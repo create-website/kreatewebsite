@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Website Building Decision Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Chosen Palette: Warm Neutrals (Slate/Indigo) -->
+    <!-- Application Structure Plan: The application is designed as a multi-step, guided decision tool to transform the static report into a personalized consultation. The user flow is: 1. Define Goal: User selects their primary business objective (e.g., e-commerce, lead-gen), which acts as the initial filter. 2. Compare Paths: High-level comparison of the three main routes (DIY, CMS, Pro). 3. Explore Options: A dynamic section that provides a deep dive into platforms relevant to the chosen path. 4. Visualize Data: Interactive charts for Total Cost of Ownership (TCO) and platform capabilities (SEO, Scalability, etc.). 5. Get Recommendation: A final, tailored recommendation based on the user's selections. This task-oriented structure is more intuitive and actionable for a business owner than a linear report, directly helping them answer "what's right for me?" -->
+    <!-- Visualization & Content Choices: Report Info -> Goal -> Viz/Presentation -> Interaction -> Justification. 1. Website Goals (Sec 1.1) -> Inform/Guide -> Icon Grid -> Click -> Visual, engaging start to the user journey. 2. Path Comparison (Table 1) -> Compare -> Card Layout -> Click to Explore -> Simplifies the primary choice. 3. TCO Data (Table 3) -> Compare -> Interactive Bar Chart (Chart.js) -> Hover for details -> Makes financial data easier to digest than a table. 4. Decision Matrix (Table 4) -> Compare/Relationships -> Interactive Radar Chart (Chart.js) -> Checkbox to add/remove platforms -> Provides instant visual comparison of multiple attributes. 5. Recommendations (Sec 7.1) -> Inform/Conclude -> Dynamic Text Block -> Updates based on selections -> Offers a personalized, actionable takeaway. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 700px; margin-left: auto; margin-right: auto; height: 320px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        .section { display: none; }
+        .section.active { display: block; }
+        .tab-button.active { border-color: #4f46e5; color: #4f46e5; background-color: #eef2ff; }
+        .path-card, .goal-card { transition: transform 0.2s, box-shadow 0.2s; }
+        .path-card:hover, .goal-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+    </style>
+    <link rel="preconnect" href="https://rsms.me/">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-2">Website Building Decision Guide</h1>
+            <p class="text-lg text-slate-600">Find the perfect platform for your business in 5 simple steps.</p>
+        </header>
+
+        <nav class="mb-12">
+            <div class="flex items-center justify-center border border-slate-200 rounded-lg p-2 bg-white shadow-sm">
+                <div id="step-1-nav" class="nav-step active flex-1 text-center p-2 rounded-md cursor-pointer">
+                    <span class="font-semibold text-indigo-600">1. Goal</span>
+                </div>
+                <div class="flex-shrink-0 text-slate-300 mx-2">→</div>
+                <div id="step-2-nav" class="nav-step flex-1 text-center p-2 rounded-md cursor-pointer">
+                    <span class="font-semibold text-slate-500">2. Paths</span>
+                </div>
+                <div class="flex-shrink-0 text-slate-300 mx-2">→</div>
+                <div id="step-3-nav" class="nav-step flex-1 text-center p-2 rounded-md cursor-pointer">
+                    <span class="font-semibold text-slate-500">3. Options</span>
+                </div>
+                <div class="flex-shrink-0 text-slate-300 mx-2">→</div>
+                <div id="step-4-nav" class="nav-step flex-1 text-center p-2 rounded-md cursor-pointer">
+                    <span class="font-semibold text-slate-500">4. Analysis</span>
+                </div>
+                 <div class="flex-shrink-0 text-slate-300 mx-2">→</div>
+                <div id="step-5-nav" class="nav-step flex-1 text-center p-2 rounded-md cursor-pointer">
+                    <span class="font-semibold text-slate-500">5. Recommendation</span>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <section id="section-goal" class="section active">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-900">What is your website's primary goal?</h2>
+                    <p class="mt-2 text-slate-600 max-w-2xl mx-auto">The most critical first step is defining your site's core purpose. This single decision will guide all others. Select the objective that best describes your business need.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </section>
+
+            <section id="section-paths" class="section">
+                 <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-900">Choose Your Building Path</h2>
+                    <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Now that you've defined your goal, you can evaluate the three primary ways to build a website. Each represents a different trade-off between convenience, control, cost, and time. Click "Explore Path" on your preferred option to see a detailed breakdown.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                </div>
+            </section>
+
+            <section id="section-options" class="section">
+                 <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-900">Explore Your Options</h2>
+                    <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Here's a deep dive into the specific platforms and services within your chosen path. Compare their strengths, weaknesses, and pricing to find the perfect fit for your business.</p>
+                </div>
+                <div id="options-content" class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                </div>
+            </section>
+            
+            <section id="section-analysis" class="section">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-900">Long-Term Analysis & Comparison</h2>
+                    <p class="mt-2 text-slate-600 max-w-2xl mx-auto">A website is a long-term investment. Use these interactive charts to understand the total cost of ownership and compare key capabilities like SEO and scalability across different platforms.</p>
+                </div>
+                <div class="space-y-16">
+                    <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold text-center mb-4">Total Cost of Ownership (3-Year Estimate)</h3>
+                         <p class="text-center text-slate-600 mb-6">This chart visualizes the estimated costs over three years, including initial setup and ongoing fees. Note that costs for professional services can vary widely.</p>
+                        <div class="chart-container">
+                            <canvas id="tcoChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold text-center mb-4">Platform Capability Matrix</h3>
+                        <p class="text-center text-slate-600 mb-6">Select platforms to compare them visually across key business priorities. A larger shape indicates stronger capabilities in more areas.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            <div class="md:col-span-1">
+                                <h4 class="font-semibold mb-2">Select Platforms:</h4>
+                                <div id="radar-controls" class="space-y-2"></div>
+                            </div>
+                            <div class="md:col-span-3">
+                                <div class="chart-container">
+                                    <canvas id="radarChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="section-recommendation" class="section">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-900">Your Personalized Recommendation</h2>
+                    <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Based on the most common business profiles, here is a tailored recommendation. Use the filters to find the profile that best matches your business.</p>
+                </div>
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="md:w-1/3 lg:w-1/4">
+                        <div class="bg-white p-6 rounded-lg shadow-lg sticky top-8">
+                            <h4 class="font-bold mb-4">Filter by Business Profile:</h4>
+                            <select id="profile-filter" class="w-full p-2 border border-slate-300 rounded-md">
+                            </select>
+                        </div>
+                    </div>
+                    <div id="recommendation-content" class="md:w-2/3 lg:w-3/4">
+                    </div>
+                </div>
+            </section>
+
+            <div class="mt-12 text-center">
+                <button id="back-button" class="bg-slate-200 text-slate-800 font-bold py-2 px-6 rounded-lg hover:bg-slate-300 transition-colors hidden">Back</button>
+            </div>
+        </main>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const data = {
+        goals: [
+            { id: 'ecommerce', title: 'E-commerce Storefront', description: 'Sell physical or digital goods directly to consumers.', icon: '🛒' },
+            { id: 'leadgen', title: 'Lead Generation Engine', description: 'Capture potential customer information and fill your sales funnel.', icon: '🎣' },
+            { id: 'info', title: 'Informational / Business Card', description: 'Establish credibility and provide essential business information.', icon: '🏢' },
+            { id: 'content', title: 'Content & Authority Hub', description: 'Build brand authority and attract an audience with articles and blogs.', icon: '✍️' },
+            { id: 'booking', title: 'Service-Based Booking Portal', description: 'Allow clients to schedule appointments and services directly.', icon: '🗓️' },
+            { id: 'portfolio', title: 'Creative Portfolio', description: 'Showcase your creative work, such as design, photography, or art.', icon: '🎨' }
+        ],
+        paths: [
+            { id: 'diy', title: 'DIY Website Builder', icon: '✨', description: 'All-in-one platforms like Wix or Shopify. Bundles hosting, security, and design tools into a simple monthly fee.', pros: ['Fastest time to launch', 'Easiest for beginners', 'Predictable costs', 'No maintenance burden'], cons: ['Limited customization', 'Potential "platform lock-in"', 'Can become expensive with apps', 'Less scalable'], bestFor: 'Beginners, simple sites, and those prioritizing speed.' },
+            { id: 'cms', title: 'Content Management System (CMS)', icon: '🔧', description: 'Self-hosted software like WordPress. Offers ultimate control and flexibility but requires more management.', pros: ['Complete design freedom', 'Limitless scalability', 'You own your data (no lock-in)', 'Huge ecosystem of plugins'], cons: ['Steeper learning curve', 'You are responsible for security', 'Requires choosing hosting', 'Can have hidden costs'], bestFor: 'Businesses wanting full control and scalability.' },
+            { id: 'pro', title: 'Professional Services', icon: '💼', description: 'Hire a freelancer or agency to build a custom site. The highest quality outcome for the highest cost.', pros: ['Expert, high-quality result', 'Saves you valuable time', 'Can build any custom feature', 'Handles all technical aspects'], cons: ['Most expensive option by far', 'Longest development time', 'Finding a good partner is critical', 'Dependent on them for updates'], bestFor: 'Businesses with complex needs and a sufficient budget.' }
+        ],
+        options: {
+            diy: {
+                tabs: ['Wix', 'Squarespace', 'Shopify'],
+                content: {
+                    Wix: {
+                        title: 'Wix: The Design Playground',
+                        bestFor: 'Beginners, freelancers, and small businesses wanting creative control.',
+                        ease: '5/5 (Very Easy)',
+                        price: '~$17/mo (Core Plan)',
+                        ecommerce: '~$27/mo',
+                        strengths: ['True drag-and-drop editor', 'Over 900 templates', 'Large app market', 'AI-powered builder (ADI)'],
+                        limitations: ['Cannot switch templates after publishing', 'Basic e-commerce features', 'Can be slow on very large sites']
+                    },
+                    Squarespace: {
+                        title: 'Squarespace: The Designer Touch',
+                        bestFor: 'Creatives, portfolios, and service businesses prioritizing a polished aesthetic.',
+                        ease: '4/5 (Easy)',
+                        price: '~$16/mo (Personal Plan)',
+                        ecommerce: '~$27/mo (Commerce Basic)',
+                        strengths: ['Award-winning templates', 'Structured, clean layouts', 'Strong blogging tools', 'Integrated scheduling (Acuity)'],
+                        limitations: ['Less design freedom than Wix', 'Smaller app ecosystem', 'E-commerce is less scalable than Shopify']
+                    },
+                    Shopify: {
+                        title: 'Shopify: The E-commerce Specialist',
+                        bestFor: 'Any business focused primarily on selling products online, from startups to large brands.',
+                        ease: '4/5 (Easy for E-com)',
+                        price: '~$29/mo (Basic Plan)',
+                        ecommerce: '~$29/mo',
+                        strengths: ['Unmatched e-commerce tools', 'Massive app store (8,000+)', 'Integrated POS system', 'Highly scalable for retail'],
+                        limitations: ['Limited design customization without code', 'Weaker blogging/content tools', 'Rigid URL structure for SEO']
+                    }
+                }
+            },
+            cms: {
+                content: {
+                    title: 'WordPress.org: The Power of Ownership',
+                    description: 'WordPress is not a service, but an asset you own. It\'s free, open-source software that you install on your own hosting account, giving you unparalleled freedom and control. While it requires more hands-on management, modern page builders like Elementor or Divi make it nearly as easy to design with as a DIY builder.',
+                    components: [
+                        { name: 'Hosting', cost: '$5 - $30+/month', desc: 'The engine for your site. Choose from shared, VPS, or managed hosting.' },
+                        { name: 'Theme', cost: '$0 - $100 (one-time)', desc: 'Controls the design. Thousands of free and premium options.' },
+                        { name: 'Plugins', cost: '$0 - $500+/year', desc: 'Add functionality. Many essential plugins are free.' }
+                    ],
+                    ecommerceTitle: 'WooCommerce: The E-commerce Engine',
+                    ecommerceDesc: 'A free plugin that turns WordPress into a powerful, fully customizable online store. It\'s the choice for businesses that want to deeply integrate content and commerce, and avoid the transaction fees charged by platforms like Shopify.',
+                }
+            },
+            pro: {
+                tabs: ['Freelancer', 'Agency', 'Custom Dev'],
+                content: {
+                    Freelancer: {
+                        title: 'Hiring a Freelancer',
+                        profile: 'An independent professional with specialized skills. Best for smaller, well-defined projects.',
+                        pros: ['More affordable than an agency', 'Direct communication', 'Flexible and personal'],
+                        cons: ['Single point of failure', 'Availability can be an issue', 'Limited scope of skills']
+                    },
+                    Agency: {
+                        title: 'Partnering with an Agency',
+                        profile: 'A company with a team of specialists (designers, developers, marketers). Best for larger, complex projects.',
+                        pros: ['Access to a diverse team', 'Reliable and accountable', 'Offer ongoing support'],
+                        cons: ['Significantly more expensive', 'Less flexible, more process-driven', 'Less direct contact with developers']
+                    },
+                    'Custom Dev': {
+                        title: 'Full Custom Development',
+                        profile: 'Building a website from scratch. Reserved for businesses where the website IS the product or has unique, mission-critical needs.',
+                        pros: ['Unmatched performance and security', 'Total design freedom', 'Built to your exact scaling needs'],
+                        cons: ['Highest possible cost', 'Longest timeline', 'Requires ongoing developer maintenance']
+                    }
+                }
+            }
+        },
+        tcoData: {
+            labels: ['DIY Builder', 'E-com Builder', 'WordPress (DIY)', 'WordPress (Pro)', 'Custom Dev'],
+            datasets: [{
+                label: 'Year 1 Estimated Cost',
+                data: [450, 800, 300, 6500, 57500],
+                backgroundColor: 'rgba(79, 70, 229, 0.6)',
+                borderColor: 'rgba(79, 70, 229, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Years 2 & 3 Annual Cost',
+                data: [450, 800, 200, 2800, 5500],
+                backgroundColor: 'rgba(129, 140, 248, 0.6)',
+                borderColor: 'rgba(129, 140, 248, 1)',
+                borderWidth: 1
+            }]
+        },
+        radarData: {
+            labels: ['Low Cost & Fast Launch', 'Ease of Use', 'Design Control', 'E-commerce', 'SEO & Content', 'Scalability & Ownership'],
+            platforms: {
+                Wix: { data: [5, 5, 3, 2, 3, 1], color: 'rgba(239, 68, 68, 0.4)' },
+                Squarespace: { data: [4, 5, 2, 3, 3, 1], color: 'rgba(34, 197, 94, 0.4)' },
+                Shopify: { data: [3, 4, 2, 5, 2, 2], color: 'rgba(59, 130, 246, 0.4)' },
+                WordPress: { data: [2, 2, 5, 4, 5, 5], color: 'rgba(249, 115, 22, 0.4)' },
+                Custom: { data: [1, 1, 5, 5, 5, 5], color: 'rgba(107, 33, 168, 0.4)' },
+            }
+        },
+        recommendations: [
+            { id: 'solo', title: 'Solo Service Provider or Creative', recommendation: 'Squarespace', rationale: 'This profile prioritizes a polished, professional aesthetic with minimal effort. Squarespace\'s stunning templates and integrated tools for blogging and appointment scheduling are a perfect all-in-one fit.' },
+            { id: 'local', title: 'Small Local Business (e.g., restaurant)', recommendation: 'Wix or Basic WordPress', rationale: 'The primary need is a functional "online business card". Wix offers the fastest, easiest path. A basic WordPress site is a great alternative offering better long-term scalability for content marketing.' },
+            { id: 'ecom_startup', title: 'E-commerce Startup', recommendation: 'Shopify', rationale: 'For a new business selling products, speed to market and a reliable sales engine are key. Shopify lets you focus on marketing and sales, not website tech. It\'s the most user-friendly, comprehensive solution to start selling quickly.' },
+            { id: 'content', title: 'Content-Driven Business or Blogger', recommendation: 'WordPress', rationale: 'This choice is unequivocal. For any business where content is the core activity, WordPress is superior. Its content management, organizational tools, and unparalleled SEO flexibility make it the industry standard.' },
+            { id: 'ecom_growth', title: 'High-Growth E-commerce Business', recommendation: 'BigCommerce or Shopify Plus', rationale: 'As a store scales, its needs become more complex. BigCommerce offers robust built-in features and zero transaction fees. Shopify Plus provides an enterprise-level version of the familiar Shopify platform with enhanced support.' },
+            { id: 'tech_startup', title: 'Tech Startup with a Web App', recommendation: 'Custom Development', rationale: 'When the website IS the product (e.g., a SaaS platform), off-the-shelf solutions are inadequate. Custom development is the only path that provides the necessary security, performance, and unique functionality required.' }
+        ]
+    };
+
+    let appState = {
+        currentStep: 1,
+        userGoal: null,
+        selectedPath: null
+    };
+
+    const sections = document.querySelectorAll('.section');
+    const navSteps = document.querySelectorAll('.nav-step');
+    const backButton = document.getElementById('back-button');
+
+    function updateNav() {
+        navSteps.forEach((step, index) => {
+            const stepNum = index + 1;
+            const span = step.querySelector('span');
+            if (stepNum < appState.currentStep) {
+                step.classList.add('completed');
+                span.classList.remove('text-slate-500', 'text-indigo-600');
+                span.classList.add('text-green-600');
+                span.innerHTML = `${stepNum}. ✓`;
+            } else if (stepNum === appState.currentStep) {
+                step.classList.add('active');
+                span.classList.remove('text-slate-500', 'text-green-600');
+                span.classList.add('text-indigo-600');
+                span.innerHTML = `${stepNum}. ${step.id.split('-')[1].charAt(0).toUpperCase() + step.id.split('-')[1].slice(1)}`;
+
+            } else {
+                step.classList.remove('active', 'completed');
+                span.classList.remove('text-indigo-600', 'text-green-600');
+                span.classList.add('text-slate-500');
+                span.innerHTML = `${stepNum}. ${step.id.split('-')[1].charAt(0).toUpperCase() + step.id.split('-')[1].slice(1)}`;
+            }
+        });
+    }
+    
+    function showSection(step) {
+        appState.currentStep = step;
+        sections.forEach(section => section.classList.remove('active'));
+        document.getElementById(`section-${getSectionName(step)}`).classList.add('active');
+        backButton.classList.toggle('hidden', step === 1);
+        updateNav();
+        window.scrollTo(0, 0);
+    }
+    
+    function getSectionName(step) {
+        return ['goal', 'paths', 'options', 'analysis', 'recommendation'][step - 1];
+    }
+
+    backButton.addEventListener('click', () => {
+        if (appState.currentStep > 1) {
+            showSection(appState.currentStep - 1);
+        }
+    });
+
+    navSteps.forEach((step, index) => {
+        step.addEventListener('click', () => {
+             if (index < appState.currentStep) {
+                showSection(index + 1);
+            }
+        });
+    });
+
+    function renderGoals() {
+        const container = document.querySelector('#section-goal .grid');
+        container.innerHTML = data.goals.map(goal => `
+            <div class="goal-card bg-white p-6 rounded-lg shadow-sm border border-slate-200 cursor-pointer" data-id="${goal.id}">
+                <div class="text-4xl mb-4">${goal.icon}</div>
+                <h3 class="font-bold text-xl mb-2 text-slate-900">${goal.title}</h3>
+                <p class="text-slate-600">${goal.description}</p>
+            </div>
+        `).join('');
+
+        container.querySelectorAll('.goal-card').forEach(card => {
+            card.addEventListener('click', () => {
+                appState.userGoal = card.dataset.id;
+                showSection(2);
+                renderPaths();
+            });
+        });
+    }
+
+    function renderPaths() {
+        const container = document.querySelector('#section-paths .grid');
+        container.innerHTML = data.paths.map(path => `
+            <div class="path-card flex flex-col bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                <div class="text-4xl mb-4">${path.icon}</div>
+                <h3 class="font-bold text-2xl mb-2 text-slate-900">${path.title}</h3>
+                <p class="text-slate-600 mb-4 flex-grow">${path.description}</p>
+                <div class="mb-4">
+                    <strong class="text-green-600">Pros:</strong>
+                    <ul class="list-disc list-inside text-slate-600 text-sm mt-1">
+                        ${path.pros.map(p => `<li>${p}</li>`).join('')}
+                    </ul>
+                </div>
+                <div class="mb-6">
+                    <strong class="text-red-600">Cons:</strong>
+                     <ul class="list-disc list-inside text-slate-600 text-sm mt-1">
+                        ${path.cons.map(c => `<li>${c}</li>`).join('')}
+                    </ul>
+                </div>
+                <button class="w-full mt-auto bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors explore-path-btn" data-id="${path.id}">Explore Path</button>
+            </div>
+        `).join('');
+
+        container.querySelectorAll('.explore-path-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                appState.selectedPath = btn.dataset.id;
+                showSection(3);
+                renderOptions();
+            });
+        });
+    }
+
+    function renderOptions() {
+        const container = document.getElementById('options-content');
+        const pathData = data.options[appState.selectedPath];
+        let contentHTML = '';
+
+        if (appState.selectedPath === 'diy' || appState.selectedPath === 'pro') {
+            contentHTML = `
+                <div class="flex border-b border-slate-200 mb-6">
+                    ${pathData.tabs.map((tab, index) => `
+                        <button class="tab-button flex-1 py-2 px-4 border-b-2 font-medium text-slate-500 hover:bg-slate-100 ${index === 0 ? 'active' : ''}" data-tab="${tab}">${tab}</button>
+                    `).join('')}
+                </div>
+                <div id="options-tab-content"></div>
+            `;
+        } else if (appState.selectedPath === 'cms') {
+            const d = pathData.content;
+            contentHTML = `
+                <div class="max-w-4xl mx-auto">
+                    <h3 class="font-bold text-2xl mb-2 text-slate-900 text-center">${d.title}</h3>
+                    <p class="text-slate-600 text-center mb-8">${d.description}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center mb-10">
+                        ${d.components.map(c => `
+                            <div class="bg-slate-50 p-4 rounded-lg border">
+                                <h4 class="font-semibold text-lg">${c.name}</h4>
+                                <p class="text-indigo-600 font-bold">${c.cost}</p>
+                                <p class="text-sm text-slate-500">${c.desc}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="border-t border-slate-200 pt-8">
+                        <h3 class="font-bold text-2xl mb-2 text-slate-900 text-center">${d.ecommerceTitle}</h3>
+                        <p class="text-slate-600 text-center">${d.ecommerceDesc}</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = contentHTML;
+
+        if (appState.selectedPath === 'diy' || appState.selectedPath === 'pro') {
+            renderTabContent(pathData.tabs[0]);
+            container.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    container.querySelector('.tab-button.active').classList.remove('active');
+                    button.classList.add('active');
+                    renderTabContent(button.dataset.tab);
+                });
+            });
+        }
+    }
+    
+    function renderTabContent(tabName) {
+        const container = document.getElementById('options-tab-content');
+        const pathData = data.options[appState.selectedPath];
+        const tabData = pathData.content[tabName];
+        let contentHTML = '';
+
+        if (appState.selectedPath === 'diy') {
+            contentHTML = `
+                <h4 class="text-2xl font-bold mb-2">${tabData.title}</h4>
+                <p class="text-slate-600 mb-6"><strong>Best For:</strong> ${tabData.bestFor}</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-slate-100 p-4 rounded-lg text-center"><div class="text-sm text-slate-500">Ease of Use</div><div class="text-xl font-bold">${tabData.ease}</div></div>
+                    <div class="bg-slate-100 p-4 rounded-lg text-center"><div class="text-sm text-slate-500">Starting Price</div><div class="text-xl font-bold">${tabData.price}</div></div>
+                    <div class="bg-slate-100 p-4 rounded-lg text-center"><div class="text-sm text-slate-500">E-commerce Plan</div><div class="text-xl font-bold">${tabData.ecommerce}</div></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div><h5 class="font-semibold mb-2 text-green-700">Key Strengths</h5><ul class="list-disc list-inside space-y-1 text-slate-600">${tabData.strengths.map(s => `<li>${s}</li>`).join('')}</ul></div>
+                    <div><h5 class="font-semibold mb-2 text-red-700">Key Limitations</h5><ul class="list-disc list-inside space-y-1 text-slate-600">${tabData.limitations.map(l => `<li>${l}</li>`).join('')}</ul></div>
+                </div>
+            `;
+        } else if (appState.selectedPath === 'pro') {
+             contentHTML = `
+                <h4 class="text-2xl font-bold mb-2">${tabData.title}</h4>
+                <p class="text-slate-600 mb-6">${tabData.profile}</p>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div><h5 class="font-semibold mb-2 text-green-700">Pros</h5><ul class="list-disc list-inside space-y-1 text-slate-600">${tabData.pros.map(s => `<li>${s}</li>`).join('')}</ul></div>
+                    <div><h5 class="font-semibold mb-2 text-red-700">Cons</h5><ul class="list-disc list-inside space-y-1 text-slate-600">${tabData.cons.map(l => `<li>${l}</li>`).join('')}</ul></div>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = contentHTML;
+    }
+
+    let tcoChartInstance, radarChartInstance;
+    
+    function renderTcoChart() {
+        const ctx = document.getElementById('tcoChart').getContext('2d');
+        if (tcoChartInstance) tcoChartInstance.destroy();
+        tcoChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: data.tcoData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function renderRadarChart() {
+        const controlsContainer = document.getElementById('radar-controls');
+        const platformNames = Object.keys(data.radarData.platforms);
+        controlsContainer.innerHTML = platformNames.map(name => `
+            <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="checkbox" class="radar-checkbox" value="${name}" checked>
+                <span>${name}</span>
+            </label>
+        `).join('');
+
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        if (radarChartInstance) radarChartInstance.destroy();
+
+        radarChartInstance = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: data.radarData.labels,
+                datasets: []
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                elements: {
+                    line: { borderWidth: 3 }
+                },
+                 scales: {
+                    r: {
+                        angleLines: { display: true },
+                        suggestedMin: 0,
+                        suggestedMax: 5,
+                        pointLabels: {
+                            font: { size: 12 }
+                        },
+                        ticks: { display: false, stepSize: 1 }
+                    }
+                }
+            }
+        });
+
+        updateRadarChart();
+
+        document.querySelectorAll('.radar-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateRadarChart);
+        });
+    }
+    
+    function updateRadarChart() {
+        const selectedPlatforms = Array.from(document.querySelectorAll('.radar-checkbox:checked')).map(cb => cb.value);
+        radarChartInstance.data.datasets = selectedPlatforms.map(name => ({
+            label: name,
+            data: data.radarData.platforms[name].data,
+            backgroundColor: data.radarData.platforms[name].color,
+            borderColor: data.radarData.platforms[name].color.replace('0.4', '1'),
+            pointBackgroundColor: data.radarData.platforms[name].color.replace('0.4', '1'),
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: data.radarData.platforms[name].color.replace('0.4', '1')
+        }));
+        radarChartInstance.update();
+    }
+    
+    function renderRecommendations() {
+        const filter = document.getElementById('profile-filter');
+        filter.innerHTML = data.recommendations.map(rec => `<option value="${rec.id}">${rec.title}</option>`).join('');
+        
+        function updateRecommendationContent(profileId) {
+            const container = document.getElementById('recommendation-content');
+            const recData = data.recommendations.find(r => r.id === profileId);
+            container.innerHTML = `
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-bold text-slate-800">${recData.title}</h4>
+                    <div class="my-4">
+                        <span class="text-sm font-bold uppercase text-indigo-500">Recommendation</span>
+                        <p class="text-3xl font-extrabold text-indigo-600">${recData.recommendation}</p>
+                    </div>
+                    <h5 class="font-semibold text-slate-800 mt-6 mb-2">Rationale:</h5>
+                    <p class="text-slate-600 leading-relaxed">${recData.rationale}</p>
+                </div>
+            `;
+        }
+
+        updateRecommendationContent(filter.value);
+        filter.addEventListener('change', (e) => updateRecommendationContent(e.target.value));
+    }
+
+
+    function initialize() {
+        renderGoals();
+        renderPaths();
+        renderTcoChart();
+        renderRadarChart();
+        renderRecommendations();
+        showSection(1);
+    }
+    
+    initialize();
+});
+</script>
+
+</body>
+</html>

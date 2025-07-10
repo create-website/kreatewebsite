@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choosing Your Website: An Infographic Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic tells a linear story designed to guide a business owner from a broad understanding to a specific choice. The narrative flow is: 1. Hook: A powerful stat on the market leader (WordPress) to establish context. 2. The Core Choice: A visual flowchart breaking down the three main paths (DIY, CMS, Pro) to simplify the primary decision. 3. Deep Dive Sections: Each path is explored with tailored visualizations (bar charts for cost, donut charts for audience fit, radar for complex comparisons). 4. Cost vs. Control: A central theme visualized through a stacked bar chart for TCO and a radar chart for capability trade-offs. 5. Conclusion: A summary reinforcing the core message that the best choice is goal-dependent. This narrative structure makes the dense report digestible and actionable in a single scrolling experience. -->
+    <!-- Visualization & Content Choices: 1. WordPress Market Share (Sec 1.2) -> Inform -> Single Big Number -> High-impact hook. 2. 3 Paths Flowchart (Sec 1.2) -> Organize -> HTML/CSS Diagram -> Clarifies the primary strategic fork in the road. (No SVG/Mermaid). 3. DIY Builder Costs (Table 2) -> Compare -> Bar Chart (Chart.js) -> Easily compare monthly costs. 4. WordPress Components (Sec 4.2) -> Organize -> HTML/CSS Diagram -> Visually deconstructs what a WordPress site entails. (No SVG/Mermaid). 5. TCO Comparison (Table 3) -> Compare -> Stacked Bar Chart (Chart.js) -> Shows long-term financial impact, not just initial cost. 6. Decision Matrix (Table 4) -> Relationships -> Radar Chart (Chart.js) -> The best way to visualize multi-attribute comparisons between platforms. 7. Platform Audience (Sec 3.2/3.3) -> Compare -> Donut Chart (Chart.js) -> Shows the ideal user for key platforms. All visualizations use Chart.js/Canvas, adhering to the NO SVG constraint. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        .bg-cream { background-color: #E5DDC8; }
+        .bg-main-blue { background-color: #004369; }
+        .bg-accent-red { background-color: #DB1F48; }
+        .bg-accent-teal { background-color: #01949A; }
+        .text-main-blue { color: #004369; }
+        .text-accent-red { color: #DB1F48; }
+        .text-accent-teal { color: #01949A; }
+        .text-cream { color: #E5DDC8; }
+        .border-main-blue { border-color: #004369; }
+        .border-accent-red { border-color: #DB1F48; }
+        .border-accent-teal { border-color: #01949A; }
+        .stat-card { transition: transform 0.3s, box-shadow 0.3s; }
+        .stat-card:hover { transform: translateY(-10px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
+    </style>
+    <link rel="preconnect" href="https://rsms.me/">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+</head>
+<body class="bg-cream">
+
+    <div class="container mx-auto px-4 py-12 md:px-8 md:py-16">
+
+        <section id="hero" class="text-center mb-20">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-main-blue mb-4">The Business Owner's Guide to Building a Website in 2025</h1>
+            <p class="text-lg md:text-xl text-main-blue max-w-3xl mx-auto">Choosing a website platform is a critical strategic decision. This guide breaks down the complex landscape to help you find the right path for your business goals.</p>
+        </section>
+
+        <section id="market-leader" class="mb-20">
+            <div class="bg-main-blue text-white rounded-lg shadow-xl p-8 md:p-12 text-center">
+                <p class="text-2xl md:text-3xl font-bold text-cream mb-2">One Platform Dominates the Web</p>
+                <p class="text-cream mb-6 max-w-2xl mx-auto">To understand the web, you have to understand its biggest player. The flexibility of open-source has created a clear market leader, setting the standard for control and scalability.</p>
+                <div class="text-7xl md:text-9xl font-extrabold text-accent-teal">43%</div>
+                <p class="text-2xl font-bold text-cream mt-2">Of all websites on the internet are powered by WordPress.</p>
+            </div>
+        </section>
+
+        <section id="the-three-paths" class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-main-blue">Your First Decision: The Three Strategic Paths</h2>
+                <p class="text-main-blue mt-2 max-w-2xl mx-auto">Before comparing features, you must choose your core strategy. Each path represents a different trade-off between convenience, control, and cost.</p>
+            </div>
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-8">
+                <div class="text-center p-6 bg-white rounded-lg shadow-lg w-full md:w-1/3">
+                    <div class="text-5xl mb-4">✨</div>
+                    <h3 class="text-2xl font-bold text-main-blue mb-2">Path 1: DIY Builders</h3>
+                    <p class="text-main-blue">All-in-one platforms like Wix & Shopify. The fastest and easiest path, ideal for beginners who value convenience over control.</p>
+                </div>
+                <div class="text-2xl font-bold text-main-blue hidden md:block">→</div>
+                 <div class="text-center p-6 bg-white rounded-lg shadow-lg w-full md:w-1/3">
+                    <div class="text-5xl mb-4">🔧</div>
+                    <h3 class="text-2xl font-bold text-main-blue mb-2">Path 2: CMS (WordPress)</h3>
+                    <p class="text-main-blue">Self-hosted software you own. Offers ultimate control and scalability but requires more management.</p>
+                </div>
+                 <div class="text-2xl font-bold text-main-blue hidden md:block">→</div>
+                 <div class="text-center p-6 bg-white rounded-lg shadow-lg w-full md:w-1/3">
+                    <div class="text-5xl mb-4">💼</div>
+                    <h3 class="text-2xl font-bold text-main-blue mb-2">Path 3: Professional</h3>
+                    <p class="text-main-blue">Hire an expert freelancer or agency. The highest quality outcome for the highest cost, saving you time.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="diy-deep-dive" class="mb-20">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-main-blue">Deep Dive: The DIY Builder Market</h2>
+                <p class="text-main-blue mt-2 max-w-2xl mx-auto">DIY builders offer predictable costs and incredible ease of use, but which one is right for you? It depends entirely on your primary business function.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="bg-white rounded-lg shadow-xl p-8">
+                    <h3 class="text-2xl font-bold text-main-blue mb-4 text-center">Typical Monthly Costs (E-commerce Plans)</h3>
+                    <p class="text-main-blue text-center mb-6">While seemingly similar, the true power of each platform lies in what these costs include. Shopify is built for sales, while others focus on design.</p>
+                    <div class="chart-container">
+                        <canvas id="costChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-xl p-8">
+                    <h3 class="text-2xl font-bold text-main-blue mb-4 text-center">Who Are They For?</h3>
+                    <p class="text-main-blue text-center mb-6">The ideal user for each major platform is distinct. Choosing the right one means aligning the platform's strengths with your business needs.</p>
+                    <div class="chart-container">
+                        <canvas id="audienceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cost-vs-control" class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-main-blue">The Central Trade-Off: Cost vs. Control</h2>
+                <p class="text-main-blue mt-2 max-w-2xl mx-auto">The core of your decision lies in a visual comparison. Do you need maximum capability and ownership, or are you prioritizing speed and simplicity? </p>
+            </div>
+            <div class="bg-white rounded-lg shadow-xl p-8">
+                <h3 class="text-2xl font-bold text-main-blue mb-4 text-center">Platform Capability Matrix</h3>
+                <p class="text-main-blue text-center mb-6">This chart rates each path across key business priorities. A larger shape indicates more power and control, which often correlates with higher cost or a steeper learning curve.</p>
+                <div class="chart-container max-w-2xl">
+                    <canvas id="decisionMatrixChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="tco-analysis" class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-main-blue">Beyond the Sticker Price: Total Cost of Ownership</h2>
+                <p class="text-main-blue mt-2 max-w-2xl mx-auto">A website is a long-term investment. This 3-year projection reveals how initial costs can be misleading, especially when factoring in developer fees and ongoing maintenance.</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-xl p-8">
+                <h3 class="text-2xl font-bold text-main-blue mb-4 text-center">Estimated 3-Year Total Cost of Ownership</h3>
+                <p class="text-main-blue text-center mb-6">The "Professional" paths have high upfront costs but can be more predictable long-term, while DIY builders have low entry costs that can grow with app subscriptions.</p>
+                 <div class="chart-container max-w-4xl h-[500px]">
+                    <canvas id="tcoChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+         <footer class="text-center mt-16 pt-8 border-t-2 border-main-blue border-opacity-20">
+            <p class="text-main-blue">Data sourced from "Strategic Pathways for Business Website Development: A 2025 Industry Analysis."</p>
+            <p class="text-sm text-main-blue opacity-75 mt-2">The right choice is the one that best serves your unique business goals, budget, and ambition.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const chartTooltipPlugin = {
+            tooltip: {
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) {
+                            return label.join(' ');
+                        } else {
+                            return label;
+                        }
+                    }
+                }
+            }
+        };
+
+        const wrapLabel = (label) => {
+            if (label.length > 16) {
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > 16) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            }
+            return label;
+        };
+
+        const colors = {
+            blue: '#004369',
+            red: '#DB1F48',
+            teal: '#01949A',
+            cream: '#E5DDC8'
+        };
+
+        new Chart(document.getElementById('costChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Wix', 'Squarespace', 'Shopify', 'BigCommerce'],
+                datasets: [{
+                    label: 'Starting E-commerce Plan ($/month)',
+                    data: [29, 27, 39, 39],
+                    backgroundColor: [colors.blue, colors.teal, colors.red, '#5e72e4'],
+                    borderColor: '#ffffff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    ...chartTooltipPlugin
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            callback: function(value) { return '$' + value }
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('audienceChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Shopify: Pure E-commerce', 'Squarespace: Creatives & Services', 'Wix: General Small Business'],
+                datasets: [{
+                    data: [45, 30, 25],
+                    backgroundColor: [colors.red, colors.teal, colors.blue],
+                    borderColor: colors.cream,
+                    borderWidth: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    ...chartTooltipPlugin
+                }
+            }
+        });
+
+        const decisionMatrixLabels = [
+            'Low Cost & Fast Launch', 
+            'Ease of Use', 
+            'Design Control', 
+            'E-commerce Power', 
+            'SEO & Content', 
+            'Scalability & Ownership'
+        ].map(wrapLabel);
+        
+        new Chart(document.getElementById('decisionMatrixChart'), {
+            type: 'radar',
+            data: {
+                labels: decisionMatrixLabels,
+                datasets: [
+                    {
+                        label: 'DIY Builder',
+                        data: [5, 5, 2, 2, 3, 1],
+                        backgroundColor: 'rgba(219, 31, 72, 0.2)',
+                        borderColor: colors.red,
+                        pointBackgroundColor: colors.red,
+                    },
+                    {
+                        label: 'WordPress',
+                        data: [2, 2, 5, 4, 5, 5],
+                        backgroundColor: 'rgba(0, 67, 105, 0.2)',
+                        borderColor: colors.blue,
+                        pointBackgroundColor: colors.blue,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                     ...chartTooltipPlugin
+                },
+                scales: {
+                    r: {
+                        angleLines: { display: true },
+                        suggestedMin: 0,
+                        suggestedMax: 5,
+                        pointLabels: {
+                             font: { size: 12 }
+                        },
+                        ticks: { display: false, stepSize: 1 }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('tcoChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Website Builder', 'E-commerce Builder', wrapLabel('WordPress (DIY Management)'), wrapLabel('WordPress (Pro Build)'), wrapLabel('Custom Development (Agency)')],
+                datasets: [{
+                    label: 'Year 1 Cost',
+                    data: [450, 800, 300, 6500, 57500],
+                    backgroundColor: colors.blue,
+                }, {
+                    label: 'Years 2-3 Annual Cost',
+                    data: [450, 800, 200, 2800, 5500],
+                    backgroundColor: colors.teal,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    ...chartTooltipPlugin
+                },
+                scales: {
+                    x: { stacked: true },
+                    y: {
+                        stacked: true,
+                        ticks: {
+                            callback: function(value) { return '$' + value.toLocaleString() }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
