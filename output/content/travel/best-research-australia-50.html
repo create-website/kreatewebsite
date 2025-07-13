@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Australia Travel Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Earthy Accents -->
+    <!-- Application Structure Plan: The application is structured as an interactive dashboard. The core user experience centers on a dynamic filtering system where users can select a 'Travel Style' (e.g., Urban, Wilderness, Coastal). This instantly updates a grid of destination cards and summary charts. Clicking a card opens a modal with in-depth information. This non-linear, task-oriented design was chosen to empower users to explore the report's rich content based on their personal interests, making it more engaging and useful than a static, linear document. -->
+    <!-- Visualization & Content Choices: Report Info: Master list of destinations -> Goal: Organize/Compare -> Viz: Filterable Card Grid (HTML/JS) -> Interaction: User clicks filters to update grid -> Justification: Allows for rapid, personalized discovery. | Report Info: Distribution of destination types -> Goal: Inform/Summarize -> Viz: Don't Chart & Bar Chart (Chart.js/Canvas) -> Interaction: Charts update dynamically with filters -> Justification: Provides a high-level visual overview of the selected travel style. | Report Info: Detailed destination descriptions/logistics -> Goal: Inform in Detail -> Viz: Modal Window (HTML/JS) -> Interaction: Opens on card click -> Justification: Delivers comprehensive content without cluttering the primary interface. NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #fdfaf6; color: #4a4a4a; }
+        .chart-container { position: relative; width: 100%; max-width: 450px; margin-left: auto; margin-right: auto; height: 320px; max-height: 350px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .modal-content { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .tag { display: inline-block; background-color: #e3f2fd; color: #1e88e5; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+        .btn-filter { background-color: #ffffff; border: 1px solid #d1d5db; }
+        .btn-filter.active { background-color: #c59d5f; color: white; border-color: #c59d5f; }
+    </style>
+</head>
+<body>
+    <header class="bg-[#2c3e50] text-white shadow-lg">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold tracking-tight">The Quintessential Australian Journey</h1>
+            <p class="mt-1 text-lg text-gray-300">An Interactive Guide to the Continent's Unforgettable Destinations</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <section id="filters" class="mb-8 p-4 bg-white rounded-lg shadow-md sticky top-0 z-10">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Travel Style</label>
+                    <div id="style-filters" class="flex flex-wrap gap-2"></div>
+                </div>
+                 <div>
+                    <label for="search" class="block text-sm font-medium text-gray-700">Search by Name</label>
+                    <input type="text" id="search" placeholder="e.g., Sydney" class="mt-1 block w-full md:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard" class="mb-10">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-[#2c3e50]">Destination Overview</h2>
+                <p class="text-gray-600">A snapshot of Australia's premier destinations based on your selection.</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-8">
+                <div class="w-full lg:w-1/2 p-4 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-center font-semibold text-lg mb-2">Destinations by Sub-Type</h3>
+                     <div class="chart-container">
+                        <canvas id="subTypeChart"></canvas>
+                    </div>
+                </div>
+                <div class="w-full lg:w-1/2 p-4 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-center font-semibold text-lg mb-2">Destinations by State/Territory</h3>
+                     <div class="chart-container">
+                        <canvas id="stateChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="destinations-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        </section>
+    </main>
+
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto modal-content">
+            <div class="sticky top-0 bg-[#2c3e50] text-white px-6 py-4 flex justify-between items-center">
+                <h2 id="modal-title" class="text-2xl font-bold"></h2>
+                <button id="modal-close" class="text-2xl font-bold hover:text-red-500 transition-colors">&times;</button>
+            </div>
+            <div id="modal-body" class="p-6">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const destinationsData = [
+            { id: 1, name: "Sydney", type: "Urban Icons", subType: "City", state: "NSW", icon: "🏙️" },
+            { id: 2, name: "Melbourne", type: "Urban Icons", subType: "City", state: "VIC", icon: "🎨" },
+            { id: 3, name: "Uluru-Kata Tjuta", type: "Ancient Heart", subType: "Cultural Landscape", state: "NT", icon: "🔴" },
+            { id: 4, name: "Daintree & GBR", type: "Ancient Heart", subType: "Dual World Heritage", state: "QLD", icon: "🐠" },
+            { id: 5, name: "Great Ocean Road", type: "Epic Drives", subType: "Scenic Drive", state: "VIC", icon: "🚗" },
+            { id: 6, name: "Blue Mountains", type: "Wilderness Escapes", subType: "National Park", state: "NSW", icon: "🏞️" },
+            { id: 7, name: "The Kimberley", type: "Wilderness Escapes", subType: "Remote Wilderness", state: "WA", icon: "🐊" },
+            { id: 8, name: "Tasmania", type: "Island Sanctuaries", subType: "Wilderness Island", state: "TAS", icon: "⛰️" },
+            { id: 9, name: "Kangaroo Island", type: "Island Sanctuaries", subType: "Wildlife Island", state: "SA", icon: "🦘" },
+            { id: 10, name: "Barossa & Margaret River", type: "Gourmet Valleys", subType: "Wine Region", state: "SA/WA", icon: "🍷" }
+        ];
+
+        const detailsData = {
+            1: {
+                essential: "Sydney is defined by its spectacular harbour, a glittering expanse of water that shapes the city's identity and outdoor lifestyle. The Sydney Opera House and Harbour Bridge are not just monuments but stages for dynamic experiences.",
+                attractions: ["Sydney Opera House Tour", "BridgeClimb", "Ferry to Manly", "Bondi to Bronte Coastal Walk", "Exploring iconic beaches like Bondi and Coogee."],
+                insider: "The city’s premier attractions are not things to be simply seen, but to be climbed, sailed around, and walked along. Active engagement with the natural environment is key to understanding Sydney's appeal."
+            },
+            2: {
+                essential: "Melbourne's soul is discovered within its intimate, creative, and epicurean laneways. It is Australia's cultural capital, a city of discovery rewarding those who venture into its labyrinth of cobbled alleys filled with street art and world-class coffee.",
+                attractions: ["Exploring laneway street art (Hosier Lane, AC/DC Lane)", "Indulging in coffee culture on Degraves Street", "National Gallery of Victoria (NGV)", "Queen Victoria Market", "Melbourne Cricket Ground (MCG)."],
+                insider: "To truly experience Melbourne, adopt a mindset of curiosity. The city's greatest rewards are reserved for those willing to get lost in its creative maze, stumbling upon hidden gems."
+            },
+            3: {
+                essential: "A journey to Uluru is a journey to the spiritual heart of the nation and the world's oldest living culture. This living cultural landscape is sacred to the Aṉangu people, its Traditional Owners.",
+                attractions: ["Aṉangu-led base walk of Uluru", "Visiting the Cultural Centre", "Bruce Munro's Field of Light installation", "Wintjiri Wiru drone experience", "Sounds of Silence dinner under the stars."],
+                insider: "The climb of Uluru is permanently closed out of respect for the Aṉangu people. Visiting is not a neutral act; by choosing Indigenous-led tours, travelers support a remarkable story of cultural resurgence. Visit from May to September."
+            },
+            4: {
+                essential: "In tropical north Queensland, two UNESCO World Heritage sites converge: the ancient Daintree Rainforest and the vibrant Great Barrier Reef. This region offers a unique opportunity to explore two of the planet's most precious ecosystems.",
+                attractions: ["Ngadiku Dreamtime Walk at Mossman Gorge", "Crocodile-spotting cruise on the Daintree River", "Outer reef pontoon trips from Cairns/Port Douglas (for non-swimmers/families)", "Liveaboard dive trips to remote reefs", "Sailing the Whitsunday Islands and visiting Whitehaven Beach."],
+                insider: "Your experience depends entirely on your gateway and travel style. A serious diver should choose a Cairns liveaboard, while a family or non-swimmer is better suited to a pontoon. For sailing and beaches, the Whitsundays are premier."
+            },
+            5: {
+                essential: "The Great Ocean Road is one of the world's most scenic coastal drives, spanning 243km along Victoria's rugged coast. Built by returned soldiers, it's a journey of dramatic beauty. A 2-3 day self-drive itinerary is recommended.",
+                attractions: ["The 12 Apostles (best at sunrise/sunset)", "Loch Ard Gorge", "Gibson Steps", "Great Otway National Park & Maits Rest Rainforest", "Surf culture in Torquay and Bells Beach."],
+                insider: "The journey has two acts: the surf coast (Torquay to Apollo Bay) and the more dramatic Shipwreck Coast (Apollo Bay onwards). Drive on the left, use slow-vehicle turnouts, and book accommodation in advance."
+            },
+            6: {
+                essential: "A UNESCO World Heritage-listed wilderness just 90 minutes from Sydney, the Blue Mountains are famed for dramatic escarpments, eucalyptus-filled gorges, and cascading waterfalls, all veiled in a signature blue haze.",
+                attractions: ["The Three Sisters rock formation from Echo Point", "Scenic World (Scenic Railway, Cableway, Skyway, and Walkway)", "Hiking the national park's 140km+ of trails", "Prince Henry Cliff Walk."],
+                insider: "Strategically use Scenic World's rides to customize your hike. Arrive at opening time to avoid tour buses. The best seasons for walking are spring (Oct-Nov) and autumn (May). Come prepared for changing weather."
+            },
+7: {
+                essential: "The Kimberley in Western Australia is one of the planet's last great wildernesses. An expedition cruise is the definitive way to witness its most spectacular phenomena, dictated by the massive, powerful tides.",
+                attractions: ["The Horizontal Falls in Talbot Bay", "Montgomery Reef appearing from the ocean", "King George Falls (highest twin falls in the Kimberley)", "Ancient Gwion Gwion (Bradshaw) rock art", "Wildlife sightings (crocodiles, birds)."],
+                insider: "This is a genuine expedition, not a passive vacation. The journey is governed by the lunar-driven cycles of the ocean. The best time to go is the dry season, from late May to the end of September."
+            },
+            8: {
+                essential: "Tasmania is a sanctuary of pristine, dramatic wilderness, perfect for hikers. Its parks offer a 'choose your own adventure' model, with accessible short walks serving as gateways to demanding multi-day treks.",
+                attractions: ["Cradle Mountain & Dove Lake Circuit (short walk)", "The Overland Track (6-day trek)", "Wineglass Bay Lookout in Freycinet (short walk)", "Freycinet Peninsula Circuit (multi-day trek)", "Wineglass Bay cruises."],
+                insider: "The tiered system of engagement in parks like Cradle Mountain and Freycinet allows you to tailor your adventure to your fitness and time. Match the iconic short walks or epic treks to your personal style."
+            },
+            9: {
+                essential: "Kangaroo Island is a sanctuary for Australian wildlife and a powerful symbol of ecological resilience after the 2019-20 bushfires. A visit today is a chance to witness a remarkable story of regeneration.",
+                attractions: ["Remarkable Rocks in Flinders Chase NP (best at sunrise/sunset)", "Admirals Arch fur seal colony", "Seal Bay Conservation Park (walk with sea lions)", "Spotting koalas, kangaroos, and wallabies in the wild."],
+                insider: "A visit today offers a more profound experience than ever before. It's a chance to not only enjoy stunning scenery and unique wildlife but also to support a remarkable environmental comeback story."
+            },
+            10: {
+                essential: "Australia's premier wine regions offer distinct personalities. The Barossa Valley is about heritage and powerful, old-vine Shiraz. Margaret River is a contemporary lifestyle experience where fine wine meets a rugged, adventure-filled coast.",
+                attractions: ["Barossa: Yalumba, Seppeltsfield (100-year-old tawny), Maggie Beer's Farm Shop.", "Margaret River: World-class wineries with restaurants, surfing, beaches, forests, and caves."],
+                insider: "Choose based on your preferred travel style. Barossa is for history buffs and lovers of bold reds. Margaret River is for those who want a dynamic holiday blending gourmet indulgence with outdoor activity."
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('destinations-grid');
+            const searchInput = document.getElementById('search');
+            const styleFiltersContainer = document.getElementById('style-filters');
+
+            const modal = document.getElementById('modal');
+            const modalClose = document.getElementById('modal-close');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+
+            let subTypeChart, stateChart;
+            let activeFilter = 'all';
+
+            function getUniqueValues(key) {
+                const values = destinationsData.map(item => item[key]);
+                return ['all', ...new Set(values)].sort((a,b) => a === 'all' ? -1 : b === 'all' ? 1 : a.localeCompare(b));
+            }
+
+            function createFilterButtons(container, values, type) {
+                container.innerHTML = '';
+                values.forEach(value => {
+                    const button = document.createElement('button');
+                    button.className = 'btn-filter px-3 py-1 text-sm font-medium rounded-full transition-colors';
+                    button.textContent = value === 'all' ? `All ${type}s` : value;
+                    button.dataset.filter = value;
+                    if (value === 'all') button.classList.add('active');
+                    
+                    button.addEventListener('click', () => {
+                        activeFilter = value;
+                        updateActiveButtonStates(container, button);
+                        filterDestinations();
+                    });
+                    container.appendChild(button);
+                });
+            }
+            
+            function updateActiveButtonStates(container, activeButton) {
+                container.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active'));
+                activeButton.classList.add('active');
+            }
+
+            function populateFilters() {
+                const styles = getUniqueValues('type');
+                createFilterButtons(styleFiltersContainer, styles, 'Style');
+            }
+            
+            function renderCards(destinations) {
+                grid.innerHTML = '';
+                destinations.forEach(dest => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform hover:scale-105 transition-transform duration-300';
+                    card.dataset.id = dest.id;
+                    card.innerHTML = `
+                        <div class="p-5">
+                            <div class="flex items-center mb-2">
+                                <span class="text-2xl mr-3">${dest.icon || '🇦🇺'}</span>
+                                <h3 class="text-lg font-bold text-gray-900 leading-tight">${dest.name}</h3>
+                            </div>
+                            <div class="mt-3">
+                               <span class="tag">${dest.type}</span>
+                               <span class="tag">${dest.subType}</span>
+                            </div>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => openModal(dest.id));
+                    grid.appendChild(card);
+                });
+            }
+
+            function openModal(id) {
+                const destination = destinationsData.find(d => d.id === id);
+                const details = detailsData[id];
+                if (!destination || !details) return;
+
+                modalTitle.textContent = destination.name;
+                
+                let attractionsHTML = '';
+                details.attractions.forEach(attraction => {
+                    attractionsHTML += `<li class="text-gray-700 leading-relaxed">${attraction}</li>`;
+                });
+
+                modalBody.innerHTML = `
+                    <div class="mb-6">
+                        <h3 class="text-xl font-semibold text-[#c59d5f] border-b-2 border-gray-200 pb-2 mb-3">Why It's Essential</h3>
+                        <p class="text-gray-700 leading-relaxed">${details.essential}</p>
+                    </div>
+                    <div class="mb-6">
+                        <h3 class="text-xl font-semibold text-[#c59d5f] border-b-2 border-gray-200 pb-2 mb-3">Key Attractions</h3>
+                        <ul class="list-disc list-inside space-y-2">${attractionsHTML}</ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-[#c59d5f] border-b-2 border-gray-200 pb-2 mb-3">Insider's Edge</h3>
+                        <p class="text-gray-700 leading-relaxed bg-[#fce4ec] bg-opacity-30 p-3 rounded-md">${details.insider}</p>
+                    </div>
+                `;
+                
+                modal.classList.remove('hidden');
+            }
+
+            function closeModal() {
+                modal.classList.add('hidden');
+            }
+
+            function filterDestinations() {
+                const searchTerm = searchInput.value.toLowerCase();
+                
+                const filtered = destinationsData.filter(dest => {
+                    const nameMatch = dest.name.toLowerCase().includes(searchTerm);
+                    const styleMatch = activeFilter === 'all' || dest.type === activeFilter;
+                    return nameMatch && styleMatch;
+                });
+
+                renderCards(filtered);
+                updateCharts(filtered);
+            }
+
+            function updateCharts(data) {
+                if(subTypeChart) subTypeChart.destroy();
+                if(stateChart) stateChart.destroy();
+                renderCharts(data);
+            }
+            
+            function renderCharts(data) {
+                const subTypeCounts = data.reduce((acc, curr) => {
+                    acc[curr.subType] = (acc[curr.subType] || 0) + 1;
+                    return acc;
+                }, {});
+                
+                const stateCounts = data.reduce((acc, curr) => {
+                    // Handle dual states like SA/WA
+                    const states = curr.state.split('/');
+                    states.forEach(state => {
+                        acc[state] = (acc[state] || 0) + 1;
+                    });
+                    return acc;
+                }, {});
+
+                const chartColors = ['#8e9aaf', '#c59d5f', '#606c38', '#f2e8cf', '#3a5a40', '#a3b18a', '#588157'];
+
+                const subTypeCtx = document.getElementById('subTypeChart').getContext('2d');
+                subTypeChart = new Chart(subTypeCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(subTypeCounts),
+                        datasets: [{ data: Object.values(subTypeCounts), backgroundColor: chartColors, borderColor: '#fdfaf6', borderWidth: 2 }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { padding: 15, boxWidth: 12 } } } }
+                });
+
+                const stateCtx = document.getElementById('stateChart').getContext('2d');
+                stateChart = new Chart(stateCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(stateCounts),
+                        datasets: [{ label: 'Number of Destinations', data: Object.values(stateCounts), backgroundColor: chartColors, borderWidth: 1 }]
+                    },
+                    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+                });
+            }
+
+            searchInput.addEventListener('input', filterDestinations);
+            modalClose.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target.id === 'modal') closeModal();
+            });
+
+            populateFilters();
+            filterDestinations();
+        });
+    </script>
+</body>
+</html>

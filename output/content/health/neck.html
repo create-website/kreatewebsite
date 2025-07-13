@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Neck Health</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Subtle Blue Accent -->
+    <!-- Application Structure Plan: The SPA is designed with a user-centric flow, moving from foundational knowledge to actionable strategies. It starts with an 'Understanding Neck Pain' section that visualizes common causes. The 'Prevention Hub' provides practical, categorized advice on ergonomics and lifestyle. A 'Guided Exercise Library' allows users to filter exercises for their specific needs (strengthening vs. flexibility). 'Immediate Relief' offers quick self-care tips. The structure culminates in a high-visibility 'When to Seek Help' section, clearly delineating urgent red flags. This thematic organization makes complex information digestible and empowers users to find relevant content easily. -->
+    <!-- Visualization & Content Choices: 
+        1. Common Causes of Neck Pain -> Goal: Compare/Inform -> Viz: Doughnut Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: Provides a quick, proportional overview of the primary causes of neck pain, making it easier to grasp the most prevalent issues like muscle strain versus degenerative conditions. Confirmed NO SVG.
+        2. Anatomy of the Cervical Spine -> Goal: Inform -> Viz: Simplified diagram using styled HTML/CSS -> Justification: A visual aid to help users understand the basic structure of the neck without needing complex medical illustrations. Confirmed NO SVG/Mermaid JS.
+        3. Prevention & Exercise Sections -> Goal: Organize/Instruct -> Viz: Interactive filterable card galleries (JS/HTML/CSS) -> Interaction: User clicks on filter buttons to display relevant exercises or tips -> Justification: Allows users to personalize the content, making the large amount of information in the report manageable and actionable. Confirmed NO SVG.
+        4. Red Flag Symptoms -> Goal: Warn/Instruct -> Viz: High-contrast, icon-driven alert cards -> Justification: Maximizes clarity and impact for critical safety information, ensuring the urgent message is immediately understood. Confirmed NO SVG.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .bg-cream { background-color: #FDFBF5; }
+        .bg-warm-gray-100 { background-color: #F5F2EF; }
+        .text-dark-brown { color: #433A31; }
+        .accent-blue { color: #3B82F6; }
+        .bg-accent-blue { background-color: #3B82F6; }
+        .border-accent-blue { border-color: #3B82F6; }
+        nav a {
+            transition: color 0.3s ease;
+        }
+        nav a.active, nav a:hover {
+            color: #2563EB;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .card-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+        }
+        .filter-btn.active {
+            background-color: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
+        }
+    </style>
+</head>
+<body class="bg-cream text-dark-brown">
+
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <nav id="main-nav" class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold accent-blue">Guide to Neck Health</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#understanding" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Understanding</a>
+                        <a href="#prevention" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Prevention</a>
+                        <a href="#exercises" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Exercises</a>
+                        <a href="#relief" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Relief</a>
+                        <a href="#red-flags" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-red-600 font-bold">Red Flags</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:bg-gray-200 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <span class="block h-6 w-6" aria-hidden="true">☰</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#understanding" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Understanding</a>
+                <a href="#prevention" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Prevention</a>
+                <a href="#exercises" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Exercises</a>
+                <a href="#relief" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Relief</a>
+                <a href="#red-flags" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-red-600 font-bold">Red Flags</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <section class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">An Interactive Guide to Neck Health</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600">Your neck is a delicate balance of mobility and strength. This guide provides the knowledge and tools to help you understand, protect, and manage your neck health for a pain-free life.</p>
+        </section>
+
+        <section id="understanding" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Understanding Neck Pain</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">Neck pain is a common issue stemming from a variety of causes. The most frequent culprits are mechanical issues like muscle strain and age-related wear and tear on the spinal discs and joints.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-xl">
+                     <h4 class="text-xl font-semibold mb-4 text-center">Common Causes of Neck Pain</h4>
+                    <div class="chart-container">
+                        <canvas id="causesChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-warm-gray-100 p-6 md:p-8 rounded-xl shadow-lg">
+                    <h4 class="text-xl font-semibold mb-6 text-center">Anatomy of Your Neck</h4>
+                    <div class="flex justify-center items-center flex-col space-y-1">
+                        <div class="font-mono text-xs text-center text-gray-500">Skull Base</div>
+                        <div class="bg-blue-200 p-2 rounded-md w-24 text-center text-xs font-semibold">C1 (Atlas)</div>
+                        <div class="bg-blue-200 p-2 rounded-md w-24 text-center text-xs font-semibold">C2 (Axis)</div>
+                        <div class="bg-blue-300 p-2 rounded-md w-28 text-center text-xs font-semibold">C3 Vertebra</div>
+                        <div class="bg-gray-300 h-2 w-24 rounded-full"><span class="sr-only">Disc</span></div>
+                        <div class="bg-blue-300 p-2 rounded-md w-28 text-center text-xs font-semibold">C4 Vertebra</div>
+                         <div class="bg-gray-300 h-2 w-24 rounded-full"><span class="sr-only">Disc</span></div>
+                        <div class="bg-blue-300 p-2 rounded-md w-28 text-center text-xs font-semibold">C5 Vertebra</div>
+                         <div class="bg-gray-300 h-2 w-24 rounded-full"><span class="sr-only">Disc</span></div>
+                        <div class="bg-blue-300 p-2 rounded-md w-28 text-center text-xs font-semibold">C6 Vertebra</div>
+                         <div class="bg-gray-300 h-2 w-24 rounded-full"><span class="sr-only">Disc</span></div>
+                        <div class="bg-blue-300 p-2 rounded-md w-28 text-center text-xs font-semibold">C7 Vertebra</div>
+                        <div class="font-mono text-xs text-center mt-2 text-gray-500">Upper Back (Thoracic Spine)</div>
+                    </div>
+                    <p class="text-xs text-gray-500 text-center mt-4">A simplified diagram showing the seven cervical vertebrae (C1-C7) that make up your neck.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="prevention" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Prevention Hub: Daily Habits for a Healthy Neck</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">The best way to manage neck pain is to prevent it. Small, consistent adjustments to your daily posture, ergonomics, and lifestyle can make a significant difference.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-accent-blue card-item">
+                    <h4 class="text-xl font-semibold mb-3 flex items-center"><span class="mr-2 text-2xl">💻</span> At Your Desk</h4>
+                    <ul class="list-disc list-inside text-gray-600 mt-2 space-y-1 text-sm">
+                        <li>Position monitor at eye level.</li>
+                        <li>Keep keyboard at elbow height.</li>
+                        <li>Sit with your back straight and shoulders back.</li>
+                        <li>Take frequent stretch breaks (every 30 mins).</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-accent-blue card-item">
+                    <h4 class="text-xl font-semibold mb-3 flex items-center"><span class="mr-2 text-2xl">📱</span> Using Your Phone</h4>
+                    <ul class="list-disc list-inside text-gray-600 mt-2 space-y-1 text-sm">
+                        <li>Hold your phone up at eye level.</li>
+                        <li>Avoid cradling the phone between your ear and shoulder.</li>
+                        <li>Use voice-to-text to reduce typing.</li>
+                        <li>Take breaks from looking down.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-accent-blue card-item">
+                    <h4 class="text-xl font-semibold mb-3 flex items-center"><span class="mr-2 text-2xl">🛌</span> While Sleeping</h4>
+                    <ul class="list-disc list-inside text-gray-600 mt-2 space-y-1 text-sm">
+                        <li>Sleep on your back or side, not your stomach.</li>
+                        <li>Use a pillow that supports the natural curve of your neck.</li>
+                        <li>Memory foam or feather pillows can conform to your neck shape.</li>
+                        <li>Ensure your pillow isn't too high or too flat.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="exercises" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Guided Exercise Library</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">Regularly performing targeted exercises can strengthen neck muscles, improve flexibility, and reduce pain. Use the filters below to find exercises for your needs.</p>
+            <div class="flex justify-center flex-wrap gap-2 mb-8" id="exercise-filters">
+                <button data-filter="all" class="ex-filter-btn active px-4 py-2 rounded-full text-sm font-medium">All</button>
+                <button data-filter="Flexibility" class="ex-filter-btn bg-white text-dark-brown px-4 py-2 rounded-full text-sm font-medium border">Flexibility & Mobility</button>
+                <button data-filter="Strengthening" class="ex-filter-btn bg-white text-dark-brown px-4 py-2 rounded-full text-sm font-medium border">Strengthening & Posture</button>
+            </div>
+            <div id="exercise-gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            </div>
+        </section>
+
+        <section id="relief" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Immediate Relief Strategies</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">For episodes of acute neck pain, these self-care strategies can help manage discomfort and promote healing.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg card-item">
+                    <h4 class="text-xl font-semibold mb-3 flex items-center"><span class="mr-2 text-2xl">🧊</span> Cold & Heat Therapy</h4>
+                    <p class="text-sm text-gray-600">Use <strong>cold packs</strong> for the first 24-48 hours to reduce inflammation. Apply for 15-20 minutes. After that, switch to <strong>heat</strong> (heating pad, warm shower) to relax muscles and improve blood flow.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg card-item">
+                     <h4 class="text-xl font-semibold mb-3 flex items-center"><span class="mr-2 text-2xl">💊</span> Pain Relievers</h4>
+                    <p class="text-sm text-gray-600">Over-the-counter NSAIDs like ibuprofen or naproxen can help reduce both pain and inflammation. Follow package directions and use only as needed for short-term relief.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="red-flags" class="scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 text-red-700">Red Flags: When to Seek Professional Help</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">While most neck pain can be managed at home, certain symptoms can indicate a more serious condition requiring medical evaluation. Do not delay seeking help if you experience any of the following.</p>
+            <div id="red-flags-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-warm-gray-100 mt-16">
+        <div class="container mx-auto py-6 px-4 text-center text-gray-500">
+            <p class="text-sm">This guide provides informational content and should not be considered a substitute for professional medical advice, diagnosis, or treatment. Always consult with a qualified health provider for any health concerns.</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const causesChartCtx = document.getElementById('causesChart').getContext('2d');
+        new Chart(causesChartCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Muscle Strain & Sprain', 'Poor Posture', 'Degenerative Disc Disease', 'Arthritis', 'Nerve Compression'],
+                datasets: [{
+                    label: 'Common Causes of Neck Pain',
+                    data: [40, 25, 15, 10, 10],
+                    backgroundColor: ['#3B82F6', '#60A5FA', '#93C5FD', '#BFDBFE', '#DBEAFE'],
+                    borderColor: '#FDFBF5',
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#433A31' }
+                    },
+                    tooltip: {
+                         callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const exercisesData = [
+            { name: 'Neck Tilt', type: 'Flexibility', desc: 'Gently tilt head, ear to shoulder.' },
+            { name: 'Neck Rotation', type: 'Flexibility', desc: 'Slowly turn head side to side.' },
+            { name: 'Cat-Cow Stretch', type: 'Flexibility', desc: 'Arch and round your back on all fours.' },
+            { name: 'Doorway Pec Stretch', type: 'Flexibility', desc: 'Stretch chest in a doorway.' },
+            { name: 'Chin Tucks', type: 'Strengthening', desc: 'Gently pull chin back to create a double chin.' },
+            { name: 'Scapular Squeeze', type: 'Strengthening', desc: 'Squeeze shoulder blades together.' },
+            { name: 'Prone "I-Y-T" Raises', type: 'Strengthening', desc: 'Lying face down, lift arms into I, Y, and T shapes.' },
+            { name: 'Resistance Band Rows', type: 'Strengthening', desc: 'Pull a resistance band towards you.' },
+        ];
+        
+        const exerciseGallery = document.getElementById('exercise-gallery');
+        const exerciseFilters = document.getElementById('exercise-filters');
+
+        function renderExercises(filter) {
+            exerciseGallery.innerHTML = '';
+            const filteredData = filter === 'all' ? exercisesData : exercisesData.filter(ex => ex.type === filter);
+            filteredData.forEach(ex => {
+                const card = document.createElement('div');
+                card.className = 'card-item bg-white p-4 rounded-lg shadow-md flex flex-col items-center text-center';
+                const icon = ex.type === 'Flexibility' ? '🧘' : '💪';
+                card.innerHTML = `
+                    <div class="h-16 w-16 bg-warm-gray-100 rounded-full mb-3 flex items-center justify-center text-3xl">${icon}</div>
+                    <h5 class="font-semibold">${ex.name}</h5>
+                    <p class="text-xs text-gray-500 mb-2">${ex.desc}</p>
+                    <span class="text-xs font-semibold px-2 py-1 rounded-full ${ex.type === 'Flexibility' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${ex.type}</span>
+                `;
+                exerciseGallery.appendChild(card);
+            });
+        }
+
+        exerciseFilters.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                document.querySelectorAll('#exercise-filters .ex-filter-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                renderExercises(e.target.dataset.filter);
+            }
+        });
+
+        const redFlagsData = [
+            { icon: '💥', title: 'Pain After Trauma', desc: 'Severe pain following a car accident, fall, or direct blow to the head/neck.' },
+            { icon: '⚡', title: 'Radiating Pain', desc: 'Pain, numbness, or weakness that shoots down into your arms or legs.' },
+            { icon: '🤕', title: 'Severe Headache', desc: 'An unusually severe headache accompanied by a stiff neck and fever.' },
+            { icon: '⚖️', title: 'Loss of Balance', desc: 'Difficulty with coordination, walking, or balance problems.' },
+            { icon: '🚽', title: 'Bowel/Bladder Issues', desc: 'New loss of bowel or bladder control is a medical emergency.' },
+            { icon: '⚖️', title: 'Unexplained Weight Loss', desc: 'Significant weight loss without trying, accompanied by fever or chills.' },
+        ];
+
+        const redFlagsContainer = document.getElementById('red-flags-container');
+        redFlagsData.forEach(flag => {
+            const item = document.createElement('div');
+            item.className = 'bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex items-start card-item';
+            item.innerHTML = `
+                <span class="text-3xl mr-4">${flag.icon}</span>
+                <div>
+                    <h5 class="font-bold text-red-700">${flag.title}</h5>
+                    <p class="text-sm text-red-600">${flag.desc}</p>
+                </div>
+            `;
+            redFlagsContainer.appendChild(item);
+        });
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        document.querySelectorAll('#main-nav a, #mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+        
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('main section');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active', 'accent-blue', 'font-bold');
+                        if (`#${entry.target.id}` === link.getAttribute('href')) {
+                            link.classList.add('active', 'accent-blue', 'font-bold');
+                        }
+                    });
+                }
+            });
+        }, { rootMargin: '-30% 0px -70% 0px' });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        renderExercises('all');
+    });
+    </script>
+</body>
+</html>

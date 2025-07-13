@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Drivetrain Approach: An Interactive Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutral Indigo -->
+    <!-- Application Structure Plan: A tab-based SPA to deconstruct the Drivetrain Approach. The structure is thematic rather than linear to facilitate user-led exploration.
+    1.  **Overview:** An interactive diagram of the core loop to establish the main concept immediately.
+    2.  **The Framework:** A deep-dive into each of the 4+1 steps, using cards for clarity.
+    3.  **In Practice:** Clickable company logos to explore case studies, making abstract concepts concrete.
+    4.  **Comparison:** An interactive chart to dynamically compare Drivetrain with CRISP-DM and Agile.
+    5.  **Implementation:** A dual-column layout linking challenges to solutions.
+    This structure was chosen to transform a dense text report into a digestible, engaging, and non-linear learning tool, prioritizing user understanding and interaction over mirroring the report's chapter flow. -->
+    <!-- Visualization & Content Choices:
+    - Report Info: Core Drivetrain Loop -> Goal: Orient -> Viz: Interactive HTML/CSS Diagram -> Interaction: Click nodes for info -> Justification: Engages user and makes the core concept memorable. -> Library: Vanilla JS.
+    - Report Info: Methodology Comparison Table -> Goal: Compare -> Viz: Interactive Bar Chart -> Interaction: Select dimension from dropdown to update chart -> Justification: More visually engaging and easier to parse than a static table. -> Library: Chart.js.
+    - Report Info: Case Study Table -> Goal: Inform/Compare -> Viz: Logo-based selector -> Interaction: Click logo to populate details -> Justification: Creates a dynamic and focused way to explore real-world examples. -> Library: Vanilla JS.
+    - Report Info: Challenges & Recommendations -> Goal: Guide -> Viz: Two-column accordion -> Interaction: Click to expand -> Justification: Directly links problems with solutions, making advice actionable. -> Library: Vanilla JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .nav-link { transition: color 0.2s, border-color 0.2s; }
+        .nav-link.active { border-color: #4f46e5; color: #4f46e5; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .drivetrain-node { transition: all 0.3s ease; cursor: pointer; }
+        .drivetrain-node:hover { transform: translateY(-4px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .drivetrain-arrow {
+            position: absolute;
+            width: 2px;
+            background-color: #6b7280;
+            transform-origin: top left;
+        }
+        .case-study-logo {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            filter: grayscale(100%);
+            opacity: 0.6;
+        }
+        .case-study-logo:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        .case-study-logo.active {
+            filter: grayscale(0%);
+            opacity: 1;
+            box-shadow: 0 0 0 2px #4f46e5;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 50vh;
+        }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div id="app" class="container mx-auto px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900">The Drivetrain Approach</h1>
+            <p class="mt-2 text-lg text-slate-600">An Interactive Guide to Engineering Actionable Data Products</p>
+        </header>
+
+        <nav class="mb-10 border-b border-slate-200">
+            <ul class="flex flex-wrap justify-center -mb-px">
+                <li><a href="#overview" class="nav-link inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-slate-600 hover:border-slate-300">Overview</a></li>
+                <li><a href="#framework" class="nav-link inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-slate-600 hover:border-slate-300">The Framework</a></li>
+                <li><a href="#practice" class="nav-link inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-slate-600 hover:border-slate-300">In Practice</a></li>
+                <li><a href="#comparison" class="nav-link inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-slate-600 hover:border-slate-300">Comparison</a></li>
+                <li><a href="#implementation" class="nav-link inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-slate-600 hover:border-slate-300">Implementation</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <!-- Overview Section -->
+            <section id="overview" class="content-section">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-4 text-slate-900">The Core Loop of Action</h2>
+                    <p class="text-slate-600 mb-12">The Drivetrain Approach transforms data from a tool for retrospective analysis into an engine for driving specific, optimized business outcomes. It's a strategic loop designed to connect data science directly to business action. Click on any step below to learn more about its role in the process.</p>
+                </div>
+                <div class="relative w-full max-w-4xl mx-auto h-[450px] md:h-[300px]">
+                    <div id="node-objective" class="drivetrain-node absolute p-4 rounded-lg bg-white shadow-md w-48 text-center top-0 left-1/2 -translate-x-1/2 md:left-0 md:top-1/2 md:-translate-y-1/2">
+                        <span class="text-indigo-600 font-bold text-xl">1. Objective</span>
+                        <p class="text-sm text-slate-500 mt-1">Define a specific, quantifiable business goal.</p>
+                    </div>
+                    <div id="node-levers" class="drivetrain-node absolute p-4 rounded-lg bg-white shadow-md w-48 text-center top-[100px] left-1/2 -translate-x-1/2 md:left-1/4 md:top-0 md:-translate-x-1/2">
+                        <span class="text-indigo-600 font-bold text-xl">2. Levers</span>
+                        <p class="text-sm text-slate-500 mt-1">Identify the controllable inputs that influence the objective.</p>
+                    </div>
+                    <div id="node-data" class="drivetrain-node absolute p-4 rounded-lg bg-white shadow-md w-48 text-center top-[200px] left-1/2 -translate-x-1/2 md:left-1/2 md:top-1/2 md:-translate-y-1/2">
+                        <span class="text-indigo-600 font-bold text-xl">3. Data</span>
+                        <p class="text-sm text-slate-500 mt-1">Collect necessary data, often via experimentation.</p>
+                    </div>
+                    <div id="node-model" class="drivetrain-node absolute p-4 rounded-lg bg-white shadow-md w-48 text-center top-[300px] left-1/2 -translate-x-1/2 md:left-3/4 md:top-0 md:-translate-x-1/2">
+                        <span class="text-indigo-600 font-bold text-xl">4. Model</span>
+                        <p class="text-sm text-slate-500 mt-1">Build a system of models that represents the process.</p>
+                    </div>
+                    <div id="node-optimizer" class="drivetrain-node absolute p-4 rounded-lg bg-white shadow-md w-48 text-center top-[400px] left-1/2 -translate-x-1/2 md:right-0 md:top-1/2 md:translate-x-0 md:-translate-y-1/2">
+                        <span class="text-green-600 font-bold text-xl">✓ Optimize</span>
+                        <p class="text-sm text-slate-500 mt-1">Find the optimal lever settings to achieve the objective.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Framework Section -->
+            <section id="framework" class="content-section">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-4 text-slate-900">The Mechanics of the Drivetrain</h2>
+                    <p class="text-slate-600 mb-12">The framework is composed of four core steps that culminate in the "Model Assembly Line," a system designed not just to predict, but to prescribe action. Explore each component to understand how they work together.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-xl mb-2 text-indigo-700">1. Define Objective</h3>
+                        <p class="text-slate-600">The foundational step. The goal must be specific, measurable, and directly tied to a business outcome. Vague goals like "increase sales" are refined into precise statements like "maximize the net-present value of profit from a new customer over three years."</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-xl mb-2 text-indigo-700">2. Identify Levers</h3>
+                        <p class="text-slate-600">These are the dials the business can turn. It's crucial to distinguish controllable levers (e.g., product price, marketing spend) from uncontrollable variables (e.g., competitor actions, economy). The focus is on what can be actively manipulated.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-xl mb-2 text-indigo-700">3. Collect Data</h3>
+                        <p class="text-slate-600">This step often requires proactive data collection through experimentation (like A/B testing) to establish true causal links between levers and the objective. Passive historical data is often insufficient and can be misleading.</p>
+                    </div>
+                    <div class="lg:col-span-3 bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-xl mb-4 text-indigo-700">4. Build the Model Assembly Line</h3>
+                        <p class="text-slate-600 mb-6">This isn't a single model but an integrated system. It's the computational core that translates inputs into an optimized action plan, presciently mirroring modern concepts like Digital Twins and Reinforcement Learning.</p>
+                        <div class="grid md:grid-cols-3 gap-6 text-center">
+                            <div class="bg-slate-50 p-4 rounded-md">
+                                <h4 class="font-semibold text-slate-800">Modeler</h4>
+                                <p class="text-sm text-slate-500 mt-1">A collection of models representing the causal relationships in the system.</p>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-md">
+                                <h4 class="font-semibold text-slate-800">Simulator</h4>
+                                <p class="text-sm text-slate-500 mt-1">Runs "what-if" scenarios to map out the landscape of potential outcomes from lever adjustments.</p>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-md">
+                                <h4 class="font-semibold text-slate-800">Optimizer</h4>
+                                <p class="text-sm text-slate-500 mt-1">Searches the simulated outcomes to find the specific lever settings that best achieve the objective.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Practice Section -->
+            <section id="practice" class="content-section">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-4 text-slate-900">The Drivetrain in Practice</h2>
+                    <p class="text-slate-600 mb-12">The principles of the Drivetrain Approach are implicitly built into the world's most successful data products. Select a company below to see how they apply this action-oriented philosophy to create immense business value.</p>
+                </div>
+                <div class="flex justify-center items-center gap-4 md:gap-8 flex-wrap mb-10" id="case-study-selector">
+                    <img src="https://placehold.co/120x60/f8fafc/1e293b?text=Netflix" alt="Netflix Logo" class="case-study-logo rounded-md" data-case="netflix">
+                    <img src="https://placehold.co/120x60/f8fafc/1e293b?text=Spotify" alt="Spotify Logo" class="case-study-logo rounded-md" data-case="spotify">
+                    <img src="https://placehold.co/120x60/f8fafc/1e293b?text=Uber" alt="Uber Logo" class="case-study-logo rounded-md" data-case="uber">
+                    <img src="https://placehold.co/120x60/f8fafc/1e293b?text=Airbnb" alt="Airbnb Logo" class="case-study-logo rounded-md" data-case="airbnb">
+                </div>
+                <div id="case-study-content" class="bg-white p-8 rounded-lg shadow-md border border-slate-200 max-w-4xl mx-auto min-h-[300px]">
+                </div>
+            </section>
+
+            <!-- Comparison Section -->
+            <section id="comparison" class="content-section">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-4 text-slate-900">Frameworks in Context</h2>
+                    <p class="text-slate-600 mb-12">The Drivetrain Approach offers a unique strategic perspective compared to other data science methodologies like CRISP-DM and Agile. Use the selector below to compare them across different dimensions and understand where each framework shines.</p>
+                </div>
+                <div class="max-w-xl mx-auto mb-8">
+                     <label for="comparison-selector" class="block mb-2 text-sm font-medium text-slate-900">Select Comparison Dimension:</label>
+                     <select id="comparison-selector" class="bg-gray-50 border border-gray-300 text-slate-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5">
+                        <option value="goal">Primary Goal</option>
+                        <option value="focus">Core Focus</option>
+                        <option value="problem">Ideal Problem Type</option>
+                     </select>
+                </div>
+                <div class="chart-container">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Implementation Section -->
+            <section id="implementation" class="content-section">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-4 text-slate-900">Implementation: Challenges & Strategies</h2>
+                    <p class="text-slate-600 mb-12">Adopting the Drivetrain Approach is a strategic commitment that involves overcoming both organizational and technical hurdles. Explore the common challenges and the recommended strategies to navigate them successfully.</p>
+                </div>
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-10">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-slate-800">Common Challenges</h3>
+                        <div class="space-y-4">
+                            <details class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 cursor-pointer">
+                                <summary class="font-semibold text-slate-700">Organizational Misalignment</summary>
+                                <p class="mt-2 text-slate-600">A persistent gap between business teams who understand the market and technical teams who understand modeling can lead to data products that don't solve a real business need.</p>
+                            </details>
+                            <details class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 cursor-pointer">
+                                <summary class="font-semibold text-slate-700">High Cost of Experimentation</summary>
+                                <p class="mt-2 text-slate-600">Running live experiments to gather causal data can be costly and risky. Deliberately altering prices or user experiences requires significant buy-in and a culture that tolerates calculated risk.</p>
+                            </details>
+                            <details class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 cursor-pointer">
+                                <summary class="font-semibold text-slate-700">Rigidity for Exploration</summary>
+                                <p class="mt-2 text-slate-600">The framework's goal-oriented structure is ill-suited for purely exploratory, "blue-sky" research where the objective is to find unknown unknowns, not to optimize a predefined metric.</p>
+                            </details>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-green-700">Strategic Recommendations</h3>
+                        <div class="space-y-4">
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <h4 class="font-semibold text-green-800">Build Cross-Functional "Squads"</h4>
+                                <p class="mt-2 text-green-700">Create embedded, autonomous teams that own a data product end-to-end. A squad with a Product Manager, Data Scientist, Data Engineer, and Software Engineer eliminates silos and ensures alignment from day one.</p>
+                            </div>
+                             <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <h4 class="font-semibold text-green-800">Start with a "Minimum Viable Drivetrain"</h4>
+                                <p class="mt-2 text-green-700">Begin with a small, well-defined problem. Manually model the system in a spreadsheet or simple script to prove the value of Drivetrain thinking with minimal investment, building momentum for larger initiatives.</p>
+                            </div>
+                             <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <h4 class="font-semibold text-green-800">Foster a Hybrid Culture</h4>
+                                <p class="mt-2 text-green-700">Use the Drivetrain Approach for high-level strategic architecture (the "why" and "what"). Use Agile methodologies like Scrum for the tactical, iterative development of the individual components (the "how"), combining long-term vision with short-term flexibility.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const appState = {
+        activeTab: 'overview',
+        activeCase: 'netflix',
+        activeComparison: 'goal',
+    };
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    const caseStudyData = {
+        netflix: {
+            name: "Netflix: The Recommendation Engine",
+            objective: "Maximize long-term member retention and satisfaction by personalizing the user experience.",
+            levers: "Content ranking on homepage, personalized artwork/thumbnails for titles, composition of curated rows, and content acquisition strategy.",
+            data: "Massive streams of user interaction data (views, pauses, ratings, time of day) coupled with extensive A/B testing to measure the causal impact of lever changes.",
+            model: "A complex system of ML models (collaborative filtering, deep learning, causal inference) that optimizes the entire homepage layout to maximize predicted user engagement."
+        },
+        spotify: {
+            name: "Spotify: The Discovery Engine",
+            objective: "Increase user engagement (listening hours) and drive premium conversions by fostering a sense of personalized music discovery.",
+            levers: "The selection and ordering of songs within personalized playlists like 'Discover Weekly', and direct recommendations for artists and podcasts.",
+            data: "Rich dataset of listening history (skips, repeats, playlist adds), text analysis of music blogs, and raw audio analysis of songs themselves.",
+            model: "A hybrid system combining collaborative filtering, NLP, and audio models to optimize for a delicate balance of familiarity (what the user knows) and novelty (what will surprise them)."
+        },
+        uber: {
+            name: "Uber: The Real-Time Marketplace",
+            objective: "For 'Surge Pricing', the objective is to balance supply (drivers) and demand (riders) in real-time to minimize wait times and maximize completed trips.",
+            levers: "The primary lever is the dynamic price multiplier applied to different geographic areas at different times.",
+            data: "Constant firehose of real-time data including GPS locations of all drivers and riders, traffic conditions, and historical trip patterns.",
+            model: "A real-time supply and demand model that monitors the driver-to-rider ratio. The optimizer finds the price multiplier needed to restore market equilibrium by incentivizing drivers or reducing demand."
+        },
+        airbnb: {
+            name: "Airbnb: The Trust & Pricing Engine",
+            objective: "For 'Smart Pricing', the objective is to help hosts maximize their revenue by recommending the optimal nightly price, thereby increasing platform liquidity.",
+            levers: "The price recommendations shown to hosts, the ranking of listings in search results, and the stringency of user verification rules.",
+            data: "Vast dataset of historical bookings, seasonality, local events, listing characteristics, and user Browse behavior. Rigorous A/B testing is used on nearly every feature.",
+            model: "A machine learning model predicts the probability of a booking at various price points for a given night, then an optimizer recommends the price that maximizes the host's expected revenue."
+        }
+    };
+
+    const comparisonData = {
+        goal: {
+            label: 'Primary Goal',
+            Drivetrain: 10,
+            CRISP_DM: 7,
+            Agile: 5,
+            description: {
+                Drivetrain: 'Achieve an optimized business outcome.',
+                CRISP_DM: 'Successfully deploy a predictive model.',
+                Agile: 'Deliver incremental product features.'
+            }
+        },
+        focus: {
+            label: 'Core Focus',
+            Drivetrain: 10,
+            CRISP_DM: 6,
+            Agile: 8,
+            description: {
+                Drivetrain: 'Business objective & controllable levers.',
+                CRISP_DM: 'The data mining project workflow.',
+                Agile: 'Team collaboration & adapting to change.'
+            }
+        },
+        problem: {
+            label: 'Ideal Problem Type',
+            Drivetrain: 10,
+            CRISP_DM: 7,
+            Agile: 9,
+            description: {
+                Drivetrain: 'Well-defined optimization problems.',
+                CRISP_DM: 'Standard predictive modeling tasks.',
+                Agile: 'Exploratory projects with uncertainty.'
+            }
+        }
+    };
+    
+    let comparisonChart;
+
+    const init = () => {
+        updateView();
+        setupEventListeners();
+        renderCaseStudy();
+        renderComparisonChart();
+    };
+
+    const setupEventListeners = () => {
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                appState.activeTab = e.target.hash.substring(1);
+                updateView();
+            });
+        });
+
+        const caseStudySelector = document.getElementById('case-study-selector');
+        caseStudySelector.addEventListener('click', (e) => {
+            if (e.target.dataset.case) {
+                appState.activeCase = e.target.dataset.case;
+                renderCaseStudy();
+            }
+        });
+
+        const comparisonSelector = document.getElementById('comparison-selector');
+        comparisonSelector.addEventListener('change', (e) => {
+            appState.activeComparison = e.target.value;
+            renderComparisonChart();
+        });
+    };
+
+    const updateView = () => {
+        window.location.hash = appState.activeTab;
+        navLinks.forEach(link => {
+            if (link.hash.substring(1) === appState.activeTab) {
+                link.classList.add('active', 'font-semibold');
+            } else {
+                link.classList.remove('active', 'font-semibold');
+            }
+        });
+        contentSections.forEach(section => {
+            if (section.id === appState.activeTab) {
+                section.classList.add('active');
+            } else {
+                section.classList.remove('active');
+            }
+        });
+    };
+
+    const renderCaseStudy = () => {
+        const contentEl = document.getElementById('case-study-content');
+        const selectorEl = document.getElementById('case-study-selector');
+        const data = caseStudyData[appState.activeCase];
+
+        selectorEl.querySelectorAll('img').forEach(img => {
+            if (img.dataset.case === appState.activeCase) {
+                img.classList.add('active');
+            } else {
+                img.classList.remove('active');
+            }
+        });
+
+        contentEl.innerHTML = `
+            <h3 class="text-2xl font-bold mb-4 text-slate-900">${data.name}</h3>
+            <div class="space-y-4">
+                <div>
+                    <h4 class="font-semibold text-indigo-600">Objective:</h4>
+                    <p class="text-slate-600">${data.objective}</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-indigo-600">Levers:</h4>
+                    <p class="text-slate-600">${data.levers}</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-indigo-600">Data & Experimentation:</h4>
+                    <p class="text-slate-600">${data.data}</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-indigo-600">Model Assembly Line:</h4>
+                    <p class="text-slate-600">${data.model}</p>
+                </div>
+            </div>
+        `;
+    };
+
+    const renderComparisonChart = () => {
+        const ctx = document.getElementById('comparisonChart').getContext('2d');
+        const data = comparisonData[appState.activeComparison];
+        
+        const chartData = {
+            labels: ['Drivetrain', 'CRISP-DM', 'Agile'],
+            datasets: [{
+                label: data.label,
+                data: [data.Drivetrain, data.CRISP_DM, data.Agile],
+                backgroundColor: [
+                    'rgba(79, 70, 229, 0.6)',
+                    'rgba(107, 114, 128, 0.6)',
+                    'rgba(5, 150, 105, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(79, 70, 229, 1)',
+                    'rgba(107, 114, 128, 1)',
+                    'rgba(5, 150, 105, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    display: false,
+                    max: 12
+                },
+                y: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            size: 14,
+                            weight: '500'
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true,
+                    callbacks: {
+                        label: function(context) {
+                            const framework = context.label;
+                            let description = '';
+                            if (framework === 'Drivetrain') description = data.description.Drivetrain;
+                            if (framework === 'CRISP-DM') description = data.description.CRISP_DM;
+                            if (framework === 'Agile') description = data.description.Agile;
+                            return description;
+                        }
+                    }
+                }
+            }
+        };
+
+        if (comparisonChart) {
+            comparisonChart.data = chartData;
+            comparisonChart.options = chartOptions;
+            comparisonChart.update();
+        } else {
+            comparisonChart = new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: chartOptions,
+            });
+        }
+    };
+    
+    init();
+});
+</script>
+</body>
+</html>

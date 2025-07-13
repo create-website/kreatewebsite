@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: A Visual Guide to Australia's Quintessential Journeys</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful (Orange & Blue) -->
+    <!-- Narrative Structure Plan: The infographic is structured as a visual journey across Australia's diverse landscapes. It starts with a dynamic comparison of its two largest cities, transitions to the spiritual and ancient Red Centre, showcases the epic scale of its wilderness escapes, and concludes with a taste of its world-class wine regions. This thematic flow creates a compelling story that is easy for the user to follow and digest. -->
+    <!-- Visualization Choices: Data Point: City Personalities (Sydney vs Melbourne) -> Goal: Compare -> Viz: Donut Charts (Chart.js/Canvas) -> Justification: Effectively breaks down the core appeal of each city into simple, visual proportions. | Data Point: Uluru's Significance -> Goal: Inform -> Viz: Large Number Stats & Pictographs (HTML/CSS/Unicode) -> Justification: High-impact method to convey key facts and cultural importance without complex charts. | Data Point: Wilderness Diversity -> Goal: Compare -> Viz: Horizontal Bar Chart (Chart.js/Canvas) -> Justification: Clearly compares different types of wilderness experiences on a single metric, aiding traveler choice. | Data Point: Wine Regions -> Goal: Organize/Compare -> Viz: Styled HTML Table -> Justification: A clean, direct way to present comparative information for two distinct regions. NO SVG or Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #fef8f2; }
+        .chart-container { position: relative; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .info-card { background-color: #ffffff; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03); padding: 1.5rem 2rem; transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; border: 1px solid #fdecdf; }
+        .info-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        h1, h2, h3 { font-weight: 800; color: #0a2342; letter-spacing: -0.02em; }
+        .text-accent { color: #ff5722; }
+    </style>
+</head>
+<body class="text-gray-700">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold">The Australian Journey</h1>
+            <p class="mt-3 text-lg md:text-xl text-gray-500 max-w-3xl mx-auto">A visual exploration of a continent of contrasts, from vibrant urban icons to the ancient, spiritual heart of the outback.</p>
+        </header>
+
+        <section class="mb-12 md:mb-20">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl">Urban Icons: A Tale of Two Cities</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto mt-2">Australia's two largest cities, Sydney and Melbourne, offer compelling but distinctly different urban experiences, one defined by its sun-drenched harbour, the other by its creative laneways.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="info-card text-center">
+                    <h3 class="text-2xl mb-2">Sydney: The Harbour City</h3>
+                    <p class="text-gray-600 mb-6">Sydney's identity is projected outwards from its magnificent natural harbour. The city's appeal is a blend of iconic landmarks and a celebrated outdoor lifestyle centered on its famous beaches and waterways.</p>
+                    <div class="chart-container">
+                        <canvas id="sydneyChart"></canvas>
+                    </div>
+                </div>
+                <div class="info-card text-center">
+                    <h3 class="text-2xl mb-2">Melbourne: The Cultural Capital</h3>
+                    <p class="text-gray-600 mb-6">Melbourne's soul is discovered inwards, within its labyrinth of cobbled laneways. It's a city of art, coffee, and culinary creativity, rewarding those who explore its hidden corners.</p>
+                    <div class="chart-container">
+                        <canvas id="melbourneChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 md:mb-20">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl">The Ancient Heart: Journey to Uluru</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto mt-2">A visit to the Red Centre is a journey into the world's oldest living culture. Uluru is not just a rock; it's a living cultural landscape, sacred to the Aṉangu people.</p>
+            </div>
+            <div class="info-card">
+                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-orange-50 p-6 rounded-lg">
+                        <p class="text-5xl font-extrabold text-accent">600M</p>
+                        <p class="font-semibold text-gray-800 mt-2">Years Old</p>
+                        <p class="text-gray-600">The estimated age of the colossal sandstone monolith.</p>
+                    </div>
+                    <div class="bg-orange-50 p-6 rounded-lg">
+                        <p class="text-5xl font-extrabold text-accent">1985</p>
+                        <p class="font-semibold text-gray-800 mt-2">The Handback</p>
+                        <p class="text-gray-600">The year the land title was returned to its Traditional Owners.</p>
+                    </div>
+                    <div class="bg-orange-50 p-6 rounded-lg">
+                        <p class="text-5xl font-extrabold text-accent">50K+</p>
+                        <p class="font-semibold text-gray-800 mt-2">Lights</p>
+                        <p class="text-gray-600">Solar-powered stems in the Field of Light installation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 md:mb-20">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl">Wilderness & Coastal Escapes</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto mt-2">From the world's largest reef to its oldest rainforest, Australia's natural landscapes offer diverse and unforgettable adventures. This chart compares key destinations by their primary experiential focus.</p>
+            </div>
+            <div class="info-card">
+                <div class="h-[400px] md:h-[450px] relative">
+                    <canvas id="wildernessChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl">Gourmet Valleys: A Tale of Two Terroirs</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto mt-2">Australia's premier wine regions, Barossa and Margaret River, offer world-class experiences with distinctly different personalities—one historic and hearty, the other contemporary and coastal.</p>
+            </div>
+             <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="p-4 bg-[#0a2342] text-white font-semibold border-b-2 border-orange-200">Feature</th>
+                            <th class="p-4 bg-[#0a2342] text-white font-semibold border-b-2 border-orange-200">Barossa Valley</th>
+                            <th class="p-4 bg-[#0a2342] text-white font-semibold border-b-2 border-orange-200">Margaret River</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white hover:bg-orange-50">
+                            <td class="p-4 border-b border-gray-200 font-semibold">Vibe</td>
+                            <td class="p-4 border-b border-gray-200">Historic, Traditional, Hearty</td>
+                            <td class="p-4 border-b border-gray-200">Contemporary, Coastal, Lifestyle</td>
+                        </tr>
+                         <tr class="bg-gray-50 hover:bg-orange-50">
+                            <td class="p-4 border-b border-gray-200 font-semibold">Signature Wine</td>
+                            <td class="p-4 border-b border-gray-200">🍷 Old Vine Shiraz</td>
+                            <td class="p-4 border-b border-gray-200">🍇 Cabernet Sauvignon</td>
+                        </tr>
+                        <tr class="bg-white hover:bg-orange-50">
+                            <td class="p-4 border-b border-gray-200 font-semibold">Landscape</td>
+                            <td class="p-4 border-b border-gray-200">Rolling Hills & Villages</td>
+                            <td class="p-4 border-b border-gray-200">Rugged Coastline & Forests</td>
+                        </tr>
+                         <tr class="bg-gray-50 hover:bg-orange-50">
+                            <td class="p-4 border-b border-gray-200 font-semibold">Best For</td>
+                            <td class="p-4 border-b border-gray-200">History buffs & lovers of bold reds</td>
+                            <td class="p-4 border-b border-gray-200">A mix of gourmet food & outdoor activity</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const energeticPalette = ['#0a2342', '#ff5722', '#0077b6', '#fca311', '#14213d'];
+            
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) { return label.join(' '); }
+                return label;
+            };
+
+            const sydneyChartCtx = document.getElementById('sydneyChart').getContext('2d');
+            new Chart(sydneyChartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Harbour & Icons', 'Beaches & Coast', 'Urban Lifestyle', 'Dining & Culture'],
+                    datasets: [{
+                        data: [40, 25, 20, 15],
+                        backgroundColor: energeticPalette,
+                        borderColor: '#ffffff',
+                        borderWidth: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { padding: 15, font: { size: 12 } } }, tooltip: { callbacks: { title: tooltipTitleCallback } } },
+                    cutout: '60%'
+                }
+            });
+
+            const melbourneChartCtx = document.getElementById('melbourneChart').getContext('2d');
+            new Chart(melbourneChartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Laneway Culture', 'Arts & Museums', 'Coffee & Dining', 'Sporting Events'],
+                    datasets: [{
+                        data: [35, 25, 30, 10],
+                        backgroundColor: energeticPalette,
+                        borderColor: '#ffffff',
+                        borderWidth: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { padding: 15, font: { size: 12 } } }, tooltip: { callbacks: { title: tooltipTitleCallback } } },
+                    cutout: '60%'
+                }
+            });
+
+            const wildernessChartCtx = document.getElementById('wildernessChart').getContext('2d');
+            new Chart(wildernessChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Great Barrier Reef', 'Daintree Rainforest', 'The Kimberley', 'Blue Mountains', 'Tasmanian Wilderness'],
+                    datasets: [{
+                        label: 'Adventure Focus Level (1-10)',
+                        data: [9, 7, 10, 6, 8],
+                        backgroundColor: energeticPalette[1],
+                        borderColor: energeticPalette[0],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { x: { beginAtZero: true, grid: { display: false }, ticks: { font: { weight: '600' } } }, y: { grid: { display: false }, ticks: { font: { weight: '600' } } } },
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { title: tooltipTitleCallback } } }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

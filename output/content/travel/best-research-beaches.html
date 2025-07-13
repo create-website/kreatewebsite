@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Shoreline Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Warm Neutrals) -->
+    <!-- Application Structure Plan: The SPA is designed as a "Shoreline Explorer" to transform the report into an interactive discovery tool. The core of the app is a dynamic filtering system where users can select their 'Traveler Archetype' (e.g., Adventurer, Family) and 'Desired Experience' (e.g., Natural Wonder, Cultural Hub). This instantly updates a grid of destination cards, allowing for personalized exploration. This user-driven approach is more engaging than a static report. It's supplemented by thematic sections on "The Planet's Masterpieces" and "The Conscious Coast" to provide narrative depth, and concludes with a practical "Traveler's Compass" section for responsible travel tips. -->
+    <!-- Visualization & Content Choices: Report Info: Global Beach Destination Matrix -> Goal: Organize & Filter -> Viz/Method: Interactive card grid with filter buttons. -> Interaction: User clicks on archetype/experience buttons to dynamically filter and display relevant destination cards. -> Justification: Transforms a static table into a user-centric discovery tool, providing immediate, personalized results. Library/Method: Vanilla JS for filtering, HTML/Tailwind for card layout. | Report Info: Traveler Archetypes & Experiences -> Goal: Inform/Engage -> Viz/Method: Styled filter buttons with clear labels and icons. -> Justification: Provides a visually intuitive and primary navigation method that directly reflects the report's core structure. Method: HTML/Tailwind. | Report Info: Responsible Traveler's Checklist -> Goal: Inform/Action -> Viz/Method: A clear, multi-column checklist. -> Justification: Presents actionable advice from the report in a highly scannable and digestible format. Method: HTML/Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8F7F6; color: #44403C; }
+        .filter-btn { transition: all 0.2s ease-in-out; }
+        .filter-btn.active { background-color: #A16207; color: white; }
+        .card-enter { animation: card-enter 0.5s ease-out forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes card-enter { to { opacity: 1; transform: translateY(0); } }
+        .modal { display: none; }
+        .modal.is-open { display: flex; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/90 backdrop-blur-sm sticky top-0 z-40 border-b border-stone-200">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-amber-800">Shoreline Explorer</a>
+            <div class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#explorer" class="text-stone-600 hover:text-amber-800">Explore</a>
+                <a href="#masterpieces" class="text-stone-600 hover:text-amber-800">Masterpieces</a>
+                <a href="#culture" class="text-stone-600 hover:text-amber-800">Culture</a>
+                <a href="#responsible" class="text-stone-600 hover:text-amber-800">Travel Wisely</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-10">
+        <section class="text-center py-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-stone-800 tracking-tight">Find Your Perfect Shore</h1>
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-stone-600">The "best" beach isn't a single place—it's a personal discovery. This guide helps you navigate the world's coastlines to find the one that matches your travel style, from iconic luxury to wild adventure and serene sanctuaries.</p>
+        </section>
+
+        <section id="explorer" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-stone-200">
+            <div class="md:flex md:space-x-8">
+                <aside class="md:w-1/4 mb-8 md:mb-0">
+                    <h3 class="text-xl font-bold text-stone-700 mb-4">Filter Your Search</h3>
+                    
+                    <div id="filter-container">
+                        <div>
+                            <h4 class="font-semibold text-stone-600 mb-2">Traveler Style</h4>
+                            <div id="archetype-filters" class="flex flex-wrap gap-2"></div>
+                        </div>
+                        <div class="mt-6">
+                            <h4 class="font-semibold text-stone-600 mb-2">Desired Experience</h4>
+                            <div id="experience-filters" class="flex flex-wrap gap-2"></div>
+                        </div>
+                         <div class="mt-6">
+                            <button id="reset-filters" class="w-full text-sm font-medium text-stone-600 bg-stone-100 hover:bg-stone-200 rounded-lg py-2 transition-colors">Reset All Filters</button>
+                        </div>
+                    </div>
+                </aside>
+
+                <div class="md:w-3/4">
+                    <div id="results-count" class="text-sm text-stone-500 mb-4"></div>
+                    <div id="destinations-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <p id="no-results" class="hidden col-span-full text-center text-stone-500 py-10">No destinations match your criteria. Try removing a filter.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="masterpieces" class="py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-stone-800">The Planet's Masterpieces</h2>
+                <p class="mt-3 max-w-3xl mx-auto text-stone-600">Some coastlines are gateways to natural wonders so profound they are recognized as part of humanity's shared heritage. These are beaches shaped by geological time and awesome natural power, inviting not just relaxation, but reverence.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-200">
+                    <h3 class="text-xl font-bold text-amber-900">Great Barrier Reef</h3>
+                    <p class="text-sm text-stone-500 mb-2">Australia</p>
+                    <p class="text-stone-600">A living ecosystem visible from space. The beaches of the Whitsundays are the threshold to an underwater continent, a global epicenter of marine biodiversity offering unparalleled snorkeling and diving.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-200">
+                    <h3 class="text-xl font-bold text-amber-900">Ha Long Bay</h3>
+                    <p class="text-sm text-stone-500 mb-2">Vietnam</p>
+                    <p class="text-stone-600">A mythical seascape of over 1,600 limestone karsts rising from emerald waters. Best explored on an overnight cruise, revealing hidden lagoons, caves, and moments of profound tranquility.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-200">
+                    <h3 class="text-xl font-bold text-amber-900">Reynisfjara Beach</h3>
+                    <p class="text-sm text-stone-500 mb-2">Iceland</p>
+                    <p class="text-stone-600">A shore of stark, volcanic beauty, with jet-black sand, geometric basalt columns, and powerful Atlantic waves. It's a humbling testament to the elemental forces that shape our planet.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="culture" class="py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-stone-800">The Cultural Coastline</h2>
+                <p class="mt-3 max-w-3xl mx-auto text-stone-600">At these destinations, the beach is the stage for human culture. The rhythm of life—from art and architecture to food and history—is inseparable from the sea, offering travelers a chance for deep immersion.</p>
+            </div>
+             <div class="grid md:grid-cols-2 gap-8">
+                 <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-200">
+                    <h3 class="text-xl font-bold text-amber-900">Amalfi Coast</h3>
+                    <p class="text-sm text-stone-500 mb-2">Italy</p>
+                    <p class="text-stone-600">A UNESCO World Heritage landscape where cliffside towns cascade into the sea. The beach is the social heart, a place to experience *la dolce vita* amidst vibrant ceramics, fresh seafood, and glamorous history.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-200">
+                    <h3 class="text-xl font-bold text-amber-900">Hoi An</h3>
+                    <p class="text-sm text-stone-500 mb-2">Vietnam</p>
+                    <p class="text-stone-600">A lantern-lit ancient port where a short bicycle ride connects the UNESCO town to tranquil beaches. It's a journey from a rich cultural fusion to serene sands, linking history, agriculture, and the coast.</p>
+                </div>
+             </div>
+        </section>
+
+        <section id="responsible" class="py-20 bg-stone-100 rounded-2xl">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-stone-800">The Responsible Traveler's Compass</h2>
+                <p class="mt-3 max-w-3xl mx-auto text-stone-600">Traveling responsibly is about making conscious choices that protect the places we love. Every decision, from packing to purchasing, is a chance to leave a positive mark.</p>
+            </div>
+            <div class="max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-sm">
+                    <div class="bg-white p-4 rounded-lg">
+                        <h4 class="font-bold text-amber-800">Before You Go</h4>
+                        <ul class="mt-2 space-y-2 list-disc list-inside text-stone-600">
+                            <li>Pack a reusable water bottle & bag</li>
+                            <li>Choose reef-safe sunscreen</li>
+                            <li>Learn a few local phrases</li>
+                            <li>Book sustainable operators</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg">
+                        <h4 class="font-bold text-amber-800">On the Ground</h4>
+                        <ul class="mt-2 space-y-2 list-disc list-inside text-stone-600">
+                            <li>Hire local guides</li>
+                            <li>Shop at local businesses</li>
+                            <li>Ask permission for photos</li>
+                            <li>Conserve water and energy</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg">
+                        <h4 class="font-bold text-amber-800">Travel Patterns</h4>
+                        <ul class="mt-2 space-y-2 list-disc list-inside text-stone-600">
+                            <li>Travel in shoulder seasons</li>
+                            <li>Explore beyond main circuits</li>
+                            <li>Stay overnight vs. day trips</li>
+                            <li>Choose "fewer, longer trips"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-800 text-white mt-16 py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>Shoreline Explorer</p>
+            <p class="text-sm text-stone-400 mt-1">An interactive guide based on the "Global Coastline" report.</p>
+        </div>
+    </footer>
+
+    <!-- Modal Structure -->
+    <div id="destination-modal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4">
+        <div class="bg-white w-full max-w-2xl max-h-[90vh] rounded-2xl shadow-xl flex flex-col">
+            <div class="p-6 border-b border-stone-200 flex justify-between items-center">
+                <h2 id="modal-title" class="text-2xl font-bold text-stone-800"></h2>
+                <button id="modal-close" class="text-stone-500 hover:text-stone-800">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto">
+                <p id="modal-description" class="text-stone-600 mb-6"></p>
+                <div class="grid sm:grid-cols-2 gap-6 text-sm">
+                    <div>
+                        <h4 class="font-bold text-stone-700 mb-2">Key Features</h4>
+                        <ul id="modal-features" class="list-disc list-inside space-y-1 text-stone-600"></ul>
+                    </div>
+                     <div>
+                        <h4 class="font-bold text-stone-700 mb-2">Best Time to Visit</h4>
+                        <p id="modal-season" class="text-stone-600"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const destinations = [
+            { id: 'maldives', name: 'The Maldivian Atolls', country: 'Maldives', archetypes: ['Icons', 'Sanctuaries', 'Family'], experiences: ['Luxury', 'Marine Life'], description: "The global benchmark for private-island luxury, defined by sublime seclusion in overwater bungalows. It offers direct access to vibrant coral reefs and has evolved to provide sophisticated, educational experiences for families.", features: ["Overwater bungalows", "Pristine coral reefs", "Ultimate seclusion", "Family-friendly luxury"], season: "November - April" },
+            { id: 'grace_bay', name: 'Grace Bay', country: 'Turks and Caicos', archetypes: ['Icons', 'Family'], experiences: ['Luxury'], description: "A masterclass in coastal beauty, featuring miles of powdery white sand and calm turquoise water sheltered by a massive barrier reef. It's an ecosystem of high-end leisure that feels both exclusive and welcoming.", features: ["Powdery white sand", "Calm turquoise water", "Luxury resorts", "Watersports"], season: "December - April" },
+            { id: 'copacabana', name: 'Copacabana Beach', country: 'Brazil', archetypes: ['Icons'], experiences: ['Cultural Hub'], description: "An icon of public, pulsating, cultural vibrancy. This beach is the social heart of Rio de Janeiro, a living theater where the city's infectious energy, from samba to football, unfolds on its golden sands.", features: ["Vibrant social scene", "Iconic cityscape", "Cultural events (New Year's)"], season: "December - March" },
+            { id: 'turquoise_bay', name: 'Turquoise Bay', country: 'Australia', archetypes: ['Wild Frontiers'], experiences: ['Marine Life', 'Natural Wonder'], description: "Home to one of the world's most extraordinary snorkeling experiences. A gentle current allows you to drift effortlessly over the vibrant Ningaloo Reef, just meters from the shore, for an unparalleled wildlife encounter.", features: ["World-class drift snorkeling", "Ningaloo Reef access", "Accessible from shore"], season: "All Year (Dry: Apr-Oct)" },
+            { id: 'railay_beach', name: 'Railay Beach', country: 'Thailand', archetypes: ['Wild Frontiers'], experiences: ['Adventure'], description: "A peninsula accessible only by boat, Railay is a global mecca for rock climbers. Its majestic limestone karsts offer a vertical playground with hundreds of routes catering to all skill levels.", features: ["World-renowned rock climbing", "Limestone karsts", "Accessible only by boat"], season: "November - April" },
+            { id: 'queenstown', name: 'Queenstown', country: 'New Zealand', archetypes: ['Wild Frontiers'], experiences: ['Adventure'], description: "The undisputed 'adventure capital of the world.' Its stunning lakeside shore is a launchpad for over 200 activities, from bungy jumping and jet boating to skiing and world-class hiking.", features: ["Hub for 200+ adventure activities", "Bungy, jet boat, ski", "Stunning alpine lake"], season: "Year-round" },
+            { id: 'anse_source', name: 'Anse Source d\'Argent', country: 'Seychelles', archetypes: ['Sanctuaries'], experiences: ['Natural Wonder'], description: "A world-famous beach whose unforgettable landscape is defined by massive, time-weathered granite boulders. Its shallow, clear waters and series of intimate coves make it a sculpted paradise.", features: ["Iconic granite boulders", "Shallow clear waters", "Requires entry fee"], season: "April-May, Oct-Nov" },
+            { id: 'die_plaat', name: 'Die Plaat', country: 'South Africa', archetypes: ['Sanctuaries', 'Wild Frontiers'], experiences: ['Marine Life'], description: "A vast, wild 17km coastline within a protected nature reserve. It's a premier land-based whale-watching destination, offering solitude and spectacular sightings of Southern Right Whales.", features: ["Remote 17km coastline", "Land-based whale watching", "4x4 access only"], season: "June - December (whales)" },
+            { id: 'albanian_riviera', name: 'Albanian Riviera', country: 'Albania', archetypes: ['Sanctuaries'], experiences: ['Cultural Hub'], description: "An emerging destination offering quintessential Mediterranean beauty without the crowds. The coastline is a dramatic landscape of mountains meeting the Ionian Sea, dotted with pristine beaches and ancient ruins.", features: ["Underrated Mediterranean beauty", "Pristine beaches", "Ancient ruins"], season: "May - September" },
+            { id: 'wategos_beach', name: 'Wategos Beach', country: 'Australia', archetypes: ['Family'], experiences: ['Relaxation'], description: "A picturesque, sheltered cove perfect for families. Its north-facing aspect provides calm, patrolled swimming conditions and gentle waves ideal for beginner surfers, all complemented by excellent picnic facilities.", features: ["Sheltered, patrolled swimming", "Beginner surf", "Picnic/BBQ facilities"], season: "Year-round (Summer)" },
+            { id: 'elafonissi_beach', name: 'Elafonissi Beach', country: 'Greece', archetypes: ['Family'], experiences: ['Natural Wonder'], description: "A natural wonder tailor-made for families, famous for its unique pink-tinged sand. Its shallow, warm, lagoon-like bay offers exceptionally safe swimming conditions for young children.", features: ["Pink-tinged sand", "Shallow lagoon-like waters", "Protected nature reserve"], season: "May, September" },
+            { id: 'algarve', name: 'The Algarve', country: 'Portugal', archetypes: ['Family'], experiences: ['Relaxation', 'Cultural Hub'], description: "One of Europe's premier family holiday destinations, offering reliable sunshine, dramatic sea caves, and a comprehensive hub of activities from dolphin-watching to jeep safaris.", features: ["Golden beaches", "Dramatic caves (Benagil)", "Family-friendly resorts"], season: "May - October" },
+            { id: 'great_barrier_reef', name: 'Great Barrier Reef', country: 'Australia', archetypes: [], experiences: ['Natural Wonder', 'Marine Life'], description: "The world's largest coral reef system, a living ecosystem visible from space. It's a global epicenter of marine biodiversity, offering unparalleled snorkeling and diving experiences.", features: ["World's largest coral reef", "Unparalleled biodiversity"], season: "June - October" },
+            { id: 'ha_long_bay', name: 'Ha Long Bay', country: 'Vietnam', archetypes: [], experiences: ['Natural Wonder'], description: "A UNESCO World Heritage seascape of over 1,600 limestone karsts rising from emerald waters. Best explored by boat to discover hidden lagoons, caves, and moments of profound tranquility.", features: ["UNESCO seascape", "Limestone karsts", "Junk boat cruises"], season: "Mar-May, Sep-Nov" },
+            { id: 'reynisfjara', name: 'Reynisfjara Beach', country: 'Iceland', archetypes: [], experiences: ['Natural Wonder'], description: "A beach of stark, volcanic beauty, with jet-black sand, geometric basalt columns, and powerful Atlantic waves. It's a humbling testament to the elemental forces that shape our planet.", features: ["Black volcanic sand", "Basalt columns", "Powerful sneaker waves"], season: "Year-round" },
+            { id: 'amalfi_coast', name: 'Amalfi Coast', country: 'Italy', archetypes: [], experiences: ['Cultural Hub', 'Luxury'], description: "A UNESCO cultural landscape of dramatic cliffside towns. The beach is the social heart, a place to experience 'la dolce vita' amidst vibrant ceramics, fresh seafood, and glamorous history.", features: ["UNESCO cultural landscape", "Dramatic cliffside towns", "'La dolce vita'"], season: "Apr-Jun, Sep-Oct" },
+            { id: 'hoi_an', name: 'Hoi An', country: 'Vietnam', archetypes: [], experiences: ['Cultural Hub'], description: "An ancient port where a short bicycle ride connects the UNESCO town to tranquil beaches. A journey linking history, agriculture, and the coast, at its most magical when lit by thousands of lanterns.", features: ["UNESCO ancient town", "Lantern-lit streets", "Nearby beaches"], season: "Nov - Mar" },
+            { id: 'costa_rica', name: 'Costa Rica', country: '', archetypes: [], experiences: ['Conscious', 'Marine Life', 'Adventure'], description: "A national ecotourism model where a quarter of the land is protected. It offers a "Pura Vida" experience, from cloud forests to turtle nesting sites, pioneered by luxury eco-lodges.", features: ["National ecotourism model", "Cloud forests, rainforests", "Turtle nesting"], season: "December - April" },
+            { id: 'palawan', name: 'Palawan', country: 'Philippines', archetypes: ['Sanctuaries'], experiences: ['Conscious', 'Marine Life'], description: "The 'last ecological frontier' of the Philippines. Its stunning raw beauty, from the UNESCO subterranean river to pristine lagoons in El Nido, makes it a world-class diving and eco-paradise.", features: ["UNESCO subterranean river", "Pristine lagoons", "World-class diving"], season: "December - May" },
+        ];
+
+        const archetypeFiltersEl = document.getElementById('archetype-filters');
+        const experienceFiltersEl = document.getElementById('experience-filters');
+        const destinationsGrid = document.getElementById('destinations-grid');
+        const resultsCount = document.getElementById('results-count');
+        const noResults = document.getElementById('no-results');
+        const resetBtn = document.getElementById('reset-filters');
+        const modal = document.getElementById('destination-modal');
+        const modalClose = document.getElementById('modal-close');
+        
+        let activeFilters = { archetypes: [], experiences: [] };
+
+        const allArchetypes = [...new Set(destinations.flatMap(d => d.archetypes))];
+        const allExperiences = [...new Set(destinations.flatMap(d => d.experiences))];
+
+        function createFilterButtons(container, items, type) {
+            container.innerHTML = items.map(item => `
+                <button data-filter="${item}" data-type="${type}" class="filter-btn text-sm px-3 py-1 bg-stone-100 text-stone-700 rounded-full hover:bg-stone-200">
+                    ${item}
+                </button>
+            `).join('');
+        }
+        
+        function renderCards(destinationsToRender) {
+            destinationsGrid.innerHTML = '';
+            if (destinationsToRender.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+            resultsCount.textContent = `Showing ${destinationsToRender.length} of ${destinations.length} destinations.`;
+            
+            destinationsToRender.forEach((dest, index) => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg shadow-sm border border-stone-200 p-4 cursor-pointer hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col card-enter';
+                card.style.animationDelay = `${index * 50}ms`;
+                card.dataset.id = dest.id;
+
+                let tagsHtml = '';
+                if(dest.archetypes.length > 0) tagsHtml += dest.archetypes.map(a => `<span class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">${a}</span>`).join(' ');
+                if(dest.experiences.length > 0) tagsHtml += ' ' + dest.experiences.map(e => `<span class="text-xs bg-sky-100 text-sky-800 px-2 py-0.5 rounded-full">${e}</span>`).join(' ');
+
+                card.innerHTML = `
+                    <div class="flex-grow">
+                        <h3 class="text-lg font-bold text-stone-800">${dest.name}</h3>
+                        <p class="text-sm text-stone-500">${dest.country}</p>
+                        <p class="text-sm text-stone-600 mt-2">${dest.description.substring(0, 100)}...</p>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">${tagsHtml}</div>
+                `;
+                card.addEventListener('click', () => openModal(dest.id));
+                destinationsGrid.appendChild(card);
+            });
+        }
+        
+        function applyFilters() {
+            let filtered = destinations;
+
+            if (activeFilters.archetypes.length > 0) {
+                filtered = filtered.filter(d => activeFilters.archetypes.every(f => d.archetypes.includes(f)));
+            }
+            if (activeFilters.experiences.length > 0) {
+                filtered = filtered.filter(d => activeFilters.experiences.every(f => d.experiences.includes(f)));
+            }
+            
+            renderCards(filtered);
+        }
+
+        function handleFilterClick(e) {
+            const btn = e.target.closest('.filter-btn');
+            if (!btn) return;
+            
+            const filter = btn.dataset.filter;
+            const type = btn.dataset.type;
+
+            btn.classList.toggle('active');
+            
+            const filterSet = new Set(activeFilters[type]);
+            if (filterSet.has(filter)) {
+                filterSet.delete(filter);
+            } else {
+                filterSet.add(filter);
+            }
+            activeFilters[type] = [...filterSet];
+            
+            applyFilters();
+        }
+
+        function openModal(id) {
+            const dest = destinations.find(d => d.id === id);
+            if (!dest) return;
+
+            document.getElementById('modal-title').textContent = `${dest.name}, ${dest.country}`;
+            document.getElementById('modal-description').textContent = dest.description;
+            document.getElementById('modal-features').innerHTML = dest.features.map(f => `<li>${f}</li>`).join('');
+            document.getElementById('modal-season').textContent = dest.season;
+            
+            modal.classList.add('is-open');
+        }
+
+        // Initial setup
+        createFilterButtons(archetypeFiltersEl, allArchetypes, 'archetypes');
+        createFilterButtons(experienceFiltersEl, allExperiences, 'experiences');
+        renderCards(destinations);
+        
+        archetypeFiltersEl.addEventListener('click', handleFilterClick);
+        experienceFiltersEl.addEventListener('click', handleFilterClick);
+
+        resetBtn.addEventListener('click', () => {
+            activeFilters = { archetypes: [], experiences: [] };
+            document.querySelectorAll('.filter-btn.active').forEach(btn => btn.classList.remove('active'));
+            applyFilters();
+        });
+
+        modalClose.addEventListener('click', () => modal.classList.remove('is-open'));
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                 modal.classList.remove('is-open');
+            }
+        });
+    });
+    </script>
+</body>
+</html>

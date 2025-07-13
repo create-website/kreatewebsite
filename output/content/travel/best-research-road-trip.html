@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: An Essential Guide to Heart Health</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Application Structure Plan: This SPA is designed as a logical, top-down exploration of heart health. It begins with 'Understanding the Heart', using an interactive diagram for foundational knowledge. It then flows into 'Major Conditions' presented in a tabbed interface to manage complexity. 'Risk Factors' are visualized with a bar chart for impact comparison, followed by an interactive hub-and-spoke diagram for 'Systemic Links' to illustrate the heart's interconnectedness. The final section, 'Prevention & Management', uses an accordion to present actionable advice in digestible categories. This structure is designed to guide the user from foundational knowledge to practical application in an intuitive, engaging manner. -->
+    <!-- Visualization & Content Choices: 1. Heart Anatomy: Interactive Diagram (HTML/CSS) to make learning engaging. 2. Major Conditions: Tabbed Interface to organize dense information. 3. Modifiable Risk Factors: Bar Chart (Chart.js) to visually compare the relative impact of key lifestyle factors. 4. Systemic Links: Hub-and-Spoke Diagram (HTML/CSS) to intuitively show relationships between the heart and other organs. 5. Prevention Strategies: Accordion Component to break down extensive advice into manageable sections. This approach avoids static text, using interaction to enhance understanding and usability. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .bg-light-gray { background-color: #F8F9FA; }
+        .text-dark-blue { color: #1E40AF; }
+        .text-bright-blue { color: #007BFF; }
+        .bg-bright-blue { background-color: #007BFF; }
+        .border-bright-blue { border-color: #007BFF; }
+        .text-sky-blue { color: #00BFFF; }
+        .bg-sky-blue { background-color: #00BFFF; }
+        .text-red-alert { color: #DC3545; }
+        .bg-red-alert-light { background-color: #F8D7DA; }
+        .border-red-alert { border-color: #DC3545; }
+
+        nav a.active { color: #007BFF; font-weight: 600; border-bottom: 2px solid #007BFF; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, padding 0.5s ease-out; }
+        .accordion-content.open { max-height: 1000px; padding-top: 1rem; padding-bottom: 1rem; }
+        .tab-btn.active { background-color: #007BFF; color: white; border-color: #007BFF; }
+        .card-item { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .card-item:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.04); }
+        
+        .anatomy-label { cursor: pointer; transition: all 0.2s ease-in-out; }
+        .anatomy-label:hover, .anatomy-label.active { transform: scale(1.1); font-weight: 700; color: #007BFF; }
+        
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        
+        .system-link { cursor: pointer; transition: all 0.2s ease-in-out; }
+        .system-link:hover, .system-link.active { transform: scale(1.05); }
+        .system-link.active .link-node { background-color: #007BFF; color: white; }
+        .link-line { transition: all 0.2s ease-in-out; }
+        .system-link.active .link-line { stroke: #007BFF; stroke-width: 3; }
+    </style>
+</head>
+<body class="bg-light-gray text-dark-blue">
+
+    <header class="bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <nav id="main-nav" class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-extrabold text-bright-blue">Heart Health Guide</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#anatomy" class="nav-link px-3 py-2 text-sm font-medium border-b-2 border-transparent hover:border-bright-blue">The Heart</a>
+                        <a href="#conditions" class="nav-link px-3 py-2 text-sm font-medium border-b-2 border-transparent hover:border-bright-blue">Conditions</a>
+                        <a href="#risk-factors" class="nav-link px-3 py-2 text-sm font-medium border-b-2 border-transparent hover:border-bright-blue">Risk Factors</a>
+                        <a href="#systemic-links" class="nav-link px-3 py-2 text-sm font-medium border-b-2 border-transparent hover:border-bright-blue">Systemic Links</a>
+                        <a href="#prevention" class="nav-link px-3 py-2 text-sm font-medium border-b-2 border-transparent hover:border-bright-blue">Prevention</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-slate-500 hover:bg-slate-200 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <span class="block h-6 w-6" aria-hidden="true">☰</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                 <a href="#anatomy" class="nav-link block px-3 py-2 rounded-md text-base font-medium">The Heart</a>
+                 <a href="#conditions" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Conditions</a>
+                 <a href="#risk-factors" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Risk Factors</a>
+                 <a href="#systemic-links" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Systemic Links</a>
+                 <a href="#prevention" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Prevention</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <section class="text-center mb-20">
+            <h2 class="text-4xl md:text-6xl font-extrabold text-dark-blue mb-4 leading-tight">YOUR HEART: THE ENGINE OF LIFE</h2>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-slate-600">Explore the heart's incredible function, common challenges, and powerful steps you can take to protect your most vital organ.</p>
+        </section>
+
+        <section id="anatomy" class="mb-20 scroll-mt-20">
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-4 text-dark-blue">Understanding the Heart's Blueprint</h3>
+            <p class="max-w-3xl mx-auto text-center text-slate-600 mb-12">Click on the labels to explore the heart's chambers, valves, and the path blood takes on its life-sustaining journey. This intricate structure ensures efficient circulation.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+                <div class="lg:col-span-3 relative w-full max-w-lg mx-auto aspect-square">
+                    <div class="absolute inset-0 bg-red-100 rounded-full"></div>
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-5/6 h-5/6">
+                        <div class="absolute top-0 right-0 w-1/2 h-1/2 bg-sky-100/50 rounded-tl-full rounded-br-full"></div>
+                        <div class="absolute top-0 left-0 w-1/2 h-1/2 bg-red-200/50 rounded-tr-full rounded-bl-full"></div>
+                        <div class="absolute bottom-0 right-0 w-1/2 h-1/2 bg-sky-200/50 rounded-bl-full rounded-tr-full"></div>
+                        <div class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-red-300/50 rounded-br-full rounded-tl-full"></div>
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full w-px bg-slate-400"></div>
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-px bg-slate-400"></div>
+                    </div>
+                    <div class="absolute inset-0 anatomy-diagram text-xs md:text-sm">
+                        <div data-target="info-ra" class="anatomy-label absolute top-[25%] right-[22%] bg-white px-2 py-1 rounded-full shadow">Right Atrium</div>
+                        <div data-target="info-rv" class="anatomy-label absolute bottom-[25%] right-[22%] bg-white px-2 py-1 rounded-full shadow">Right Ventricle</div>
+                        <div data-target="info-la" class="anatomy-label absolute top-[25%] left-[22%] bg-white px-2 py-1 rounded-full shadow">Left Atrium</div>
+                        <div data-target="info-lv" class="anatomy-label absolute bottom-[25%] left-[22%] bg-white px-2 py-1 rounded-full shadow">Left Ventricle</div>
+                        <div data-target="info-tricuspid" class="anatomy-label absolute top-1/2 right-[30%] -translate-y-1/2 bg-white px-2 py-1 rounded-full shadow">Tricuspid Valve</div>
+                        <div data-target="info-mitral" class="anatomy-label absolute top-1/2 left-[30%] -translate-y-1/2 bg-white px-2 py-1 rounded-full shadow">Mitral Valve</div>
+                        <div data-target="info-aorta" class="anatomy-label absolute top-[10%] left-[25%] bg-white px-2 py-1 rounded-full shadow">Aorta</div>
+                        <div data-target="info-pulmonary" class="anatomy-label absolute top-[10%] right-[20%] bg-white px-2 py-1 rounded-full shadow">Pulmonary Artery</div>
+                    </div>
+                </div>
+                <div id="anatomy-info-panel" class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg min-h-[300px] flex flex-col justify-center card-item">
+                    <h4 id="info-title" class="text-xl font-bold mb-2 text-bright-blue">Select a part of the heart.</h4>
+                    <p id="info-description" class="text-slate-600">The heart is a four-chambered muscular pump that circulates blood throughout the body, delivering oxygen and nutrients while removing waste. Its precise structure ensures efficient, one-way blood flow.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="conditions" class="mb-20 scroll-mt-20">
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-4 text-dark-blue">Major Cardiovascular Conditions</h3>
+            <p class="max-w-3xl mx-auto text-center text-slate-600 mb-12">Cardiovascular disease encompasses a broad spectrum of conditions affecting the heart and blood vessels. Explore some of the most common types below.</p>
+            <div id="conditions-tabs" class="flex justify-center flex-wrap gap-2 mb-8"></div>
+            <div id="conditions-content" class="bg-white p-6 md:p-8 rounded-xl shadow-lg min-h-[400px]"></div>
+        </section>
+
+        <section id="risk-factors" class="mb-20 scroll-mt-20">
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-4 text-dark-blue">Understanding Your Risk Profile</h3>
+            <p class="max-w-3xl mx-auto text-center text-slate-600 mb-12">While some risks like age and genetics are fixed, many others are modifiable through lifestyle choices. Understanding these factors empowers you to take control of your heart health.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="bg-white p-6 rounded-xl shadow-lg card-item">
+                    <h4 class="font-bold text-lg mb-4 text-center text-bright-blue">Relative Impact of Modifiable Risk Factors</h4>
+                    <div class="chart-container">
+                        <canvas id="riskFactorChart"></canvas>
+                    </div>
+                    <p class="text-sm text-slate-600 text-center mt-4">Smoking, high blood pressure, and high cholesterol are among the most impactful modifiable risks for heart disease.</p>
+                </div>
+                <div class="space-y-4">
+                     <div class="bg-white p-4 rounded-lg shadow-sm card-item">
+                        <h5 class="font-bold text-lg text-dark-blue mb-1">Non-Modifiable Risks</h5>
+                        <p class="text-sm text-slate-600">Age, sex, and family history form a baseline risk that cannot be changed but underscore the importance of managing what you can control.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm card-item">
+                        <h5 class="font-bold text-lg text-dark-blue mb-1">Modifiable Risks</h5>
+                        <p class="text-sm text-slate-600">Smoking, an unhealthy diet, physical inactivity, obesity, high blood pressure, high cholesterol, and chronic stress are major factors you can influence to protect your heart.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm card-item">
+                        <h5 class="font-bold text-lg text-dark-blue mb-1">Emerging Risks</h5>
+                        <p class="text-sm text-slate-600">Poor oral health, sleep apnea, and gut microbiome imbalances are increasingly recognized as contributors to cardiovascular disease.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="systemic-links" class="mb-20 scroll-mt-20">
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-4 text-dark-blue">The Heart's Interconnected Network</h3>
+            <p class="max-w-3xl mx-auto text-center text-slate-600 mb-12">The heart doesn't work in isolation. Its health is deeply connected to other vital organs and bodily systems. Click on an organ to see how it relates to cardiovascular health.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                <div class="lg:col-span-2 relative w-full max-w-xl mx-auto aspect-video">
+                    <svg class="absolute inset-0 w-full h-full" viewbox="0 0 400 200">
+                        <line class="link-line" data-target="link-brain" x1="200" y1="100" x2="60" y2="40" stroke="gray" stroke-width="2"/>
+                        <line class="link-line" data-target="link-kidneys" x1="200" y1="100" x2="60" y2="160" stroke="gray" stroke-width="2"/>
+                        <line class="link-line" data-target="link-eyes" x1="200" y1="100" x2="340" y2="40" stroke="gray" stroke-width="2"/>
+                        <line class="link-line" data-target="link-oral" x1="200" y1="100" x2="340" y2="160" stroke="gray" stroke-width="2"/>
+                        <line class="link-line" data-target="link-gut" x1="200" y1="100" x2="200" y2="20" stroke="gray" stroke-width="2"/>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-24 h-24 bg-red-500 text-white rounded-full flex items-center justify-center font-extrabold text-lg shadow-2xl">HEART</div>
+                    </div>
+                    <div data-target="link-brain" class="system-link absolute top-8 left-8 link-node w-20 h-20 bg-white border-2 border-slate-300 rounded-full flex items-center justify-center text-center text-xs font-semibold shadow-lg">Brain & Cognition</div>
+                    <div data-target="link-kidneys" class="system-link absolute bottom-8 left-8 link-node w-20 h-20 bg-white border-2 border-slate-300 rounded-full flex items-center justify-center text-center text-xs font-semibold shadow-lg">Kidneys</div>
+                    <div data-target="link-eyes" class="system-link absolute top-8 right-8 link-node w-20 h-20 bg-white border-2 border-slate-300 rounded-full flex items-center justify-center text-center text-xs font-semibold shadow-lg">Eyes</div>
+                    <div data-target="link-oral" class="system-link absolute bottom-8 right-8 link-node w-20 h-20 bg-white border-2 border-slate-300 rounded-full flex items-center justify-center text-center text-xs font-semibold shadow-lg">Oral Health</div>
+                    <div data-target="link-gut" class="system-link absolute top-0 left-1/2 -translate-x-1/2 link-node w-20 h-20 bg-white border-2 border-slate-300 rounded-full flex items-center justify-center text-center text-xs font-semibold shadow-lg">Gut Microbiome</div>
+                </div>
+                <div id="system-info-panel" class="bg-white p-6 rounded-xl shadow-lg min-h-[300px] flex flex-col justify-center card-item">
+                    <h4 id="system-title" class="text-xl font-bold mb-2 text-bright-blue">The Body is a Network</h4>
+                    <p id="system-description" class="text-slate-600">Click a connected organ to learn about its specific relationship with the heart, revealing how cardiovascular health impacts the entire body.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="prevention" class="mb-20 scroll-mt-20">
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-4 text-dark-blue">Prevention & Lifelong Health</h3>
+            <p class="max-w-3xl mx-auto text-center text-slate-600 mb-12">Adopting a heart-healthy lifestyle is the most powerful step you can take to prevent cardiovascular disease and live a longer, healthier life.</p>
+            <div id="prevention-accordion-container" class="max-w-4xl mx-auto space-y-4"></div>
+        </section>
+
+        <section id="urgent-warnings" class="scroll-mt-20">
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-4 text-red-alert">URGENT WARNINGS: ACT FAST!</h3>
+            <p class="max-w-3xl mx-auto text-center text-slate-600 mb-12">Recognizing these critical symptoms of heart attack or stroke is vital. Immediate action can save a life and prevent permanent damage. **Call emergency services immediately.**</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-red-alert-light p-6 rounded-xl shadow-lg border-l-4 border-red-alert card-item">
+                    <h4 class="font-bold text-lg mb-2 flex items-center text-red-alert"><span class="text-3xl mr-3">💔</span> Chest Pain / Discomfort</h4>
+                    <p class="text-sm text-slate-700">Pressure, squeezing, fullness, or pain in the chest that lasts more than a few minutes or goes away and comes back.</p>
+                </div>
+                <div class="bg-red-alert-light p-6 rounded-xl shadow-lg border-l-4 border-red-alert card-item">
+                    <h4 class="font-bold text-lg mb-2 flex items-center text-red-alert"><span class="text-3xl mr-3">💨</span> Shortness of Breath</h4>
+                    <p class="text-sm text-slate-700">Difficulty breathing, with or without chest discomfort.</p>
+                </div>
+                <div class="bg-red-alert-light p-6 rounded-xl shadow-lg border-l-4 border-red-alert card-item">
+                    <h4 class="font-bold text-lg mb-2 flex items-center text-red-alert"><span class="text-3xl mr-3">💪</span> Discomfort in Other Areas</h4>
+                    <p class="text-sm text-slate-700">Pain or discomfort in one or both arms, the back, neck, jaw, or stomach.</p>
+                </div>
+                <div class="bg-red-alert-light p-6 rounded-xl shadow-lg border-l-4 border-red-alert card-item">
+                    <h4 class="font-bold text-lg mb-2 flex items-center text-red-alert"><span class="text-3xl mr-3">😵</span> Lightheadedness / Cold Sweat / Nausea</h4>
+                    <p class="text-sm text-slate-700">Sudden dizziness, breaking out in a cold sweat, or feeling sick to your stomach.</p>
+                </div>
+                <div class="bg-red-alert-light p-6 rounded-xl shadow-lg border-l-4 border-red-alert card-item">
+                    <h4 class="font-bold text-lg mb-2 flex items-center text-red-alert"><span class="text-3xl mr-3">🚨</span> Stroke: F.A.S.T. Signs</h4>
+                    <p class="text-sm text-slate-700">**F**ace drooping, **A**rm weakness, **S**peech difficulty, **T**ime to call 911.</p>
+                </div>
+                <div class="bg-red-alert-light p-6 rounded-xl shadow-lg border-l-4 border-red-alert card-item">
+                    <h4 class="font-bold text-lg mb-2 flex items-center text-red-alert"><span class="text-3xl mr-3">⚠️</span> Other Sudden Symptoms</h4>
+                    <p class="text-sm text-slate-700">Sudden severe headache, confusion, trouble seeing, difficulty walking, or loss of balance.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-100 mt-16">
+        <div class="container mx-auto py-6 px-4 text-center text-slate-600">
+            <p class="text-sm">This infographic is for informational purposes only and does not constitute medical advice. Always consult with a qualified healthcare professional for diagnosis and treatment.</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const appData = {
+        anatomy: {
+            'info-ra': { title: 'Right Atrium', description: 'Receives deoxygenated blood returning from the body and pumps it into the right ventricle.' },
+            'info-rv': { title: 'Right Ventricle', description: 'Pumps the deoxygenated blood through the pulmonary valve into the pulmonary artery, which sends it to the lungs for oxygenation.' },
+            'info-la': { title: 'Left Atrium', description: 'Receives oxygen-rich blood from the lungs and pumps it into the left ventricle.' },
+            'info-lv': { title: 'Left Ventricle', description: 'The heart\'s strongest chamber. It powerfully pumps oxygen-rich blood through the aortic valve into the aorta to the rest of the body.' },
+            'info-tricuspid': { title: 'Tricuspid Valve', description: 'Regulates blood flow between the right atrium and the right ventricle, preventing backflow.' },
+            'info-mitral': { title: 'Mitral Valve', description: 'Regulates blood flow from the left atrium to the left ventricle, ensuring efficient one-way flow of oxygenated blood.' },
+            'info-aorta': { title: 'Aorta', description: 'The largest artery in the body. It carries oxygenated blood from the left ventricle to be distributed to all body tissues.' },
+            'info-pulmonary': { title: 'Pulmonary Artery', description: 'Carries deoxygenated blood from the right ventricle to the lungs to pick up oxygen.' }
+        },
+        conditions: [
+            { id: 'cad', name: 'CAD', title: 'Coronary Artery Disease (CAD)', content: 'Plaque buildup in heart arteries narrows them, reducing blood flow. Can cause chest pain (angina) or heart attack.' },
+            { id: 'mi', name: 'Heart Attack', title: 'Myocardial Infarction (Heart Attack)', content: 'Blood flow to heart muscle is blocked, causing tissue damage. Medical emergency. Symptoms: chest pain, shortness of breath, discomfort in upper body.' },
+            { id: 'stroke', name: 'Stroke', title: 'Stroke', content: 'Blood flow to part of the brain is interrupted, causing brain damage. Symptoms: face drooping, arm weakness, speech difficulty (F.A.S.T.). Medical emergency.' },
+            { id: 'hf', name: 'Heart Failure', title: 'Heart Failure', content: 'Heart doesn\'t pump blood effectively, leading to fluid buildup in lungs/legs. Causes shortness of breath, fatigue, swelling.' },
+            { id: 'arrhythmia', name: 'Arrhythmia', title: 'Cardiac Arrhythmias', content: 'Irregular heartbeat (too fast, too slow, or inconsistent). Can cause fluttering, racing heart, chest pain, dizziness.' },
+            { id: 'htn', name: 'Hypertension', title: 'Hypertension (High Blood Pressure)', content: 'Consistently high blood pressure (≥130/80 mmHg). Often "silent" but can damage arteries, leading to heart disease, stroke, kidney issues.' },
+            { id: 'vhd', name: 'Valve Disease', title: 'Valvular Heart Disease', content: 'Heart valves malfunction (leaky or narrowed), forcing heart to work harder. Can lead to heart failure, irregular rhythms, stroke.' },
+            { id: 'pad', name: 'PAD/DVT', title: 'Peripheral Artery Disease (PAD) / Deep Vein Thrombosis (DVT)', content: 'PAD: Narrowed arteries reduce blood flow to limbs, causing leg pain with exertion. DVT: Blood clot in deep leg vein, risking pulmonary embolism (life-threatening).' }
+        ],
+        systemicLinks: {
+            'link-brain': { title: 'Heart-Brain Axis: Cognition & Stroke', description: 'Heart health directly impacts brain blood flow. Conditions like high blood pressure, AFib, and heart failure increase stroke risk, cognitive decline, and vascular dementia.' },
+            'link-kidneys': { title: 'Cardiorenal Syndrome: Heart-Kidney Link', description: 'Heart and kidneys are interdependent. Heart failure can damage kidneys, while kidney disease can strain the heart, leading to fluid overload and toxin buildup.' },
+            'link-eyes': { title: 'Ocular Health: Window to Vascular Health', description: 'Retinal blood vessels reflect systemic health. Diabetes and hypertension can damage these vessels (diabetic/hypertensive retinopathy), visible in eye exams, signaling broader vascular issues.' },
+            'link-oral': { title: 'Oral-Systemic Connection: Gum Disease & Heart', description: 'Chronic gum disease releases bacteria and inflammation into the bloodstream, contributing to atherosclerosis, heart infections (endocarditis), and increased cardiovascular risk.' },
+            'link-gut': { title: 'Gut Microbiome: Influencing Heart Health', description: 'Gut bacteria and their metabolites (e.g., TMAO) influence CVD risk factors like hypertension and cholesterol, and modulate systemic inflammation and intestinal barrier function.' }
+        },
+        prevention: [
+            { title: 'Adopt a Heart-Healthy Diet', content: 'Focus on evidence-based diets like the Mediterranean or DASH diets. Prioritize fruits, vegetables, whole grains, lean proteins (fish, poultry), and healthy fats (olive oil, nuts, avocados). Limit processed foods, red meat, sodium, and added sugars to reduce inflammation and manage blood pressure and cholesterol.' },
+            { title: 'Engage in Regular Physical Activity', content: 'Aim for at least 150 minutes of moderate-intensity aerobic exercise (like brisk walking or cycling) or 75 minutes of vigorous exercise per week. Include muscle-strengthening activities at least two days a week. Regular activity strengthens the heart, improves circulation, and helps manage weight.' },
+            { title: 'Maintain a Healthy Weight', content: 'Excess weight, especially around the abdomen, increases the strain on your heart and contributes to risk factors like high blood pressure and diabetes. Even modest weight loss can provide significant cardiovascular benefits.' },
+            { title: 'Quit Smoking and Limit Alcohol', content: 'Smoking is one of the most significant risk factors for heart disease as it damages blood vessels and reduces oxygen in the blood. Quitting provides immediate and long-term benefits. Excessive alcohol consumption can also raise blood pressure and contribute to heart failure.' },
+            { title: 'Manage Stress and Prioritize Sleep', content: 'Chronic stress can contribute to high blood pressure and other heart disease risks. Practice stress-reduction techniques like meditation, deep breathing, or yoga. Aim for 7-9 hours of quality sleep per night, as poor sleep is linked to cardiovascular problems, including sleep apnea.' },
+            { title: 'Know Your Numbers and Get Regular Check-ups', content: 'Regularly monitor your blood pressure, cholesterol levels, and blood sugar. Work with your healthcare provider to manage these numbers and schedule regular check-ups to detect any potential issues early.' }
+        ]
+    };
+
+    const anatomyContainer = document.querySelector('.anatomy-diagram');
+    const infoTitle = document.getElementById('info-title');
+    const infoDescription = document.getElementById('info-description');
+
+    anatomyContainer.addEventListener('click', (e) => {
+        if (e.target.dataset.target) {
+            document.querySelectorAll('.anatomy-label').forEach(el => el.classList.remove('active'));
+            e.target.classList.add('active');
+            const data = appData.anatomy[e.target.dataset.target];
+            infoTitle.textContent = data.title;
+            infoDescription.textContent = data.description;
+        }
+    });
+
+    const conditionsTabsContainer = document.getElementById('conditions-tabs');
+    const conditionsContentContainer = document.getElementById('conditions-content');
+    appData.conditions.forEach((condition, index) => {
+        const button = document.createElement('button');
+        button.dataset.tab = condition.id;
+        button.className = `tab-btn px-4 py-2 rounded-full text-sm font-medium border-2 transition-colors duration-300 ${index === 0 ? 'active' : 'bg-white text-slate-600 border-slate-300 hover:border-bright-blue'}`;
+        button.textContent = condition.name;
+        conditionsTabsContainer.appendChild(button);
+    });
+
+    const renderConditionContent = (id) => {
+        const condition = appData.conditions.find(c => c.id === id);
+        conditionsContentContainer.innerHTML = `
+            <h4 class="text-xl font-bold mb-2 text-dark-blue">${condition.title}</h4>
+            <p class="text-slate-600">${condition.content}</p>
+            ${id === 'mi' ? `
+                <div class="mt-6 bg-red-alert-light border-l-4 border-red-alert text-red-alert p-4" role="alert">
+                    <p class="font-bold">Recognize a Heart Attack: Be aware of:</p>
+                    <ul class="list-disc list-inside mt-2 text-sm">
+                        <li><strong>Chest discomfort:</strong> Pressure, squeezing, fullness, or pain.</li>
+                        <li><strong>Discomfort in other areas:</strong> Arms, back, neck, jaw, or stomach.</li>
+                        <li><strong>Shortness of breath,</strong> with or without chest discomfort.</li>
+                        <li><strong>Other signs:</strong> Breaking out in a cold sweat, nausea, or lightheadedness.</li>
+                    </ul>
+                    <p class="mt-2 font-semibold">Call emergency services immediately if you suspect a heart attack.</p>
+                </div>
+            ` : ''}
+            ${id === 'stroke' ? `
+                <div class="mt-6 bg-red-alert-light border-l-4 border-red-alert text-red-alert p-4" role="alert">
+                    <p class="font-bold">Recognize a Stroke: F.A.S.T. is critical!</p>
+                    <ul class="list-disc list-inside mt-2 text-sm">
+                        <li><strong>F</strong>ace drooping: One side of the face droops or is numb.</li>
+                        <li><strong>A</strong>rm weakness: One arm is weak or numb, drifting downward when raised.</li>
+                        <li><strong>S</strong>peech difficulty: Speech is slurred, or the person is unable to speak or hard to understand.</li>
+                        <li><strong>T</strong>ime to call 911: Immediate medical attention is needed if any of these symptoms occur, even if they are temporary.</li>
+                    </ul>
+                    <p class="mt-2 font-semibold">Call emergency services immediately if you suspect a stroke.</p>
+                </div>
+            ` : ''}
+        `;
+    };
+
+    conditionsTabsContainer.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            const tabId = e.target.dataset.tab;
+            document.querySelectorAll('#conditions-tabs .tab-btn').forEach(btn => btn.classList.remove('active', 'bg-bright-blue', 'text-white', 'border-bright-blue'));
+            document.querySelectorAll('#conditions-tabs .tab-btn').forEach(btn => btn.classList.add('bg-white', 'text-slate-600', 'border-slate-300', 'hover:border-bright-blue'));
+            e.target.classList.add('active', 'bg-bright-blue', 'text-white', 'border-bright-blue');
+            e.target.classList.remove('bg-white', 'text-slate-600', 'border-slate-300');
+            renderConditionContent(tabId);
+        }
+    });
+    
+    renderConditionContent(appData.conditions[0].id);
+
+    const riskFactorCtx = document.getElementById('riskFactorChart').getContext('2d');
+    const wrapText = (text, maxLength = 16) => {
+        if (text.length <= maxLength) return text;
+        const words = text.split(' ');
+        const lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + ' ' + word).length > maxLength && currentLine.length > 0) {
+                lines.push(currentLine);
+                currentLine = word;
+            } else {
+                currentLine = currentLine ? currentLine + ' ' + word : word;
+            }
+        });
+        lines.push(currentLine);
+        return lines;
+    };
+
+    const tooltipTitleCallback = function(tooltipItems) {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        if (Array.isArray(label)) {
+            return label.join(' ');
+        }
+        return label;
+    };
+
+    new Chart(riskFactorCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Smoking', 'High Blood Pressure', 'High Cholesterol', 'Physical Inactivity', 'Unhealthy Diet', 'Obesity', 'Chronic Stress'].map(label => wrapText(label)),
+            datasets: [{
+                label: 'Relative Impact on Heart Disease Risk',
+                data: [90, 85, 75, 70, 65, 60, 50],
+                backgroundColor: ['#2563EB', '#007BFF', '#00BFFF', '#60A5FA', '#93C5FD', '#BFDBFE', '#DBEAFE'],
+                borderColor: '#1E40AF',
+                borderWidth: 1,
+                borderRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            scales: {
+                x: { beginAtZero: true, grid: { display: false }, ticks: { display: false } },
+                y: { grid: { display: false }, ticks: { font: { size: 12, weight: '600' }, color: '#1E40AF' } }
+            },
+            plugins: {
+                legend: { display: false },
+                title: { display: false },
+                tooltip: {
+                    callbacks: { title: tooltipTitleCallback }
+                }
+            }
+        }
+    });
+    
+    const systemLinksContainer = document.querySelector('#systemic-links');
+    const systemTitle = document.getElementById('system-title');
+    const systemDescription = document.getElementById('system-description');
+
+    systemLinksContainer.addEventListener('click', (e) => {
+        const link = e.target.closest('.system-link');
+        if (link) {
+            const targetId = link.dataset.target;
+            document.querySelectorAll('.system-link').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.link-line').forEach(el => { el.style.stroke = 'gray'; el.style.strokeWidth = '2'; });
+            
+            link.classList.add('active');
+            const line = document.querySelector(`.link-line[data-target="${targetId}"]`);
+            if(line) {
+                line.style.stroke = '#007BFF';
+                line.style.strokeWidth = '3';
+            }
+
+            const data = appData.systemicLinks[targetId];
+            systemTitle.textContent = data.title;
+            systemDescription.textContent = data.description;
+        }
+    });
+
+    const preventionAccordionContainer = document.getElementById('prevention-accordion-container');
+    appData.prevention.forEach(item => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'border border-slate-200 rounded-lg bg-white overflow-hidden shadow-sm card-item';
+        wrapper.innerHTML = `
+            <button class="accordion-header w-full text-left p-4 flex justify-between items-center transition duration-300 ease-in-out hover:bg-slate-50">
+                <span class="font-semibold text-dark-blue">${item.title}</span>
+                <span class="transform transition-transform duration-300 ease-in-out text-bright-blue">▼</span>
+            </button>
+            <div class="accordion-content px-4 text-slate-600 text-sm">
+                <p>${item.content}</p>
+            </div>`;
+        preventionAccordionContainer.appendChild(wrapper);
+    });
+
+    preventionAccordionContainer.addEventListener('click', e => {
+        const header = e.target.closest('.accordion-header');
+        if (header) {
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector('span:last-child');
+            const isOpen = content.classList.contains('open');
+
+            document.querySelectorAll('#prevention-accordion-container .accordion-content.open').forEach(openContent => {
+                if (openContent !== content) {
+                    openContent.classList.remove('open');
+                    openContent.previousElementSibling.querySelector('span:last-child').classList.remove('rotate-180');
+                }
+            });
+            
+            content.classList.toggle('open');
+            arrow.classList.toggle('rotate-180');
+        }
+    });
+
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('#main-nav a, #mobile-menu a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+            document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    });
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('main section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === entry.target.id) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, { rootMargin: '-40% 0px -60% 0px' });
+    sections.forEach(section => observer.observe(section));
+});
+</script>
+</body>
+</html>

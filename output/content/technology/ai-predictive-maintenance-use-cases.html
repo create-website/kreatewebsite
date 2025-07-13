@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Power of AI in Predictive Maintenance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Application Structure Plan: The SPA follows a logical narrative designed for easy comprehension. It starts with a high-level "What Is It?" hook, then explains "How It Works" with an interactive process flow. It visualizes the "Why It Matters" with a quantitative benefits chart, shows "Where It's Used" with categorical examples, and finishes with "What to Watch For" via an interactive challenges section. This top-down, story-driven structure is more engaging and intuitive for a user than a static report, guiding them from concept to practical application and consideration. -->
+    <!-- Visualization & Content Choices: 
+        - Process Flow: Goal: Organize a multi-step process. Method: An interactive HTML/CSS flowchart. Interaction: Clicking a step highlights it and reveals details, breaking down complex information into digestible parts. Justification: Superior to a static list for engagement and clarity. Method: HTML/CSS/JS.
+        - Benefits Chart: Goal: Compare key performance indicators. Method: A Chart.js horizontal bar chart. Interaction: Tooltips provide precise data on hover. Justification: Best for comparing the magnitude of quantitative benefits from the report. Library: Chart.js (Canvas).
+        - Applications Grid: Goal: Organize categorical examples. Method: A responsive grid of styled HTML cards. Interaction: Hovering on a card provides more detail. Justification: Allows users to quickly scan industries and drill down into those of interest. Method: HTML/CSS.
+        - Challenges Accordion: Goal: Organize qualitative analysis. Method: A collapsible accordion created with HTML/CSS/JS. Interaction: Clicking a challenge expands to show the corresponding solution. Justification: A space-efficient way to present problem/solution pairs without overwhelming the user. Method: HTML/CSS/JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #1e293b;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 450px;
+            max-height: 60vh;
+        }
+        @media (max-width: 768px) {
+            .chart-container { height: 400px; }
+        }
+        .section-title {
+            color: #00449E;
+        }
+        .kpi-card {
+            background-color: #ffffff;
+            border-left: 5px solid #0072CE;
+        }
+        .process-step {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .process-step.active {
+            border-color: #0072CE;
+            background-color: #e0f2fe;
+            transform: scale(1.03);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .accordion-button span:last-child {
+             transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <section id="hero" class="text-center py-16">
+            <h1 class="text-4xl md:text-5xl font-bold section-title mb-4">AI-Powered Predictive Maintenance</h1>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600">This section introduces the core concept of Predictive Maintenance (PdM) enhanced with Artificial Intelligence. It's a transformative strategy where equipment data is used to predict failures *before* they occur, enabling precise, just-in-time interventions instead of reactive or routine repairs.</p>
+            <div class="mt-8 text-6xl">🤖</div>
+        </section>
+
+        <section id="kpis" class="py-16">
+            <div class="text-center mb-12">
+                 <h2 class="text-3xl font-bold section-title">The ROI: Key Performance Indicators</h2>
+                 <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">The shift to AI-driven maintenance delivers substantial, measurable returns. This section quantifies the impact, showcasing significant reductions in operational costs and downtime, alongside a notable extension of equipment lifespan, which are key drivers for adoption.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="kpi-card rounded-lg shadow-lg p-6">
+                    <div class="text-5xl font-bold text-blue-700">50%</div>
+                    <div class="mt-2 text-slate-600 font-semibold">Reduction in Downtime</div>
+                </div>
+                <div class="kpi-card rounded-lg shadow-lg p-6">
+                    <div class="text-5xl font-bold text-blue-700">30%</div>
+                    <div class="mt-2 text-slate-600 font-semibold">Lower Maintenance Costs</div>
+                </div>
+                <div class="kpi-card rounded-lg shadow-lg p-6">
+                    <div class="text-5xl font-bold text-blue-700">40%</div>
+                    <div class="mt-2 text-slate-600 font-semibold">Longer Equipment Lifespan</div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="benefits-chart" class="py-16">
+             <div class="text-center mb-12">
+                 <h2 class="text-3xl font-bold section-title">Comparing the Benefits</h2>
+                 <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">To further illustrate the value, this chart provides a direct comparison of the primary benefits. Visualizing the data highlights how significantly downtime is impacted compared to other key metrics, reinforcing the primary value proposition of operational continuity.</p>
+            </div>
+            <div class="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-lg">
+                <div class="chart-container">
+                    <canvas id="benefitsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="process" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold section-title">From Data to Action: The 5-Step Process</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">Understanding how AI-PdM works is key. This interactive diagram breaks down the entire workflow, from initial data collection to proactive maintenance action. Click on each step to see a detailed explanation of its purpose and outcome in the overall system.</p>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-8 items-start">
+                <div class="w-full lg:w-1/3 space-y-4">
+                    <div id="process-steps-container"></div>
+                </div>
+                <div class="w-full lg:w-2/3 sticky top-8">
+                    <div id="process-details" class="bg-white p-8 rounded-lg shadow-lg min-h-[250px] flex flex-col justify-center transition-all duration-300">
+                        <h3 id="process-detail-title" class="text-2xl font-bold text-blue-800 mb-3"></h3>
+                        <p id="process-detail-text" class="text-slate-600 text-base"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="applications" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold section-title">Where It's Used: Applications Across Industries</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">The adoption of AI-PdM is widespread and impactful. This section provides concrete examples of how various industries leverage this technology to solve critical operational challenges, from ensuring manufacturing continuity to enhancing public transportation safety.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
+                    <div class="text-5xl mb-4">🏭</div>
+                    <h3 class="text-xl font-bold text-blue-900 mb-2">Manufacturing</h3>
+                    <p class="text-slate-600">Monitoring robotic arms and assembly lines to prevent production halts.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
+                    <div class="text-5xl mb-4">⚡️</div>
+                    <h3 class="text-xl font-bold text-blue-900 mb-2">Energy & Utilities</h3>
+                    <p class="text-slate-600">Predicting failures in wind turbines and power grid transformers to ensure a stable energy supply.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
+                    <div class="text-5xl mb-4">🚆</div>
+                    <h3 class="text-xl font-bold text-blue-900 mb-2">Transportation</h3>
+                    <p class="text-slate-600">Assessing aircraft engines and railway systems to enhance safety and reduce delays.</p>
+                </div>
+                 <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
+                    <div class="text-5xl mb-4">🛢️</div>
+                    <h3 class="text-xl font-bold text-blue-900 mb-2">Oil & Gas</h3>
+                    <p class="text-slate-600">Analyzing drilling equipment and pipelines to prevent environmental hazards.</p>
+                </div>
+                 <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
+                    <div class="text-5xl mb-4">🏥</div>
+                    <h3 class="text-xl font-bold text-blue-900 mb-2">Healthcare</h3>
+                    <p class="text-slate-600">Ensuring critical medical devices like MRI machines are always operational for patient care.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="challenges" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold section-title">Overcoming the Hurdles</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">Implementation is not without its challenges. This final section outlines the primary obstacles organizations face when adopting AI-PdM and presents clear, strategic solutions to navigate these hurdles for a successful deployment.</p>
+            </div>
+            <div class="max-w-4xl mx-auto space-y-4" id="challenges-accordion">
+            </div>
+        </section>
+
+    </main>
+    <footer class="text-center py-8 bg-slate-800 text-slate-400 mt-12">
+        <p>SPA Infographic on AI in Predictive Maintenance.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const benefitsData = {
+                labels: ['Reduced Downtime', ['Lower', 'Maintenance Costs'], ['Increased', 'Equipment Lifespan'], 'Improved Safety'],
+                values: [50, 30, 40, 45] 
+            };
+
+            const benefitsCtx = document.getElementById('benefitsChart').getContext('2d');
+            new Chart(benefitsCtx, {
+                type: 'bar',
+                data: {
+                    labels: benefitsData.labels,
+                    datasets: [{
+                        label: 'Maximum Impact (%)',
+                        data: benefitsData.values,
+                        backgroundColor: '#6DAEE1',
+                        borderColor: '#0072CE',
+                        borderWidth: 2,
+                        borderRadius: 5,
+                        barThickness: 40,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        tooltip: {
+                            backgroundColor: '#00449E',
+                            titleFont: { size: 16 },
+                            bodyFont: { size: 14 },
+                            padding: 15,
+                            cornerRadius: 5,
+                            displayColors: false,
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    } else {
+                                      return label;
+                                    }
+                                },
+                                label: function(context) {
+                                    return `Maximum Impact: ${context.parsed.x}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                             max: 60,
+                            grid: {
+                                color: '#e2e8f0'
+                            },
+                            ticks: {
+                                font: { size: 14, weight: '500' },
+                                callback: function(value) {
+                                    return value + '%'
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: { size: 14, weight: '600' },
+                                color: '#00449E'
+                            }
+                        }
+                    }
+                }
+            });
+
+            const processData = [
+                { title: 'Data Acquisition', text: 'Sensors on machinery collect real-time data (vibration, temperature, pressure). This creates a constant stream of raw operational data.', what: 'Collect real-time data', result: 'Raw operational data stream' },
+                { title: 'Data Preprocessing', text: 'The raw data is cleaned, structured, and normalized to ensure quality. This produces high-quality, reliable data ready for analysis.', what: 'Clean & structure data', result: 'High-quality analysis-ready data' },
+                { title: 'AI Model Training', text: 'Machine learning algorithms are trained on historical data to recognize patterns that precede failures, creating an intelligent model that understands the equipment\'s unique "health signature."', what: 'Train algorithms on historical data', result: 'An intelligent model of equipment health' },
+                { title: 'Real-Time Prediction', text: 'The trained AI model analyzes live data streams to forecast potential issues, resulting in a probability score for future failures and an estimated time-to-failure.', what: 'Analyze live data streams', result: 'Failure probability score' },
+                { title: 'Alerts & Action', text: 'When a potential failure is detected, the system alerts the maintenance team with diagnostic details. This allows maintenance to be performed proactively, preventing costly downtime.', what: 'Alert teams on detection', result: 'Proactive, just-in-time maintenance' }
+            ];
+
+            const stepsContainer = document.getElementById('process-steps-container');
+            const detailTitle = document.getElementById('process-detail-title');
+            const detailText = document.getElementById('process-detail-text');
+
+            processData.forEach((item, index) => {
+                const stepEl = document.createElement('div');
+                stepEl.className = 'process-step cursor-pointer bg-white p-4 rounded-lg shadow-md';
+                stepEl.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-lg">${index + 1}</div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-slate-800">${item.title}</h4>
+                        </div>
+                    </div>
+                `;
+                stepEl.addEventListener('click', () => {
+                    document.querySelectorAll('.process-step').forEach(el => el.classList.remove('active'));
+                    stepEl.classList.add('active');
+                    detailTitle.textContent = item.title;
+                    detailText.innerHTML = `<p>${item.text}</p>`;
+                });
+                stepsContainer.appendChild(stepEl);
+            });
+            
+            document.querySelector('.process-step').click();
+
+            const challengesData = [
+                { title: 'Poor Data Quality', solution: 'Invest in robust IoT sensors and strong data governance to ensure the data foundation is solid.' },
+                { title: 'High Initial Cost', solution: 'Start with a pilot project on critical assets to prove ROI before committing to a full-scale rollout.' },
+                { title: 'Skills Gap', solution: 'Invest in employee training and development programs. Partner with technology experts to bridge immediate gaps.' },
+                { title: 'Resistance to Change', solution: 'Involve maintenance teams in the process from the start. Use explainable AI (XAI) to build trust and demonstrate value.' }
+            ];
+
+            const accordionContainer = document.getElementById('challenges-accordion');
+            challengesData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'bg-white rounded-lg shadow-md';
+                div.innerHTML = `
+                    <button class="accordion-button w-full flex justify-between items-center text-left p-5 focus:outline-none">
+                        <span class="text-lg font-semibold text-blue-900">${item.title}</span>
+                        <span class="text-2xl font-bold text-blue-500 transform">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <p class="text-slate-600 px-5 pb-5">${item.solution}</p>
+                    </div>
+                `;
+                accordionContainer.appendChild(div);
+            });
+
+            document.querySelectorAll('.accordion-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('span:last-child');
+                    const isOpen = content.style.maxHeight;
+
+                    if (isOpen) {
+                        content.style.maxHeight = null;
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(45deg)';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: A Guide to Leg & Muscle Health</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Application Structure Plan: The infographic follows a logical narrative from understanding the problem to implementing solutions and recognizing emergencies. It begins with "The Root Causes" to visualize the primary categories and risk factors for leg pain. It then transitions to "Your Proactive Playbook," offering actionable prevention advice through clear diagrams and icon-based tips. A section on "Building Your Foundation" highlights key muscle groups and exercises. The narrative culminates in the most critical section, "Urgent Warnings," which uses a high-contrast design to emphasize red flag symptoms, ensuring this vital safety information is unmissable. -->
+    <!-- Visualization & Content Choices: 
+        1.  Primary Categories of Leg Pain -> Goal: Compare -> Viz: Donut Chart (Chart.js) -> Justification: To provide a quick, proportional overview of the main sources of leg pain, such as injuries vs. nerve-related issues.
+        2.  Key Lifestyle Risk Factors -> Goal: Rank/Compare -> Viz: Horizontal Bar Chart (Chart.js) -> Justification: To visually rank the impact of major risk factors like sedentary habits and excess weight, making the most significant threats immediately clear.
+        3.  Safe Lifting Technique -> Goal: Organize/Instruct -> Viz: HTML/CSS diagram with Unicode icons -> Justification: To present a clear, scannable "do vs. don't" guide for a critical prevention strategy without using SVG.
+        4.  Red Flag Symptoms -> Goal: Warn/Inform -> Viz: High-contrast alert-style cards (HTML/CSS) -> Justification: To create a visually arresting section that conveys the seriousness and urgency of critical medical symptoms, prioritizing user safety.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            color: #051923; /* Deepest Blue from Palette */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 320px;
+            }
+        }
+        .text-accent-light { color: #00A6FB; }
+        .bg-accent-light { background-color: #00A6FB; }
+        .border-accent-light { border-color: #00A6FB; }
+        
+        .text-accent-medium { color: #0582CA; }
+        .bg-accent-medium { background-color: #0582CA; }
+        
+        .text-accent-dark { color: #006494; }
+        .bg-accent-dark { background-color: #006494; }
+        
+        .bg-deep-blue { background-color: #051923; }
+        
+        .header-gradient {
+            background: linear-gradient(135deg, #003554, #0582CA);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-black text-accent-dark mb-4 tracking-tight">POWER YOUR MOVEMENT</h1>
+            <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">An essential infographic guide to building strong, resilient legs and understanding the key factors for a pain-free, active life.</p>
+        </header>
+
+        <section id="causes" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-accent-dark">The Root Causes of Leg Pain</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">Leg pain is complex, stemming from direct injuries, overuse, nerve compression, and circulatory problems. Understanding the primary drivers is the first step toward effective prevention and management.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="bg-white p-6 rounded-xl shadow-2xl border-t-4 border-accent-light">
+                    <h3 class="text-xl font-semibold mb-4 text-center">Primary Categories of Leg Pain</h3>
+                    <div class="chart-container">
+                        <canvas id="causesChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-500 text-center mt-4">Injuries and overuse syndromes are the most frequent culprits, followed by nerve and joint conditions.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-2xl border-t-4 border-accent-light">
+                    <h3 class="text-xl font-semibold mb-4 text-center">Key Lifestyle Risk Factors</h3>
+                    <div class="chart-container">
+                        <canvas id="riskFactorsChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-500 text-center mt-4">Daily habits and physical condition play a major role in leg health and pain development.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="prevention" class="mb-20 bg-gray-100 p-8 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-10 text-accent-dark">Your Proactive Playbook for Prevention</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">The most effective strategy against leg pain is prevention. Simple, consistent habits in how you move, eat, and rest can build powerful resilience against injury and chronic pain.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+                    <span class="text-5xl mb-3">🏋️</span>
+                    <h4 class="font-bold text-lg mb-2">Lift Smart</h4>
+                    <p class="text-gray-600 mb-4">Protect your back and legs. Always lift with your legs, not your back. Keep the object close and avoid twisting.</p>
+                    <div class="w-full text-left text-sm">
+                        <div class="flex items-center text-green-600 mb-2"><span class="mr-2 text-xl">✓</span> Bend knees, straight back.</div>
+                        <div class="flex items-center text-red-600"><span class="mr-2 text-xl">✗</span> Bend at waist, curved back.</div>
+                    </div>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+                    <span class="text-5xl mb-3">🍎</span>
+                    <h4 class="font-bold text-lg mb-2">Eat for Strength</h4>
+                    <p class="text-gray-600">Reduce inflammation and support tissue repair with a diet rich in whole foods, omega-3s, and antioxidants.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+                    <span class="text-5xl mb-3">👟</span>
+                    <h4 class="font-bold text-lg mb-2">Choose Proper Footwear</h4>
+                    <p class="text-gray-600">Wear supportive shoes suited to your activity. Good footwear prevents imbalances that travel up the kinetic chain.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="exercises" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-accent-dark">Building Your Foundation: Key Muscle Groups</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">Targeted strengthening provides stability, improves function, and prevents injury. Focus on these core leg muscles to build a powerful foundation for all your movements.</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-accent-dark text-white p-4 rounded-lg shadow-lg text-center">
+                    <h4 class="font-bold text-xl">Quadriceps</h4>
+                    <p class="text-xs mt-1">Exercises: Squats, Lunges</p>
+                </div>
+                <div class="bg-accent-medium text-white p-4 rounded-lg shadow-lg text-center">
+                    <h4 class="font-bold text-xl">Hamstrings</h4>
+                    <p class="text-xs mt-1">Exercises: Deadlifts, Curls</p>
+                </div>
+                <div class="bg-accent-light text-white p-4 rounded-lg shadow-lg text-center">
+                    <h4 class="font-bold text-xl">Glutes</h4>
+                    <p class="text-xs mt-1">Exercises: Bridges, Hip Thrusts</p>
+                </div>
+                <div class="bg-gray-700 text-white p-4 rounded-lg shadow-lg text-center">
+                    <h4 class="font-bold text-xl">Calves</h4>
+                    <p class="text-xs mt-1">Exercises: Heel Raises</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="red-flags" class="header-gradient text-white p-8 rounded-xl shadow-2xl">
+            <h2 class="text-3xl font-black text-center mb-4 tracking-tight">URGENT WARNINGS</h2>
+            <p class="text-center font-semibold text-lg text-yellow-300 mb-8">If you experience leg pain with any of these symptoms, seek IMMEDIATE medical care.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-800">
+                <div class="bg-white/90 p-5 rounded-lg shadow-md">
+                    <h4 class="font-bold flex items-center mb-1"> <span class="text-2xl mr-2">💥</span> Inability to Bear Weight</h4>
+                    <p class="text-sm">Could indicate a fracture or severe injury.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-md">
+                    <h4 class="font-bold flex items-center mb-1"><span class="text-2xl mr-2">🧠</span> Severe Numbness/Weakness</h4>
+                    <p class="text-sm">Suggests serious nerve compression or damage.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-md">
+                    <h4 class="font-bold flex items-center mb-1"><span class="text-2xl mr-2">🩸</span> Calf Pain with Swelling</h4>
+                    <p class="text-sm">Classic sign of a DVT (blood clot), a medical emergency.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-md">
+                    <h4 class="font-bold flex items-center mb-1"><span class="text-2xl mr-2">🌡️</span> Signs of Infection</h4>
+                    <p class="text-sm">Pain accompanied by fever, redness, or warmth.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-md">
+                    <h4 class="font-bold flex items-center mb-1"><span class="text-2xl mr-2">🚽</span> Loss of Bladder/Bowel Control</h4>
+                    <p class="text-sm">A critical sign of Cauda Equina Syndrome.</p>
+                </div>
+                 <div class="bg-white/90 p-5 rounded-lg shadow-md">
+                    <h4 class="font-bold flex items-center mb-1"><span class="text-2xl mr-2">⚖️</span> Unexplained Weight Loss</h4>
+                    <p class="text-sm">Can be a sign of a tumor or systemic illness.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: { size: 12, family: 'Roboto' },
+                        color: '#051923'
+                    }
+                },
+                tooltip: {
+                    callbacks: { title: tooltipTitleCallback },
+                    bodyFont: { family: 'Roboto' },
+                    titleFont: { family: 'Roboto' }
+                }
+            }
+        };
+
+        const causesChartCtx = document.getElementById('causesChart').getContext('2d');
+        new Chart(causesChartCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Injuries & Overuse', 'Nerve-Related', 'Joint Conditions', 'Circulatory & Other'],
+                datasets: [{
+                    label: 'Pain Categories',
+                    data: [45, 25, 20, 10],
+                    backgroundColor: ['#0582CA', '#00A6FB', '#006494', '#003554'],
+                    borderColor: '#ffffff',
+                    borderWidth: 4,
+                }]
+            },
+            options: { ...commonOptions, cutout: '60%' }
+        });
+
+        const riskFactorsCtx = document.getElementById('riskFactorsChart').getContext('2d');
+        new Chart(riskFactorsCtx, {
+            type: 'bar',
+            data: {
+                labels: [['Sedentary Lifestyle', '& Weak Muscles'], 'Poor Posture', 'Excess Weight', 'Improper Lifting'],
+                datasets: [{
+                    label: 'Relative Risk Impact',
+                    data: [90, 80, 75, 65],
+                    backgroundColor: ['#003554', '#006494', '#0582CA', '#00A6FB'],
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                ...commonOptions,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                },
+                scales: {
+                    x: { display: false, beginAtZero: true, max: 100 },
+                    y: { 
+                        grid: { display: false, drawBorder: false },
+                        ticks: { font: { size: 12, weight: 'bold', family: 'Roboto' }, color: '#051923' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

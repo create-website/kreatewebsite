@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Global Coastline: An Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a clear narrative designed for a single-page scroll. It starts with a hook ("Find Your Shore"), then immediately presents the report's core framework: the four Traveler Archetypes. This is the main section, helping users self-identify. The narrative then broadens to explore "The Living Coast," showing how beaches are shaped by nature (Masterpieces) and culture (Cultural Coastlines). It concludes with a practical, actionable section on "The Responsible Traveler's Compass," adapting the report's checklist. This structure guides the user from inspiration to practical application, telling a coherent story with the report's data. -->
+    <!-- Visualization & Content Choices: Data Point: The Four Traveler Archetypes -> Goal: Organize -> Visualization: A grid of styled cards using Unicode icons -> Justification: This is the most effective way to present the core framework of the report, allowing for easy comparison and self-identification. Method: HTML/CSS with Tailwind. | Data Point: Planet's Masterpieces & Cultural Coastlines -> Goal: Inform -> Visualization: Styled content cards and a 'Big Number' stat -> Justification: Presents key examples from the report in a visually distinct and digestible format. The large statistic for the Great Barrier Reef provides a high-impact data point. Method: HTML/CSS. | Data Point: Responsible Travel -> Goal: Inform/Action -> Visualization: A multi-column checklist with Unicode icons -> Justification: Adapts Table 2 from the report into a scannable, visually appealing, and actionable guide for users. Method: HTML/CSS. | Data Point: Sustainability Model -> Goal: Inform -> Visualization: Donut Chart -> Justification: Visualizes the tangible conservation success of a destination like Costa Rica (25% protected land), making the concept of "The Conscious Coast" concrete. Library: Chart.js/Canvas. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8F9FA; color: #283447; }
+        .chart-container { position: relative; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; height: 300px; max-h-80; }
+        .gradient-text { background: linear-gradient(to right, #0A81D1, #F55D3E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .card { background-color: white; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); padding: 1.5rem; transition: transform 0.2s; }
+        .card:hover { transform: translateY(-5px); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 py-12">
+        <section class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-extrabold gradient-text">Find Your Shore</h1>
+            <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-gray-600">The "perfect beach" isn't a single place—it's a personal journey. The modern traveler seeks more than just sand and sun; they seek experiences that match their unique style. This guide helps you find the coast that calls to you.</p>
+        </section>
+
+        <section class="mb-20">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#283447]">The Four Archetypes of the Shore</h2>
+                <p class="mt-3 max-w-3xl mx-auto text-gray-600">To navigate the world's coastlines, we first need to understand your travel intent. The report organizes premier destinations into four distinct styles. Which one are you?</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="card text-center">
+                    <div class="text-6xl mb-4">👑</div>
+                    <h3 class="text-2xl font-bold">The Icons</h3>
+                    <p class="text-gray-600 mt-2">Shores of legend and luxury, where impeccable service and breathtaking settings converge.</p>
+                    <p class="font-semibold text-sm mt-4 text-[#0A81D1]">Exemplars: The Maldives, Grace Bay, Copacabana</p>
+                </div>
+                <div class="card text-center">
+                    <div class="text-6xl mb-4">🧗</div>
+                    <h3 class="text-2xl font-bold">The Wild Frontiers</h3>
+                    <p class="text-gray-600 mt-2">Coastlines that are launchpads for exhilaration, challenge, and thrilling adventures.</p>
+                    <p class="font-semibold text-sm mt-4 text-[#EE9B00]">Exemplars: Railay Beach, Turquoise Bay, Queenstown</p>
+                </div>
+                <div class="card text-center">
+                    <div class="text-6xl mb-4">🏝️</div>
+                    <h3 class="text-2xl font-bold">The Sanctuaries</h3>
+                    <p class="text-gray-600 mt-2">Secluded coves and hidden gems that reward the determined with tranquility and pristine beauty.</p>
+                    <p class="font-semibold text-sm mt-4 text-[#94D2BD]">Exemplars: Anse Source d'Argent, Die Plaat, Albanian Riviera</p>
+                </div>
+                <div class="card text-center">
+                    <div class="text-6xl mb-4">👨‍👩‍👧‍👦</div>
+                    <h3 class="text-2xl font-bold">The Family Album</h3>
+                    <p class="text-gray-600 mt-2">Shores for all generations, offering safety, convenience, and engaging activities for everyone.</p>
+                    <p class="font-semibold text-sm mt-4 text-[#F55D3E]">Exemplars: Wategos Beach, Elafonissi, The Algarve</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+             <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#283447]">The Living Coast: Where Nature and Culture Meet</h2>
+                <p class="mt-3 max-w-3xl mx-auto text-gray-600">A beach is never just sand; it's the edge of a living system. The most memorable destinations are defined by their profound connection to extraordinary natural wonders and rich local cultures.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="card text-center">
+                    <h3 class="text-2xl font-bold text-center mb-2 text-[#0A81D1]">Planet's Masterpieces</h3>
+                    <p class="text-center text-sm text-gray-500 mb-6">Some shores are gateways to awe-inspiring phenomena. The Great Barrier Reef is a UNESCO World Heritage site and a global epicenter of marine biodiversity.</p>
+                    <p class="text-6xl md:text-8xl font-extrabold text-[#0A81D1]">1,500</p>
+                    <p class="font-bold mt-2">Species of fish supported by the reef, a living continent visible from space.</p>
+                </div>
+                 <div class="card text-center">
+                    <h3 class="text-2xl font-bold text-center mb-2 text-[#F55D3E]">Cultural Coastlines</h3>
+                    <p class="text-center text-sm text-gray-500 mb-6">At these destinations, the beach is a stage for culture. A short bicycle ride in Hoi An, Vietnam, connects the ancient UNESCO town to the tranquil coast.</p>
+                    <div class="relative w-full max-w-md mx-auto p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="text-center">
+                                <div class="w-16 h-16 rounded-full bg-[#F55D3E] text-white flex items-center justify-center text-2xl mx-auto">🏛️</div>
+                                <p class="mt-2 font-semibold text-sm">Ancient Town</p>
+                            </div>
+                            <div class="flex-grow border-t-2 border-dashed border-gray-300 mx-2"></div>
+                             <div class="text-center">
+                                <div class="w-16 h-16 rounded-full bg-[#F6AD25] text-white flex items-center justify-center text-2xl mx-auto">🚲</div>
+                                <p class="mt-2 font-semibold text-sm">Rice Paddies</p>
+                            </div>
+                            <div class="flex-grow border-t-2 border-dashed border-gray-300 mx-2"></div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 rounded-full bg-[#0A81D1] text-white flex items-center justify-center text-2xl mx-auto">🌊</div>
+                                <p class="mt-2 font-semibold text-sm">An Bang Beach</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#283447]">The Conscious Coast</h2>
+                <p class="mt-3 max-w-3xl mx-auto text-gray-600">The future of travel is being written on coastlines pioneering a more sustainable approach. These destinations prove that a thriving tourism industry can support healthy ecosystems and empower local communities.</p>
+            </div>
+            <div class="card text-center max-w-3xl mx-auto">
+                 <h3 class="text-2xl font-bold text-center mb-2 text-[#0A9396]">Case Study: Costa Rica</h3>
+                 <p class="text-center text-sm text-gray-500 mb-4">Costa Rica has built its national brand on environmental stewardship. The philosophy of "Pura Vida" (pure life) is reflected in its commitment to conservation, making it a global leader in ecotourism.</p>
+                 <div class="chart-container">
+                    <canvas id="sustainabilityChart"></canvas>
+                </div>
+                <p class="font-semibold text-lg mt-4">Over 25% of Costa Rica's landmass is protected in national parks and reserves.</p>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg p-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#283447]">The Responsible Traveler's Checklist</h2>
+                <p class="mt-3 max-w-3xl mx-auto text-gray-600">Traveling responsibly is a series of conscious choices. Every decision, from packing to purchasing, is a chance to leave a positive mark on the places we love.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
+                <div>
+                    <h4 class="text-xl font-bold text-[#0A81D1] mb-3">🌎 Before You Go</h4>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start"><span class="mr-3 text-lg">✈️</span><span>Choose non-stop flights and pack light to reduce your carbon footprint.</span></li>
+                        <li class="flex items-start"><span class="mr-3 text-lg">🧴</span><span>Pack reusable bottles and containers, plus reef-safe sunscreen.</span></li>
+                        <li class="flex items-start"><span class="mr-3 text-lg">🤝</span><span>Book with certified sustainable tour operators and hotels.</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold text-[#EE9B00] mb-3">📍 On The Ground</h4>
+                    <ul class="space-y-3 text-gray-700">
+                         <li class="flex items-start"><span class="mr-3 text-lg">🛍️</span><span>Shop and eat at locally-owned businesses to support the community.</span></li>
+                         <li class="flex items-start"><span class="mr-3 text-lg">📸</span><span>Always ask for permission before taking photos of people.</span></li>
+                         <li class="flex items-start"><span class="mr-3 text-lg">💧</span><span>Conserve water and energy in your accommodation.</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold text-[#AE2012] mb-3">🧭 Navigating Your Trip</h4>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start"><span class="mr-3 text-lg">🗓️</span><span>Travel in the shoulder season to reduce pressure on popular spots.</span></li>
+                        <li class="flex items-start"><span class="mr-3 text-lg">🗺️</span><span>Hire local guides for authentic insights and to keep money local.</span></li>
+                        <li class="flex items-start"><span class="mr-3 text-lg">🐢</span><span>Avoid any activities that exploit wildlife or people.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) { return label.join(' '); } 
+                return label;
+            };
+
+            const sustainabilityData = {
+                labels: ['Protected Land', 'Other Land'],
+                datasets: [{
+                    label: '% of Land Mass',
+                    data: [26, 74],
+                    backgroundColor: ['#0A9396', '#E9D8A6'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 4,
+                    hoverOffset: 4
+                }]
+            };
+
+            new Chart(document.getElementById('sustainabilityChart'), {
+                type: 'doughnut',
+                data: sustainabilityData,
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { font: { size: 14 } } },
+                        tooltip: {
+                            callbacks: { title: tooltipTitleCallback },
+                            backgroundColor: '#283447',
+                            titleColor: '#FFFFFF',
+                            bodyColor: '#FFFFFF',
+                            titleFont: { weight: 'bold' },
+                            padding: 10,
+                            cornerRadius: 4,
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

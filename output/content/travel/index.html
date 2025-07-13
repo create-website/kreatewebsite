@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Global Destination Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Warm Neutrals) -->
+    <!-- Application Structure Plan: The application is structured as a user-driven discovery tool, not a linear report. It starts with an interactive "Destination Finder" quiz, allowing users to immediately engage and get personalized results based on the report's traveler archetypes. This is followed by a "Perspectives on 'Best'" section using interactive tabs to compare different ranking methodologies (UNWTO vs. Travel + Leisure), making the report's core analytical point—that 'best' is subjective—immediately clear through interaction. Sections on "World Icons" and "Modern Travel Trends" provide further exploration. This task-oriented design, centered on the user's interests, is more usable and engaging than a simple scroll-through of the original report's content. -->
+    <!-- Visualization & Content Choices: Report Info: Traveler archetypes -> Goal: Personalization -> Viz/Method: Interactive quiz dynamically showing/hiding content blocks -> Interaction: User clicks their travel style -> Justification: More engaging than a static list; provides immediate value. | Report Info: UNWTO vs. T+L rankings -> Goal: Comparison -> Viz/Method: Two Chart.js bar charts in tabbed layout -> Interaction: User clicks tabs to switch views -> Justification: Directly visualizes the report's key insight about differing methodologies. | Report Info: Travel Trends (Overtourism, etc.) -> Goal: Inform -> Viz/Method: Clickable cards with expanding text -> Interaction: Click-to-reveal -> Justification: Breaks down complex topics into digestible pieces. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FDFBF8; }
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 400px; max-height: 500px; }
+        @media (min-width: 768px) { .chart-container { height: 500px; max-height: 600px; } }
+        .nav-link { transition: color 0.3s, border-color 0.3s; }
+        .nav-link.active, .nav-link:hover { color: #D97706; border-bottom-color: #D97706; }
+        .archetype-card.selected { border-color: #D97706; background-color: #FEF3C7; }
+        .tab.active { background-color: #FBBF24; color: #422006; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="text-stone-800 antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-stone-200">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl sm:text-2xl font-bold text-amber-900">Global Destination Explorer</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#finder" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 border-b-2 border-transparent">Finder</a>
+                        <a href="#perspectives" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 border-b-2 border-transparent">Perspectives</a>
+                        <a href="#icons" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 border-b-2 border-transparent">Icons</a>
+                        <a href="#trends" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 border-b-2 border-transparent">Trends</a>
+                    </div>
+                </div>
+                 <div class="md:hidden">
+                    <select id="mobile-nav" class="bg-stone-100 border border-stone-300 text-stone-700 text-sm rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2.5">
+                        <option value="#finder">Finder</option>
+                        <option value="#perspectives">Perspectives</option>
+                        <option value="#icons">Icons</option>
+                        <option value="#trends">Trends</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+
+        <section id="hero" class="text-center py-12">
+            <h2 class="text-4xl lg:text-5xl font-extrabold text-stone-800 tracking-tight">What Makes a Destination the "Best"?</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-stone-600">The "best" place to visit isn't a single location, but a personal discovery. It's a complex mix of expert opinions, traveler reviews, and most importantly, your own unique travel style. This explorer helps you navigate these perspectives to find your perfect destination.</p>
+        </section>
+
+        <section id="finder" class="py-16 bg-amber-50 rounded-2xl">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-amber-900">Start Your Journey: Find Your Perfect Destination</h3>
+                <p class="mt-2 text-stone-600 max-w-2xl mx-auto">Select the travel style that best describes you to see a curated list of world-class destinations tailored to your interests.</p>
+            </div>
+
+            <div id="archetype-selector" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 px-4">
+            </div>
+
+            <div id="results-container" class="mt-12 px-4 md:px-8">
+            </div>
+        </section>
+
+        <section id="perspectives" class="py-16">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-stone-800">Perspectives on "Best"</h3>
+                <p class="mt-2 text-stone-600 max-w-2xl mx-auto">A destination's ranking can change dramatically depending on who you ask. Compare the data-driven view of global popularity with the experience-driven voice of travelers.</p>
+            </div>
+            
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                <div class="flex justify-center border-b border-stone-200 mb-4">
+                    <button data-tab="popularity" class="tab py-2 px-4 font-semibold text-stone-600 focus:outline-none">Popularity (by Arrivals)</button>
+                    <button data-tab="experience" class="tab py-2 px-4 font-semibold text-stone-600 focus:outline-none">Experience (by Travelers)</button>
+                </div>
+
+                <div id="popularity-content" class="tab-content hidden">
+                    <p class="text-center text-stone-600 mb-4">This chart, based on UNWTO data, shows the most visited countries, reflecting global tourism powerhouses with massive infrastructure and brand recognition. It measures sheer volume of travelers.</p>
+                    <div class="chart-container">
+                        <canvas id="unwtoChart"></canvas>
+                    </div>
+                </div>
+
+                <div id="experience-content" class="tab-content hidden">
+                    <p class="text-center text-stone-600 mb-4">This chart, based on Travel + Leisure reader awards, reveals the most-loved cities. These rankings prioritize qualities like friendliness, culture, and value, showing that the best experience isn't always in the most-visited place.</p>
+                    <div class="chart-container">
+                        <canvas id="tlChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="icons" class="py-16 bg-stone-100 rounded-2xl">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-stone-800">Icons of Natural & Human Heritage</h3>
+                <p class="mt-2 text-stone-600 max-w-2xl mx-auto">Some places transcend rankings. These are icons of "outstanding universal value," recognized by UNESCO and celebrated for their profound cultural significance or superlative natural beauty.</p>
+            </div>
+            <div id="icons-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+        <section id="trends" class="py-16">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-stone-800">The Modern Traveler's Compass</h3>
+                <p class="mt-2 text-stone-600 max-w-2xl mx-auto">The future of travel is being shaped by a growing awareness of its impact. Explore the key trends defining how we see the world, from sustainable practices to the challenges of overtourism.</p>
+            </div>
+            <div id="trends-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>Global Destination Explorer</p>
+            <p class="text-sm text-stone-400 mt-1">Interactive experience based on "The Global Travel Index" report. Designed to make global travel data accessible and personal.</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const appData = {
+        archetypes: [
+            { id: 'culturalist', name: 'The Culturalist', icon: '🏛️', description: 'For lovers of history, art, and immersive culture.', destinations: [
+                { name: 'Florence, Italy', snippet: 'An open-air museum, the Cradle of the Renaissance, with unparalleled art collections in the Uffizi and Galleria dell\'Accademia.' },
+                { name: 'Kyoto, Japan', snippet: 'The heart of traditional Japan, boasting over 1,600 Buddhist temples, 400 Shinto shrines, and the historic Gion geisha district.' },
+                { name: 'Cusco, Peru', snippet: 'The historic capital of the Inca Empire, a stunning blend of Inca stonework and Spanish colonial architecture, and the gateway to Machu Picchu.' },
+                { name: 'Siem Reap, Cambodia', snippet: 'The gateway to the magnificent Angkor temple complex, including the world\'s largest religious monument, Angkor Wat.' }
+            ]},
+            { id: 'adventurer', name: 'The Adventurer', icon: '🧗', description: 'For those seeking thrills, treks, and untamed nature.', destinations: [
+                { name: 'Queenstown, New Zealand', snippet: 'The undisputed "adventure capital of the world," offering bungy jumping, jet boating, skydiving, and world-class skiing.' },
+                { name: 'Patagonia, Chile & Argentina', snippet: 'A trekker\'s paradise with iconic landscapes like Torres del Paine and Mount Fitz Roy, plus glacier hiking and kayaking.' },
+                { name: 'Costa Rica', snippet: 'A pioneer in eco-adventure with dense rainforests perfect for zip-lining, surfing, volcano hiking, and white-water rafting.' },
+                { name: 'Nepal', snippet: 'The ultimate destination for high-altitude trekking, home to Mount Everest and the world-renowned Annapurna Circuit.' }
+            ]},
+            { id: 'urban', name: 'The Urban Explorer', icon: '🏙️', description: 'For those who thrive on the kinetic energy of a metropolis.', destinations: [
+                { name: 'Tokyo, Japan', snippet: 'A megacity blending hyper-modern (Shibuya Crossing) and traditional (Meiji Shrine), with an unparalleled culinary scene.' },
+                { name: 'Bangkok, Thailand', snippet: 'A city of exhilarating contrasts, from ornate temples to legendary street food, bustling markets, and vibrant nightlife.' },
+                { name: 'Mexico City, Mexico', snippet: 'A vibrant capital celebrated for its deep history, incredible food, walkability, and a thriving art scene from Frida Kahlo to Diego Rivera.' },
+                 { name: 'London, UK', snippet: 'Masterfully fuses rich history with cutting-edge culture. Explore free museums, royal traditions, and edgy street art.' }
+            ]},
+            { id: 'luxury', name: 'The Luxury Seeker', icon: '💎', description: 'For those seeking serenity, indulgence, and ultimate comfort.', destinations: [
+                { name: 'The Maldives', snippet: 'The quintessential luxury escape, famous for private island resorts with lavish overwater bungalows and personalized service.' },
+                { name: 'Bora Bora, French Polynesia', snippet: 'Synonymous with romantic seclusion, offering stunning overwater resorts set in a breathtakingly beautiful lagoon.' },
+                { name: 'Kenya & Tanzania Safari', snippet: 'Experience the world\'s most luxurious safari lodges, combining thrilling wildlife viewing with impeccable, five-star service.' },
+                { name: 'Anguilla, Caribbean', snippet: 'Celebrated for 33 pristine white-sand beaches, a sophisticated culinary scene, and a laid-back, exclusive atmosphere.' }
+            ]},
+            { id: 'family', name: 'The Family Voyager', icon: '👨‍👩‍👧‍👦', description: 'For those planning adventures for all ages.', destinations: [
+                { name: 'Costa Rica', snippet: 'A natural playground for families, offering a safe mix of adventure (zip-lining) and education (sloth sanctuaries).' },
+                { name: 'Galápagos Islands, Ecuador', snippet: 'Nature\'s ultimate classroom, offering safe, up-close encounters with unique wildlife that inspire all ages.' },
+                { name: 'Japan', snippet: 'An exceptional family destination due to its unparalleled safety, efficient transport, and blend of ancient culture and modern fun.' },
+                { name: 'Italy', snippet: 'History comes alive with "gladiator school" in Rome and exploring Pompeii, plus universally loved food like pizza and gelato.' }
+            ]},
+            { id: 'budget', name: 'The Budget Backpacker', icon: '🎒', description: 'For those maximizing experience while minimizing cost.', destinations: [
+                { name: 'Southeast Asia Trail', snippet: 'The heartland of backpacking (Thailand, Vietnam, Cambodia), famous for its affordability, classic routes, and vibrant hostels.' },
+                { name: 'The Balkans, Europe', snippet: 'Experience Europe without the high price tag. Stunning coastlines, rugged mountains, and rich history on a budget.' },
+                { name: 'Bolivia & Colombia', snippet: 'Incredible value in South America, offering otherworldly salt flats, vibrant culture, and stunning landscapes for under $30/day.' },
+                { name: 'Peru', snippet: 'Offers great value with affordable set lunches and bus travel, making treks to icons like Machu Picchu accessible.' }
+            ]}
+        ],
+        icons: [
+            {name: 'Grand Canyon, USA', type: 'Natural Wonder', snippet: 'A colossal canyon revealing millions of years of geological history, unsurpassed in its scale and multi-colored beauty.'},
+            {name: 'Pyramids of Giza, Egypt', type: 'Human Heritage', snippet: 'The last surviving wonder of the ancient world, a monumental testament to the ingenuity of ancient Egyptian civilization.'},
+            {name: 'Serengeti Migration, TAN/KEN', type: 'Natural Wonder', snippet: 'One of the greatest wildlife spectacles on Earth, with over two million animals traversing the plains.'},
+            {name: 'Angkor Wat, Cambodia', type: 'Human Heritage', snippet: 'The vast heart of the ancient Khmer Empire, a masterpiece of religious architecture and artistry visible from space.'},
+            {name: 'Iguazu Falls, ARG/BRA', type: 'Natural Wonder', snippet: 'A breathtaking system of 275 waterfalls, forming one of the largest and most powerful waterfall systems in the world.'},
+            {name: 'Machu Picchu, Peru', type: 'Human Heritage', snippet: 'A mysterious and breathtakingly situated Inca citadel high in the Andes, the pinnacle of Inca engineering.'}
+        ],
+        trends: [
+            { 
+                title: 'Responsible Travel', 
+                snippet: 'A shift towards minimizing negative impacts and maximizing positive contributions. It’s about making conscious choices that support local communities and protect the environment.',
+                details: 'Led by pioneers like Costa Rica, this trend champions ecotourism and community-based models. It encourages travelers to support locally owned businesses, conserve resources, and respect local cultures, turning tourism into a force for good. Key principle: Leave a place better than you found it.'
+            },
+            { 
+                title: 'The Overtourism Challenge', 
+                snippet: 'When the sheer volume of visitors overwhelms a destination, degrading the environment, infrastructure, and quality of life for residents.',
+                details: 'Venice is the poster child for this issue, where a flood of tourism has led to local depopulation and an economic "monoculture." This cautionary tale highlights the urgent need for sustainable management to protect the very authenticity that attracts visitors in the first place.'
+            },
+            { 
+                title: 'Off-the-Beaten-Path', 
+                snippet: 'A direct response to overtourism, travelers are increasingly seeking less crowded, more authentic destinations for a genuine sense of discovery.',
+                details: 'This trend is driving popularity to emerging regions like the Balkans, the Caucasus, and Central Asia. It reflects a desire for unique cultural encounters and a more sustainable way to explore, distributing tourism benefits away from already strained hotspots.'
+            }
+        ],
+        unwtoData: {
+            labels: ['France', 'Spain', 'United States', 'Turkey', 'Italy', 'Mexico', 'Germany', 'UK', 'Japan', 'Greece'],
+            data: [100, 85.2, 66.5, 55.2, 57.2, 42.2, 34.8, 37.2, 25.1, 32.7]
+        },
+        tlData: {
+            labels: ['San Miguel de Allende', 'Chiang Mai', 'Tokyo', 'Bangkok', 'Jaipur', 'Hoi An', 'Mexico City', 'Kyoto', 'Ubud', 'Cuzco'],
+            data: [93.33, 91.94, 91.39, 91.34, 91.18, 90.95, 90.87, 90.76, 90.54, 90.33]
+        }
+    };
+
+    const archetypeSelector = document.getElementById('archetype-selector');
+    const resultsContainer = document.getElementById('results-container');
+    const iconsGrid = document.getElementById('icons-grid');
+    const trendsContainer = document.getElementById('trends-container');
+
+    function initArchetypes() {
+        archetypeSelector.innerHTML = appData.archetypes.map(arch => `
+            <div data-id="${arch.id}" class="archetype-card cursor-pointer p-4 bg-white rounded-lg shadow-sm border-2 border-transparent transition-all duration-300 text-center hover:shadow-lg hover:border-amber-400">
+                <div class="text-4xl">${arch.icon}</div>
+                <h4 class="mt-2 font-bold text-stone-800">${arch.name}</h4>
+                <p class="text-xs text-stone-500">${arch.description}</p>
+            </div>
+        `).join('');
+
+        document.querySelectorAll('.archetype-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const selectedId = card.dataset.id;
+                document.querySelectorAll('.archetype-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                displayResults(selectedId);
+            });
+        });
+    }
+
+    function displayResults(archetypeId) {
+        const archetype = appData.archetypes.find(a => a.id === archetypeId);
+        if (!archetype) {
+            resultsContainer.innerHTML = '';
+            return;
+        }
+        resultsContainer.innerHTML = `
+            <div class="fade-in bg-white p-6 rounded-lg shadow-md border border-stone-200">
+                <h4 class="text-2xl font-bold text-amber-800 mb-4">${archetype.icon} Curated for ${archetype.name}</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    ${archetype.destinations.map(dest => `
+                        <div class="bg-amber-50/50 p-4 rounded-md">
+                            <h5 class="font-bold text-stone-900">${dest.name}</h5>
+                            <p class="text-stone-600">${dest.snippet}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function initIcons() {
+        iconsGrid.innerHTML = appData.icons.map(icon => `
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-stone-200">
+                <span class="inline-block bg-${icon.type === 'Natural Wonder' ? 'green' : 'sky'}-100 text-${icon.type === 'Natural Wonder' ? 'green' : 'sky'}-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">${icon.type}</span>
+                <h4 class="text-xl font-bold mt-2">${icon.name}</h4>
+                <p class="mt-1 text-stone-600">${icon.snippet}</p>
+            </div>
+        `).join('');
+    }
+    
+    function initTrends() {
+        trendsContainer.innerHTML = appData.trends.map(trend => `
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-stone-200">
+                <h4 class="text-xl font-bold">${trend.title}</h4>
+                <p class="mt-2 text-stone-600">${trend.snippet}</p>
+                <p class="mt-3 text-sm text-stone-500 bg-stone-50 p-3 rounded-md">${trend.details}</p>
+            </div>
+        `).join('');
+    }
+
+    function initCharts() {
+        const tabButtons = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        let unwtoChartInstance, tlChartInstance;
+
+        const chartOptions = (title) => ({
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: title, font: { size: 16 } },
+                tooltip: {
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    titleFont: { size: 14 },
+                    bodyFont: { size: 12 },
+                    padding: 10,
+                    cornerRadius: 4
+                }
+            },
+            scales: {
+                x: { grid: { display: false } },
+                y: { grid: { color: '#e5e7eb' } }
+            }
+        });
+        
+        const horizontalChartOptions = (title) => ({
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: title, font: { size: 16 } },
+                tooltip: {
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    titleFont: { size: 14 },
+                    bodyFont: { size: 12 },
+                    padding: 10,
+                    cornerRadius: 4
+                }
+            },
+            scales: {
+                x: { grid: { color: '#e5e7eb' } },
+                y: { grid: { display: false } }
+            }
+        });
+
+
+        function createUnwtoChart() {
+            if (unwtoChartInstance) unwtoChartInstance.destroy();
+            unwtoChartInstance = new Chart(document.getElementById('unwtoChart'), {
+                type: 'bar',
+                data: {
+                    labels: appData.unwtoData.labels,
+                    datasets: [{
+                        label: 'International Arrivals (in millions)',
+                        data: appData.unwtoData.data,
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: chartOptions('Top 10 Most Visited Countries by Arrivals (2023)')
+            });
+        }
+
+        function createTlChart() {
+            if (tlChartInstance) tlChartInstance.destroy();
+            tlChartInstance = new Chart(document.getElementById('tlChart'), {
+                type: 'bar',
+                data: {
+                    labels: appData.tlData.labels,
+                    datasets: [{
+                        label: 'Reader Score',
+                        data: appData.tlData.data,
+                        backgroundColor: 'rgba(245, 158, 11, 0.7)',
+                        borderColor: 'rgba(245, 158, 11, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: horizontalChartOptions('Top 10 Cities by Traveler Experience (2025)')
+            });
+        }
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.dataset.tab;
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                tabContents.forEach(content => content.classList.add('hidden'));
+                const activeContent = document.getElementById(`${tabId}-content`);
+                activeContent.classList.remove('hidden');
+                activeContent.classList.add('fade-in');
+
+                if (tabId === 'popularity' && !unwtoChartInstance) {
+                    createUnwtoChart();
+                } else if (tabId === 'experience' && !tlChartInstance) {
+                    createTlChart();
+                }
+            });
+        });
+        
+        // Activate the first tab by default
+        tabButtons[0].click();
+    }
+
+    function initNavigation() {
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                    });
+                }
+            });
+        }, { rootMargin: '-50% 0px -50% 0px' });
+
+        sections.forEach(section => observer.observe(section));
+
+        const mobileNav = document.getElementById('mobile-nav');
+        mobileNav.addEventListener('change', (e) => {
+            window.location.hash = e.target.value;
+        });
+    }
+
+    initArchetypes();
+    initIcons();
+    initTrends();
+    initCharts();
+    initNavigation();
+});
+</script>
+</body>
+</html>

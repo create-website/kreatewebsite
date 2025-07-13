@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: A Guide to Hand Health & Strength</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Application Structure Plan: The infographic is structured to tell a compelling story about hand health. It starts with a hook to establish importance, then uses a doughnut chart to quickly visualize the "Why" (common causes). It moves to actionable prevention with "Building Your Defense," featuring clear ergonomic checklists and exercise guides. "Fueling Your Foundation" covers diet, and the narrative concludes with the most critical information: the "Urgent Warnings" or red flags, presented for maximum impact. This flow guides the user from understanding the problem to implementing solutions and knowing when to seek professional help. -->
+    <!-- Visualization & Content Choices: 
+        1.  Primary Causes of Hand Pain -> Goal: Compare/Inform -> Viz: Doughnut Chart (Chart.js/Canvas) -> Justification: Excellent for providing a quick, proportional overview of the main sources of hand pain (RSI, Arthritis, Trauma). It's visually engaging and easy to understand. NO SVG.
+        2.  Ergonomic Checklists -> Goal: Organize/Instruct -> Viz: Styled HTML/CSS cards with Unicode icons -> Justification: Provides clear, scannable tips for computer and tool use in a visually organized manner without needing complex graphics. NO SVG/Mermaid JS.
+        3.  Key Hand Exercises -> Goal: Organize/Instruct -> Viz: A grid of styled HTML/CSS cards with Unicode emojis -> Justification: Breaks down essential strengthening and flexibility exercises into digestible, actionable steps. NO SVG/Mermaid JS.
+        4.  Red Flag Symptoms -> Goal: Warn/Inform -> Viz: High-contrast alert-style cards (HTML/CSS) -> Justification: Creates a visually arresting section to convey the seriousness and urgency of critical medical symptoms, prioritizing user safety. NO SVG/Mermaid JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa; /* Light grey-blue */
+            color: #13505B; /* Dark Blue */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .header-gradient {
+            background: linear-gradient(135deg, #00818A, #3C9D9B);
+        }
+        .text-accent-light { color: #A2D0C1; }
+        .bg-accent-light { background-color: #A2D0C1; }
+        .text-accent-mid { color: #3C9D9B; }
+        .bg-accent-mid { background-color: #3C9D9B; }
+        .text-accent-dark { color: #13505B; }
+        .bg-accent-dark { background-color: #13505B; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-black text-accent-dark mb-4 tracking-tight">THE POWER IN YOUR HANDS</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">An essential guide to understanding, strengthening, and protecting your most valuable tools.</p>
+        </header>
+
+        <section id="causes" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-accent-dark">Understanding Hand & Wrist Pain</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-700 mb-12">Hand pain is a common ailment that can significantly impact daily life. It primarily stems from repetitive strain, degenerative conditions like arthritis, and acute traumatic injuries.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="bg-white p-6 rounded-xl shadow-2xl border-t-4 border-accent-mid">
+                    <h3 class="text-xl font-semibold mb-4 text-center">Primary Causes of Hand Pain</h3>
+                    <div class="chart-container">
+                        <canvas id="causesChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-500 text-center mt-4">A proportional breakdown of the most common origins of hand and wrist issues.</p>
+                </div>
+                <div class="flex flex-col space-y-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-lg mb-2">Repetitive Strain Injury (RSI)</h4>
+                        <p class="text-gray-600 text-sm">Gradual damage to muscles, tendons, and nerves from repeated motions and overuse, often linked to occupational tasks like typing or using tools.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-lg mb-2">Arthritis (OA & RA)</h4>
+                        <p class="text-gray-600 text-sm">Joint inflammation and cartilage deterioration from "wear-and-tear" (Osteoarthritis) or autoimmune conditions (Rheumatoid Arthritis).</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-lg mb-2">Traumatic Injuries</h4>
+                        <p class="text-gray-600 text-sm">Acute damage such as fractures, sprains, or dislocations resulting from falls, impacts, or accidents.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="prevention" class="mb-20 bg-cyan-50 p-8 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-10 text-accent-dark">Building Your Defense: Ergonomics & Exercise</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-700 mb-12">Prevention is the most powerful strategy against hand and wrist pain. Proper ergonomics in your daily tasks and a consistent routine of targeted exercises can build resilience and ward off injury.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-xl mb-4 flex items-center"><span class="text-3xl mr-3">💻</span> Workstation Ergonomics</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2 text-sm">
+                        <li><strong>Neutral Wrists:</strong> Keep wrists straight, avoiding bending up, down, or sideways while typing.</li>
+                        <li><strong>Elbows at 90°:</strong> Adjust your chair so your elbows are bent at a right angle.</li>
+                        <li><strong>Monitor at Eye Level:</strong> Position the top of your screen at or just below eye level to maintain good neck posture.</li>
+                        <li><strong>Take Frequent Breaks:</strong> Stand, stretch, and move around every 30 minutes.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-xl mb-4 flex items-center"><span class="text-3xl mr-3">🛠️</span> Hand Tool Ergonomics</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2 text-sm">
+                        <li><strong>Use a Power Grip:</strong> Wrap your whole hand around the tool, not just your fingers.</li>
+                        <li><strong>Choose Bent Handles:</strong> Use tools with curved handles to keep your wrist in a neutral, straight position.</li>
+                        <li><strong>Reduce Vibration:</strong> Wear anti-vibration gloves when using tools that shake.</li>
+                        <li><strong>Vary Your Tasks:</strong> Avoid long periods of continuous, repetitive motion with the same tool.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3 class="font-bold text-xl mb-6 text-center text-accent-dark">Essential Hand & Wrist Exercises</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <p class="text-3xl">✊</p>
+                    <h4 class="font-semibold text-sm mt-2">Grip Strengthening</h4>
+                    <p class="text-xs text-gray-500">Squeeze a soft ball.</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <p class="text-3xl">🖐️</p>
+                    <h4 class="font-semibold text-sm mt-2">Wrist Flexor Stretch</h4>
+                    <p class="text-xs text-gray-500">Gently bend wrist down.</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <p class="text-3xl">🤚</p>
+                    <h4 class="font-semibold text-sm mt-2">Wrist Extensor Stretch</h4>
+                    <p class="text-xs text-gray-500">Gently extend wrist up.</p>
+                </div>
+                 <div class="bg-white p-4 rounded-lg shadow">
+                    <p class="text-3xl">🤏</p>
+                    <h4 class="font-semibold text-sm mt-2">Thumb Opposition</h4>
+                    <p class="text-xs text-gray-500">Touch thumb to each finger.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="red-flags" class="header-gradient text-white p-8 rounded-xl shadow-2xl">
+            <h2 class="text-3xl font-black text-center mb-4 tracking-tight">URGENT WARNINGS: WHEN TO SEE A DOCTOR</h2>
+            <p class="text-center font-semibold text-lg text-cyan-100 mb-8">While most hand pain can be managed at home, seek IMMEDIATE medical care if you experience any of these symptoms.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg text-accent-dark transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">💥</span> Severe Pain After Injury</h4>
+                    <p class="text-sm">Intense pain, swelling, or visible deformity could indicate a fracture or dislocation.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg text-accent-dark transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">🌡️</span> Signs of Infection</h4>
+                    <p class="text-sm">Redness, warmth, significant swelling, or fever along with pain requires urgent evaluation.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg text-accent-dark transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">📉</span> Loss of Sensation</h4>
+                    <p class="text-sm">Sudden or progressive numbness or severe tingling suggests serious nerve involvement.</p>
+                </div>
+                 <div class="bg-white/90 p-5 rounded-lg shadow-lg text-accent-dark transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">💪</span> Sudden Weakness</h4>
+                    <p class="text-sm">An abrupt inability to grip or move the wrist/fingers needs immediate attention.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg text-accent-dark transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">⚪</span> Pale or Bluish Fingers</h4>
+                    <p class="text-sm">Discoloration, especially with coldness, can indicate a serious circulatory problem.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg text-accent-dark transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3"> Lump</span> Rapidly Growing Lumps</h4>
+                    <p class="text-sm">Any new or quickly changing masses should be checked by a doctor promptly.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: { size: 12, family: 'Poppins' },
+                        color: '#13505B'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#13505B',
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#FFFFFF',
+                    callbacks: { title: tooltipTitleCallback },
+                    bodyFont: { family: 'Poppins' },
+                    titleFont: { family: 'Poppins', weight: 'bold' }
+                }
+            }
+        };
+
+        const causesChartCtx = document.getElementById('causesChart').getContext('2d');
+        new Chart(causesChartCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Repetitive Strain Injury (RSI)', 'Arthritis (OA & RA)', 'Acute Trauma (Fractures, etc.)'],
+                datasets: [{
+                    label: 'Pain Categories',
+                    data: [50, 30, 20],
+                    backgroundColor: ['#13505B', '#3C9D9B', '#A2D0C1'],
+                    borderColor: '#ffffff',
+                    borderWidth: 5,
+                    hoverOffset: 10
+                }]
+            },
+            options: { ...commonChartOptions, cutout: '60%' }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: A Visual Guide to America's 50 Essential Destinations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Narrative Structure Plan: The infographic will tell a story in four parts. 1) A bold, high-level introduction using large numbers to establish the scope (50 destinations). 2) A visual breakdown of the destinations by "Primary Appeal" using a donut chart to show the mix of travel styles. 3) A comparison of regions using a horizontal bar chart to show the geographic distribution. 4) A deep dive into the types of destinations, contrasting "Urban Explorations" vs. "Natural Sanctuaries" using two side-by-side pictograph-style cards. This structure guides the user from a broad overview to more specific, comparative insights, making the report's data easily digestible. -->
+    <!-- Visualization Choices: Data Point: 50 Total Destinations -> Goal: Inform -> Viz: Large Number Display -> Justification: High-impact hook. | Data Point: Primary Appeal Distribution -> Goal: Compare Composition -> Viz: Donut Chart (Chart.js/Canvas) -> Justification: Clearly shows part-to-whole relationships. | Data Point: Regional Distribution -> Goal: Compare Categories -> Viz: Horizontal Bar Chart (Chart.js/Canvas) -> Justification: Excellent for comparing counts across multiple categories. | Data Point: Urban vs. Natural Split -> Goal: Compare Categories -> Viz: Pictograph (HTML/CSS/Unicode) -> Justification: Visually engaging way to present a simple count comparison. NO SVG or Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* A very light, neutral blue-gray */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .stat-card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            transition: transform 0.3s ease-in-out;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        h1, h2, h3 {
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <!-- Section 1: Header -->
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-[#2c3e50]">The American Mosaic</h1>
+            <p class="mt-3 text-lg md:text-xl text-slate-500 max-w-3xl mx-auto">A visual synthesis of the 50 most essential U.S. travel destinations, curated from expert analysis and traveler sentiment.</p>
+        </header>
+
+        <!-- Section 2: Big Numbers -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-12 md:mb-16">
+            <div class="stat-card">
+                <p class="text-5xl md:text-6xl font-extrabold text-[#e74c3c]">50</p>
+                <p class="mt-2 text-lg font-semibold text-slate-600">Essential Destinations</p>
+                <p class="text-sm text-slate-500">Curated from premier travel authorities.</p>
+            </div>
+            <div class="stat-card">
+                <p class="text-5xl md:text-6xl font-extrabold text-[#3498db]">6</p>
+                <p class="mt-2 text-lg font-semibold text-slate-600">Distinct Themes</p>
+                <p class="text-sm text-slate-500">From Icons to Legendary Journeys.</p>
+            </div>
+            <div class="stat-card">
+                <p class="text-5xl md:text-6xl font-extrabold text-[#2ecc71]">28</p>
+                <p class="mt-2 text-lg font-semibold text-slate-600">States Represented</p>
+                <p class="text-sm text-slate-500">Showcasing nationwide diversity.</p>
+            </div>
+        </section>
+
+        <!-- Section 3: Destinations by Appeal -->
+        <section class="mb-12 md:mb-20">
+            <div class="stat-card text-center">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#2c3e50] mb-2">What Kind of Traveler Are You?</h2>
+                <p class="text-slate-500 mb-6 max-w-2xl mx-auto">The 50 essential destinations cater to a wide range of travel styles. "Nature" is the dominant appeal, highlighting America's spectacular national parks, while "City," "History," and "Coast" also represent major travel motivations.</p>
+                <div class="chart-container h-[400px] md:h-[450px]">
+                    <canvas id="appealChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Destinations by Region -->
+        <section class="mb-12 md:mb-20">
+            <div class="stat-card text-center">
+                 <h2 class="text-2xl md:text-3xl font-bold text-[#2c3e50] mb-2">A Coast-to-Coast Journey</h2>
+                <p class="text-slate-500 mb-6 max-w-2xl mx-auto">The list spans the entire nation, but certain regions have a higher concentration of essential destinations. The "South" and "Northeast" lead the way, showcasing their rich blend of history, culture, and natural beauty.</p>
+                <div class="chart-container h-[450px] md:h-[500px]">
+                    <canvas id="regionChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section 5: Urban vs. Natural -->
+        <section class="mb-12 md:mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#2c3e50]">The Great Divide: Cityscapes vs. Landscapes</h2>
+                <p class="text-slate-500 max-w-2xl mx-auto">While the destinations cover many themes, the core of American travel often involves a choice between urban exploration and immersion in nature. Here's how the 50 essential spots break down between these two fundamental experiences.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="stat-card text-center">
+                    <p class="text-6xl text-[#e74c3c]">🏙️</p>
+                    <p class="text-4xl font-extrabold text-slate-800 mt-2">17</p>
+                    <p class="text-xl font-semibold text-slate-600">Urban Explorations</p>
+                    <p class="text-slate-500 mt-2">These destinations are defined by their architecture, museums, culinary scenes, and cultural energy. They are the bustling hearts of American life.</p>
+                </div>
+                <div class="stat-card text-center">
+                    <p class="text-6xl text-[#2ecc71]">🏞️</p>
+                    <p class="text-4xl font-extrabold text-slate-800 mt-2">25</p>
+                    <p class="text-xl font-semibold text-slate-600">Natural Sanctuaries</p>
+                    <p class="text-slate-500 mt-2">These are the nation's majestic parks and wilderness areas, offering awe-inspiring beauty, grand-scale adventure, and a vital connection to the wild.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const destinations = [
+                { "region": "Southwest", "appeal": "Nature" }, { "region": "Rockies", "appeal": "Nature" }, { "region": "Northeast", "appeal": "City" },
+                { "region": "Mid-Atlantic", "appeal": "History" }, { "region": "Midwest", "appeal": "City" }, { "region": "South", "appeal": "Culture" },
+                { "region": "West Coast", "appeal": "City" }, { "region": "Northeast", "appeal": "History" }, { "region": "Southwest", "appeal": "Art" },
+                { "region": "Southwest", "appeal": "Entertainment" }, { "region": "Rockies", "appeal": "Nature" }, { "region": "West Coast", "appeal": "Nature" },
+                { "region": "Southwest", "appeal": "Nature" }, { "region": "Southwest", "appeal": "Nature" }, { "region": "South", "appeal": "Nature" },
+                { "region": "Northeast", "appeal": "Coast" }, { "region": "Pacific NW", "appeal": "Nature" }, { "region": "Southwest", "appeal": "Nature" },
+                { "region": "Midwest", "appeal": "Nature" }, { "region": "Alaska", "appeal": "Wilderness" }, { "region": "South", "appeal": "Wildlife" },
+                { "region": "Hawaii", "appeal": "Nature" }, { "region": "West Coast", "appeal": "Nature" }, { "region": "Rockies", "appeal": "Nature" },
+                { "region": "Pacific NW", "appeal": "Nature" }, { "region": "Mid-Atlantic", "appeal": "Adventure" }, { "region": "Northeast", "appeal": "Coast" },
+                { "region": "Northeast", "appeal": "Coast" }, { "region": "South", "appeal": "Coast" }, { "region": "Pacific NW", "appeal": "Coast" },
+                { "region": "Hawaii", "appeal": "Coast" }, { "region": "Hawaii", "appeal": "Culture" }, { "region": "South", "appeal": "Coast" },
+                { "region": "Northeast", "appeal": "Wineries" }, { "region": "West Coast", "appeal": "Scenic Drive" }, { "region": "South", "appeal": "History" },
+                { "region": "South", "appeal": "History" }, { "region": "Rockies", "appeal": "Adventure" }, { "region": "Northeast", "appeal": "Town" },
+                { "region": "Rockies", "appeal": "Adventure" }, { "region": "Rockies", "appeal": "Adventure" }, { "region": "Northeast", "appeal": "Nature" },
+                { "region": "Southwest", "appeal": "Scenery" }, { "region": "Mid-Atlantic", "appeal": "History" }, { "region": "South", "appeal": "History" },
+                { "region": "Hawaii", "appeal": "City" }, { "region": "Rockies", "appeal": "Luxury" }, { "region": "South", "appeal": "Scenic Drive" },
+                { "region": "Southwest", "appeal": "Scenic Drive" }, { "region": "Cross-Country", "appeal": "Scenic Drive" }
+            ];
+
+            const appealCounts = destinations.reduce((acc, { appeal }) => {
+                acc[appeal] = (acc[appeal] || 0) + 1;
+                return acc;
+            }, {});
+            
+            const regionCounts = destinations.reduce((acc, { region }) => {
+                acc[region] = (acc[region] || 0) + 1;
+                return acc;
+            }, {});
+            
+            const vibrantPalette = ['#e74c3c', '#3498db', '#f1c40f', '#2ecc71', '#9b59b6', '#1abc9c', '#e67e22', '#34495e'];
+
+            const wrapLabel = (label) => {
+                if (label.length > 16) {
+                    const words = label.split(' ');
+                    let currentLine = '';
+                    const lines = [];
+                    words.forEach(word => {
+                        if ((currentLine + word).length > 16) {
+                            lines.push(currentLine.trim());
+                            currentLine = '';
+                        }
+                        currentLine += word + ' ';
+                    });
+                    lines.push(currentLine.trim());
+                    return lines;
+                }
+                return label;
+            };
+            
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            const appealChartCtx = document.getElementById('appealChart').getContext('2d');
+            new Chart(appealChartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(appealCounts),
+                    datasets: [{
+                        data: Object.values(appealCounts),
+                        backgroundColor: vibrantPalette,
+                        borderColor: '#f0f4f8',
+                        borderWidth: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 14,
+                                    family: "'Inter', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: { title: tooltipTitleCallback }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+
+            const regionChartCtx = document.getElementById('regionChart').getContext('2d');
+            const sortedRegions = Object.entries(regionCounts).sort((a, b) => b[1] - a[1]);
+            const wrappedRegionLabels = sortedRegions.map(entry => wrapLabel(entry[0]));
+            
+            new Chart(regionChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: wrappedRegionLabels,
+                    datasets: [{
+                        label: 'Number of Destinations',
+                        data: sortedRegions.map(entry => entry[1]),
+                        backgroundColor: vibrantPalette,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: { title: tooltipTitleCallback }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    family: "'Inter', sans-serif"
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 14,
+                                    family: "'Inter', sans-serif",
+                                    weight: '600'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

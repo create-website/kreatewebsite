@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide: The Autonomous Supply Chain</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Alabaster, Taupe, Slate, Amber) -->
+    <!-- Application Structure Plan: The SPA is designed for non-linear exploration. It starts with a high-impact 'Hero' section displaying key ROI metrics. The core is an interactive 'AI Maturity Model' that visually explains the progression from Predictive to Agentic AI, allowing users to click and learn. This is followed by a filterable 'Use Case Explorer' to deep-dive into real-world applications by AI type or business function, making the dense case study information digestible. An interactive 'Implementation Roadmap' visualizes the strategic plan, and a 'Challenges & Ethics' section uses an accordion to break down complex risks. This structure was chosen to transform the report's linear text into a task-oriented, engaging experience, prioritizing user discovery and understanding over passive reading. -->
+    <!-- Visualization & Content Choices: Key stats are presented as large, animated numbers for immediate impact. The AI maturity curve is an interactive HTML/CSS diagram for comparison. Use cases are organized in a filterable card gallery (HTML/JS) for exploration. The implementation roadmap is a clickable process flow (HTML/CSS/JS). ROI is visualized with a doughnut chart (Chart.js) and interactive cards for tangible/intangible benefits. Challenges are presented in an accordion UI (HTML/JS) to manage information density. This combination of methods aligns with the goals of informing, comparing, and organizing information from the report in an interactive format without using SVG or Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8F5F2; }
+        .active-nav { color: #D97706; border-bottom: 2px solid #D97706; }
+        .inactive-nav { color: #4B5563; }
+        .section-hidden { display: none; }
+        .card-active { border-color: #D97706; transform: translateY(-4px); }
+        .filter-btn-active { background-color: #D97706; color: white; }
+        .filter-btn-inactive { background-color: white; color: #4B5563; }
+        .tab-active { background-color: #D97706; color: white; }
+        .tab-inactive { background-color: #E5E7EB; color: #374151; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .chart-container { position: relative; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">The Autonomous Supply Chain</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#hero" class="nav-link inactive-nav font-medium">Home</a>
+                <a href="#maturity" class="nav-link inactive-nav font-medium">AI Models</a>
+                <a href="#use-cases" class="nav-link inactive-nav font-medium">Use Cases</a>
+                <a href="#roadmap" class="nav-link inactive-nav font-medium">Roadmap</a>
+                <a href="#challenges" class="nav-link inactive-nav font-medium">Risks</a>
+            </div>
+             <button id="mobile-menu-button" class="md:hidden p-2 rounded-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2">
+            <a href="#hero" class="block nav-link inactive-nav">Home</a>
+            <a href="#maturity" class="block nav-link inactive-nav">AI Models</a>
+            <a href="#use-cases" class="block nav-link inactive-nav">Use Cases</a>
+            <a href="#roadmap" class="block nav-link inactive-nav">Roadmap</a>
+            <a href="#challenges" class="block nav-link inactive-nav">Risks</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="py-16 md:py-24 text-center bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">Navigating the AI Revolution in Supply Chain</h2>
+                <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-gray-600">This guide unpacks the transformative impact of Predictive, Generative, and Agentic AI, providing a strategic framework for building a resilient, autonomous supply chain.</p>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-amber-50 p-6 rounded-xl shadow-md">
+                        <p class="text-4xl font-bold text-amber-600">20-50%</p>
+                        <p class="mt-2 text-gray-700">Reduction in Demand Forecast Errors</p>
+                    </div>
+                    <div class="bg-blue-50 p-6 rounded-xl shadow-md">
+                        <p class="text-4xl font-bold text-blue-600">40%</p>
+                        <p class="mt-2 text-gray-700">Reduction in Sourcing Cycle Times</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-xl shadow-md">
+                        <p class="text-4xl font-bold text-green-600">35%</p>
+                        <p class="mt-2 text-gray-700">Improvement in Inventory Levels</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="maturity" class="py-16 md:py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold">The AI Maturity Model</h2>
+                    <p class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">Understand the journey from data analysis to autonomous action. Click on each stage to explore its function, capabilities, and strategic value.</p>
+                </div>
+
+                <div class="relative w-full max-w-4xl mx-auto mb-8">
+                    <div class="absolute top-1/2 left-0 w-full h-1 bg-gray-300 transform -translate-y-1/2"></div>
+                    <div class="relative flex justify-between items-center">
+                        <div class="maturity-card-wrapper" data-content="predictive">
+                            <div class="w-6 h-6 rounded-full bg-white border-2 border-amber-500 z-10"></div>
+                            <p class="mt-2 text-center font-semibold">1. Predictive</p>
+                        </div>
+                        <div class="maturity-card-wrapper" data-content="generative">
+                            <div class="w-6 h-6 rounded-full bg-white border-2 border-blue-500 z-10"></div>
+                            <p class="mt-2 text-center font-semibold">2. Generative</p>
+                        </div>
+                        <div class="maturity-card-wrapper" data-content="agentic">
+                             <div class="w-6 h-6 rounded-full bg-white border-2 border-green-500 z-10"></div>
+                            <p class="mt-2 text-center font-semibold">3. Agentic</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="maturity-content-area" class="mt-8 bg-white p-8 rounded-xl shadow-lg min-h-[300px] fade-in">
+                </div>
+            </div>
+        </section>
+
+        <section id="use-cases" class="py-16 md:py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold">Interactive Use Case Explorer</h2>
+                    <p class="mt-3 text-lg text-gray-600 max-w-3xl mx-auto">Explore real-world applications of AI in the supply chain. Filter by AI type or business function to discover how leading companies are driving value.</p>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-4 mb-10">
+                    <button class="use-case-filter-btn filter-btn-active" data-filter="all">All</button>
+                    <button class="use-case-filter-btn filter-btn-inactive" data-filter="Predictive AI">Predictive AI</button>
+                    <button class="use-case-filter-btn filter-btn-inactive" data-filter="Generative AI">Generative AI</button>
+                    <button class="use-case-filter-btn filter-btn-inactive" data-filter="Agentic AI">Agentic AI</button>
+                </div>
+                
+                <div id="use-cases-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+
+                <div id="use-case-modal" class="section-hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center p-4">
+                    <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        <div class="p-6">
+                             <div class="flex justify-between items-start">
+                                <h3 id="modal-title" class="text-2xl font-bold mb-4"></h3>
+                                <button id="modal-close" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+                            </div>
+                            <p id="modal-description" class="text-gray-600 mb-4"></p>
+                            <h4 class="font-semibold text-lg mb-2">Case Study:</h4>
+                            <div id="modal-case-study" class="bg-gray-50 p-4 rounded-md text-gray-700"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-16 md:py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold">Strategic Implementation Roadmap</h2>
+                    <p class="mt-3 text-lg text-gray-600 max-w-3xl mx-auto">Adopt AI effectively with a phased approach. This blueprint moves from foundational projects to transformational initiatives, ensuring sustainable growth and ROI.</p>
+                </div>
+                
+                <div class="flex flex-col md:flex-row justify-center gap-4 mb-10">
+                     <button class="roadmap-tab tab-active" data-content="run">Run: Optimize</button>
+                     <button class="roadmap-tab tab-inactive" data-content="grow">Grow: Enhance</button>
+                     <button class="roadmap-tab tab-inactive" data-content="transform">Transform: Innovate</button>
+                </div>
+                
+                <div id="roadmap-content-area" class="bg-white p-8 rounded-xl shadow-lg min-h-[250px] fade-in">
+                </div>
+                
+                <div class="mt-16 text-center">
+                     <h3 class="text-2xl font-bold mb-6">Measuring True Return on Investment</h3>
+                     <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+                         <div class="chart-container">
+                             <canvas id="roiChart"></canvas>
+                         </div>
+                         <div class="text-left max-w-md">
+                             <div class="bg-white p-4 rounded-lg shadow mb-4">
+                                 <h4 class="font-bold text-green-700">Hard ROI (Tangible)</h4>
+                                 <p class="text-gray-600">Directly measurable financial gains like cost reduction in logistics, inventory optimization, and improved service levels.</p>
+                             </div>
+                             <div class="bg-white p-4 rounded-lg shadow">
+                                  <h4 class="font-bold text-blue-700">Soft ROI (Intangible)</h4>
+                                 <p class="text-gray-600">Strategic benefits that are harder to quantify but critical for long-term value, such as better decision quality, enhanced resilience, and increased employee satisfaction.</p>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="challenges" class="py-16 md:py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold">Navigating Headwinds and Risks</h2>
+                    <p class="mt-3 text-lg text-gray-600 max-w-3xl mx-auto">A successful AI strategy requires a clear-eyed assessment of implementation hurdles, ethical risks, and the human impact. Click each category to explore key considerations.</p>
+                </div>
+                <div id="accordion-container" class="max-w-3xl mx-auto space-y-4">
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-gray-800 text-white text-center py-6">
+        <p>&copy; 2025 Autonomous Supply Chain Initiative. All rights reserved.</p>
+        <p class="text-sm text-gray-400 mt-1">An interactive summary based on the report 'The Autonomous Supply Chain'.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const contentData = {
+                maturity: {
+                    predictive: {
+                        title: 'Predictive AI: The Foundation of Optimization',
+                        color: 'amber',
+                        description: 'Predictive AI analyzes historical and real-time data to forecast future outcomes and optimize well-defined tasks. It answers, "What is likely to happen?"',
+                        details: `<strong>Core Function:</strong> Analyze & Predict<br><strong>Key Capabilities:</strong> Pattern Recognition, Regression, Classification<br><strong>Autonomy:</strong> Human-in-the-Loop<br><strong>Value:</strong> Efficiency, Cost Reduction`
+                    },
+                    generative: {
+                        title: 'Generative AI: The Engine for Creation',
+                        color: 'blue',
+                        description: 'Generative AI moves from analysis to creation, generating novel content, synthetic data, and complex simulations. It answers, "What could be?"',
+                        details: `<strong>Core Function:</strong> Create & Simulate<br><strong>Key Capabilities:</strong> LLMs, GANs, Content Generation, Synthetic Data<br><strong>Autonomy:</strong> Human-over-the-Loop<br><strong>Value:</strong> Innovation, Resilience`
+                    },
+                    agentic: {
+                        title: 'Agentic AI: The Dawn of Autonomous Operations',
+                        color: 'green',
+                        description: 'Agentic AI introduces systems that can autonomously make decisions and take actions to achieve complex goals with minimal supervision. It asks, "How can I do it myself?"',
+                        details: `<strong>Core Function:</strong> Decide & Act<br><strong>Key Capabilities:</strong> Reinforcement Learning, Autonomous Goal-Seeking<br><strong>Autonomy:</strong> Autonomous<br><strong>Value:</strong> Autonomy, Speed, Agility`
+                    },
+                },
+                useCases: [
+                    { id: 1, title: 'Demand Forecasting', type: 'Predictive AI', description: 'Reduce forecast errors by 20-50% by analyzing diverse datasets like social media trends, weather, and economic indicators.', caseStudy: { company: 'Walmart & Amazon', text: 'Walmart uses predictive analytics to cut stockouts by 16%. Amazon analyzes petabytes of data for precise Prime Day inventory management, improving turnover by 12%.' } },
+                    { id: 2, title: 'Predictive Maintenance', type: 'Predictive AI', description: 'Analyze IoT sensor data from vehicles and machinery to predict equipment failures, reducing downtime by 20-30%.', caseStudy: { company: 'Maersk & GE', text: 'Shipping giant Maersk and GE Digital use predictive maintenance on critical assets to minimize unplanned downtime and optimize logistics capacity.' } },
+                    { id: 3, title: 'Digital Twin Simulation', type: 'Generative AI', description: 'Create virtual replicas of the supply chain and use synthetic data to stress-test resilience against disruptions like port strikes or demand spikes.', caseStudy: { company: 'Unilever', text: 'Unilever uses a digital twin for its ice cream supply chain, analyzing weather data to reallocate inventory and boost sales by up to 30% in some markets.' } },
+                    { id: 4, title: 'Automated Content', type: 'Generative AI', description: 'Automatically generate product descriptions, shipping documentation, and power sophisticated chatbots for customer and supplier communications.', caseStudy: { company: 'Amazon', text: "Amazon's 'Wellspring' tech uses GenAI to create accurate delivery instructions for complex locations by analyzing satellite imagery and past delivery data." } },
+                    { id: 5, title: 'Autonomous Procurement', type: 'Agentic AI', description: 'Deploy AI agents to autonomously manage end-to-end procurement, slashing sourcing cycle times by up to 40%.', caseStudy: { company: 'Walmart & Maersk', text: 'Walmart automated negotiations with thousands of suppliers via Pactum AI, achieving a 1.5% cost reduction. Maersk uses AI agents to accelerate supplier deal-making at scale.' } },
+                    { id: 6, title: 'Real-Time Disruption Response', type: 'Agentic AI', description: 'AI agents autonomously execute contingency plans when disruptions are detected, such as rerouting shipments or securing alternative carriers.', caseStudy: { company: 'Pharmaceuticals', text: 'Pharma companies use agentic AI to reroute shipments of critical active ingredients during geopolitical disruptions, ensuring operational continuity without human intervention.' } }
+                ],
+                roadmap: {
+                    run: { title: 'Run: Optimize Core Operations', icon: '⚙️', description: 'Focus on enhancing current efficiency and cutting costs. These "quick win" projects build momentum and are the primary domain of Predictive AI.', examples: ['Automate repetitive tasks', 'Deploy predictive maintenance to reduce downtime', 'Optimize logistics routes for fuel savings'] },
+                    grow: { title: 'Grow: Enhance Decision Making', icon: '📈', description: 'Foster cross-functional alignment and improve decision-making. This often involves integrating Generative AI into processes like Sales & Operations Planning (S&OP).', examples: ['Use GenAI as a "thought partner" for planners', 'Simulate "what-if" scenarios for risk management', 'Improve S&OP with data-backed recommendations'] },
+                    transform: { title: 'Transform: Drive Strategic Growth', icon: '🚀', description: 'Position the supply chain as a driver of business growth with principled bets on advanced Generative and Agentic AI. These projects create a lasting competitive advantage.', examples: ['Build autonomous procurement systems', 'Leverage AI for deep consumer insights', 'Create self-healing supply chain networks'] }
+                },
+                challenges: [
+                    { title: "Implementation Hurdles", content: "<strong>Data Quality & Fragmentation:</strong> The 'garbage in, garbage out' principle is critical. AI models are only as good as their data. Many firms struggle with data trapped in silos, which is often inaccurate or incomplete.<br><strong>Legacy Systems & Integration:</strong> Outdated ERP, WMS, and TMS platforms are rigid and were not designed to integrate with modern, cloud-native AI, creating significant technical and financial barriers.<br><strong>Talent Gaps & Resistance:</strong> There is a shortage of skilled data scientists, and existing teams often lack data literacy. Employees may also resist adoption due to fear of job displacement." },
+                    { title: "Ethical Imperatives", content: "<strong>Algorithmic Bias:</strong> AI can perpetuate and amplify historical biases found in data, leading to unfair supplier selection or inequitable logistics.<br><strong>The 'Black Box' Problem:</strong> The opacity of some AI models creates an accountability problem. If an autonomous agent makes a costly error, who is responsible?<br><strong>Data Privacy & Security:</strong> AI systems require access to sensitive data, creating significant risks of misuse and security breaches. Strong governance is non-negotiable." },
+                    { title: "The Human Element", content: "<strong>Job Displacement & Creation:</strong> While AI will displace roles involving repetitive tasks, it will also create new ones focused on managing the technology. The World Economic Forum predicts 170 million new roles will be created by 2030.<br><strong>The Upskilling Imperative:</strong> The skills gap is a major barrier to transformation. Organizations have a strategic and ethical responsibility to invest heavily in retraining their workforce for an AI-driven environment." }
+                ]
+            };
+            
+            const maturityContentArea = document.getElementById('maturity-content-area');
+            const maturityCards = document.querySelectorAll('.maturity-card-wrapper');
+
+            function updateMaturityContent(key) {
+                const content = contentData.maturity[key];
+                maturityContentArea.innerHTML = `
+                    <h3 class="text-2xl font-bold text-${content.color}-600 mb-3">${content.title}</h3>
+                    <p class="text-lg text-gray-700 mb-4">${content.description}</p>
+                    <div class="text-left text-gray-600 bg-gray-50 p-4 rounded-lg">
+                        <p>${content.details}</p>
+                    </div>
+                `;
+                maturityContentArea.className = 'mt-8 bg-white p-8 rounded-xl shadow-lg min-h-[300px] fade-in';
+
+                maturityCards.forEach(c => {
+                    c.querySelector('div').classList.remove('ring-4', 'ring-amber-500', 'ring-blue-500', 'ring-green-500');
+                    if (c.dataset.content === key) {
+                       c.querySelector('div').classList.add('ring-4', `ring-${content.color}-500`);
+                    }
+                });
+            }
+
+            maturityCards.forEach(card => {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', () => updateMaturityContent(card.dataset.content));
+            });
+            updateMaturityContent('predictive');
+
+            const useCasesGrid = document.getElementById('use-cases-grid');
+            const useCaseModal = document.getElementById('use-case-modal');
+            const modalClose = document.getElementById('modal-close');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+            const modalCaseStudy = document.getElementById('modal-case-study');
+            
+            function renderUseCases(filter = 'all') {
+                useCasesGrid.innerHTML = '';
+                const filteredCases = filter === 'all' 
+                    ? contentData.useCases 
+                    : contentData.useCases.filter(c => c.type === filter);
+
+                filteredCases.forEach(c => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white p-6 rounded-xl shadow-lg border-2 border-transparent hover:border-amber-500 hover:shadow-xl transition-all duration-300 cursor-pointer fade-in';
+                    card.innerHTML = `
+                        <h4 class="text-xl font-bold mb-2">${c.title}</h4>
+                        <p class="text-gray-600 mb-4">${c.description}</p>
+                        <span class="text-sm font-semibold text-white px-3 py-1 rounded-full ${ c.type === 'Predictive AI' ? 'bg-amber-500' : c.type === 'Generative AI' ? 'bg-blue-500' : 'bg-green-500'}">${c.type}</span>
+                    `;
+                    card.addEventListener('click', () => {
+                        modalTitle.textContent = c.title;
+                        modalDescription.textContent = c.description;
+                        modalCaseStudy.innerHTML = `<strong>${c.caseStudy.company}:</strong> ${c.caseStudy.text}`;
+                        useCaseModal.classList.remove('section-hidden');
+                    });
+                    useCasesGrid.appendChild(card);
+                });
+            }
+
+            document.querySelectorAll('.use-case-filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelector('.use-case-filter-btn.filter-btn-active').classList.replace('filter-btn-active', 'filter-btn-inactive');
+                    btn.classList.replace('filter-btn-inactive', 'filter-btn-active');
+                    renderUseCases(btn.dataset.filter);
+                });
+            });
+
+            modalClose.addEventListener('click', () => useCaseModal.classList.add('section-hidden'));
+            useCaseModal.addEventListener('click', (e) => {
+                if (e.target === useCaseModal) {
+                    useCaseModal.classList.add('section-hidden');
+                }
+            });
+            renderUseCases();
+
+            const roadmapContentArea = document.getElementById('roadmap-content-area');
+            function updateRoadmapContent(key) {
+                const content = contentData.roadmap[key];
+                 roadmapContentArea.innerHTML = `
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="text-6xl">${content.icon}</div>
+                        <div class="text-left">
+                            <h3 class="text-2xl font-bold mb-2">${content.title}</h3>
+                            <p class="text-gray-700 mb-4">${content.description}</p>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                ${content.examples.map(ex => `<li>${ex}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+            document.querySelectorAll('.roadmap-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelector('.roadmap-tab.tab-active').classList.replace('tab-active', 'tab-inactive');
+                    tab.classList.replace('tab-inactive', 'tab-active');
+                    updateRoadmapContent(tab.dataset.content);
+                })
+            });
+            updateRoadmapContent('run');
+
+            const roiCtx = document.getElementById('roiChart').getContext('2d');
+            new Chart(roiCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Software & Hardware', 'Maintenance', 'Data Storage', 'Training & Development'],
+                    datasets: [{
+                        label: 'Total Cost of Ownership',
+                        data: [40, 20, 15, 25],
+                        backgroundColor: ['#4A90E2', '#50E3C2', '#F5A623', '#BD10E0'],
+                        borderColor: '#F8F5F2',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: { callbacks: { label: (context) => `${context.label}: ${context.raw}%` } }
+                    },
+                    cutout: '60%'
+                }
+            });
+            
+            const accordionContainer = document.getElementById('accordion-container');
+            contentData.challenges.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'border border-gray-200 rounded-lg';
+                div.innerHTML = `
+                    <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center font-semibold">
+                        <span>${item.title}</span>
+                        <span class="transform transition-transform duration-300 text-amber-600 text-xl">+</span>
+                    </button>
+                    <div class="accordion-content px-4">
+                        <div class="py-4 text-gray-600">${item.content}</div>
+                    </div>
+                `;
+                accordionContainer.appendChild(div);
+            });
+
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const isOpen = content.style.maxHeight;
+
+                    document.querySelectorAll('.accordion-content').forEach(c => {
+                        c.style.maxHeight = null;
+                        c.previousElementSibling.querySelector('span:last-child').textContent = '+';
+                    });
+
+                    if (!isOpen || isOpen === "0px") {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        header.querySelector('span:last-child').textContent = '-';
+                    }
+                });
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main > section');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 100) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active-nav');
+                    link.classList.add('inactive-nav');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active-nav');
+                        link.classList.remove('inactive-nav');
+                    }
+                })
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Hand Health & Muscle Building</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Subtle Blue Accent -->
+    <!-- Application Structure Plan: The SPA is structured into logical, task-oriented sections to guide the user from foundational knowledge to actionable strategies. It begins with 'Anatomy & Conditions' for understanding, moves to 'Ergonomics & Prevention' for proactive care, and offers practical solutions in 'Guided Exercises'. The 'Holistic Health' section broadens the perspective to lifestyle factors, and the final 'When to Seek Help' section provides critical safety information. This flow is designed for maximum usability, allowing users to easily access the information most relevant to their needs, whether it's identifying a condition, learning preventive ergonomics, or finding appropriate exercises. -->
+    <!-- Visualization & Content Choices: 
+        1.  Major Causes of Hand & Wrist Pain -> Goal: Compare/Inform -> Viz: Doughnut Chart (Chart.js) -> Interaction: Hover tooltips for details -> Justification: Provides a quick, proportional overview of pain sources (Repetitive Strain vs. Arthritis vs. Acute Injury), making complex data easily digestible.
+        2.  Common Hand/Wrist Conditions -> Goal: Organize/Inform -> Viz: Filterable Card Grid (HTML/CSS/JS) -> Interaction: Buttons to filter conditions by type (e.g., 'Nerve', 'Tendon', 'Joint') -> Justification: Creates an interactive glossary for users to explore different conditions without being overwhelmed by text.
+        3.  Targeted Hand & Wrist Exercises -> Goal: Organize/Instruct -> Viz: Filterable Card Gallery (HTML/CSS/JS) -> Interaction: Filter by type ('Strengthening' vs. 'Flexibility') -> Justification: Provides a practical, easy-to-use tool for rehabilitation and prevention, turning a static list into an engaging feature.
+        4.  Red Flag Symptoms -> Goal: Warn/Instruct -> Viz: High-contrast alert-style cards (HTML/CSS with Unicode icons) -> Justification: Presents critical safety information with maximum clarity and impact, ensuring the urgent message is immediately understood.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .bg-cream { background-color: #FDFBF5; }
+        .bg-warm-gray-100 { background-color: #F5F2EF; }
+        .text-dark-brown { color: #433A31; }
+        .accent-blue { color: #3B82F6; }
+        .bg-accent-blue { background-color: #3B82F6; }
+        .border-accent-blue { border-color: #3B82F6; }
+        nav a {
+            transition: color 0.3s ease;
+        }
+        nav a.active, nav a:hover {
+            color: #2563EB;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        .card-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+        }
+        .filter-btn.active {
+            background-color: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
+        }
+    </style>
+</head>
+<body class="bg-cream text-dark-brown">
+
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <nav id="main-nav" class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold accent-blue">Hand Health & Muscle Building</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#conditions" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Conditions</a>
+                        <a href="#ergonomics" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Ergonomics</a>
+                        <a href="#exercises" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Exercises</a>
+                        <a href="#holistic-health" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Holistic Health</a>
+                        <a href="#red-flags" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-red-600 font-bold">Red Flags</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:bg-gray-200 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <span class="block h-6 w-6" aria-hidden="true">☰</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#conditions" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Conditions</a>
+                <a href="#ergonomics" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Ergonomics</a>
+                <a href="#exercises" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Exercises</a>
+                <a href="#holistic-health" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Holistic Health</a>
+                <a href="#red-flags" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-red-600 font-bold">Red Flags</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">An Interactive Guide to Hand Health</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600">Our hands are essential for daily life. This guide provides knowledge and tools to help you understand, protect, and strengthen your hands and wrists for long-term health and optimal function.</p>
+        </section>
+
+        <section id="conditions" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Anatomy & Common Conditions</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">Hand and wrist pain can arise from many sources, including nerve compression, tendon inflammation, and joint degeneration. Understanding the most common conditions is the first step toward effective management and prevention.</p>
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-xl mb-12">
+                 <h4 class="text-xl font-semibold mb-4 text-center">Primary Categories of Hand & Wrist Pain</h4>
+                <div class="chart-container">
+                    <canvas id="causesChart"></canvas>
+                </div>
+            </div>
+            <div class="bg-warm-gray-100 p-6 md:p-8 rounded-xl shadow-lg">
+                <h4 class="text-xl font-semibold mb-6 text-center">Explore Common Hand & Wrist Conditions</h4>
+                <div class="flex flex-wrap justify-center gap-2 mb-6" id="condition-filters">
+                    <button data-filter="all" class="filter-btn active px-4 py-2 rounded-full text-sm font-medium">All</button>
+                    <button data-filter="Nerve" class="filter-btn bg-white text-dark-brown px-4 py-2 rounded-full text-sm font-medium border">Nerve-Related</button>
+                    <button data-filter="Tendon" class="filter-btn bg-white text-dark-brown px-4 py-2 rounded-full text-sm font-medium border">Tendon-Related</button>
+                    <button data-filter="Joint" class="filter-btn bg-white text-dark-brown px-4 py-2 rounded-full text-sm font-medium border">Joint-Related</button>
+                </div>
+                <div id="conditions-gallery" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </div>
+        </section>
+
+        <section id="ergonomics" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Ergonomics & Prevention</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">Preventing hand and wrist pain largely depends on minimizing repetitive strain. Proper ergonomics at your computer workstation and when using tools are critical for protecting your hands from chronic injury.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-accent-blue card-item">
+                    <h4 class="text-xl font-semibold mb-3 flex items-center"><span class="mr-2 text-2xl">💻</span> Computer Workstation</h4>
+                     <ul class="list-disc list-inside text-gray-600 mt-2 space-y-1 text-sm">
+                        <li><strong>Neutral Wrists:</strong> Keep wrists straight, not bent up, down, or to the side.</li>
+                        <li><strong>Elbows at 90°:</strong> Adjust chair height so elbows are bent at a right angle.</li>
+                        <li><strong>Monitor at Eye Level:</strong> Position the top of your screen at or slightly below eye level.</li>
+                        <li><strong>Take Micro-Breaks:</strong> Every 10-15 minutes, let your hands relax and stretch.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-accent-blue card-item">
+                    <h4 class="text-xl font-semibold mb-3 flex items-center"><span class="mr-2 text-2xl">🛠️</span> Hand Tool Use</h4>
+                    <ul class="list-disc list-inside text-gray-600 mt-2 space-y-1 text-sm">
+                        <li><strong>Power Grip:</strong> Use your whole hand to grip tools, not just your fingers.</li>
+                        <li><strong>Proper Fit:</strong> Use tools with handles that fit your hand comfortably.</li>
+                        <li><strong>Avoid Vibration:</strong> Use anti-vibration gloves or materials for vibrating tools.</li>
+                        <li><strong>Vary Tasks:</strong> Alternate between different tasks to avoid repetitive motions.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="exercises" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Guided Exercise Library</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">Specific exercises can improve flexibility, build strength, and reduce muscle tension in the hands, wrists, and forearms. Use the filters to find exercises for strengthening or increasing flexibility.</p>
+            <div class="flex justify-center flex-wrap gap-2 mb-8" id="exercise-filters">
+                <button data-filter="all" class="ex-filter-btn active px-4 py-2 rounded-full text-sm font-medium">All</button>
+                <button data-filter="Flexibility" class="ex-filter-btn bg-white text-dark-brown px-4 py-2 rounded-full text-sm font-medium border">Flexibility & Mobility</button>
+                <button data-filter="Strengthening" class="ex-filter-btn bg-white text-dark-brown px-4 py-2 rounded-full text-sm font-medium border">Strengthening</button>
+            </div>
+            <div id="exercise-gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            </div>
+        </section>
+
+        <section id="holistic-health" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Holistic Health Factors</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">Overall health profoundly impacts our musculoskeletal system, including our hands. Weight, diet, and sleep are key pillars in managing inflammation and supporting tissue health.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center card-item">
+                    <span class="text-4xl">⚖️</span>
+                    <h4 class="font-semibold text-lg my-2">Weight Management</h4>
+                    <p class="text-sm text-gray-600">Excess weight increases systemic inflammation, which can worsen conditions like arthritis even in non-weight-bearing joints like the hands.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center card-item">
+                    <span class="text-4xl">🥗</span>
+                    <h4 class="font-semibold text-lg my-2">Anti-Inflammatory Diet</h4>
+                    <p class="text-sm text-gray-600">Foods rich in Omega-3s (like salmon), antioxidants (berries), and healthy fats (nuts, olive oil) can help reduce inflammation and support joint health.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center card-item">
+                    <span class="text-4xl">😴</span>
+                    <h4 class="font-semibold text-lg my-2">Optimal Sleep</h4>
+                    <p class="text-sm text-gray-600">Quality sleep is crucial for muscle repair and reducing inflammation. Use pillows to keep wrists in a neutral position to avoid pain.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="red-flags" class="scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 text-red-700">Red Flags: When to Seek Professional Help</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">While most hand pain can be managed at home, certain symptoms can indicate a more serious condition requiring medical evaluation. Do not delay seeking help if you experience any of the following.</p>
+            <div id="red-flags-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-warm-gray-100 mt-16">
+        <div class="container mx-auto py-6 px-4 text-center text-gray-500">
+            <p class="text-sm">This guide provides informational content and should not be considered a substitute for professional medical advice, diagnosis, or treatment. Always consult with a qualified health provider for any health concerns.</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const causesChartCtx = document.getElementById('causesChart').getContext('2d');
+        new Chart(causesChartCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Repetitive Strain Injury (RSI)', 'Arthritis (OA & RA)', 'Acute Injury (Fractures/Sprains)', 'Nerve Compression (e.g., CTS)'],
+                datasets: [{
+                    label: 'Categories of Hand & Wrist Pain',
+                    data: [45, 25, 15, 15],
+                    backgroundColor: ['#3B82F6', '#60A5FA', '#93C5FD', '#BFDBFE'],
+                    borderColor: '#FDFBF5',
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#433A31' }
+                    },
+                    tooltip: {
+                         callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const conditionsData = [
+            { name: 'Carpal Tunnel Syndrome', type: 'Nerve', desc: 'Pressure on the median nerve causing numbness, tingling, and weakness in the hand and arm.' },
+            { name: 'Wrist Tendinitis', type: 'Tendon', desc: 'Inflammation of a wrist tendon, leading to pain, tenderness, and mild swelling.' },
+            { name: 'De Quervain\'s Tenosynovitis', type: 'Tendon', desc: 'Painful condition affecting tendons on the thumb side of the wrist.' },
+            { name: 'Osteoarthritis (OA)', type: 'Joint', desc: '"Wear-and-tear" arthritis causing cartilage breakdown, pain, and stiffness.' },
+            { name: 'Rheumatoid Arthritis (RA)', type: 'Joint', desc: 'Autoimmune disease causing chronic inflammation, pain, and swelling in joints.' },
+            { name: 'Hand/Wrist Fracture', type: 'Joint', desc: 'A break in one or more bones of the hand or wrist, usually from trauma.' },
+            { name: 'Repetitive Strain Injury (RSI)', type: 'Tendon', desc: 'Pain from repeated movements affecting muscles and tendons in the forearm, wrist, and hand.' },
+            { name: 'Trigger Finger', type: 'Tendon', desc: 'A condition where a finger gets stuck in a bent position, caused by tendon inflammation.' },
+            { name: 'Ganglion Cyst', type: 'Joint', desc: 'Noncancerous lumps that most commonly develop along the tendons or joints of wrists or hands.' },
+        ];
+        
+        const conditionsGallery = document.getElementById('conditions-gallery');
+        const conditionFilters = document.getElementById('condition-filters');
+
+        function renderConditions(filter) {
+            conditionsGallery.innerHTML = '';
+            const filteredData = filter === 'all' ? conditionsData : conditionsData.filter(c => c.type === filter);
+            filteredData.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'card-item bg-white p-4 rounded-lg shadow-md';
+                card.innerHTML = `
+                    <h5 class="font-semibold text-md mb-2">${c.name}</h5>
+                    <p class="text-sm text-gray-600 mb-2">${c.desc}</p>
+                    <span class="text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-800">${c.type}</span>
+                `;
+                conditionsGallery.appendChild(card);
+            });
+        }
+        
+        conditionFilters.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                document.querySelectorAll('#condition-filters .filter-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                renderConditions(e.target.dataset.filter);
+            }
+        });
+
+        const exercisesData = [
+            { name: 'Wrist Flexor Stretch', type: 'Flexibility', desc: 'Gently bend wrist down.' },
+            { name: 'Wrist Extensor Stretch', type: 'Flexibility', desc: 'Gently extend wrist up.' },
+            { name: 'Tendon Glides', type: 'Flexibility', desc: 'Cycle through finger positions.' },
+            { name: 'Prayer Stretch', type: 'Flexibility', desc: 'Press palms together, lower hands.' },
+            { name: 'Grip Strengthening', type: 'Strengthening', desc: 'Squeeze a soft ball.' },
+            { name: 'Finger Lifts', type: 'Strengthening', desc: 'Lift each finger off a flat surface.' },
+            { name: 'Wrist Curls', type: 'Strengthening', desc: 'Use light weights to curl wrist up.' },
+            { name: 'Thumb Opposition', type: 'Strengthening', desc: 'Touch thumb to each fingertip.' },
+        ];
+        
+        const exerciseGallery = document.getElementById('exercise-gallery');
+        const exerciseFilters = document.getElementById('exercise-filters');
+
+        function renderExercises(filter) {
+            exerciseGallery.innerHTML = '';
+            const filteredData = filter === 'all' ? exercisesData : exercisesData.filter(ex => ex.type === filter);
+            filteredData.forEach(ex => {
+                const card = document.createElement('div');
+                card.className = 'card-item bg-white p-4 rounded-lg shadow-md flex flex-col items-center text-center';
+                const icon = ex.type === 'Flexibility' ? '🧘' : '💪';
+                card.innerHTML = `
+                    <div class="h-16 w-16 bg-warm-gray-100 rounded-full mb-3 flex items-center justify-center text-3xl">${icon}</div>
+                    <h5 class="font-semibold">${ex.name}</h5>
+                    <p class="text-xs text-gray-500 mb-2">${ex.desc}</p>
+                    <span class="text-xs font-semibold px-2 py-1 rounded-full ${ex.type === 'Flexibility' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${ex.type}</span>
+                `;
+                exerciseGallery.appendChild(card);
+            });
+        }
+
+        exerciseFilters.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                document.querySelectorAll('#exercise-filters .ex-filter-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                renderExercises(e.target.dataset.filter);
+            }
+        });
+
+        const redFlagsData = [
+            { icon: '💥', title: 'Severe Pain After Injury', desc: 'Intense pain, swelling, or deformity after a fall or blow could signal a fracture.' },
+            { icon: '🌡️', title: 'Signs of Infection', desc: 'Redness, significant swelling, warmth, or fever accompanying pain requires urgent evaluation.' },
+            { icon: '📉', title: 'Loss of Sensation', desc: 'Sudden or progressive numbness or severe tingling in the hand or fingers indicates nerve issues.' },
+            { icon: '💪', title: 'Sudden, Severe Weakness', desc: 'An abrupt inability to grip objects or move the wrist/fingers needs immediate attention.' },
+            { icon: '⚪', title: 'Pale or Bluish Fingers', desc: 'Discoloration, especially with coldness, can indicate a serious circulatory problem.' },
+            { icon: ' lumps', title: 'Rapidly Growing Lumps', desc: 'Any new or rapidly changing lumps or masses should be checked by a doctor.' },
+        ];
+
+        const redFlagsContainer = document.getElementById('red-flags-container');
+        redFlagsData.forEach(flag => {
+            const item = document.createElement('div');
+            item.className = 'bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex items-start card-item';
+            item.innerHTML = `
+                <span class="text-3xl mr-4">${flag.icon}</span>
+                <div>
+                    <h5 class="font-bold text-red-700">${flag.title}</h5>
+                    <p class="text-sm text-red-600">${flag.desc}</p>
+                </div>
+            `;
+            redFlagsContainer.appendChild(item);
+        });
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        document.querySelectorAll('#main-nav a, #mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+        
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('main section');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active', 'accent-blue', 'font-bold');
+                        if (`#${entry.target.id}` === link.getAttribute('href')) {
+                            link.classList.add('active', 'accent-blue', 'font-bold');
+                        }
+                    });
+                }
+            });
+        }, { rootMargin: '-30% 0px -70% 0px' });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        renderConditions('all');
+        renderExercises('all');
+    });
+    </script>
+</body>
+</html>

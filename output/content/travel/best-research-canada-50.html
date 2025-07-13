@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Canada Travel Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: The SPA is designed as a dynamic, filterable dashboard. A persistent control panel at the top allows users to filter destinations by region and travel style (Primary Appeal). The main content area features a responsive grid of destination cards that update instantly based on user selections. Clicking a card triggers a modal window with detailed information, keeping the user in a single, fluid context. This interactive, non-linear structure is chosen over the report's linear format to empower users to actively explore the data based on their personal interests, making the information more accessible and engaging. -->
+    <!-- Visualization & Content Choices: Report Info: The master list of destinations -> Goal: Organize/Compare -> Viz: Interactive Card Grid -> Interaction: JS filtering -> Justification: Allows for rapid, user-driven exploration. | Report Info: Distribution of destinations -> Goal: Inform/Summarize -> Viz: Donut Chart (Primary Appeal) & Bar Chart (Region) -> Interaction: Charts update on filter change -> Justification: Provides a dynamic, high-level visual summary of the filtered dataset (Chart.js/Canvas). | Report Info: Detailed destination descriptions -> Goal: Inform in Detail -> Viz: Modal Window -> Interaction: Opens on card click -> Justification: Presents comprehensive info without cluttering the main interface. All visualizations are built to support the interactive dashboard structure. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f7f4; color: #3d405b; }
+        .chart-container { position: relative; width: 100%; max-width: 450px; margin-left: auto; margin-right: auto; height: 320px; max-height: 350px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .modal-content { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .tag { display: inline-block; background-color: #e0f2fe; color: #0c4a6e; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+        .btn-filter { background-color: #ffffff; border: 1px solid #d1d5db; }
+        .btn-filter.active { background-color: #4f46e5; color: white; border-color: #4f46e5; }
+    </style>
+</head>
+<body>
+    <header class="bg-[#3d405b] text-white shadow-lg">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold tracking-tight">The Great White North, Explored</h1>
+            <p class="mt-1 text-lg text-gray-300">An Interactive Guide to Canada's Premier Destinations</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <section id="filters" class="mb-8 p-4 bg-white rounded-lg shadow-md sticky top-0 z-10">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Region</label>
+                    <div id="region-filters" class="flex flex-wrap gap-2"></div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Travel Style</label>
+                    <div id="appeal-filters" class="flex flex-wrap gap-2"></div>
+                </div>
+                 <div>
+                    <label for="search" class="block text-sm font-medium text-gray-700">Search by Name</label>
+                    <input type="text" id="search" placeholder="e.g., Banff" class="mt-1 block w-full md:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard" class="mb-10">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-[#3d405b]">Destination Snapshot</h2>
+                <p class="text-gray-600">Distribution of Canada's premier travel spots based on your selection.</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-8">
+                <div class="w-full lg:w-1/2 p-4 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-center font-semibold text-lg mb-2">Destinations by Primary Appeal</h3>
+                     <div class="chart-container">
+                        <canvas id="appealChart"></canvas>
+                    </div>
+                </div>
+                <div class="w-full lg:w-1/2 p-4 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-center font-semibold text-lg mb-2">Destinations by Region</h3>
+                     <div class="chart-container">
+                        <canvas id="regionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="destinations-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        </section>
+    </main>
+
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto modal-content">
+            <div class="sticky top-0 bg-[#3d405b] text-white px-6 py-4 flex justify-between items-center">
+                <h2 id="modal-title" class="text-2xl font-bold"></h2>
+                <button id="modal-close" class="text-2xl font-bold hover:text-red-500 transition-colors">&times;</button>
+            </div>
+            <div class="p-6">
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-[#81b29a] border-b-2 border-gray-200 pb-2 mb-3">Why It's Essential</h3>
+                    <p id="modal-essential" class="text-gray-700 leading-relaxed"></p>
+                </div>
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-[#81b29a] border-b-2 border-gray-200 pb-2 mb-3">Key Attractions</h3>
+                    <ul id="modal-attractions" class="list-disc list-inside text-gray-700 leading-relaxed space-y-2"></ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-[#81b29a] border-b-2 border-gray-200 pb-2 mb-3">Insider's Edge</h3>
+                    <p id="modal-insider" class="text-gray-700 leading-relaxed bg-[#f2cc8f] bg-opacity-30 p-3 rounded-md"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const destinationsData = [
+            { id: 1, name: "Vancouver", region: "The Majestic West", appeal: "City Exploration", icon: "🏙️" },
+            { id: 2, name: "Vancouver Island & Tofino", region: "The Majestic West", appeal: "Coastal & Island", icon: "🏄‍♀️" },
+            { id: 3, name: "Canadian Rockies", region: "The Majestic West", appeal: "Natural Sanctuaries", icon: "🏞️" },
+            { id: 4, name: "Toronto", region: "Central Canada", appeal: "City Exploration", icon: "🏙️" },
+            { id: 5, name: "Montréal & Québec City", region: "Central Canada", appeal: "City Exploration", icon: "🎭" },
+            { id: 6, name: "Niagara Falls", region: "Central Canada", appeal: "Natural Sanctuaries", icon: "🌊" },
+            { id: 7, name: "Cabot Trail", region: "Atlantic Maritimes", appeal: "Scenic Drive", icon: "🚗" },
+            { id: 8, name: "Prince Edward Island", region: "Atlantic Maritimes", appeal: "Coastal & Island", icon: "🏝️" },
+            { id: 9, name: "Churchill, Manitoba", region: "Quintessential Odysseys", appeal: "Wildlife", icon: "🐻‍❄️" },
+            { id: 10, name: "The Far North", region: "Quintessential Odysseys", appeal: "Wilderness Adventure", icon: "✨" }
+        ];
+
+        const detailsData = {
+            1: { essential: "Vancouver's identity is fundamentally shaped by its unique geography, a vibrant metropolis nestled between the temperate waters of the Pacific Ocean and the majestic Coast Mountain Range. This setting fosters a lifestyle where world-class urban amenities and profound outdoor recreation are not just adjacent but deeply intertwined.", attractions: ["Stanley Park & Seawall", "Granville Island Public Market", "Gastown historic district", "UBC Museum of Anthropology", "Whale watching tours", "Sea-to-Sky Highway to Whistler"], insider: "The city has consciously woven its natural spaces into the urban fabric. A visitor can engage with nature without sacrificing the comforts and accessibility of a major city, a key differentiator from truly remote wilderness destinations. Visit in spring or fall for fewer crowds." },
+            2: { essential: "Recognized by Travel + Leisure readers as the #1 island in Canada, Vancouver Island presents a wilder, more rugged counterpoint to the mainland. Tofino is the epicenter of Canadian surf culture, dramatic winter storm watching, and a celebrated 'boat-to-table' culinary ethos.", attractions: ["Surfing at Long Beach & Chesterman Beach", "Whale and bear watching in Clayoquot Sound", "Hiking the Rainforest Trail in Pacific Rim National Park", "Hot Springs Cove", "Tacofino food truck"], insider: "The appeal of Tofino lies in a carefully cultivated paradox of 'rugged luxury.' It combines a wild, off-the-grid aesthetic with sophisticated, high-end tourism offerings. A wetsuit is essential for the frigid Pacific waters year-round." },
+            3: { essential: "Straddling the border of Alberta and British Columbia, the Canadian Rockies represent the pinnacle of North American mountain landscapes, a breathtaking domain of turquoise glacial lakes, jagged peaks, and abundant wildlife. At the heart of this region lie Banff and Jasper National Parks.", attractions: ["Lake Louise & Moraine Lake", "Icefields Parkway drive", "Columbia Icefield & Athabasca Glacier tour", "Maligne Lake & Spirit Island cruise", "Johnston Canyon & Maligne Canyon hikes", "Banff & Jasper Gondolas"], insider: "The 'best' experience involves a trade-off between access and crowds. Peak summer (July-August) offers reliable weather but significant congestion. Parking at popular sites like Lake Louise is nearly impossible; use park-and-ride shuttles." },
+            4: { essential: "As Canada's largest and most ethnically diverse city, Toronto's identity is defined by a vibrant multiculturalism that permeates every aspect of urban life. It stands as a dynamic hub of arts, finance, and professional sports, its skyline instantly recognizable by the iconic CN Tower.", attractions: ["CN Tower & EdgeWalk", "Royal Ontario Museum (ROM)", "Art Gallery of Ontario (AGO)", "St. Lawrence Market", "Distillery District", "Toronto Islands ferry"], insider: "Toronto's true essence is best experienced by venturing into its diverse neighborhoods. Explore Kensington Market, Chinatown, Greektown, and Little Italy to discover the living culture of a city where nearly half of its residents were born abroad." },
+            5: { essential: "The province of Québec offers two of Canada's most captivating urban experiences. Montréal is a dynamic, bilingual metropolis, while Québec City, a UNESCO World Heritage site, offers a journey back in time with its fortified walls and 17th-century architecture.", attractions: ["Old Montréal & Notre-Dame Basilica", "Mont-Royal Park", "Montréal International Jazz Festival", "Old Québec & Château Frontenac", "Montmorency Falls", "Québec Winter Carnival"], insider: "The appeal of these cities lies in the fusion of their French and North American identities. Look for this duality in the language (a mix of French and 'Franglish'), the cuisine (from croissants to poutine), and the history to turn a simple city tour into a deeper cultural exploration." },
+            6: { essential: "A quintessential travel destination, Niagara Falls is one of Canada's most powerful and iconic natural wonders. Its appeal extends beyond the waterfalls to include boat tours, hiking trails along the gorge, and the celebrated wine region of Niagara-on-the-Lake.", attractions: ["Hornblower Niagara Cruises boat tour", "Journey Behind the Falls", "Wildplay Zipline", "Hiking in Niagara Glen Nature Centre", "Exploring Niagara-on-the-Lake wineries"], insider: "The challenge for a discerning traveler is to filter the authentic natural experience from the surrounding commercialism of Clifton Hill. Use the charming town of Niagara-on-the-Lake as a more sophisticated and tranquil base of operations." },
+            7: { essential: "Widely regarded as one of the world's most scenic drives, the 185-mile Cabot Trail loops around the northern tip of Cape Breton Island. The drive is an unforgettable journey through dramatic coastal landscapes, Cape Breton Highlands National Park, and a vibrant Gaelic and Acadian cultural tapestry.", attractions: ["Driving the scenic coastal road", "Hiking the Skyline Trail for sunset views", "Cape Breton Highlands National Park", "Whale watching from Pleasant Bay", "Cultural music at the Gaelic College", "Acadian culture in Chéticamp"], insider: "The Cabot Trail is more than just a scenic drive; it is a cultural immersion. An expert travel plan should be structured around cultural touchpoints like a traditional ceilidh (social gathering with music) to truly experience the soul of Cape Breton." },
+            8: { essential: "As Canada's smallest province, Prince Edward Island is celebrated for its gentle, pastoral landscapes, iconic red-sand beaches, and a culture of warm hospitality. It offers a slower, more relaxed pace of life and is renowned for its outstanding culinary scene, especially lobster and oysters.", attractions: ["The 700-kilometer Island Walk trail", "Prince Edward Island National Park (Cavendish & Brackley beaches)", "Culinary experiences (Malpeque oysters, lobster suppers)", "Anne of Green Gables heritage sites"], insider: "The new 700km Island Walk, which circumnavigates the province, is repositioning PEI from a destination experienced by car to one that invites active, immersive exploration, appealing to a new demographic of traveler interested in slow, sustainable journeys." },
+            9: { essential: "The remote northern town of Churchill, on the shores of Hudson Bay, is globally renowned as the 'Polar Bear Capital of the World.' In autumn (Oct-Nov), hundreds of bears congregate waiting for the sea ice. In summer (July-Aug), the river estuary becomes a nursery for thousands of beluga whales.", attractions: ["Tundra Buggy tours for polar bear viewing (autumn)", "Kayaking or boat tours with beluga whales (summer)", "Itsanitaq Museum (Inuit artifacts)", "Polar Bears International House"], insider: "A trip to Churchill is a complex logistical and ethical undertaking. It is accessible only by plane or a 45-hour train from Winnipeg. Choose your tour operator carefully, balancing budget, comfort, and ethical approach to wildlife viewing." },
+            10: { essential: "Canada's three territories—Yukon, Northwest Territories, and Nunavut—offer the ultimate frontier adventure. The Yukon's identity is forged by the Klondike Gold Rush, while Yellowknife (NWT) is the 'Aurora Capital of the World,' and Nunavut is a realm of immense arctic landscapes.", attractions: ["Dawson City, Yukon (Klondike Gold Rush history)", "Northern Lights viewing from Yellowknife, NWT", "Hiking in Auyuittuq National Park, Nunavut", "Arctic safaris on Baffin Island (narwhals, polar bears)"], insider: "Travel to Canada's Far North is fundamentally a journey into living Indigenous cultures. Prioritize Indigenous-led tours and cultural centers, understanding that you are a guest in vibrant, contemporary cultures, not just a tourist in a scenic park." }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('destinations-grid');
+            const searchInput = document.getElementById('search');
+            const regionFiltersContainer = document.getElementById('region-filters');
+            const appealFiltersContainer = document.getElementById('appeal-filters');
+
+            const modal = document.getElementById('modal');
+            const modalClose = document.getElementById('modal-close');
+            const modalTitle = document.getElementById('modal-title');
+            const modalEssential = document.getElementById('modal-essential');
+            const modalAttractions = document.getElementById('modal-attractions');
+            const modalInsider = document.getElementById('modal-insider');
+
+            let appealChart, regionChart;
+            let activeFilters = { region: 'all', appeal: 'all' };
+
+            function getUniqueValues(key) {
+                const values = destinationsData.map(item => item[key]);
+                return ['all', ...new Set(values)].sort((a,b) => a === 'all' ? -1 : b === 'all' ? 1 : a.localeCompare(b));
+            }
+
+            function createFilterButtons(container, values, type) {
+                container.innerHTML = '';
+                values.forEach(value => {
+                    const button = document.createElement('button');
+                    button.className = 'btn-filter px-3 py-1 text-sm font-medium rounded-full transition-colors';
+                    button.textContent = value === 'all' ? `All ${type}s` : value;
+                    button.dataset.filter = value;
+                    if (value === 'all') {
+                        button.classList.add('active');
+                    }
+                    button.addEventListener('click', () => {
+                        activeFilters[type.toLowerCase()] = value;
+                        updateActiveButtonStates(container, button);
+                        filterDestinations();
+                    });
+                    container.appendChild(button);
+                });
+            }
+
+            function updateActiveButtonStates(container, activeButton) {
+                container.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active'));
+                activeButton.classList.add('active');
+            }
+            
+            function populateFilters() {
+                const regions = getUniqueValues('region');
+                const appeals = getUniqueValues('appeal');
+                createFilterButtons(regionFiltersContainer, regions, 'Region');
+                createFilterButtons(appealFiltersContainer, appeals, 'Style');
+            }
+            
+            function renderCards(destinations) {
+                grid.innerHTML = '';
+                destinations.forEach(dest => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform hover:scale-105 transition-transform duration-300';
+                    card.dataset.id = dest.id;
+                    card.innerHTML = `
+                        <div class="p-5">
+                            <div class="flex items-center mb-2">
+                                <span class="text-2xl mr-3">${dest.icon || '🇨🇦'}</span>
+                                <h3 class="text-lg font-bold text-gray-900 leading-tight">${dest.name}</h3>
+                            </div>
+                            <div class="mt-3">
+                               <span class="tag">${dest.appeal}</span>
+                               <span class="tag">${dest.region}</span>
+                            </div>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => openModal(dest.id));
+                    grid.appendChild(card);
+                });
+            }
+
+            function openModal(id) {
+                const destination = destinationsData.find(d => d.id === id);
+                const details = detailsData[id];
+                if (!destination || !details) return;
+
+                modalTitle.textContent = destination.name;
+                modalEssential.textContent = details.essential;
+                modalInsider.textContent = details.insider;
+
+                modalAttractions.innerHTML = '';
+                details.attractions.forEach(attraction => {
+                    const li = document.createElement('li');
+                    li.textContent = attraction;
+                    modalAttractions.appendChild(li);
+                });
+                
+                modal.classList.remove('hidden');
+            }
+
+            function closeModal() {
+                modal.classList.add('hidden');
+            }
+
+            function filterDestinations() {
+                const searchTerm = searchInput.value.toLowerCase();
+                
+                const filtered = destinationsData.filter(dest => {
+                    const nameMatch = dest.name.toLowerCase().includes(searchTerm);
+                    const appealMatch = activeFilters.appeal === 'all' || dest.appeal === activeFilters.appeal;
+                    const regionMatch = activeFilters.region === 'all' || dest.region === activeFilters.region;
+                    return nameMatch && appealMatch && regionMatch;
+                });
+
+                renderCards(filtered);
+                updateCharts(filtered);
+            }
+
+            function updateCharts(data) {
+                if(appealChart) appealChart.destroy();
+                if(regionChart) regionChart.destroy();
+                renderCharts(data);
+            }
+            
+            function renderCharts(data) {
+                const appealCounts = data.reduce((acc, curr) => {
+                    acc[curr.appeal] = (acc[curr.appeal] || 0) + 1;
+                    return acc;
+                }, {});
+                
+                const regionCounts = data.reduce((acc, curr) => {
+                    acc[curr.region] = (acc[curr.region] || 0) + 1;
+                    return acc;
+                }, {});
+
+                const chartColors = ['#e07a5f', '#3d405b', '#81b29a', '#f2cc8f', '#6d597a', '#a5a58d', '#b392ac', '#588157'];
+
+                const appealCtx = document.getElementById('appealChart').getContext('2d');
+                appealChart = new Chart(appealCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(appealCounts),
+                        datasets: [{ data: Object.values(appealCounts), backgroundColor: chartColors, borderColor: '#f8f7f4', borderWidth: 2 }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { padding: 15, boxWidth: 12 } } } }
+                });
+
+                const regionCtx = document.getElementById('regionChart').getContext('2d');
+                regionChart = new Chart(regionCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(regionCounts),
+                        datasets: [{ label: 'Number of Destinations', data: Object.values(regionCounts), backgroundColor: chartColors, borderWidth: 1 }]
+                    },
+                    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+                });
+            }
+
+            searchInput.addEventListener('input', filterDestinations);
+            modalClose.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target.id === 'modal') closeModal();
+            });
+
+            populateFilters();
+            filterDestinations();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Lower Back Care</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Calming Teal -->
+    <!-- Application Structure Plan: The application is designed as a single-page, scrollable guide with a sticky top navigation for easy access to five core, user-centric sections: 'Understand', 'Prevent', 'Exercise', 'Relieve', and the critical 'When to Seek Help'. This thematic structure, rather than mirroring the report's linear format, allows users to directly address their immediate needs—whether it's understanding the root causes of their pain, learning preventative habits, finding safe exercises, getting quick relief, or identifying serious symptoms. The flow starts with foundational knowledge, moves to actionable prevention and exercise, covers immediate self-care, and concludes with safety-critical medical advice, creating a logical and empowering user journey. -->
+    <!-- Visualization & Content Choices: 
+    1. Risk Factors -> Goal: Compare -> Viz: Horizontal Bar Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: To visually quantify the impact of key lifestyle risks, making the data more immediate and impactful than a simple list.
+    2. Exercises/Stretches -> Goal: Organize & Demonstrate -> Viz: Interactive Card Gallery (HTML/CSS/JS) -> Interaction: Filtering (strengthening/flexibility) and card expansion/modal to show animated diagrams and instructions -> Justification: To make exercises easy to find and correctly perform. CSS animations provide lightweight, clear visual guidance without needing video or heavy assets.
+    3. Posture/Lifting/Sleep Habits -> Goal: Inform & Instruct -> Viz: Accordion with illustrated cards (HTML/CSS Icons) -> Interaction: Click to expand -> Justification: To present dense information in digestible, topic-focused chunks, preventing user overwhelm.
+    4. Red Flag Symptoms -> Goal: Warn & Instruct -> Viz: High-contrast static list with icons -> Interaction: None -> Justification: The critical, life-safety nature of this information demands a direct, unambiguous presentation without any interactive elements that might distract from the core message.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .bg-warm-beige { background-color: #F5F5DC; }
+        .bg-soft-gray { background-color: #F8F8F8; }
+        .text-deep-charcoal { color: #333333; }
+        .accent-teal { color: #008080; }
+        .bg-accent-teal { background-color: #008080; }
+        .border-accent-teal { border-color: #008080; }
+        nav a {
+            transition: color 0.3s ease;
+        }
+        nav a.active, nav a:hover {
+            color: #008080;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .exercise-card {
+            transition: all 0.3s ease-in-out;
+            transform-style: preserve-3d;
+        }
+        .exercise-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .exercise-card.is-flipped .exercise-card-inner {
+            transform: rotateY(180deg);
+        }
+        .exercise-card-front, .exercise-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        .exercise-card-back {
+            transform: rotateY(180deg);
+            justify-content: flex-start;
+            overflow-y: auto;
+        }
+        .cat-cow-anim {
+            width: 100px;
+            height: 60px;
+            position: relative;
+        }
+        .cat-cow-anim .body {
+            width: 60px;
+            height: 10px;
+            background: #008080;
+            position: absolute;
+            top: 25px;
+            left: 20px;
+            border-radius: 5px;
+            animation: cat-cow-body 4s infinite ease-in-out;
+        }
+        .cat-cow-anim .head {
+            width: 15px;
+            height: 15px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 22px;
+            left: 75px;
+            animation: cat-cow-head 4s infinite ease-in-out;
+        }
+        @keyframes cat-cow-body {
+            0%, 100% { transform: translateY(0) scaleY(1); }
+            25% { transform: translateY(-10px) scaleY(1.2); }
+            50% { transform: translateY(0) scaleY(1); }
+            75% { transform: translateY(10px) scaleY(0.8); }
+        }
+        @keyframes cat-cow-head {
+            0%, 100% { transform: translateY(0); }
+            25% { transform: translateY(5px); }
+            50% { transform: translateY(0); }
+            75% { transform: translateY(-5px); }
+        }
+        .bridge-anim {
+            width: 120px;
+            height: 60px;
+            position: relative;
+        }
+        .bridge-anim .body {
+            width: 70px;
+            height: 40px;
+            background: #008080;
+            position: absolute;
+            bottom: 10px;
+            left: 25px;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            transform-origin: bottom center;
+            animation: bridge-up 4s infinite ease-in-out;
+        }
+        .bridge-anim .legs {
+            width: 10px;
+            height: 30px;
+            background: #333;
+            position: absolute;
+            bottom: 0;
+            left: 45px;
+        }
+         .bridge-anim .legs::after {
+            content: '';
+            width: 10px;
+            height: 30px;
+            background: #333;
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+        }
+        @keyframes bridge-up {
+            0%, 50%, 100% { transform: rotate(0deg) translateY(0); }
+            25% { transform: rotate(-20deg) translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="bg-warm-beige text-deep-charcoal">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold accent-teal">Back Health Guide</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#understand" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Understand</a>
+                        <a href="#prevent" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Prevent</a>
+                        <a href="#exercise" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Exercise</a>
+                        <a href="#relief" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Relief</a>
+                        <a href="#seek-help" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-red-600 font-bold">Seek Help</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                     <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                        <span class="sr-only">Open main menu</span>
+                        <span class="block h-6 w-6" aria-hidden="true">☰</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+         <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#understand" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700">Understand</a>
+                <a href="#prevent" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700">Prevent</a>
+                <a href="#exercise" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700">Exercise</a>
+                <a href="#relief" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700">Relief</a>
+                <a href="#seek-help" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-red-600 font-bold">Seek Help</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        <section class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">A Proactive Approach to Lower Back Care</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600">This guide translates complex medical information into actionable steps. Explore the sections to understand the causes of back pain, learn preventative habits, find safe exercises, and know when to seek professional help.</p>
+        </section>
+
+        <section id="understand" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Understanding Lower Back Pain</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">Lower back pain can stem from mechanical issues like muscle strains, structural problems like disc herniation, or underlying medical conditions. Lifestyle factors also play a major role. This section helps you understand these common causes and risks.</p>
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                 <h4 class="text-xl font-semibold mb-4 text-center">Key Lifestyle Risk Factors</h4>
+                 <p class="text-center text-gray-500 mb-6">Certain lifestyle habits significantly increase the likelihood of developing back pain. This chart illustrates the relative impact of these common factors. Hover over each bar for more details.</p>
+                <div class="chart-container">
+                    <canvas id="riskFactorChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section id="prevent" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Prevention & Daily Habits</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">The foundation of a healthy back is built on consistent, proactive habits. Small, daily adjustments to your posture, lifting techniques, sleep, and nutrition can dramatically reduce strain and prevent pain. Explore these key areas to build your back care routine.</p>
+            <div id="habits-accordion" class="space-y-4"></div>
+        </section>
+
+        <section id="exercise" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Guided Exercises & Stretches</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">Movement is often the best medicine for back pain. Strengthening your core provides support, while stretching improves flexibility and relieves tension. Use the filters to explore exercises, and click on any card to see instructions and an animated guide.</p>
+            <div class="flex justify-center mb-8 space-x-2">
+                <button data-filter="all" class="filter-btn bg-accent-teal text-white px-4 py-2 rounded-full">All</button>
+                <button data-filter="strengthening" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full border">Strengthening</button>
+                <button data-filter="flexibility" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full border">Flexibility</button>
+            </div>
+            <div id="exercise-gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        </section>
+
+        <section id="relief" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Immediate Relief Strategies</h3>
+             <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">When acute back pain strikes, these simple self-care strategies can help manage discomfort and support recovery. Learn when to use heat or cold therapy and what over-the-counter options may be suitable.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="text-xl font-semibold mb-3 flex items-center"><span class="text-blue-500 mr-2">❄️</span> Cold Therapy</h4>
+                    <p class="font-semibold">Best for: First 48-72 hours (Acute Injury)</p>
+                    <p class="text-gray-600 mt-2">Reduces inflammation, swelling, and numbs pain. Apply an ice pack wrapped in a towel for up to 20 minutes at a time.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="text-xl font-semibold mb-3 flex items-center"><span class="text-red-500 mr-2">🔥</span> Heat Therapy</h4>
+                    <p class="font-semibold">Best for: After 72 hours (Ongoing Stiffness)</p>
+                    <p class="text-gray-600 mt-2">Relaxes tight muscles, improves blood flow, and increases flexibility. Use a heating pad or warm bath for 15-20 minutes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="seek-help" class="scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 text-red-700">When to Seek Immediate Medical Attention</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">Most back pain resolves with self-care, but some symptoms are "red flags" that signal a serious condition requiring urgent medical evaluation. If you experience any of the following, seek immediate care.</p>
+            <div id="red-flags-container" class="bg-red-50 border-l-4 border-red-500 p-6 md:p-8 rounded-r-lg"></div>
+        </section>
+    </main>
+
+    <footer class="bg-soft-gray mt-16">
+        <div class="container mx-auto py-6 px-4 text-center text-gray-500">
+            <p>This guide is for informational purposes only and does not constitute medical advice. Always consult a healthcare professional for diagnosis and treatment of back pain.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const habitsData = [
+                { 
+                    title: 'Posture & Ergonomics', 
+                    icon: '🪑',
+                    content: 'Good posture aligns your spine to minimize strain. An ergonomic workspace is key. <strong>Do:</strong> Sit with your back against the chair, feet flat, and monitor at eye level. Take breaks every 30 minutes. <strong>Don\'t:</strong> Slouch or round your shoulders.'
+                },
+                { 
+                    title: 'Safe Lifting', 
+                    icon: '🏋️',
+                    content: 'Improper lifting is a primary cause of back injury. <strong>Do:</strong> Bend at your knees and hips, not your waist. Keep the object close to your body and your back straight. Avoid twisting while lifting. <strong>Don\'t:</strong> Lift objects that are too heavy; ask for help.'
+                },
+                { 
+                    title: 'Sleep Positions', 
+                    icon: '😴',
+                    content: 'Sleep is for recovery. Maintain spinal alignment. <strong>Do (Back Sleepers):</strong> Place a pillow under your knees. <strong>Do (Side Sleepers):</strong> Place a pillow between your knees. <strong>Don\'t:</strong> Sleep on your stomach, as it strains the neck and back.'
+                },
+                {
+                    title: 'Anti-Inflammatory Nutrition',
+                    icon: '🥗',
+                    content: 'Diet impacts inflammation and bone health. <strong>Eat More:</strong> Leafy greens, berries, fatty fish (salmon), nuts, and olive oil. <strong>Eat Less:</strong> Processed foods, sugar, and refined grains which can promote inflammation.'
+                }
+            ];
+
+            const exercisesData = [
+                { name: 'Cat-Cow Stretch', type: 'flexibility', desc: 'Increases spinal flexibility and relieves tension.', instructions: 'Start on hands and knees. Inhale as you drop your belly (Cow), exhale as you round your spine (Cat). Repeat 3-5 times.', anim: '<div class="cat-cow-anim"><div class="head"></div><div class="body"></div></div>' },
+                { name: 'Bridge Exercise', type: 'strengthening', desc: 'Strengthens glutes and core to support the spine.', instructions: 'Lie on back, knees bent, feet flat. Lift hips to form a straight line from knees to shoulders. Hold for 3 breaths. 5-10 reps.', anim: '<div class="bridge-anim"><div class="body"></div><div class="legs"></div></div>' },
+                { name: 'Knee-to-Chest Stretch', type: 'flexibility', desc: 'Relieves tension in the lower back and glutes.', instructions: 'Lie on your back. Pull one knee gently to your chest, holding for 20-30 seconds. Repeat on the other side.', anim: '' },
+                { name: 'Pelvic Tilt', type: 'strengthening', desc: 'Strengthens lower abdominals to support the spine.', instructions: 'Lie on your back, knees bent. Gently flatten your lower back against the floor by tightening your stomach muscles. Hold for 5 seconds. 10-15 reps.', anim: '' },
+                { name: 'Lower Back Rotational Stretch', type: 'flexibility', desc: 'Improves spinal mobility and eases tension.', instructions: 'Lie on your back, knees bent. Keeping shoulders on the floor, gently roll both knees to one side. Hold 10-20 seconds. Repeat on other side.', anim: '' },
+                { name: 'Bird Dog', type: 'strengthening', desc: 'Improves stability and strengthens the core and back.', instructions: 'Start on hands and knees. Extend one arm forward and the opposite leg back, keeping your back flat. Hold for 3 breaths. Alternate sides.', anim: '' },
+                { name: 'Plank', type: 'strengthening', desc: 'Builds core strength and endurance for full-body stability.', instructions: 'Hold a push-up position, resting on forearms or hands. Keep body in a straight line from head to heels. Hold for 20-60 seconds.', anim: '' },
+                { name: 'Child\'s Pose', type: 'flexibility', desc: 'Gently stretches the lower back, hips, and thighs.', instructions: 'From hands and knees, sit back on your heels and fold forward, resting your forehead on the floor. Arms can be extended or alongside your body.', anim: '' }
+            ];
+
+            const redFlagsData = [
+                { title: 'New Bowel or Bladder Problems', desc: 'Loss of control or inability to urinate can signal severe nerve compression (Cauda Equina Syndrome).' },
+                { title: 'Weakness, Numbness, or Tingling in Legs', desc: 'Especially if it\'s progressive or includes the groin/buttocks ("saddle numbness").' },
+                { title: 'Fever or Unexplained Weight Loss', desc: 'When accompanied by back pain, this can indicate a spinal infection or tumor.' },
+                { title: 'Severe Pain That Doesn\'t Improve with Rest', desc: 'Pain that worsens at night or wakes you from sleep is a significant warning sign.' },
+                { title: 'Pain Following a Major Trauma', desc: 'After a fall or accident, any severe back pain could indicate a fracture.' },
+                { title: 'Abdominal Pain or Throbbing', desc: 'Can be a sign of a life-threatening abdominal aortic aneurysm.' }
+            ];
+
+            const habitsAccordion = document.getElementById('habits-accordion');
+            habitsData.forEach((habit, index) => {
+                const item = document.createElement('div');
+                item.className = 'bg-white rounded-lg shadow-md';
+                item.innerHTML = `
+                    <button class="w-full text-left p-4 flex items-center justify-between focus:outline-none">
+                        <span class="flex items-center">
+                            <span class="text-2xl mr-4">${habit.icon}</span>
+                            <span class="font-semibold text-lg">${habit.title}</span>
+                        </span>
+                        <span class="text-xl transform transition-transform duration-300">+</span>
+                    </button>
+                    <div class="habit-content overflow-hidden max-h-0 transition-all duration-500 ease-in-out">
+                        <p class="p-4 pt-0 text-gray-600">${habit.content}</p>
+                    </div>
+                `;
+                habitsAccordion.appendChild(item);
+            });
+            
+            habitsAccordion.addEventListener('click', (e) => {
+                const button = e.target.closest('button');
+                if (!button) return;
+                const content = button.nextElementSibling;
+                const symbol = button.querySelector('span:last-child');
+                
+                if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                    content.style.maxHeight = '0px';
+                    symbol.style.transform = 'rotate(0deg)';
+                } else {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    symbol.style.transform = 'rotate(45deg)';
+                }
+            });
+
+            const exerciseGallery = document.getElementById('exercise-gallery');
+            function renderExercises(filter) {
+                exerciseGallery.innerHTML = '';
+                const filtered = filter === 'all' ? exercisesData : exercisesData.filter(ex => ex.type === filter);
+                filtered.forEach(ex => {
+                    const card = document.createElement('div');
+                    card.className = `exercise-card h-64 cursor-pointer perspective-1000`;
+                    card.dataset.type = ex.type;
+                    card.innerHTML = `
+                        <div class="exercise-card-inner">
+                            <div class="exercise-card-front bg-white shadow-lg border rounded-lg flex-col justify-center items-center">
+                                ${ex.anim ? ex.anim : `<div class="w-24 h-16 bg-gray-200 rounded flex items-center justify-center text-gray-400">No Anim</div>`}
+                                <h5 class="font-bold mt-4">${ex.name}</h5>
+                                <p class="text-sm text-gray-500">${ex.desc}</p>
+                                <span class="mt-2 text-xs font-semibold px-2 py-1 rounded-full ${ex.type === 'strengthening' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}">${ex.type}</span>
+                            </div>
+                            <div class="exercise-card-back bg-white shadow-lg border rounded-lg text-left">
+                                <h5 class="font-bold mb-2">${ex.name}</h5>
+                                <p class="text-sm text-gray-600">${ex.instructions}</p>
+                            </div>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => {
+                        card.classList.toggle('is-flipped');
+                    });
+                    exerciseGallery.appendChild(card);
+                });
+            }
+            renderExercises('all');
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelector('.filter-btn.bg-accent-teal').classList.replace('bg-accent-teal','bg-white');
+                    document.querySelector('.filter-btn.text-white').classList.replace('text-white','text-gray-700');
+                    btn.classList.replace('bg-white','bg-accent-teal');
+                    btn.classList.replace('text-gray-700','text-white');
+                    renderExercises(btn.dataset.filter);
+                });
+            });
+
+            const redFlagsContainer = document.getElementById('red-flags-container');
+            redFlagsData.forEach(flag => {
+                const item = document.createElement('div');
+                item.className = 'mb-4';
+                item.innerHTML = `
+                    <h5 class="font-bold text-red-700 flex items-center">
+                        <span class="text-xl mr-3">⚠️</span>
+                        ${flag.title}
+                    </h5>
+                    <p class="ml-8 text-red-600">${flag.desc}</p>
+                `;
+                redFlagsContainer.appendChild(item);
+            });
+
+            const riskFactorCtx = document.getElementById('riskFactorChart').getContext('2d');
+            new Chart(riskFactorCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Sedentary Lifestyle', 'Excess Weight', 'Poor Posture', 'Smoking', 'Occupational Strain'],
+                    datasets: [{
+                        label: 'Impact on Back Pain Risk',
+                        data: [85, 80, 70, 60, 75],
+                        backgroundColor: 'rgba(0, 128, 128, 0.6)',
+                        borderColor: 'rgba(0, 128, 128, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                             callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    const value = context.raw;
+                                    let details = '';
+                                    switch(context.label) {
+                                        case 'Sedentary Lifestyle': details = 'Weak core muscles fail to support the spine.'; break;
+                                        case 'Excess Weight': details = 'Adds significant mechanical stress to the spine.'; break;
+                                        case 'Poor Posture': details = 'Creates uneven pressure on spinal discs.'; break;
+                                        case 'Smoking': details = 'Reduces blood flow, impairing disc health.'; break;
+                                        case 'Occupational Strain': details = 'Repetitive lifting or prolonged sitting causes wear.'; break;
+                                    }
+                                    return details;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: { display: false },
+                            grid: { display: false },
+                        },
+                        y: {
+                           ticks: { font: { size: 14 } },
+                           grid: { display: false }
+                        }
+                    }
+                }
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-30% 0px -70% 0px' });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if(!mobileMenu.classList.contains('hidden')){
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

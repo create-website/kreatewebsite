@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: A Guide to Neck Health</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a logical narrative flow, starting with an engaging header to highlight the neck's importance. It then visually explains the "Why" with a doughnut chart of common pain causes. The core of the infographic provides actionable solutions, divided into "Prevention" (ergonomics, posture) and "Action" (key exercises). The narrative concludes with the most critical, high-visibility information: "Urgent Warnings," ensuring user safety is prioritized. This structure guides the user from understanding the problem to implementing solutions and recognizing when to seek professional help. -->
+    <!-- Visualization & Content Choices: 
+        1. Primary Causes of Neck Pain -> Goal: Compare/Inform -> Viz: Doughnut Chart (Chart.js/Canvas) -> Justification: Provides a quick, proportional overview of the most common issues, making complex data easily digestible. It effectively shows that muscle strain is the dominant cause. Confirmed NO SVG.
+        2. Ergonomic Tips -> Goal: Organize/Instruct -> Viz: Styled HTML/CSS cards with Unicode icons -> Justification: Presents scannable, practical advice for daily habits (desk work, phone use, sleep) in a visually organized manner without needing complex graphics. Confirmed NO SVG/Mermaid JS.
+        3. Key Neck Exercises -> Goal: Organize/Instruct -> Viz: A grid of styled HTML/CSS cards with simple Unicode emojis -> Justification: Breaks down essential strengthening and flexibility exercises into simple, actionable steps, making them easy to understand and remember. Confirmed NO SVG/Mermaid JS.
+        4. Red Flag Symptoms -> Goal: Warn/Inform -> Viz: High-contrast, alert-style cards (HTML/CSS) -> Justification: Creates a visually arresting section to convey the seriousness and urgency of critical medical symptoms, ensuring this vital safety information stands out. Confirmed NO SVG/Mermaid JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f7f9; /* Off-white */
+            color: #0A2463; /* Deep Blue */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .header-gradient {
+            background: linear-gradient(135deg, #3E92CC, #0A2463);
+        }
+        .text-accent-yellow { color: #FFD000; }
+        .bg-accent-yellow { background-color: #FFD000; }
+        .text-accent-pink { color: #D8315B; }
+        .bg-accent-pink { background-color: #D8315B; }
+        .text-accent-blue { color: #3E92CC; }
+        .bg-accent-blue { background-color: #3E92CC; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-black text-[#0A2463] mb-4 tracking-tight">PROTECT YOUR NECK</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">A modern guide to understanding neck pain, preventing strain, and building resilience.</p>
+        </header>
+
+        <section id="causes" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#0A2463]">What's Causing the Pain?</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-700 mb-12">Neck pain often stems from our daily habits. While many causes exist, most issues arise from mechanical stress on the muscles and degenerative changes over time.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="bg-white p-6 rounded-xl shadow-2xl border-t-4 border-accent-blue">
+                    <h3 class="text-xl font-semibold mb-4 text-center">Primary Causes of Neck Pain</h3>
+                    <div class="chart-container">
+                        <canvas id="causesChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-500 text-center mt-4">A proportional breakdown of the most common origins of neck issues.</p>
+                </div>
+                <div class="flex flex-col space-y-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-lg mb-2">Muscle Strain & Poor Posture</h4>
+                        <p class="text-gray-600 text-sm">The most common culprit, caused by overuse from activities like prolonged computer/phone use ("text neck") and poor sleeping positions.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-lg mb-2">Degenerative Disc Disease</h4>
+                        <p class="text-gray-600 text-sm">Age-related wear and tear on the discs that cushion your vertebrae, leading to stiffness and pain.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-lg mb-2">Arthritis & Nerve Compression</h4>
+                        <p class="text-gray-600 text-sm">Includes osteoarthritis and herniated discs that can pinch nerves, causing radiating pain, numbness, or tingling.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="prevention" class="mb-20 bg-blue-50 p-8 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#0A2463]">Build Your Defense: Posture & Ergonomics</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-700 mb-12">Prevention is your best strategy. Small, consistent adjustments to your daily environment and habits can dramatically reduce neck strain.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center card-item">
+                    <p class="text-5xl mb-4">💻</p>
+                    <h3 class="font-bold text-xl mb-3">At Your Desk</h3>
+                    <ul class="text-left list-disc list-inside text-gray-700 space-y-2 text-sm">
+                        <li>Monitor at eye level</li>
+                        <li>Back straight, shoulders relaxed</li>
+                        <li>Elbows bent at 90 degrees</li>
+                        <li>Take frequent stretch breaks</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center card-item">
+                    <p class="text-5xl mb-4">📱</p>
+                    <h3 class="font-bold text-xl mb-3">Using Your Phone</h3>
+                     <ul class="text-left list-disc list-inside text-gray-700 space-y-2 text-sm">
+                        <li>Hold phone up to eye level</li>
+                        <li>Avoid cradling phone with shoulder</li>
+                        <li>Use voice-to-text to type less</li>
+                        <li>Limit time spent looking down</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center card-item">
+                     <p class="text-5xl mb-4">🛌</p>
+                    <h3 class="font-bold text-xl mb-3">While Sleeping</h3>
+                     <ul class="text-left list-disc list-inside text-gray-700 space-y-2 text-sm">
+                        <li>Sleep on your back or side</li>
+                        <li>Use a supportive pillow</li>
+                        <li>Avoid overly thick or flat pillows</li>
+                        <li>Keep neck aligned with spine</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="action" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#0A2463]">Take Action: Key Exercises</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-700 mb-12">Strengthening and stretching the muscles that support your neck are essential for long-term health. Perform these exercises gently and consistently.</p>
+             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="bg-white p-4 rounded-lg shadow transform hover:scale-105 transition-transform">
+                    <p class="text-4xl">🧘</p>
+                    <h4 class="font-semibold text-sm mt-2">Neck Tilts</h4>
+                    <p class="text-xs text-gray-500">Gently tilt ear toward shoulder.</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow transform hover:scale-105 transition-transform">
+                    <p class="text-4xl">🧘</p>
+                    <h4 class="font-semibold text-sm mt-2">Upper Trap Stretch</h4>
+                    <p class="text-xs text-gray-500">Gently pull head to side.</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow transform hover:scale-105 transition-transform">
+                    <p class="text-4xl">💪</p>
+                    <h4 class="font-semibold text-sm mt-2">Chin Tucks</h4>
+                    <p class="text-xs text-gray-500">Gently pull chin straight back.</p>
+                </div>
+                 <div class="bg-white p-4 rounded-lg shadow transform hover:scale-105 transition-transform">
+                    <p class="text-4xl">💪</p>
+                    <h4 class="font-semibold text-sm mt-2">Scapular Squeezes</h4>
+                    <p class="text-xs text-gray-500">Squeeze shoulder blades together.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="red-flags" class="bg-accent-pink text-white p-8 rounded-xl shadow-2xl">
+            <h2 class="text-3xl font-black text-center mb-4 tracking-tight">URGENT WARNINGS: WHEN TO SEE A DOCTOR</h2>
+            <p class="text-center font-semibold text-lg text-pink-100 mb-8">While most neck pain can be managed at home, seek IMMEDIATE medical care if you experience any of these symptoms.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg text-[#D8315B] transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">💥</span> Severe Pain After Injury</h4>
+                    <p class="text-sm">Intense, unrelenting pain after a car accident, fall, or direct blow to the head/neck.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg text-[#D8315B] transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">⚡</span> Radiating Pain or Weakness</h4>
+                    <p class="text-sm">New or worsening numbness, tingling, or weakness in the arms, hands, or legs.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg text-[#D8315B] transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">🌡️</span> Fever or Chills</h4>
+                    <p class="text-sm">Neck pain accompanied by fever, chills, or unexplained weight loss can signal an infection or tumor.</p>
+                </div>
+                 <div class="bg-white/90 p-5 rounded-lg shadow-lg text-[#D8315B] transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">💔</span> Chest Pain / Shortness of Breath</h4>
+                    <p class="text-sm">Neck pain radiating to the chest can be a sign of a heart attack. Call emergency services.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg text-[#D8315B] transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">🚽</span> Loss of Control</h4>
+                    <p class="text-sm">New loss of bowel or bladder control is a medical emergency requiring immediate attention.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg text-[#D8315B] transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">😵</span> Balance or Coordination Issues</h4>
+                    <p class="text-sm">New difficulty walking, dropping items, or balance problems need urgent evaluation.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: { size: 12, family: 'Poppins' },
+                        color: '#0A2463'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#0A2463',
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#FFFFFF',
+                    callbacks: { title: tooltipTitleCallback },
+                    bodyFont: { family: 'Poppins' },
+                    titleFont: { family: 'Poppins', weight: 'bold' }
+                }
+            }
+        };
+
+        const causesChartCtx = document.getElementById('causesChart').getContext('2d');
+        new Chart(causesChartCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Muscle Strain / Poor Posture', 'Disc Degeneration', 'Arthritis / Nerve Issues'],
+                datasets: [{
+                    label: 'Primary Causes',
+                    data: [55, 25, 20],
+                    backgroundColor: ['#0A2463', '#3E92CC', '#FFD000'],
+                    borderColor: '#ffffff',
+                    borderWidth: 5,
+                    hoverOffset: 10
+                }]
+            },
+            options: { ...commonChartOptions, cutout: '60%' }
+        });
+    </script>
+</body>
+</html>

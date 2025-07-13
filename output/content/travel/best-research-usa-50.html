@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive USA Travel Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A filter-driven, single-page application. The core is a control panel with filters for travel style (appeal) and region, plus a search bar. This controls a responsive grid of destination cards. This design prioritizes user-led discovery over the linear structure of the source report. It allows users to instantly query the dataset based on their specific interests. Clicking a card opens a modal with detailed information, keeping the user in a single, fluid experience without page reloads. This interactive dashboard structure is superior for usability as it turns passive reading into an active exploration tool. -->
+    <!-- Visualization & Content Choices: Report data is transformed into interactive elements. The Master Index becomes the filterable card grid (Goal: Organize/Compare, Method: JS filter on data array, Justification: Active user control). High-level data is summarized in two charts: a donut chart for Primary Appeal and a bar chart for Regions (Goal: Inform/Summarize, Method: Chart.js/Canvas, Justification: Quick visual overview). Detailed descriptions are placed in modals (Goal: Inform in detail, Method: JS-powered modal, Justification: Reduces clutter, maintains user context). This structure fully supports the interactive dashboard design. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 450px; margin-left: auto; margin-right: auto; height: 320px; max-height: 350px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .modal-content { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .tag { display: inline-block; background-color: #e0f2fe; color: #0c4a6e; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+    </style>
+</head>
+<body class="bg-amber-50 text-slate-800">
+
+    <header class="bg-teal-800 text-white shadow-lg">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold tracking-tight">The American Mosaic</h1>
+            <p class="mt-1 text-lg text-teal-100">An Interactive Guide to the 50 Best U.S. Destinations</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <section id="filters" class="mb-8 p-4 bg-white rounded-lg shadow-md sticky top-0 z-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label for="search" class="block text-sm font-medium text-gray-700">Search by Name</label>
+                    <input type="text" id="search" placeholder="e.g., Yellowstone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm p-2">
+                </div>
+                <div>
+                    <label for="appeal-filter" class="block text-sm font-medium text-gray-700">Filter by Travel Style</label>
+                    <select id="appeal-filter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm p-2">
+                        <option value="all">All Styles</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="region-filter" class="block text-sm font-medium text-gray-700">Filter by Region</label>
+                    <select id="region-filter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm p-2">
+                        <option value="all">All Regions</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard" class="mb-10">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-teal-800">Destination Overview</h2>
+                <p class="text-gray-600">A look at the distribution of the top 50 destinations.</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-8">
+                <div class="w-full lg:w-1/2 p-4 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-center font-semibold text-lg mb-2">Destinations by Primary Appeal</h3>
+                     <div class="chart-container">
+                        <canvas id="appealChart"></canvas>
+                    </div>
+                </div>
+                <div class="w-full lg:w-1/2 p-4 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-center font-semibold text-lg mb-2">Destinations by Region</h3>
+                     <div class="chart-container">
+                        <canvas id="regionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="destinations-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        </section>
+    </main>
+
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto modal-content">
+            <div class="sticky top-0 bg-teal-800 text-white px-6 py-4 flex justify-between items-center">
+                <h2 id="modal-title" class="text-2xl font-bold"></h2>
+                <button id="modal-close" class="text-2xl font-bold hover:text-red-500 transition-colors">&times;</button>
+            </div>
+            <div class="p-6">
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-teal-700 border-b-2 border-teal-200 pb-2 mb-3">Why It's Essential</h3>
+                    <p id="modal-essential" class="text-gray-700 leading-relaxed"></p>
+                </div>
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-teal-700 border-b-2 border-teal-200 pb-2 mb-3">Key Attractions</h3>
+                    <ul id="modal-attractions" class="list-disc list-inside text-gray-700 leading-relaxed space-y-2"></ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-teal-700 border-b-2 border-teal-200 pb-2 mb-3">Insider's Edge</h3>
+                    <p id="modal-insider" class="text-gray-700 leading-relaxed bg-amber-100 p-3 rounded-md"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const destinationsData = [
+            { id: 1, name: "Grand Canyon National Park", state: "AZ", region: "Southwest", appeal: "Nature", icon: "🏞️" },
+            { id: 2, name: "Yellowstone National Park", state: "WY, MT, ID", region: "Rockies", appeal: "Nature", icon: "🏞️" },
+            { id: 3, name: "New York City", state: "NY", region: "Northeast", appeal: "City", icon: "🏙️" },
+            { id: 4, name: "Washington, D.C.", state: "DC", region: "Mid-Atlantic", appeal: "History", icon: "🏛️" },
+            { id: 5, name: "Chicago", state: "IL", region: "Midwest", appeal: "City", icon: "🏙️" },
+            { id: 6, name: "New Orleans", state: "LA", region: "South", appeal: "Culture", icon: "🎭" },
+            { id: 7, name: "San Francisco", state: "CA", region: "West Coast", appeal: "City", icon: "🌉" },
+            { id: 8, name: "Boston", state: "MA", region: "Northeast", appeal: "History", icon: "🏛️" },
+            { id: 9, name: "Santa Fe", state: "NM", region: "Southwest", appeal: "Art", icon: "🎨" },
+            { id: 10, name: "Las Vegas", state: "NV", region: "Southwest", appeal: "Entertainment", icon: "🎰" },
+            { id: 11, name: "Glacier National Park", state: "MT", region: "Rockies", appeal: "Nature", icon: "🏞️" },
+            { id: 12, name: "Yosemite National Park", state: "CA", region: "West Coast", appeal: "Nature", icon: "🏞️" },
+            { id: 13, name: "Zion National Park", state: "UT", region: "Southwest", appeal: "Adventure", icon: "🧗" },
+            { id: 14, name: "Arches National Park", state: "UT", region: "Southwest", appeal: "Nature", icon: "🏞️" },
+            { id: 15, name: "Great Smoky Mountains NP", state: "NC, TN", region: "South", appeal: "Nature", icon: "🏞️" },
+            { id: 16, name: "Acadia National Park", state: "ME", region: "Northeast", appeal: "Coast", icon: "🌊" },
+            { id: 17, name: "Olympic National Park", state: "WA", region: "Pacific NW", appeal: "Nature", icon: "🏞️" },
+            { id: 18, name: "Big Bend National Park", state: "TX", region: "Southwest", appeal: "Nature", icon: "🏞️" },
+            { id: 19, name: "Badlands National Park", state: "SD", region: "Midwest", appeal: "Nature", icon: "🏞️" },
+            { id: 20, name: "Wrangell-St. Elias NP", state: "AK", region: "Alaska", appeal: "Wilderness", icon: "🏔️" },
+            { id: 21, name: "Everglades National Park", state: "FL", region: "South", appeal: "Wildlife", icon: "🐊" },
+            { id: 22, name: "Haleakalā National Park", state: "HI", region: "Hawaii", appeal: "Nature", icon: "🌋" },
+            { id: 23, name: "Redwood National Park", state: "CA", region: "West Coast", appeal: "Nature", icon: "🌲" },
+            { id: 24, name: "Rocky Mountain National Park", state: "CO", region: "Rockies", appeal: "Nature", icon: "🏞️" },
+            { id: 25, name: "Crater Lake National Park", state: "OR", region: "Pacific NW", appeal: "Nature", icon: "🏞️" },
+            { id: 26, name: "New River Gorge NP", state: "WV", region: "Mid-Atlantic", appeal: "Adventure", icon: "🚣" },
+            { id: 27, name: "Cape Cod", state: "MA", region: "Northeast", appeal: "Coast", icon: "🌊" },
+            { id: 28, name: "The Maine Coast", state: "ME", region: "Northeast", appeal: "Coast", icon: "🦞" },
+            { id: 29, name: "The Florida Keys", state: "FL", region: "South", appeal: "Coast", icon: "🏝️" },
+            { id: 30, name: "The Oregon Coast", state: "OR", region: "Pacific NW", appeal: "Coast", icon: "🌊" },
+            { id: 31, name: "Maui", state: "HI", region: "Hawaii", appeal: "Coast", icon: "🏝️" },
+            { id: 32, name: "Oahu", state: "HI", region: "Hawaii", appeal: "Culture", icon: "🏄" },
+            { id: 33, name: "Outer Banks", state: "NC", region: "South", appeal: "Coast", icon: "🌊" },
+            { id: 34, name: "Finger Lakes", state: "NY", region: "Northeast", appeal: "Wineries", icon: "🍇" },
+            { id: 35, name: "Big Sur", state: "CA", region: "West Coast", appeal: "Scenic Drive", icon: "🚗" },
+            { id: 36, name: "Charleston", state: "SC", region: "South", appeal: "History", icon: "🏛️" },
+            { id: 37, name: "Savannah", state: "GA", region: "South", appeal: "History", icon: "🏛️" },
+            { id: 38, name: "Jackson", state: "WY", region: "Rockies", appeal: "Adventure", icon: "🏔️" },
+            { id: 39, name: "The Kennebunks", state: "ME", region: "Northeast", appeal: "Coast", icon: "🌊" },
+            { id: 40, name: "Crested Butte", state: "CO", region: "Rockies", appeal: "Adventure", icon: "⛷️" },
+            { id: 41, name: "Telluride", state: "CO", region: "Rockies", appeal: "Adventure", icon: "⛷️" },
+            { id: 42, name: "Bar Harbor", state: "ME", region: "Northeast", appeal: "Nature", icon: "🏞️" },
+            { id: 43, name: "Sedona", state: "AZ", region: "Southwest", appeal: "Scenery", icon: "🏜️" },
+            { id: 44, name: "Alexandria", state: "VA", region: "Mid-Atlantic", appeal: "History", icon: "🏛️" },
+            { id: 45, name: "St. Augustine", state: "FL", region: "South", appeal: "History", icon: "🏛️" },
+            { id: 46, name: "Honolulu", state: "HI", region: "Hawaii", appeal: "City", icon: "🏙️" },
+            { id: 47, name: "Aspen", state: "CO", region: "Rockies", appeal: "Adventure", icon: "⛷️" },
+            { id: 48, name: "Blue Ridge Parkway", state: "VA, NC", region: "South", appeal: "Scenic Drive", icon: "🚗" },
+            { id: 49, name: "The Utah 'Mighty 5' Circuit", state: "UT", region: "Southwest", appeal: "Scenic Drive", icon: "🚗" },
+            { id: 50, name: "Route 66", state: "Various", region: "Cross-Country", appeal: "Scenic Drive", icon: "🚗" },
+        ];
+
+        const detailsData = {
+            1: { essential: "Profiled as Earth's grandest chronicle, the Grand Canyon is a geological marvel that offers a profound sense of scale, time, and humility. Its mile-deep, 277-mile-long chasm reveals a cross-section of the planet's history in its vibrant, layered rock walls.", attractions: ["Mather Point Overlook", "Rim Trail", "Yavapai Geology Museum", "Hermit Road scenic drive", "Desert View Drive and Watchtower", "Bright Angel Trail"], insider: "Visit during the shoulder seasons (spring/fall) for pleasant weather and fewer crowds. For a truly solitary experience, visit the North Rim, which is open from mid-May to mid-October." },
+            2: { essential: "Established in 1872 as the world's first national park, Yellowstone is a living laboratory of natural forces, sitting atop a massive supervolcano. It's famed for its geothermal wonders and an intact, thriving ecosystem.", attractions: ["Old Faithful Geyser", "Upper Geyser Basin", "Grand Prismatic Spring", "Grand Canyon of the Yellowstone", "Hayden Valley for wildlife", "Lamar Valley for wildlife"], insider: "Visit in September for the elk rut and fall colors, or in April-May to see baby animals and fewer crowds. Winter offers a magical, snow-covered landscape accessible by snowcoach." },
+            3: { essential: "Often hailed as the 'Capital of the World,' New York City is an unrivaled global hub of finance, fashion, art, and culture. A visit is an immersion into a city that has shaped global trends for over a century.", attractions: ["Empire State Building", "Top of the Rock", "Central Park", "Statue of Liberty & Ellis Island", "Broadway shows", "The Metropolitan Museum of Art (Met)", "Museum of Modern Art (MoMA)"], insider: "Explore beyond Manhattan. Discover the bohemian streets of Greenwich Village, the hipster culture of Williamsburg in Brooklyn, or the rich history and soul food of Harlem." },
+            4: { essential: "The nation's capital is both a vibrant city and a vast, open-air museum, offering a remarkable concentration of free, world-class attractions. It's where the narrative of American history and power is on full public display.", attractions: ["National Mall", "Lincoln Memorial", "Washington Monument", "U.S. Capitol Building", "Smithsonian Museums (Air and Space, Natural History, etc.)", "Tidal Basin for cherry blossoms"], insider: "The best seasons are spring and fall. Venture into neighborhoods like historic Georgetown, the lively Dupont Circle, or the trendy U Street Corridor for a taste of local D.C. life." },
+            5: { essential: "Voted the Best Big City in the U.S. for eight consecutive years, Chicago offers a world-class urban experience that is at once grand and approachable. It's the birthplace of the skyscraper and a culinary destination of global importance.", attractions: ["Architecture river cruise", "Millennium Park (Cloud Gate 'The Bean')", "Art Institute of Chicago", "Skydeck Chicago at Willis Tower", "360 CHICAGO observation deck"], insider: "Visit in the fall for pleasant weather and fewer crowds. Explore vibrant neighborhoods like Wicker Park for boutiques or Logan Square for its cutting-edge culinary scene." },
+            6: { essential: "A city with a palpable soul, New Orleans is a cultural gumbo of French, Spanish, African, and Caribbean influences. As the birthplace of jazz and a top food city, it offers a sensory experience unlike any other.", attractions: ["French Quarter & Jackson Square", "Bourbon Street", "Frenchmen Street for live music", "Preservation Hall", "St. Charles Streetcar to the Garden District", "Café Du Monde for beignets"], insider: "For a more relaxed visit than the peak Mardi Gras season, consider visiting from October to January for mild weather and major festivals like the Voodoo Music + Arts Experience." },
+            7: { essential: "San Francisco is a city of dramatic beauty, where steep hills, iconic landmarks, and a dynamic bay create a stunning urban landscape. It's a hub of innovation and a global culinary capital.", attractions: ["Golden Gate Bridge", "Alcatraz Island (book far in advance!)", "Cable Car ride", "Mission District for murals and taquerias", "Haight-Ashbury", "North Beach"], insider: "The best weather is in the fall (September-November). Summer is often cool and foggy. This counterintuitive seasonal pattern is a crucial tip for planning." },
+            8: { essential: "Boston is a city where the story of America is written on the cobblestone streets. Its remarkably compact and walkable layout makes it an ideal city to explore on foot, connecting revolutionary landmarks with ease.", attractions: ["Freedom Trail", "Fenway Park", "Beacon Hill neighborhood", "Museum of Fine Arts", "Isabella Stewart Gardner Museum"], insider: "Visit in late spring or early fall. The latter offers the spectacular bonus of New England's fall foliage. Boston is an excellent hub for day trips to Salem, Concord, or Cape Ann." },
+            9: { essential: "Voted the #1 city in the U.S. by Travel + Leisure readers, Santa Fe is celebrated for its unique cultural tapestry of Native American, Spanish colonial, and Anglo-American heritage. It offers a sophisticated and soulful escape.", attractions: ["Santa Fe Plaza", "Canyon Road art galleries", "Georgia O'Keeffe Museum", "Meow Wolf's House of Eternal Return", "Unique New Mexican cuisine"], insider: "Fall is magical, with the golden glow of aspens and the aroma of roasting green chiles. Santa Fe's high elevation means evenings are cool, so pack layers year-round." },
+            10: { essential: "An unapologetic oasis of entertainment in the Mojave Desert, Las Vegas is a global playground renowned for its top chefs, lavish buffets, world-class shows, and over-the-top sights.", attractions: ["The Las Vegas Strip", "Fountains of Bellagio", "Cirque du Soleil shows", "World-class dining", "Fremont Street Experience"], insider: "Take a day trip to the stunning Red Rock Canyon or the magnificent Hoover Dam for a natural or engineering escape from the city's neon glow." },
+            11: { essential: "Aptly nicknamed the 'Crown of the Continent,' Glacier National Park represents the American Rocky Mountains at their most rugged, dramatic, and pristine. It's a sanctuary for those seeking solitude.", attractions: ["Going-to-the-Sun Road", "Grinnell Glacier hike", "Iceberg Lake hike", "Many Glacier valley", "Lake McDonald"], insider: "For a magical experience, visit in late spring/early summer when the Going-to-the-Sun Road is open to bikers and hikers but closed to cars." },
+            12: { essential: "Yosemite is a shrine to the strength of granite, the power of glaciers, and the tranquility of the High Sierra. It is world-famous for its sheer granite cliffs, groves of ancient giant sequoias, and powerful waterfalls.", attractions: ["Tunnel View", "Yosemite Valley (El Capitan, Half Dome)", "Yosemite Falls", "Mariposa Grove of Giant Sequoias", "Glacier Point"], insider: "Visit in May and June to see waterfalls at their most powerful. To escape summer crowds, drive the scenic Tioga Road into the park's high country." },
+            13: { essential: "Zion is a hiker's sanctuary, a park defined by its dramatic verticality with towering sandstone cliffs. It offers some of the most thrilling and iconic hikes in the national park system.", attractions: ["The Narrows (hiking in the river)", "Angels Landing (permit required)", "Pa'rus Trail", "Canyon Overlook Trail"], insider: "From March to November, the main canyon is accessible only by a mandatory free park shuttle. Plan your day around the shuttle schedule." },
+            14: { essential: "Arches National Park is a geological art gallery, a surreal landscape containing the world's largest concentration of natural sandstone arches. It is a photographer's paradise.", attractions: ["Delicate Arch", "The Windows Section", "Balanced Rock", "Devils Garden area (Landscape Arch)"], insider: "The park requires a timed entry reservation from April 1 to October 31. To avoid crowds and get the best light, visit very early in the morning or late afternoon." },
+            15: { essential: "As the most visited national park, Great Smoky Mountains is renowned for its ancient, rolling mountains and the characteristic blue-tinged haze that hangs over them. It's a world of incredible biodiversity.", attractions: ["Cades Cove for wildlife viewing", "Clingmans Dome for 360-degree views", "Hiking to Laurel Falls or Grotto Falls", "Appalachian Trail sections"], insider: "Fall is spectacular for foliage but very crowded. Spring offers a stunning display of wildflowers. To escape crowds, explore less-traveled areas like the Cataloochee Valley." },
+            16: { essential: "Acadia is where the mountains meet the sea. Located on Maine's Mount Desert Island, it's a gem of the Atlantic coast, defined by its dramatic, rocky coastline and granite-domed mountains.", attractions: ["Park Loop Road", "Sand Beach", "Thunder Hole", "Cadillac Mountain (first sunrise view in the U.S.)", "Historic carriage roads for biking/walking"], insider: "Fall brings stunning foliage and fewer people. Biking the carriage roads is a fantastic way to experience the park's interior beauty without traffic." },
+            17: { essential: "Olympic National Park is remarkable for its incredible ecological diversity, protecting three distinct ecosystems: rugged Pacific coastline, glacier-capped mountains, and magnificent old-growth temperate rainforests.", attractions: ["Hurricane Ridge (alpine views)", "Hoh Rainforest", "Rialto Beach (sea stacks)", "Lake Crescent (clear blue water)"], insider: "The park is vast; plan to spend several days and focus on one or two regions. Be prepared for rain at any time of year." },
+            18: { essential: "Located in a remote corner of West Texas, Big Bend is a land of stark beauty, dramatic canyons, and vast desert landscapes. It offers a profound sense of solitude and is one of the best places in the country for stargazing.", attractions: ["Chisos Mountains hiking", "Santa Elena Canyon (Rio Grande)", "Historic Hot Springs", "Stargazing"], insider: "Visit from fall through spring to avoid dangerous summer heat. Arrive with a full tank of gas and plenty of water and supplies." },
+            19: { essential: "Badlands National Park protects an otherworldly landscape of sharply eroded buttes, pinnacles, and spires. Its layered rock formations contain one of the world's richest fossil beds.", attractions: ["Badlands Loop Road", "Pinnacles Overlook (sunset)", "Notch Trail", "Wildlife viewing (bison, bighorn sheep)"], insider: "Venture off the main loop onto the unpaved Sage Creek Rim Road for excellent wildlife viewing and a greater sense of solitude." },
+            20: { essential: "At 13.2 million acres, Wrangell-St. Elias is the largest national park in the U.S. It's a park of epic scale, representing the raw power and overwhelming beauty of the Alaskan wilderness.", attractions: ["Historic Kennecott Mines", "Guided hike on Root Glacier", "Flightseeing to grasp the park's scale"], insider: "Services are extremely limited; be self-sufficient. The McCarthy Road is gravel, and many rental car agreements prohibit its use." },
+            21: { essential: "The Everglades is a unique and vital ecosystem, a vast, slow-moving river of grass. It's a watery wilderness unlike any other, providing critical habitat for alligators, crocodiles, and countless birds.", attractions: ["Anhinga Trail (guaranteed wildlife sightings)", "Shark Valley tram tour", "Airboat tours (outside the park)"], insider: "The best time to visit is the dry season (December-April), when wildlife congregates around remaining water sources, making for easier viewing." },
+            22: { essential: "Haleakalā National Park protects a sacred and stunning landscape, from the volcanic summit of Haleakalā down to the lush, tropical coastline. It's famous for its otherworldly crater and spectacular sunrises.", attractions: ["Sunrise from the summit (reservations required)", "Hiking into the crater", "Pīpīwai Trail through a bamboo forest", "Waimoku Falls"], insider: "If you can't get a sunrise reservation, sunset is also spectacular and does not require one. Dress in warm layers for the summit; it's cold!" },
+            23: { essential: "Home to the tallest trees on Earth, Redwood National and State Parks are a sanctuary of old-growth coastal redwood forests. Walking among these ancient giants is a humbling and awe-inspiring experience.", attractions: ["Newton B. Drury Parkway scenic drive", "Lady Bird Johnson Grove Trail", "Tall Trees Grove Trail (permit required)", "Rugged coastline"], insider: "Coastal fog is common, especially in summer, adding to the mystical atmosphere. The famous 'drive-thru' trees are on private land nearby and require a fee." },
+            24: { essential: "Rocky Mountain National Park showcases the grandeur of the Rockies with ecosystems ranging from montane forests to alpine tundra. It's a high-altitude wonderland of soaring peaks and abundant wildlife.", attractions: ["Trail Ridge Road (highest continuous paved road in N.A.)", "Bear Lake Road corridor for hiking", "Wildlife viewing (elk, bighorn sheep)"], insider: "A timed entry permit is required during peak season. Fall is spectacular for golden aspens and the elk rut (bugling season)." },
+            25: { essential: "Crater Lake is a place of stunning, almost surreal beauty. Formed from the collapse of a volcano, the lake is the deepest in the U.S., renowned for its incredible clarity and intense, deep blue color.", attractions: ["Rim Drive", "Boat tour on the lake", "Visit Wizard Island", "Hike Garfield Peak for panoramic views"], insider: "The Rim Drive is typically not fully open until July due to snow. From 2026-2029, the lake and Cleetwood Cove Trail will be closed for construction." },
+            26: { essential: "America's newest national park, New River Gorge, protects a rugged landscape in the heart of the Appalachians. It's a hub for adventure sports, particularly world-class whitewater rafting and rock climbing.", attractions: ["New River Gorge Bridge", "Fayette Station Road scenic drive", "Whitewater rafting", "Rock climbing", "Hiking to overlooks like Long Point"], insider: "Fall is spectacular for foliage and the annual 'Bridge Day' festival in October, when BASE jumpers leap from the bridge." },
+            27: { essential: "The quintessential New England summer escape, Cape Cod is a nostalgic landscape of quaint shingled villages, windswept dunes, and historic lighthouses.", attractions: ["Cape Cod National Seashore", "Whale watching tours from Provincetown", "Cape Cod Rail Trail for biking", "Charming towns of Chatham and Provincetown", "Day trips to Martha's Vineyard or Nantucket"], insider: "Visit in June or September for a more relaxed experience with pleasant weather and fewer crowds. A lobster roll from a casual clam shack is a must." },
+            28: { essential: "Offering a more rugged version of the New England coast, the Maine shoreline is a stunning tapestry of rocky cliffs, picturesque fishing villages, and historic lighthouses. It is a haven for foodies and outdoor enthusiasts.", attractions: ["Acadia National Park", "Charming towns of the Kennebunks", "Culinary scene in Portland", "Iconic lighthouses like Nubble Light"], insider: "Visiting in September or early October provides the triple benefit of stunning fall foliage, beautiful weather, and significantly fewer crowds." },
+            29: { essential: "The Florida Keys offer a unique, laid-back, Caribbean-American culture. The journey along the Overseas Highway is an adventure in itself, a road trip to the 'end of the road'.", attractions: ["Overseas Highway scenic drive", "John Pennekamp Coral Reef State Park for snorkeling", "Bahia Honda State Park beaches", "Key West (Hemingway Home, Duval Street, Mallory Square)"], insider: "The best way to see the islands is by boat. Rent one or take a charter to explore the backcountry flats and sandbars popular with locals." },
+            30: { essential: "The Oregon Coast is a uniquely wild and democratic coastline where the entire 363-mile stretch is public land. It is a dramatic landscape of towering sea stacks and lush rainforests that meet the sea.", attractions: ["Cannon Beach and Haystack Rock", "Ecola State Park viewpoints", "Oswald West State Park hiking", "Hug Point sea caves"], insider: "Fall (September/October) often brings the best weather of the year, known as 'second summer,' with fewer crowds. Winter is prime season for dramatic storm watching." },
+            31: { essential: "Often called 'The Valley Isle,' Maui strikes a perfect balance between natural beauty, outdoor adventure, and refined luxury. It's a favorite for honeymooners, families, and adventure seekers alike.", attractions: ["Road to Hana scenic drive", "Waiʻānapanapa State Park (black sand beach)", "Haleakalā National Park (sunrise/hiking)", "Molokini Crater snorkeling", "Kāʻanapali Beach"], insider: "Winter (December-March) is peak season for tourists and for the thousands of humpback whales that migrate here to breed and calve, making it the prime whale watching season." },
+            32: { essential: "Nicknamed 'The Gathering Place,' Oahu is the vibrant heart of Hawaii, offering a unique combination of bustling city life and laid-back surf culture.", attractions: ["Pearl Harbor National Memorial", "Waikiki Beach", "North Shore for big-wave surfing", "Diamond Head (Lēʻahi) hike", "Hanauma Bay snorkeling"], insider: "Visit during the shoulder seasons (April-May, Sept-Oct) to avoid large crowds. Experience authentic culture at the Polynesian Cultural Center on the North Shore." },
+            33: { essential: "The Outer Banks, a string of barrier islands, offer a remote and windswept coastal experience. Known for wild dunes, historic lighthouses, and the birthplace of aviation, the OBX provides a sense of peace and quiet.", attractions: ["Cape Hatteras Lighthouse", "Wright Brothers National Memorial", "Wild horses of Corolla", "Cape Hatteras National Seashore"], insider: "Fall offers warm water, excellent fishing, and far fewer crowds than summer. A 4WD vehicle is required to drive on some remote beaches to see the wild horses." },
+            34: { essential: "The Finger Lakes region is a stunning landscape of 11 long, narrow lakes set among rolling hills and dramatic gorges. It has emerged as a premier wine region, particularly known for its world-class Rieslings.", attractions: ["Watkins Glen State Park (19 waterfalls)", "Taughannock Falls State Park", "Wine trails (Seneca, Cayuga, Keuka Lakes)", "Corning Museum of Glass"], insider: "Fall is arguably the most beautiful season, with vibrant foliage and the grape harvest in full swing. A stay in a charming inn or B&B is a great way to experience local hospitality." },
+            35: { essential: "This 90-mile stretch of California's Highway 1 through Big Sur is arguably the most famous scenic drive in the United States. It is a winding, cliff-hugging road where rugged mountains plunge dramatically into the Pacific.", attractions: ["Bixby Creek Bridge", "Pfeiffer Beach (purple sand & Keyhole Arch)", "Julia Pfeiffer Burns State Park (McWay Falls)", "Point Lobos State Natural Reserve"], insider: "Drive from north to south. This places your vehicle on the ocean side of the road, providing unobstructed views and making it much easier and safer to pull over at scenic viewpoints." },
+            36: { essential: "A perennial darling of the travel world, Charleston is a 'living museum' celebrated for its beautifully preserved antebellum architecture, world-class Lowcountry cuisine, and genuine Southern hospitality.", attractions: ["Rainbow Row", "The Battery promenade", "Historic City Market", "Fort Sumter National Monument", "Nearby plantations like Boone Hall"], insider: "The Spoleto Festival USA, a world-class 17-day arts festival in late May/early June, transforms the entire city into a stage for opera, theater, dance, and music." },
+            37: { essential: "Dripping with Spanish moss and Southern mystique, Savannah captivates visitors with its unique layout of 22 historic public squares, creating a grid of park-like oases that make it exceptionally beautiful and walkable.", attractions: ["Exploring the historic squares", "Forsyth Park and its iconic fountain", "Historic River Street", "Cathedral Basilica of St. John the Baptist", "Bonaventure Cemetery"], insider: "Given its reputation as one of America's most haunted cities, taking a ghost tour is a classic and entertaining way to learn about Savannah's darker history and folklore." },
+            38: { essential: "Serving as the gateway to Grand Teton and Yellowstone, Jackson offers a unique juxtaposition of rugged wilderness and upscale, sophisticated mountain town life.", attractions: ["Town Square with elk antler arches", "National Elk Refuge (winter sleigh rides)", "World-class skiing at Jackson Hole Mountain Resort", "Base camp for Grand Teton & Yellowstone"], insider: "Fall is a spectacular time to visit, with fewer crowds, active wildlife (including the elk rut), and stunning foliage. Don't miss the Jackson Hole Rodeo in summer." },
+            39: { essential: "Comprising Kennebunk and Kennebunkport, this area on the southern coast of Maine embodies the idyllic New England summer experience with beautiful beaches and a relaxed coastal vibe.", attractions: ["Goose Rocks Beach", "Kennebunk Beach", "Dock Square for shopping", "Sailing and kayaking", "Waterfront dining"], insider: "The area is known for serving some of the best lobster rolls in New England, making it a culinary pilgrimage for seafood lovers." },
+            40: { essential: "Described as 'the last best-kept secret in Colorado,' Crested Butte offers an authentic and unhurried mountain town experience. It is famous for its spectacular summer wildflower displays.", attractions: ["Crested Butte Mountain Resort (skiing)", "Mountain biking and hiking", "Crested Butte Wildflower Festival (July)", "Historic Victorian downtown"], insider: "For a high-end, all-inclusive experience, Scarp Ridge Lodge offers guided adventures from hiking and fly fishing to whitewater rafting." },
+            41: { essential: "Tucked away in a box canyon, Telluride is arguably one of the most scenically stunning towns in America. It offers world-class skiing, a legendary summer festival season, and authentic Old West charm.", attractions: ["Telluride Ski Resort", "Free gondola connecting Telluride and Mountain Village", "Summer festivals (Bluegrass, Film)", "Hiking and mountain biking"], insider: "The town's remote location has helped it preserve its authentic character. The free gondola is an attraction in itself and the best way to travel between the two areas." },
+            42: { essential: "Bar Harbor is the charming and bustling gateway town to Acadia National Park, offering a perfect combination of a classic New England coastal town atmosphere with easy access to dramatic natural beauty.", attractions: ["Gateway to Acadia National Park", "Vibrant downtown with shops and restaurants", "Whale watching tours", "Walk to Bar Island at low tide"], insider: "The free Island Explorer shuttle bus is an excellent way to get around the island and into Acadia National Park without worrying about traffic or parking." },
+            43: { essential: "Surrounded by stunning red rock buttes, Sedona is a town renowned for its breathtaking natural beauty. It has become a global destination for those seeking spiritual wellness, outdoor adventure, and artistic inspiration.", attractions: ["Hiking to Cathedral Rock or Bell Rock", "Jeep tours", "Art galleries and New Age shops", "Chapel of the Holy Cross"], insider: "The energy vortexes are specific sites of incredible natural beauty, popular for meditation and healing. Visit in spring or fall to avoid summer heat." },
+            44: { essential: "Just a few miles from D.C., Alexandria offers a charming and historic escape with a more relaxed, small-town feel. It's celebrated for its beautifully preserved colonial architecture and vibrant waterfront.", attractions: ["Old Town Alexandria's cobblestone streets", "King Street for boutiques and restaurants", "Potomac River waterfront", "Nearby Mount Vernon estate"], insider: "The free King Street Trolley is a convenient way to get up and down the main street. Alexandria is an ideal base for exploring D.C. via Metro or water taxi." },
+            45: { essential: "As the nation's oldest continuously inhabited European-established settlement, St. Augustine offers a unique journey into America's deep colonial past with a distinctly European atmosphere.", attractions: ["Castillo de San Marcos (17th-century fort)", "The Colonial Quarter living history museum", "Pedestrian-only St. George Street", "Lightner Museum"], insider: "Visit mid-week to avoid the largest crowds. The nearby St. Augustine Beach and Anastasia State Park offer a great break from the history." },
+            46: { essential: "The capital of Hawaii, Honolulu is a vibrant international city that offers a unique blend of urban sophistication and tropical paradise, where high-rise buildings meet world-famous beaches.", attractions: ["Waikiki Beach", "Diamond Head hike", "ʻIolani Palace", "Pearl Harbor National Memorial", "Bishop Museum"], insider: "To experience the local food scene, venture beyond Waikiki to neighborhoods like Kaimuki or Kapahulu for authentic and innovative local cuisine." },
+            47: { essential: "Aspen is synonymous with luxury, world-class skiing, and a sophisticated mountain culture. It is a premier year-round destination for those seeking the best in outdoor adventure and high-end amenities.", attractions: ["Four ski mountains (Aspen, Highlands, Buttermilk, Snowmass)", "Hiking to the Maroon Bells", "Luxury boutiques and world-class restaurants", "The Little Nell hotel"], insider: "Visit in the shoulder seasons of fall or late spring for better value. The town has a strong cultural scene, with events from the Aspen Music Festival and Aspen Institute." },
+            48: { essential: "Affectionately known as 'America's Favorite Drive,' the Blue Ridge Parkway is a 469-mile recreational road that meanders through the stunning Appalachian Highlands, designed for leisurely travel.", attractions: ["Hundreds of scenic overlooks", "Craggy Gardens", "Linn Cove Viaduct", "Mabry Mill", "Nearby Natural Bridge"], insider: "Fall is the most popular season for foliage but brings heavy traffic. There are no gas stations on the parkway, so plan fuel stops in towns just off the road." },
+            49: { essential: "This legendary road trip connects Utah's five spectacular national parks—Zion, Bryce Canyon, Capitol Reef, Arches, and Canyonlands—into one epic journey through a classic American landscape of red rock wonder.", attractions: ["Zion's canyons", "Bryce Canyon's hoodoos", "Capitol Reef's Waterpocket Fold", "Arches' natural arches", "Canyonlands' vast mesas"], insider: "Allow 10-14 days for a relaxed pace. The ideal seasons are spring and fall. Lodging in gateway towns like Springdale and Moab should be booked months in advance." },
+            50: { essential: "More than just a road, Route 66 is a cultural icon, a symbol of American mobility and the golden age of the automobile. Driving the historic alignments is a journey back in time.", attractions: ["Kitschy roadside giants", "Gateway Arch in St. Louis", "Cadillac Ranch in Amarillo, TX", "Petrified Forest National Park", "Vintage 'wigwam' motels", "Santa Monica Pier"], insider: "Driving the entire route takes at least two weeks. A good guidebook dedicated to historic Route 66 is essential, as many old alignments are no longer on modern maps." }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('destinations-grid');
+            const searchInput = document.getElementById('search');
+            const appealFilter = document.getElementById('appeal-filter');
+            const regionFilter = document.getElementById('region-filter');
+            const modal = document.getElementById('modal');
+            const modalClose = document.getElementById('modal-close');
+            const modalTitle = document.getElementById('modal-title');
+            const modalEssential = document.getElementById('modal-essential');
+            const modalAttractions = document.getElementById('modal-attractions');
+            const modalInsider = document.getElementById('modal-insider');
+
+            let appealChart, regionChart;
+
+            function getUniqueValues(key) {
+                const values = destinationsData.map(item => item[key]);
+                return [...new Set(values)].sort();
+            }
+
+            function populateFilters() {
+                const appeals = getUniqueValues('appeal');
+                const regions = getUniqueValues('region');
+
+                appeals.forEach(appeal => {
+                    const option = document.createElement('option');
+                    option.value = appeal;
+                    option.textContent = appeal;
+                    appealFilter.appendChild(option);
+                });
+
+                regions.forEach(region => {
+                    const option = document.createElement('option');
+                    option.value = region;
+                    option.textContent = region;
+                    regionFilter.appendChild(option);
+                });
+            }
+            
+            function renderCards(destinations) {
+                grid.innerHTML = '';
+                destinations.forEach(dest => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform hover:scale-105 transition-transform duration-300';
+                    card.dataset.id = dest.id;
+                    card.innerHTML = `
+                        <div class="p-5">
+                            <div class="flex items-center mb-2">
+                                <span class="text-2xl mr-3">${dest.icon || '📍'}</span>
+                                <h3 class="text-lg font-bold text-gray-900 leading-tight">${dest.name}</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-3">${dest.state}</p>
+                            <div>
+                               <span class="tag">${dest.appeal}</span>
+                               <span class="tag">${dest.region}</span>
+                            </div>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => openModal(dest.id));
+                    grid.appendChild(card);
+                });
+            }
+
+            function openModal(id) {
+                const destination = destinationsData.find(d => d.id === id);
+                const details = detailsData[id];
+                if (!destination || !details) return;
+
+                modalTitle.textContent = destination.name;
+                modalEssential.textContent = details.essential;
+                modalInsider.textContent = details.insider;
+
+                modalAttractions.innerHTML = '';
+                details.attractions.forEach(attraction => {
+                    const li = document.createElement('li');
+                    li.textContent = attraction;
+                    modalAttractions.appendChild(li);
+                });
+                
+                modal.classList.remove('hidden');
+            }
+
+            function closeModal() {
+                modal.classList.add('hidden');
+            }
+
+            function filterDestinations() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const selectedAppeal = appealFilter.value;
+                const selectedRegion = regionFilter.value;
+
+                const filtered = destinationsData.filter(dest => {
+                    const nameMatch = dest.name.toLowerCase().includes(searchTerm);
+                    const appealMatch = selectedAppeal === 'all' || dest.appeal === selectedAppeal;
+                    const regionMatch = selectedRegion === 'all' || dest.region === selectedRegion;
+                    return nameMatch && appealMatch && regionMatch;
+                });
+
+                renderCards(filtered);
+                updateCharts(filtered);
+            }
+
+            function updateCharts(data) {
+                if(appealChart) appealChart.destroy();
+                if(regionChart) regionChart.destroy();
+                renderCharts(data);
+            }
+
+            function renderCharts(data) {
+                const appealCounts = data.reduce((acc, curr) => {
+                    acc[curr.appeal] = (acc[curr.appeal] || 0) + 1;
+                    return acc;
+                }, {});
+                
+                const regionCounts = data.reduce((acc, curr) => {
+                    acc[curr.region] = (acc[curr.region] || 0) + 1;
+                    return acc;
+                }, {});
+
+                const chartColors = [
+                    '#0d9488', '#0f766e', '#115e59', '#134e4a',
+                    '#f97316', '#ea580c', '#c2410c', '#9a3412',
+                    '#0ea5e9', '#0284c7', '#0369a1', '#075985',
+                    '#84cc16', '#65a30d', '#4d7c0f', '#3f6212'
+                ];
+
+                const appealCtx = document.getElementById('appealChart').getContext('2d');
+                appealChart = new Chart(appealCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(appealCounts),
+                        datasets: [{
+                            data: Object.values(appealCounts),
+                            backgroundColor: chartColors,
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                   padding: 15,
+                                   boxWidth: 12
+                                }
+                            }
+                        }
+                    }
+                });
+
+                const regionCtx = document.getElementById('regionChart').getContext('2d');
+                regionChart = new Chart(regionCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(regionCounts),
+                        datasets: [{
+                            label: 'Number of Destinations',
+                            data: Object.values(regionCounts),
+                            backgroundColor: chartColors,
+                            borderColor: chartColors.map(c => c + 'B3'),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                           legend: { display: false }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+
+            searchInput.addEventListener('input', filterDestinations);
+            appealFilter.addEventListener('change', filterDestinations);
+            regionFilter.addEventListener('change', filterDestinations);
+            modalClose.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target.id === 'modal') {
+                    closeModal();
+                }
+            });
+
+            populateFilters();
+            renderCards(destinationsData);
+            renderCharts(destinationsData);
+        });
+    </script>
+</body>
+</html>

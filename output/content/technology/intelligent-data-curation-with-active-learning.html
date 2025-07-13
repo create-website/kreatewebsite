@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Report: Active Learning for LLM Evaluation</title>
+    <!-- Chosen Palette: Calm Harmony (Slate, Amber, Cyan, Teal) -->
+    <!-- Application Structure Plan: The SPA is organized into five thematic, navigable sections to allow non-linear exploration: 1) Fundamentals, 2) Scenarios, 3) Strategies, 4) LLM Applications, and 5) The Future. This structure was chosen over a linear report format to improve usability. A user can either follow the logical flow from basics to advanced topics or jump directly to their area of interest, such as the LLM Evaluation dashboard. The core user flow is designed to guide the user from foundational knowledge towards the report's key insight: using Active Learning as a robust evaluation tool. This culminates in an interactive dashboard in Section 4, which operationalizes the report's findings into a practical decision-support tool. This thematic, task-oriented design makes the dense academic content more accessible and engaging. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: The Active Learning Cycle -> Goal: Organize -> Viz/Method: Interactive HTML/CSS diagram -> Interaction: Click-to-reveal step details -> Justification: Breaks down the core process into digestible, user-paced steps.
+        - Report Info: Comparison of AL Scenarios (Table 1) -> Goal: Compare -> Viz/Method: Interactive cards + a comparative Bar Chart (Chart.js) -> Interaction: Hovering cards highlights chart data -> Justification: Transforms a static table into a dynamic, visual comparison of key attributes like cost and efficiency.
+        - Report Info: Comparison of Query Strategies (Table 2) -> Goal: Compare -> Viz/Method: Radar Chart (Chart.js) -> Interaction: Buttons to highlight different strategy families on the chart -> Justification: Provides a multi-dimensional view of the trade-offs between strategy types (e.g., cost vs. robustness), which is more intuitive than a simple table.
+        - Report Info: Framework for LLM Evaluation (Table 3) -> Goal: Guide (Decision Support) -> Viz/Method: Interactive Dashboard with dropdown -> Interaction: User selects an evaluation goal, and the UI dynamically displays the recommended AL strategy, metrics, and implementation notes -> Justification: This is the application's centerpiece. It converts the report's most actionable section from a static table into a live, functional tool for practitioners, directly serving the goal of user understanding and application.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #0891b2; /* cyan-600 */
+            border-bottom-color: #0891b2;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 320px;
+            max-height: 40vh;
+            width: 100%;
+            max-width: 600px;
+        }
+        .al-cycle-step {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .al-cycle-step.active {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border-color: #0d9488; /* teal-600 */
+        }
+        .scenario-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div id="app" class="container mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <header class="py-6 border-b border-slate-200">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-slate-900">Intelligent Data Curation</h1>
+                    <p class="mt-1 text-lg text-slate-600">An Interactive Analysis of Active Learning for LLM Evaluation</p>
+                </div>
+                <nav id="main-nav" class="mt-4 md:mt-0 flex flex-wrap justify-center space-x-4 sm:space-x-6">
+                    <a href="#fundamentals" class="nav-link py-2 text-sm sm:text-base font-medium text-slate-600">Fundamentals</a>
+                    <a href="#scenarios" class="nav-link py-2 text-sm sm:text-base font-medium text-slate-600">Scenarios</a>
+                    <a href="#strategies" class="nav-link py-2 text-sm sm:text-base font-medium text-slate-600">Strategies</a>
+                    <a href="#llms" class="nav-link py-2 text-sm sm:text-base font-medium text-slate-600">LLM Evaluation</a>
+                    <a href="#future" class="nav-link py-2 text-sm sm:text-base font-medium text-slate-600">Future</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="py-8 md:py-12">
+            
+            <!-- Section 1: Fundamentals -->
+            <section id="fundamentals" class="content-section">
+                <div class="fade-in">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-4">Part I: Foundational Principles</h2>
+                    <p class="text-lg text-slate-700 mb-8">This section introduces the core concepts of Active Learning (AL). We'll explore what it is, why it's a pivotal shift from traditional machine learning paradigms, and the iterative cycle that powers it. The goal is to build an intuition for how AL intelligently selects data to maximize learning efficiency and model performance.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 mb-12">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                            <h3 class="font-semibold text-xl mb-3 text-cyan-800">What is Active Learning?</h3>
+                            <p class="text-slate-600">Active Learning is a subfield of machine learning where the learning algorithm is empowered to interactively choose the data from which it learns. Instead of passively receiving a large, pre-labeled dataset, an active learner queries a human expert (an "oracle") to get labels for the most informative data points. This "smart data" approach allows models to achieve higher accuracy with significantly fewer labels, saving time and resources.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                            <h3 class="font-semibold text-xl mb-3 text-cyan-800">The Paradigm Shift: From Big Data to Smart Data</h3>
+                            <p class="text-slate-600">Traditionally, more data meant better models. Active Learning challenges this by demonstrating that not all data points are created equal. It prioritizes the quality and strategic value of data over sheer quantity. This focus on maximizing the information gained from each label is crucial in domains where data labeling is expensive or requires specialized expertise, making it a cornerstone of modern data-centric AI.</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-center text-slate-900 mb-2">The Active Learning Cycle</h3>
+                    <p class="text-center text-slate-600 mb-8">This iterative loop is the engine of active learning. Click on a step to see its description.</p>
+                    
+                    <div id="al-cycle-container" class="relative">
+                        <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4 mb-8">
+                            <div id="step-1" class="al-cycle-step bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-full md:w-1/5 text-center">
+                                <span class="text-cyan-600 text-2xl font-bold">①</span>
+                                <p class="font-semibold mt-2">Initialize</p>
+                            </div>
+                            <div class="text-2xl text-slate-400 transform md:rotate-0 rotate-90">→</div>
+                            <div id="step-2" class="al-cycle-step bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-full md:w-1/5 text-center">
+                                <span class="text-cyan-600 text-2xl font-bold">②</span>
+                                <p class="font-semibold mt-2">Predict & Query</p>
+                            </div>
+                             <div class="text-2xl text-slate-400 transform md:rotate-0 rotate-90">→</div>
+                            <div id="step-3" class="al-cycle-step bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-full md:w-1/5 text-center">
+                                <span class="text-cyan-600 text-2xl font-bold">③</span>
+                                <p class="font-semibold mt-2">Annotate</p>
+                            </div>
+                             <div class="text-2xl text-slate-400 transform md:rotate-0 rotate-90">→</div>
+                            <div id="step-4" class="al-cycle-step bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-full md:w-1/5 text-center">
+                                <span class="text-cyan-600 text-2xl font-bold">④</span>
+                                <p class="font-semibold mt-2">Retrain</p>
+                            </div>
+                             <div class="text-2xl text-slate-400 transform md:rotate-0 rotate-90">↻</div>
+                        </div>
+                        <div id="cycle-description" class="bg-amber-50 border-l-4 border-amber-400 p-6 rounded-r-lg text-slate-700 min-h-[100px]">
+                            Select a step above to learn more.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Scenarios -->
+            <section id="scenarios" class="content-section">
+                 <div class="fade-in">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-4">Part II: Core Scenarios</h2>
+                    <p class="text-lg text-slate-700 mb-8">Active learning can be implemented in several ways, depending on how data is accessed and queried. This section explores the three primary scenarios. Understanding these architectural patterns is crucial for choosing the right approach based on project constraints like data availability, computational budget, and real-time needs. Hover over a card to see its relative characteristics in the chart below.</p>
+                    
+                    <div class="grid md:grid-cols-3 gap-8 mb-12">
+                        <div class="scenario-card bg-white p-6 rounded-xl shadow-md border border-slate-200 transition-all duration-300" data-scenario="pool">
+                            <h3 class="font-semibold text-xl mb-3 text-cyan-800">Pool-Based Sampling</h3>
+                            <p class="text-slate-600">The most common scenario. The algorithm has access to a large, static "pool" of unlabeled data. In each cycle, it evaluates the entire pool to select the most informative instances for labeling. This allows for globally informed decisions but can be computationally expensive.</p>
+                        </div>
+                        <div class="scenario-card bg-white p-6 rounded-xl shadow-md border border-slate-200 transition-all duration-300" data-scenario="stream">
+                            <h3 class="font-semibold text-xl mb-3 text-cyan-800">Stream-Based Sampling</h3>
+                            <p class="text-slate-600">Designed for real-time data. The algorithm examines one unlabeled instance at a time as it arrives in a stream. It must make an immediate, irrevocable decision to either query the label or discard the instance. It's highly efficient but makes locally optimal decisions.</p>
+                        </div>
+                        <div class="scenario-card bg-white p-6 rounded-xl shadow-md border border-slate-200 transition-all duration-300" data-scenario="synthesis">
+                            <h3 class="font-semibold text-xl mb-3 text-cyan-800">Membership Query Synthesis</h3>
+                            <p class="text-slate-600">The most powerful but specialized scenario. The learner is not limited to existing data; it can generate new, synthetic data points from scratch to probe specific regions of the feature space. This is highly effective but difficult to apply in complex domains like natural language.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                        <h3 class="text-xl font-bold text-center text-slate-900 mb-4">Scenario Comparison</h3>
+                        <div class="chart-container">
+                            <canvas id="scenariosChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Strategies -->
+            <section id="strategies" class="content-section">
+                <div class="fade-in">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-4">Part III: A Taxonomy of Querying Strategies</h2>
+                    <p class="text-lg text-slate-700 mb-8">The "acquisition function" or query strategy is the heart of an active learner, determining which data gets selected for labeling. Strategies generally fall into a few families, each with a different philosophy for what makes data "informative." This section compares these core strategies, highlighting the fundamental trade-off between exploiting known weaknesses and exploring new areas of the data space.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                             <h3 class="text-xl font-bold text-center text-slate-900 mb-4">Strategy Trade-offs</h3>
+                            <div class="chart-container">
+                                <canvas id="strategiesChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                            <h3 class="font-semibold text-xl mb-3 text-cyan-800">Exploring the Strategies</h3>
+                            <p class="text-slate-600 mb-4">The radar chart visualizes the inherent trade-offs between the main strategy families. No single strategy is universally best; the optimal choice depends on the specific problem, data characteristics, and computational budget.</p>
+                            <ul class="space-y-3 text-slate-600">
+                                <li><strong class="text-slate-800">Uncertainty Sampling:</strong> Simple and fast. It "exploits" by asking about data it knows it's confused about. Prone to selecting outliers.</li>
+                                <li><strong class="text-slate-800">Query-by-Committee (QBC):</strong> More robust than using a single model. It leverages disagreement among an ensemble of models, but is computationally expensive.</li>
+                                <li><strong class="text-slate-800">Diversity Sampling:</strong> "Explores" by selecting data that is representative of the entire dataset, preventing redundant queries. Can be inefficient if it ignores highly uncertain areas.</li>
+                                <li><strong class="text-slate-800">Hybrid Approaches:</strong> The state-of-the-art. These methods balance the "exploit" of uncertainty with the "explore" of diversity to select batches that are both informative and representative.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: LLMs -->
+            <section id="llms" class="content-section">
+                <div class="fade-in">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-4">Part IV: Active Learning for Robust LLM Evaluation</h2>
+                    <p class="text-lg text-slate-700 mb-8">While traditionally used for efficient training, Active Learning's most critical modern application may be in robustly evaluating Large Language Models. Standard benchmarks often fail to find the rare, adversarial "edge cases" where LLMs fail. By repurposing AL to actively search for these failure modes, we can build dynamic, challenging, and highly efficient evaluation suites. This interactive framework helps you select an AL strategy based on your specific evaluation goal.</p>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                        <div class="flex flex-col sm:flex-row items-center sm:space-x-4 mb-6">
+                            <label for="eval-goal-selector" class="font-semibold text-slate-800 mb-2 sm:mb-0">Select an Evaluation Goal:</label>
+                            <select id="eval-goal-selector" class="flex-grow w-full sm:w-auto p-3 border border-slate-300 rounded-md bg-white shadow-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500">
+                                <!-- Options will be populated by JS -->
+                            </select>
+                        </div>
+                        
+                        <div id="eval-details-container" class="grid md:grid-cols-3 gap-6">
+                            <!-- Details will be populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 5: Future -->
+            <section id="future" class="content-section">
+                <div class="fade-in">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-4">Part V: Synthesis and Future Directions</h2>
+                    <p class="text-lg text-slate-700 mb-8">The field of Active Learning is continuously evolving. As we've seen, its principles are being adapted for new challenges in the LLM era. This final section summarizes key practical recommendations and looks ahead at the open challenges and future trajectory of intelligent data curation, pointing towards fully automated, self-improving AI systems.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                            <h3 class="font-semibold text-xl mb-3 text-cyan-800">Strategic Recommendations</h3>
+                            <ul class="space-y-4 text-slate-600 list-disc list-inside">
+                                <li>
+                                    <strong class="text-slate-800">Embrace Hybrid Strategies:</strong> For most tasks, move beyond simple uncertainty sampling. Combining uncertainty (exploitation) with diversity (exploration) is consistently more robust and efficient.
+                                </li>
+                                <li>
+                                    <strong class="text-slate-800">Tailor Strategy to Goal:</strong> The optimal strategy is context-dependent. Use uncertainty/diversity for training, adversarial generation for safety testing, and similarity-based selection for in-context learning.
+                                </li>
+                                <li>
+                                    <strong class="text-slate-800">Curate a Diverse Seed Set:</strong> The initial labeled set is critical. Ensure it's diverse and covers the major data patterns, rather than being purely random, to give the AL process a strong start.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                            <h3 class="font-semibold text-xl mb-3 text-cyan-800">Open Challenges & The Future</h3>
+                            <p class="text-slate-600 mb-4">The ultimate vision is a continuous, self-improving AI evaluation system. This "AI Immune System" would use active learning to:</p>
+                            <ul class="space-y-3 text-slate-600">
+                                <li><span class="text-teal-600 font-bold mr-2"> patrol</span> the vast input space to find novel threats (new jailbreaks, subtle biases).</li>
+                                <li><span class="text-teal-600 font-bold mr-2"> identify</span> and collect these failure modes into an evolving test suite.</li>
+                                <li><span class="text-teal-600 font-bold mr-2"> adapt</span> production models and the evaluation models themselves, creating a virtuous cycle of improvement.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const state = {
+                activeSection: 'fundamentals',
+                cycleStepDescription: {
+                    'step-1': "The process begins by training an initial model on a small, 'seed' set of labeled data. This provides a starting point for making informed decisions.",
+                    'step-2': "The current model makes predictions on a large pool of unlabeled data. A 'query strategy' then scores each data point based on how informative it would be to label.",
+                    'step-3': "The instances selected by the query strategy are sent to an 'oracle' (usually a human expert) who provides the correct labels.",
+                    'step-4': "The newly labeled data is added to the training set, and the model is retrained on this augmented data to improve its performance. The cycle then repeats."
+                },
+                scenariosData: {
+                    labels: ['Computational Cost', 'Budget Control', 'Decision Scope (Global=1, Local=0)'],
+                    datasets: [
+                        { label: 'Pool-Based', data: [0.9, 0.9, 1], backgroundColor: 'rgba(59, 130, 246, 0.6)', borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 2},
+                        { label: 'Stream-Based', data: [0.2, 0.3, 0], backgroundColor: 'rgba(16, 185, 129, 0.6)', borderColor: 'rgba(16, 185, 129, 1)', borderWidth: 2 },
+                        { label: 'Synthesis', data: [0.7, 0.8, 0.5], backgroundColor: 'rgba(239, 68, 68, 0.6)', borderColor: 'rgba(239, 68, 68, 1)', borderWidth: 2 }
+                    ]
+                },
+                strategiesData: {
+                    labels: ['Robustness', 'Redundancy Avoidance', 'Simplicity', 'Low Computational Cost'],
+                    datasets: [
+                        { label: 'Uncertainty', data: [6, 4, 9, 8], borderColor: 'rgba(59, 130, 246, 1)', backgroundColor: 'rgba(59, 130, 246, 0.2)' },
+                        { label: 'QBC', data: [9, 7, 5, 3], borderColor: 'rgba(16, 185, 129, 1)', backgroundColor: 'rgba(16, 185, 129, 0.2)' },
+                        { label: 'Diversity', data: [7, 9, 6, 6], borderColor: 'rgba(239, 68, 68, 1)', backgroundColor: 'rgba(239, 68, 68, 0.2)' },
+                        { label: 'Hybrid', data: [8, 8, 4, 4], borderColor: 'rgba(245, 158, 11, 1)', backgroundColor: 'rgba(245, 158, 11, 0.2)' }
+                    ]
+                },
+                llmEvaluationData: {
+                    "General Performance & Robustness": {
+                        strategy: "Hybrid (Uncertainty + Diversity)",
+                        metric: "Human preference ratings (Likert scales) or LLM-as-a-judge.",
+                        notes: "Start with a diverse pool of real user prompts. Use embeddings to ensure diversity, then the model's own uncertainty to find challenging edge cases."
+                    },
+                    "Factual Accuracy / Hallucination": {
+                        strategy: "Uncertainty Sampling + Knowledge Base",
+                        metric: "Factual consistency check against a trusted database. Metrics like 'Faithfulness'.",
+                        notes: "Requires an external source of truth. The 'oracle' is a fact-checker. Focus on information-seeking prompts."
+                    },
+                    "Bias and Fairness": {
+                        strategy: "Clustering-based Diversity + Uncertainty",
+                        metric: "Human evaluation for stereotypes or performance disparities across groups.",
+                        notes: "Proactively find where the model fails for specific subgroups, not just on average. Requires curating a diverse initial prompt pool."
+                    },
+                    "Safety and Toxicity (Jailbreaking)": {
+                        strategy: "Adversarial Query Generation",
+                        metric: "A safety classifier or human review to flag harmful outputs. 'Toxicity' or 'Refusal Rate' metrics.",
+                        notes: "This involves generating new, potentially malicious prompts (a form of Membership Query Synthesis). Uses automated red-teaming tools."
+                    },
+                    "Evaluating RAG Systems": {
+                        strategy: "Component-wise Uncertainty",
+                        metric: "Check retriever relevance ('Contextual Precision') and generator faithfulness to context.",
+                        notes: "Actively select queries where the retriever is likely to fail OR the generator is uncertain given the retrieved context."
+                    },
+                    "Evaluating Agents": {
+                        strategy: "Error-Driven Sampling",
+                        metric: "Human evaluation of task completion success, efficiency, and correctness of tool use.",
+                        notes: "Log agent trajectories and actively sample those that resulted in an error or loop for evaluation."
+                    }
+                }
+            };
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            function navigateTo(hash) {
+                const targetSection = hash.substring(1);
+                state.activeSection = targetSection;
+
+                navLinks.forEach(link => {
+                    if (link.getAttribute('href') === hash) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+
+                contentSections.forEach(section => {
+                    if (section.id === targetSection) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Initial setup based on hash or default
+            const initialHash = window.location.hash || '#fundamentals';
+            navigateTo(initialHash);
+            
+            // Navigation event listeners
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const hash = e.target.getAttribute('href');
+                    navigateTo(hash);
+                    window.history.pushState(null, null, hash);
+                });
+            });
+
+             window.addEventListener('popstate', () => {
+                navigateTo(window.location.hash || '#fundamentals');
+            });
+
+
+            // Section 1: AL Cycle
+            const cycleSteps = document.querySelectorAll('.al-cycle-step');
+            const cycleDescription = document.getElementById('cycle-description');
+            cycleSteps.forEach(step => {
+                step.addEventListener('click', () => {
+                    cycleSteps.forEach(s => s.classList.remove('active'));
+                    step.classList.add('active');
+                    cycleDescription.textContent = state.cycleStepDescription[step.id];
+                    cycleDescription.classList.remove('fade-in');
+                    void cycleDescription.offsetWidth; // Trigger reflow
+                    cycleDescription.classList.add('fade-in');
+                });
+            });
+
+            // Section 2: Scenarios Chart
+            const scenariosCtx = document.getElementById('scenariosChart')?.getContext('2d');
+            let scenariosChart;
+            if(scenariosCtx) {
+                scenariosChart = new Chart(scenariosCtx, {
+                    type: 'bar',
+                    data: state.scenariosData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 1.0,
+                                ticks: {
+                                    callback: function(value, index, values) {
+                                        if (value === 0) return 'Low';
+                                        if (value === 1) return 'High';
+                                        return null;
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Relative Comparison of Active Learning Scenarios'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            const val = context.parsed.y;
+                                            if(val <= 0.3) label += 'Low';
+                                            else if(val <= 0.7) label += 'Medium';
+                                            else label += 'High';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                document.querySelectorAll('.scenario-card').forEach(card => {
+                    card.addEventListener('mouseenter', (e) => {
+                        const scenario = e.target.dataset.scenario;
+                        scenariosChart.data.datasets.forEach((dataset, i) => {
+                            if (dataset.label.toLowerCase().includes(scenario)) {
+                                dataset.backgroundColor = dataset.backgroundColor.replace('0.6', '1');
+                            } else {
+                                 dataset.backgroundColor = dataset.backgroundColor.replace('1', '0.6');
+                            }
+                        });
+                        scenariosChart.update();
+                    });
+                     card.addEventListener('mouseleave', () => {
+                        scenariosChart.data.datasets.forEach((dataset, i) => {
+                            dataset.backgroundColor = dataset.backgroundColor.replace('1', '0.6');
+                        });
+                        scenariosChart.update();
+                    });
+                });
+            }
+
+
+            // Section 3: Strategies Chart
+            const strategiesCtx = document.getElementById('strategiesChart')?.getContext('2d');
+            if (strategiesCtx) {
+                new Chart(strategiesCtx, {
+                    type: 'radar',
+                    data: state.strategiesData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        elements: {
+                            line: {
+                                borderWidth: 3
+                            }
+                        },
+                         scales: {
+                            r: {
+                                angleLines: {
+                                    display: false
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 10,
+                                pointLabels: {
+                                    font: {
+                                        size: 12
+                                    }
+                                },
+                                ticks: {
+                                    display: false
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Section 4: LLM Evaluation
+            const evalSelector = document.getElementById('eval-goal-selector');
+            const evalContainer = document.getElementById('eval-details-container');
+
+            function updateEvalDetails(goal) {
+                const data = state.llmEvaluationData[goal];
+                if (!data) return;
+
+                evalContainer.innerHTML = `
+                    <div class="bg-amber-50 border-l-4 border-amber-400 p-6 rounded-r-lg fade-in">
+                        <h4 class="font-bold text-lg text-slate-900 mb-2">Recommended Strategy</h4>
+                        <p class="text-slate-700">${data.strategy}</p>
+                    </div>
+                    <div class="bg-amber-50 border-l-4 border-amber-400 p-6 rounded-r-lg fade-in" style="animation-delay: 0.1s;">
+                        <h4 class="font-bold text-lg text-slate-900 mb-2">Example Metric / Oracle</h4>
+                        <p class="text-slate-700">${data.metric}</p>
+                    </div>
+                    <div class="bg-amber-50 border-l-4 border-amber-400 p-6 rounded-r-lg fade-in" style="animation-delay: 0.2s;">
+                        <h4 class="font-bold text-lg text-slate-900 mb-2">Practical Implementation Notes</h4>
+                        <p class="text-slate-700">${data.notes}</p>
+                    </div>
+                `;
+            }
+
+            if (evalSelector) {
+                // Populate selector
+                Object.keys(state.llmEvaluationData).forEach(goal => {
+                    const option = document.createElement('option');
+                    option.value = goal;
+                    option.textContent = goal;
+                    evalSelector.appendChild(option);
+                });
+
+                // Set initial state
+                updateEvalDetails(evalSelector.value);
+
+                // Add event listener
+                evalSelector.addEventListener('change', (e) => {
+                    updateEvalDetails(e.target.value);
+                });
+            }
+
+        });
+    </script>
+
+</body>
+</html>

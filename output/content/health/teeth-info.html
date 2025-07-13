@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: An Essential Guide to Oral Health</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a clear narrative path. It begins with a bold header establishing oral health's importance. The next section, "The Primary Threats," uses simple diagrams to explain the progression of tooth decay and gum disease. The core of the infographic, "Your Daily Defense," provides actionable advice on brushing, flossing, and diet using icon-driven cards. "The Mouth-Body Connection" uses a hub-and-spoke diagram to visually link oral health to systemic diseases. The story concludes with the most critical, high-visibility section, "Dental Emergencies," ensuring user safety is prioritized. This structure moves from problem identification to actionable solutions and critical warnings. -->
+    <!-- Visualization & Content Choices: 
+        1. Primary Threats (Decay & Gum Disease) -> Goal: Organize/Inform -> Viz: Styled HTML/CSS flow diagrams -> Justification: Breaks down complex disease progressions into simple, sequential visual steps, making them easy to understand at a glance. Confirmed NO SVG/Mermaid JS.
+        2. Diet for Oral Health -> Goal: Compare/Instruct -> Viz: Two-column card layout with Unicode icons -> Justification: Provides a clear, scannable "do vs. don't" comparison for dietary choices, enhancing readability and retention. Confirmed NO SVG.
+        3. The Mouth-Body Connection -> Goal: Relationships -> Viz: Custom hub-and-spoke diagram using styled HTML divs and borders -> Justification: A visually impactful way to show how a central issue (oral health) connects to multiple systemic conditions, superior to a simple list for demonstrating relationships. Confirmed NO SVG/Mermaid JS.
+        4. Dental Emergencies -> Goal: Warn/Inform -> Viz: High-contrast, alert-style cards with bold icons -> Justification: Uses strong visual cues (color, icons) to ensure this critical safety information is unmissable and immediately understood by the user. Confirmed NO SVG/Mermaid JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f7f9; /* Off-white */
+            color: #0A2463; /* Deep Blue */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .header-gradient {
+            background: linear-gradient(135deg, #3E92CC, #0A2463);
+        }
+        .text-accent-yellow { color: #FFD000; }
+        .bg-accent-yellow { background-color: #FFD000; }
+        .text-accent-pink { color: #D8315B; }
+        .bg-accent-pink { background-color: #D8315B; }
+        .text-accent-blue { color: #3E92CC; }
+        .bg-accent-blue { background-color: #3E92CC; }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: #3E92CC;
+            line-height: 1;
+        }
+        .hub-spoke-line {
+            position: absolute;
+            background-color: #3E92CC;
+            transform-origin: left center;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-black text-[#0A2463] mb-4 tracking-tight">YOUR MOUTH, YOUR HEALTH</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">An essential guide to understanding oral health and its critical connection to your entire body.</p>
+        </header>
+
+        <section id="threats" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#0A2463]">The Primary Threats</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-700 mb-12">Two main culprits are responsible for most dental problems: tooth decay and gum disease. Understanding their progression is key to prevention.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="bg-white p-6 rounded-xl shadow-2xl border-t-4 border-accent-blue">
+                    <h3 class="font-bold text-xl text-center mb-6">Progression of Tooth Decay</h3>
+                    <div class="flex flex-col items-center space-y-4 text-center">
+                        <div class="p-4 rounded-lg bg-blue-50 w-full"><strong class="text-accent-blue">1. Demineralization:</strong> Plaque acids attack enamel. White spots may appear. Reversible.</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="p-4 rounded-lg bg-yellow-100 w-full"><strong class="text-yellow-700">2. Cavity Forms:</strong> Enamel breaks down, creating a hole. Sensitivity begins.</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="p-4 rounded-lg bg-red-100 w-full"><strong class="text-red-700">3. Infection (Abscess):</strong> Decay reaches inner pulp. Severe pain and swelling can occur.</div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-2xl border-t-4 border-accent-pink">
+                    <h3 class="font-bold text-xl text-center mb-6">Progression of Gum Disease</h3>
+                     <div class="flex flex-col items-center space-y-4 text-center">
+                        <div class="p-4 rounded-lg bg-pink-50 w-full"><strong class="text-accent-pink">1. Gingivitis:</strong> Plaque buildup inflames gums. Gums are red, swollen, and bleed easily. Reversible.</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="p-4 rounded-lg bg-red-100 w-full"><strong class="text-red-700">2. Periodontitis:</strong> Inflammation damages bone and tissues supporting teeth. Irreversible damage.</div>
+                         <div class="flow-arrow">↓</div>
+                        <div class="p-4 rounded-lg bg-gray-200 text-gray-800 w-full"><strong class="text-black">3. Advanced Periodontitis:</strong> Significant bone loss leads to loose teeth or tooth loss.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="prevention" class="mb-20 bg-blue-50 p-8 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#0A2463]">Your Daily Defense</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-700 mb-12">A consistent routine is your most powerful weapon against oral health issues. Focus on these key areas every day.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <p class="text-5xl mb-4">🦷</p>
+                    <h3 class="font-bold text-xl mb-3">Brushing</h3>
+                    <ul class="text-left list-disc list-inside text-gray-700 space-y-2 text-sm">
+                        <li>Brush 2x daily for 2 minutes.</li>
+                        <li>Use fluoride toothpaste.</li>
+                        <li>Use a soft-bristled brush.</li>
+                        <li>Spit, don't rinse after.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <p class="text-5xl mb-4">🧵</p>
+                    <h3 class="font-bold text-xl mb-3">Flossing</h3>
+                     <ul class="text-left list-disc list-inside text-gray-700 space-y-2 text-sm">
+                        <li>Floss 1x daily.</li>
+                        <li>Clean between all teeth.</li>
+                        <li>Curve floss in a "C" shape.</li>
+                        <li>Crucial for gum health.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                     <p class="text-5xl mb-4">🍎</p>
+                    <h3 class="font-bold text-xl mb-3">Diet</h3>
+                     <ul class="text-left list-disc list-inside text-gray-700 space-y-2 text-sm">
+                        <li>Limit sugary foods & drinks.</li>
+                        <li>Choose water over juice/soda.</li>
+                        <li>Eat crunchy fruits & veggies.</li>
+                        <li>Consume calcium-rich foods.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="connection" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#0A2463]">The Mouth-Body Connection</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-700 mb-12">Oral health is systemic health. Bacteria and inflammation from your mouth can travel throughout your body, contributing to serious diseases.</p>
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-2xl relative">
+                <div class="text-center mb-8">
+                    <div class="inline-block bg-accent-blue text-white font-bold py-3 px-6 rounded-full shadow-lg">Oral Health Hub</div>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-y-10 gap-x-6 text-center">
+                    <div class="flex flex-col items-center">
+                        <span class="text-5xl mb-2">❤️</span>
+                        <h5 class="font-semibold">Cardiovascular Disease</h5>
+                        <p class="text-xs text-warm-gray-600">Oral bacteria linked to heart infections and clogged arteries.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-5xl mb-2">🧠</span>
+                        <h5 class="font-semibold">Alzheimer's Disease</h5>
+                        <p class="text-xs text-warm-gray-600">Gum disease bacteria found in the brains of Alzheimer's patients.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-5xl mb-2">🩸</span>
+                        <h5 class="font-semibold">Diabetes</h5>
+                        <p class="text-xs text-warm-gray-600">Gum disease makes blood sugar harder to control, and vice-versa.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-5xl mb-2">🫁</span>
+                        <h5 class="font-semibold">Respiratory Infections</h5>
+                        <p class="text-xs text-warm-gray-600">Inhaled oral bacteria can cause pneumonia and worsen COPD.</p>
+                    </div>
+                     <div class="flex flex-col items-center">
+                        <span class="text-5xl mb-2">🤰</span>
+                        <h5 class="font-semibold">Pregnancy Outcomes</h5>
+                        <p class="text-xs text-warm-gray-600">Linked to preterm birth and low birth weight.</p>
+                    </div>
+                     <div class="flex flex-col items-center">
+                        <span class="text-5xl mb-2">🦴</span>
+                        <h5 class="font-semibold">Osteoporosis</h5>
+                        <p class="text-xs text-warm-gray-600">Jaw bone loss can lead to tooth loss. Dental X-rays can screen for it.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="red-flags" class="bg-accent-pink text-white p-8 rounded-xl shadow-2xl">
+            <h2 class="text-3xl font-black text-center mb-4 tracking-tight">DENTAL EMERGENCIES: SEEK IMMEDIATE CARE</h2>
+            <p class="text-center font-semibold text-lg text-pink-100 mb-8">Do not wait. If you experience any of these symptoms, see a dentist or go to an emergency room immediately.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg text-[#D8315B]">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">💥</span> Severe, Throbbing Pain</h4>
+                    <p class="text-sm">Constant, intense toothache that doesn't subside could be a sign of an abscess.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg text-[#D8315B]">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">🩸</span> Uncontrolled Bleeding</h4>
+                    <p class="text-sm">Bleeding from the mouth that does not stop with pressure.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg text-[#D8315B]">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">퉁</span> Swollen Face or Gums</h4>
+                    <p class="text-sm">Facial swelling or a painful lump on your gums can indicate a serious infection.</p>
+                </div>
+                 <div class="bg-white/90 p-5 rounded-lg shadow-lg text-[#D8315B]">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">🦷</span> Knocked-Out Tooth</h4>
+                    <p class="text-sm">A permanent tooth that has been knocked out. Time is critical to save it.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg text-[#D8315B]">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">🌡️</span> Fever with Mouth Pain</h4>
+                    <p class="text-sm">Fever combined with mouth pain or swelling suggests a spreading infection.</p>
+                </div>
+                 <div class="bg-white/90 p-5 rounded-lg shadow-lg text-[#D8315B]">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">💔</span> Broken or Cracked Tooth</h4>
+                    <p class="text-sm">Especially if causing severe pain or exposing the inner part of the tooth.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    
+    <footer class="mt-12 text-center text-sm text-gray-500 py-4">
+        <p>This information is for educational purposes and is not a substitute for professional medical or dental advice.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+        });
+    </script>
+</body>
+</html>

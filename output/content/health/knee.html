@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Knee Health</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Soothing Neutrals with Calming Teal Accent -->
+    <!-- Application Structure Plan: The SPA is structured thematically to guide the user from understanding to action, prioritizing usability over the report's linear format. It begins with 'Understanding Your Knee' to provide foundational knowledge on anatomy and common causes. 'The Prevention Hub' offers proactive, daily strategies in an easily scannable format. The 'Guided Exercise Library' is the core actionable section, allowing users to filter exercises by muscle group. 'Managing Pain' provides immediate self-care advice, and 'Red Flags: Seek Help' presents critical safety information with high visibility. This task-oriented flow allows users to quickly navigate to the content most relevant to their needs. -->
+    <!-- Visualization & Content Choices: 
+        1.  Major Causes of Knee Pain -> Goal: Compare/Inform -> Viz: Doughnut Chart (Chart.js) -> Interaction: Hover tooltips for details -> Justification: To provide a quick, proportional overview of the primary sources of knee pain (e.g., Overuse vs. Traumatic vs. Degenerative), making complex data easily digestible.
+        2.  Common Knee Conditions -> Goal: Organize/Inform -> Viz: Filterable Card Grid (HTML/CSS/JS) -> Interaction: Buttons to filter conditions by type (e.g., 'Injury', 'Arthritis') -> Justification: To create an interactive glossary that allows users to explore different conditions without being overwhelmed by a long list.
+        3.  Targeted Strengthening Exercises -> Goal: Organize/Instruct -> Viz: Filterable Card Gallery (HTML/CSS/JS) -> Interaction: Filter by muscle group (e.g., 'Quadriceps', 'Glutes') -> Justification: To provide a practical, easy-to-use tool for rehabilitation and prevention, turning a static data table into an engaging feature.
+        4.  Red Flag Symptoms -> Goal: Warn/Instruct -> Viz: High-contrast alert-style cards (HTML/CSS with Unicode icons) -> Justification: To present life-critical safety information with maximum clarity and impact, ensuring the urgent message is immediately understood and acted upon.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .bg-slate-50 { background-color: #f8fafc; }
+        .bg-slate-100 { background-color: #f1f5f9; }
+        .text-slate-800 { color: #1e293b; }
+        .accent-teal { color: #0f766e; }
+        .bg-teal-700 { background-color: #0f766e; }
+        .border-teal-700 { border-color: #0f766e; }
+        nav a {
+            transition: color 0.3s ease;
+        }
+        nav a.active, nav a:hover {
+            color: #0d9488;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        .card-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .filter-btn.active {
+            background-color: #0f766e;
+            color: white;
+            border-color: #0f766e;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <nav id="main-nav" class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold accent-teal">Knee Health Guide</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#understanding" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Understanding</a>
+                        <a href="#prevention" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Prevention</a>
+                        <a href="#exercises" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Exercises</a>
+                        <a href="#management" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Management</a>
+                        <a href="#red-flags" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-red-600 font-bold">Red Flags</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:bg-gray-200 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <span class="block h-6 w-6" aria-hidden="true">☰</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#understanding" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Understanding</a>
+                <a href="#prevention" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Prevention</a>
+                <a href="#exercises" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Exercises</a>
+                <a href="#management" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Management</a>
+                <a href="#red-flags" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-red-600 font-bold">Red Flags</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Your Interactive Guide to Knee Health</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600">The knee is one of the largest and most complex joints in the body. This guide provides tools and knowledge to help you understand, protect, and manage your knee health effectively.</p>
+        </section>
+
+        <section id="understanding" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Understanding Your Knee</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">Knee pain is a common issue with diverse causes, from acute injuries to chronic conditions. Understanding the primary drivers of pain is the first step toward effective treatment and prevention. This section explores the most common conditions affecting the knee.</p>
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-xl mb-12">
+                 <h4 class="text-xl font-semibold mb-4 text-center">Major Categories of Knee Pain</h4>
+                <div class="chart-container">
+                    <canvas id="causesChart"></canvas>
+                </div>
+            </div>
+            <div class="bg-slate-100 p-6 md:p-8 rounded-xl shadow-lg">
+                <h4 class="text-xl font-semibold mb-6 text-center">Explore Common Conditions</h4>
+                <div class="flex flex-wrap justify-center gap-2 mb-6" id="condition-filters">
+                    <button data-filter="all" class="filter-btn active px-4 py-2 rounded-full text-sm font-medium">All</button>
+                    <button data-filter="Traumatic Injury" class="filter-btn bg-white text-slate-800 px-4 py-2 rounded-full text-sm font-medium border">Traumatic Injuries</button>
+                    <button data-filter="Overuse Injury" class="filter-btn bg-white text-slate-800 px-4 py-2 rounded-full text-sm font-medium border">Overuse Injuries</button>
+                    <button data-filter="Degenerative/Inflammatory" class="filter-btn bg-white text-slate-800 px-4 py-2 rounded-full text-sm font-medium border">Arthritis & More</button>
+                </div>
+                <div id="conditions-gallery" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </div>
+        </section>
+
+        <section id="prevention" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">The Prevention Hub</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">Proactive care is the best defense against knee pain. Integrating simple, evidence-based habits into your daily routine can dramatically reduce your risk of injury and degenerative wear.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center card-item">
+                    <span class="text-4xl">⚖️</span>
+                    <h4 class="font-semibold text-lg my-2">Manage Weight</h4>
+                    <p class="text-sm text-gray-600">Every extra pound adds 3-5 pounds of pressure on your knees. Maintaining a healthy weight is the single most effective way to protect them.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center card-item">
+                    <span class="text-4xl">👟</span>
+                    <h4 class="font-semibold text-lg my-2">Choose Proper Footwear</h4>
+                    <p class="text-sm text-gray-600">Supportive shoes with good cushioning and arch support maintain proper alignment and reduce shock to the knees.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center card-item">
+                    <span class="text-4xl">🏋️</span>
+                    <h4 class="font-semibold text-lg my-2">Lift Safely</h4>
+                    <p class="text-sm text-gray-600">Always lift with your legs, not your back. Bend your knees and hips, keeping the object close to your body to prevent strain.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center card-item">
+                    <span class="text-4xl">🏃‍♀️</span>
+                    <h4 class="font-semibold text-lg my-2">Warm Up & Cool Down</h4>
+                    <p class="text-sm text-gray-600">Prepare your muscles for activity with a dynamic warm-up and finish with static stretching to improve flexibility and aid recovery.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="exercises" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Guided Exercise Library</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">Strong muscles are your knee's best protection. Strengthening the muscles around the knee, hip, and core provides crucial stability and shock absorption. Use the filters to find exercises targeting specific muscle groups.</p>
+            <div class="flex justify-center flex-wrap gap-2 mb-8" id="exercise-filters">
+                <button data-filter="all" class="ex-filter-btn active px-4 py-2 rounded-full text-sm font-medium">All</button>
+                <button data-filter="Quadriceps" class="ex-filter-btn bg-white text-slate-800 px-4 py-2 rounded-full text-sm font-medium border">Quadriceps</button>
+                <button data-filter="Hamstrings" class="ex-filter-btn bg-white text-slate-800 px-4 py-2 rounded-full text-sm font-medium border">Hamstrings</button>
+                <button data-filter="Glutes" class="ex-filter-btn bg-white text-slate-800 px-4 py-2 rounded-full text-sm font-medium border">Glutes</button>
+                <button data-filter="Calves" class="ex-filter-btn bg-white text-slate-800 px-4 py-2 rounded-full text-sm font-medium border">Calves</button>
+            </div>
+            <div id="exercise-gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            </div>
+        </section>
+
+        <section id="management" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Pain Management Strategies</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">For minor knee pain from strains or overuse, simple home care can provide significant relief. Knowing how and when to use different therapies is key to effective self-treatment.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-500 card-item">
+                    <h4 class="text-xl font-semibold mb-3 flex items-center"><span class="mr-2 text-2xl">❄️</span> RICE Protocol (First 48 Hours)</h4>
+                    <p class="font-semibold">Best for acute injuries & inflammation.</p>
+                    <ul class="list-disc list-inside text-gray-600 mt-2 space-y-1 text-sm">
+                        <li><strong>Rest:</strong> Avoid activities that cause pain.</li>
+                        <li><strong>Ice:</strong> Apply for 15-20 min every 2-3 hours to reduce swelling.</li>
+                        <li><strong>Compression:</strong> Use an elastic bandage to limit swelling.</li>
+                        <li><strong>Elevation:</strong> Keep the knee raised above heart level.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-red-500 card-item">
+                    <h4 class="text-xl font-semibold mb-3 flex items-center"><span class="mr-2 text-2xl">🔥</span> Heat Therapy (After 48 Hours)</h4>
+                    <p class="font-semibold">Best for chronic stiffness & muscle soreness.</p>
+                    <p class="text-gray-600 mt-2">Use a heating pad or warm compress for 15-20 minutes to relax muscles, improve blood flow, and ease stiffness before activity.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="red-flags" class="scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 text-red-700">Red Flags: When to Seek Immediate Help</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">While most knee pain can be managed at home, certain symptoms indicate a serious condition requiring urgent medical evaluation. Do not delay seeking help if you experience any of the following.</p>
+            <div id="red-flags-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-100 mt-16">
+        <div class="container mx-auto py-6 px-4 text-center text-gray-500">
+            <p class="text-sm">This guide provides informational content and should not be considered a substitute for professional medical advice, diagnosis, or treatment. Always consult with a qualified health provider for any health concerns.</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const causesChartCtx = document.getElementById('causesChart').getContext('2d');
+        new Chart(causesChartCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Overuse Injuries', 'Traumatic Injuries', 'Degenerative/Inflammatory'],
+                datasets: [{
+                    label: 'Categories of Knee Pain',
+                    data: [40, 35, 25],
+                    backgroundColor: ['#0d9488', '#14b8a6', '#5eead4'],
+                    borderColor: '#f8fafc',
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#1e293b' }
+                    },
+                    tooltip: {
+                         callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const conditionsData = [
+            { name: 'ACL Tear', type: 'Traumatic Injury', desc: 'Tear of the Anterior Cruciate Ligament, often from sudden stops or changes in direction. Often includes a "pop" sound.' },
+            { name: 'Meniscal Tear', type: 'Traumatic Injury', desc: 'Tear in the C-shaped cartilage cushion from forceful twisting. Causes pain, swelling, and locking sensations.' },
+            { name: 'Patellar Dislocation', type: 'Traumatic Injury', desc: 'The kneecap slips out of its normal position, causing intense pain and instability.' },
+            { name: 'Patellar Tendinopathy (Jumper\'s Knee)', type: 'Overuse Injury', desc: 'Irritation of the patellar tendon from repetitive jumping or running. Pain is felt just below the kneecap.' },
+            { name: 'IT Band Syndrome', type: 'Overuse Injury', desc: 'Inflammation of the iliotibial band on the outside of the knee, common in runners and cyclists.' },
+            { name: 'Knee Bursitis', type: 'Overuse Injury', desc: 'Inflammation of the bursae (fluid-filled sacs) from repetitive pressure or movement. Causes swelling and tenderness.' },
+            { name: 'Osteoarthritis (OA)', type: 'Degenerative/Inflammatory', desc: '"Wear-and-tear" arthritis where cartilage breaks down, causing pain, stiffness, and grating sensations.' },
+            { name: 'Rheumatoid Arthritis (RA)', type: 'Degenerative/Inflammatory', desc: 'An autoimmune disease causing chronic inflammation, pain, swelling, and stiffness in the knee joints.' },
+            { name: 'Gout', type: 'Degenerative/Inflammatory', desc: 'A type of inflammatory arthritis caused by uric acid crystal buildup, leading to sudden, severe pain and swelling.' },
+             { name: 'Baker\'s Cyst', type: 'Degenerative/Inflammatory', desc: 'A fluid-filled lump behind the knee, often caused by underlying joint problems like arthritis or a cartilage tear.' },
+        ];
+        
+        const conditionsGallery = document.getElementById('conditions-gallery');
+        const conditionFilters = document.getElementById('condition-filters');
+
+        function renderConditions(filter) {
+            conditionsGallery.innerHTML = '';
+            const filteredData = filter === 'all' ? conditionsData : conditionsData.filter(c => c.type === filter);
+            filteredData.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'card-item bg-white p-4 rounded-lg shadow-md';
+                card.innerHTML = `
+                    <h5 class="font-semibold text-md mb-2">${c.name}</h5>
+                    <p class="text-sm text-gray-600 mb-2">${c.desc}</p>
+                    <span class="text-xs font-semibold px-2 py-1 rounded-full bg-slate-200 text-slate-800">${c.type}</span>
+                `;
+                conditionsGallery.appendChild(card);
+            });
+        }
+        
+        conditionFilters.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                document.querySelectorAll('#condition-filters .filter-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                renderConditions(e.target.dataset.filter);
+            }
+        });
+
+        const exercisesData = [
+            { name: 'Half Squats', type: 'Quadriceps', desc: 'Strengthens quads, glutes, hamstrings with less knee stress.' },
+            { name: 'Straight Leg Raises', type: 'Quadriceps', desc: 'Strengthens quads and hip flexors with minimal joint load.' },
+            { name: 'Standing Hamstring Curls', type: 'Hamstrings', desc: 'Strengthens hamstrings and glutes, improves balance.' },
+            { name: 'Glute Bridges', type: 'Hamstrings', desc: 'Strengthens glutes and hamstrings, safe for the lower back.' },
+            { name: 'Clamshells', type: 'Glutes', desc: 'Isolates the gluteus medius to improve hip stability and protect knees.' },
+            { name: 'Lateral Band Walks', type: 'Glutes', desc: 'Targets gluteus medius for hip abduction strength.' },
+            { name: 'Calf Raises', type: 'Calves', desc: 'Strengthens calf muscles to support both knee and ankle joints.' },
+            { name: 'Side Leg Raises', type: 'Abductors', desc: 'Strengthens hip abductor muscles to prevent and treat knee pain.' },
+        ];
+        
+        const exerciseGallery = document.getElementById('exercise-gallery');
+        const exerciseFilters = document.getElementById('exercise-filters');
+
+        function renderExercises(filter) {
+            exerciseGallery.innerHTML = '';
+            const filteredData = filter === 'all' ? exercisesData : exercisesData.filter(ex => ex.type === filter || ex.type === 'Abductors'); // Abductors help glutes
+             filteredData.forEach(ex => {
+                const card = document.createElement('div');
+                card.className = 'card-item bg-white p-4 rounded-lg shadow-md flex flex-col items-center text-center';
+                card.innerHTML = `
+                    <div class="h-16 w-16 bg-slate-100 rounded-full mb-3 flex items-center justify-center text-3xl">💪</div>
+                    <h5 class="font-semibold">${ex.name}</h5>
+                    <p class="text-xs text-gray-500 mb-2">${ex.desc}</p>
+                    <span class="text-xs font-semibold px-2 py-1 rounded-full bg-teal-100 text-teal-800">${ex.type}</span>
+                `;
+                exerciseGallery.appendChild(card);
+            });
+        }
+
+        exerciseFilters.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                document.querySelectorAll('#exercise-filters .ex-filter-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                renderExercises(e.target.dataset.filter);
+            }
+        });
+
+        const redFlagsData = [
+            { icon: '💥', title: 'Can\'t Bear Weight', desc: 'A sudden inability to walk or stand could signal a fracture, dislocation, or severe tear.' },
+            { icon: ' deform', title: 'Obvious Deformity', desc: 'If the knee looks visibly out of place, it is a medical emergency.' },
+            { icon: '🌡️', title: 'Fever with Swelling/Redness', desc: 'These signs can point to a serious joint infection (septic arthritis) that requires immediate treatment.' },
+            { icon: '🦶', title: 'Numbness or Weakness', desc: 'Loss of sensation, tingling, or weakness in the leg or foot ("foot drop") indicates nerve compression.' },
+            { icon: '🩸', title: 'Calf Pain, Swelling & Redness', desc: 'These are hallmark signs of a potential Deep Vein Thrombosis (DVT), which is a life-threatening blood clot.' },
+            { icon: '🔒', title: 'Knee Locks or Gives Way', desc: 'A sensation of the knee catching, locking, or buckling suggests instability from a meniscal or ligament tear.' },
+        ];
+
+        const redFlagsContainer = document.getElementById('red-flags-container');
+        redFlagsData.forEach(flag => {
+            const item = document.createElement('div');
+            item.className = 'bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex items-start card-item';
+            item.innerHTML = `
+                <span class="text-3xl mr-4">${flag.icon}</span>
+                <div>
+                    <h5 class="font-bold text-red-700">${flag.title}</h5>
+                    <p class="text-sm text-red-600">${flag.desc}</p>
+                </div>
+            `;
+            redFlagsContainer.appendChild(item);
+        });
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        document.querySelectorAll('#main-nav a, #mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+        
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('main section');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active', 'accent-teal', 'font-bold');
+                        if (`#${entry.target.id}` === link.getAttribute('href')) {
+                            link.classList.add('active', 'accent-teal', 'font-bold');
+                        }
+                    });
+                }
+            });
+        }, { rootMargin: '-30% 0px -70% 0px' });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        renderConditions('all');
+        renderExercises('all');
+    });
+    </script>
+</body>
+</html>

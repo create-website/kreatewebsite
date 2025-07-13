@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: A Guide to Lower Back Health</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a logical narrative flow designed for user education and action. It begins with "Why It Hurts" (Causes & Risks) to build foundational understanding. It then moves to proactive "Prevention" with sections on daily habits (Posture, Lifting, Sleep), showcasing these as a preventative shield. The "Get Moving" section provides actionable exercises, segmented into strengthening and flexibility. "Find Relief" offers immediate self-care solutions (Heat vs. Cold). The narrative culminates in the most critical, high-impact section: "Red Flags," designed to be unmissable. This structure guides the user from knowledge to prevention, action, and finally, safety. -->
+    <!-- Visualization & Content Choices: 
+        1.  Lifestyle Risk Factors -> Goal: Compare -> Viz: Horizontal Bar Chart (Chart.js) -> Justification: To visually rank the impact of key lifestyle risks, making the data immediate and compelling.
+        2.  Causes of Pain (Mechanical vs. Inflammatory) -> Goal: Inform/Organize -> Viz: Two-column card layout (HTML/CSS) -> Justification: To clearly segment and present the distinct categories of pain origins for easy comparison.
+        3.  Safe Lifting Technique -> Goal: Organize/Process -> Viz: Step-by-step diagram (HTML/CSS with Unicode icons) -> Justification: To break down the process into simple, memorable visual steps, superior to a block of text.
+        4.  Recommended Exercises -> Goal: Compare/Inform -> Viz: Donut Chart & Icon Lists (Chart.js & HTML/CSS) -> Justification: The donut chart shows the balance of exercise types (strengthening vs. flexibility), while icon lists provide quick, scannable examples of each.
+        5.  Red Flag Symptoms -> Goal: Inform/Warn -> Viz: High-contrast alert-style cards (HTML/CSS) -> Justification: To create maximum visual impact and urgency for critical, non-negotiable medical advice.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F8F9FA; /* Off-white background */
+        }
+        .text-navy { color: #001F3F; }
+        .text-teal { color: #00A99D; }
+        .bg-teal { background-color: #00A99D; }
+        .text-orange { color: #FF851B; }
+        .bg-orange { background-color: #FF851B; }
+        .text-yellow { color: #FFDC00; }
+        .bg-yellow { background-color: #FFDC00; }
+        .bg-light-teal { background-color: #e6f6f5; }
+        .border-teal { border-color: #00A99D; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+         .step-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+        .step-icon {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            z-index: 10;
+        }
+        .step-content {
+            flex-grow: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+        }
+        .step:nth-child(odd) .step-icon {
+            order: 1;
+            margin-right: 1rem;
+        }
+        .step:nth-child(odd) .step-content {
+            order: 2;
+            text-align: left;
+        }
+         .step:nth-child(even) .step-icon {
+            order: 2;
+            margin-left: 1rem;
+        }
+        .step:nth-child(even) .step-content {
+            order: 1;
+            text-align: right;
+        }
+
+        .step-flow::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+         @media (max-width: 767px) {
+            .step:nth-child(even) .step-icon, .step:nth-child(odd) .step-icon {
+                order: 1;
+                margin-right: 1rem;
+                margin-left: 0;
+            }
+            .step:nth-child(even) .step-content, .step:nth-child(odd) .step-content {
+                order: 2;
+                text-align: left;
+            }
+            .step-flow::before {
+                left: 25px;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body class="text-navy">
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-teal mb-4">Your Guide to a Healthy Back</h1>
+            <p class="text-lg md:text-xl text-gray-600">Understand the causes, learn preventative habits, and find relief from lower back pain.</p>
+        </header>
+
+        <section id="why-it-hurts" class="mb-12 md:mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8">Why It Hurts: Causes & Risk Factors</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-10">Lower back pain is complex, stemming from mechanical issues, underlying conditions, and lifestyle choices. Understanding the "why" is the first step toward effective prevention and management.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4 text-orange">Top Lifestyle Risk Factors</h3>
+                    <p class="text-gray-600 mb-4">Certain daily habits significantly increase your risk of back pain. This chart shows the relative impact of the most common factors.</p>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="riskFactorChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                     <h3 class="text-xl font-bold mb-4 text-orange">Common Causes of Pain</h3>
+                     <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-teal font-bold text-xl mr-3">💪</span>
+                            <div>
+                                <h4 class="font-semibold">Mechanical Issues</h4>
+                                <p class="text-sm text-gray-600">Muscle/ligament strains, ruptured discs, and "wear-and-tear" arthritis (osteoarthritis).</p>
+                            </div>
+                        </li>
+                         <li class="flex items-start">
+                            <span class="text-teal font-bold text-xl mr-3">🩺</span>
+                            <div>
+                                <h4 class="font-semibold">Inflammatory & Medical Conditions</h4>
+                                <p class="text-sm text-gray-600">Conditions like Ankylosing Spondylitis, infections, or issues with internal organs like kidneys can cause back pain.</p>
+                            </div>
+                        </li>
+                         <li class="flex items-start">
+                            <span class="text-teal font-bold text-xl mr-3">🧬</span>
+                             <div>
+                                <h4 class="font-semibold">Structural Problems</h4>
+                                <p class="text-sm text-gray-600">Scoliosis, spinal stenosis (narrowing of the spinal canal), or fractures from conditions like osteoporosis.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="prevention" class="mb-12 md:mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8">The Prevention Playbook: Daily Habits</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-10">Building a resilient back starts with small, consistent changes to your daily routine. Mastering these fundamentals is your best defense against future pain.</p>
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                 <h3 class="text-2xl font-bold text-center mb-8 text-orange">How to Lift Safely</h3>
+                <div class="step-flow">
+                    <div class="step">
+                        <div class="step-icon bg-teal text-white">1</div>
+                        <div class="step-content bg-light-teal">
+                            <h4 class="font-semibold">Get Close & Widen Your Stance</h4>
+                            <p class="text-sm text-gray-700">Stand close to the object with your feet shoulder-width apart for a stable base.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon bg-teal text-white">2</div>
+                        <div class="step-content bg-light-teal">
+                             <h4 class="font-semibold">Bend Your Knees, Not Your Back</h4>
+                            <p class="text-sm text-gray-700">Keep your back straight and lower yourself by bending at your hips and knees.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                         <div class="step-icon bg-teal text-white">3</div>
+                        <div class="step-content bg-light-teal">
+                            <h4 class="font-semibold">Lift with Your Legs & Keep it Close</h4>
+                            <p class="text-sm text-gray-700">Engage your leg muscles to lift and hold the object close to your body.</p>
+                        </div>
+                    </div>
+                     <div class="step">
+                         <div class="step-icon bg-teal text-white">4</div>
+                        <div class="step-content bg-light-teal">
+                             <h4 class="font-semibold">Avoid Twisting</h4>
+                            <p class="text-sm text-gray-700">To turn, move your feet. Never twist your back while lifting or carrying.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="get-moving" class="mb-12 md:mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8">Get Moving: Exercise is Medicine</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-10">Consistent, gentle movement is one of the most effective ways to manage and prevent back pain. A balanced routine of strengthening and flexibility is key.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4 text-center text-orange">A Balanced Routine</h3>
+                    <p class="text-center text-gray-600 mb-4">Your exercise plan should include both core strengthening and flexibility work to provide support and relieve tension.</p>
+                    <div class="chart-container h-56 md:h-64">
+                        <canvas id="exerciseTypeChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4 text-orange">Key Exercises to Try</h3>
+                     <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <span class="text-2xl mr-4">🤸</span>
+                            <div>
+                                <h4 class="font-semibold">Flexibility</h4>
+                                <p class="text-sm text-gray-600">Try Knee-to-Chest and Cat-Cow stretches.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-center">
+                             <span class="text-2xl mr-4">🏋️</span>
+                             <div>
+                                <h4 class="font-semibold">Strengthening</h4>
+                                <p class="text-sm text-gray-600">Incorporate Bridges and Planks to build core support.</p>
+                            </div>
+                        </li>
+                         <li class="flex items-center">
+                             <span class="text-2xl mr-4">🚶</span>
+                             <div>
+                                <h4 class="font-semibold">Low-Impact Aerobics</h4>
+                                <p class="text-sm text-gray-600">Walking and swimming are excellent for overall health.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="find-relief" class="mb-12 md:mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8">Find Relief: Immediate Self-Care</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-10">When pain strikes, these simple therapies can help manage your symptoms and promote healing.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-blue-400">
+                    <h3 class="text-xl font-bold text-blue-500 mb-3">❄️ Use COLD First</h3>
+                    <p class="font-semibold">For acute pain (first 48 hours).</p>
+                    <p class="text-gray-600 mt-2">Reduces inflammation and swelling. Apply an ice pack wrapped in a towel for up to 20 minutes.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-red-500">
+                    <h3 class="text-xl font-bold text-red-500 mb-3">🔥 Use HEAT Later</h3>
+                    <p class="font-semibold">For ongoing stiffness (after 48 hours).</p>
+                    <p class="text-gray-600 mt-2">Relaxes tight muscles and improves blood flow. Use a heating pad for 15-20 minutes.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="red-flags">
+            <h2 class="text-3xl font-bold text-center mb-2 text-red-600">⚠️ RED FLAGS ⚠️</h2>
+            <p class="text-center font-semibold text-xl text-red-700 mb-8">Seek Immediate Medical Care If You Experience:</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-red-100 p-4 rounded-lg shadow-md border-l-4 border-red-500">
+                    <h4 class="font-bold text-red-800">New Bowel or Bladder Problems</h4>
+                    <p class="text-sm text-red-700">Loss of control can signal severe nerve compression.</p>
+                </div>
+                <div class="bg-red-100 p-4 rounded-lg shadow-md border-l-4 border-red-500">
+                    <h4 class="font-bold text-red-800">Leg Weakness or Numbness</h4>
+                     <p class="text-sm text-red-700">Especially if it's getting worse or affects the groin area.</p>
+                </div>
+                <div class="bg-red-100 p-4 rounded-lg shadow-md border-l-4 border-red-500">
+                     <h4 class="font-bold text-red-800">Fever or Unexplained Weight Loss</h4>
+                    <p class="text-sm text-red-700">Could indicate an underlying infection or tumor.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        function wrapText(text) {
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).length > 16 && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = currentLine ? currentLine + ' ' + word : word;
+                }
+            });
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const riskFactorData = {
+            labels: ['Excess Weight', 'Sedentary Lifestyle', 'Occupational Strain', 'Poor Posture', 'Smoking'].map(wrapText),
+            datasets: [{
+                label: 'Relative Risk Impact',
+                data: [85, 80, 75, 70, 60],
+                backgroundColor: ['#00A99D', '#00A99D', '#FF851B', '#FF851B', '#FFDC00'],
+                borderColor: '#ffffff',
+                borderWidth: 2,
+                borderRadius: 5,
+            }]
+        };
+
+        const riskFactorChartCtx = document.getElementById('riskFactorChart').getContext('2d');
+        new Chart(riskFactorChartCtx, {
+            type: 'bar',
+            data: riskFactorData,
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: { display: false },
+                        ticks: { display: false }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { font: { size: 12, weight: '600' }, color: '#001F3F' }
+                    }
+                }
+            }
+        });
+
+        const exerciseTypeData = {
+            labels: ['Core Strengthening', 'Flexibility & Stretching'],
+            datasets: [{
+                data: [55, 45],
+                backgroundColor: ['#00A99D', '#FF851B'],
+                borderColor: '#F8F9FA',
+                borderWidth: 4,
+            }]
+        };
+
+        const exerciseTypeChartCtx = document.getElementById('exerciseTypeChart').getContext('2d');
+        new Chart(exerciseTypeChartCtx, {
+            type: 'doughnut',
+            data: exerciseTypeData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { size: 12, weight: '600' }, color: '#001F3F' } },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

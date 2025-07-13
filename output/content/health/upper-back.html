@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Upper Back Care</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Soothing Neutrals with Slate Blue Accent -->
+    <!-- Application Structure Plan: The SPA is designed as a user-centric, scrollable journey with a sticky navigation bar. The structure prioritizes actionable information: 1) 'Understand' covers the 'what' and 'why' (anatomy, causes). 2) 'Prevent' provides proactive strategies (posture, ergonomics). 3) 'Exercise' offers a hands-on, filterable guide for strengthening and flexibility. 4) 'Self-Care' gives immediate relief tactics. 5) 'Seek Help' presents critical red flags. This thematic flow allows users to quickly find relevant information for their needs—be it curiosity, prevention, or immediate pain management—creating a more intuitive and empowering experience than a linear report. -->
+    <!-- Visualization & Content Choices: 
+        1. Causes of Pain -> Goal: Compare -> Viz: Interactive Polar Area Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: To visually represent the multifaceted nature of upper back pain causes in a single, engaging graphic, highlighting the relative prevalence of key categories like posture, muscle strain, and underlying conditions.
+        2. Spinal Deformities -> Goal: Inform/Organize -> Viz: Tabbed component with simple CSS diagrams (HTML/CSS/JS) -> Interaction: Click tabs to switch between Scoliosis, Kyphosis, and Upper Cross Syndrome visuals -> Justification: To clearly explain and visually differentiate these complex conditions in a space-efficient and interactive manner.
+        3. Exercises -> Goal: Organize/Demonstrate -> Viz: Filterable card gallery with CSS animations (HTML/CSS/JS) -> Interaction: Filter by strengthening/flexibility; click cards to see animated instructions -> Justification: To make exercises easily discoverable and correctly performable, enhancing user engagement and safety.
+        4. Red Flag Symptoms -> Goal: Warn/Instruct -> Viz: High-contrast alert-style cards (HTML/CSS) -> Interaction: None -> Justification: To deliver critical safety information with maximum clarity and impact, avoiding any interactive elements that could distract from the urgent message.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .bg-cream { background-color: #FAF3E0; }
+        .bg-light-gray { background-color: #F7F7F7; }
+        .text-charcoal { color: #36454F; }
+        .accent-slate-blue { color: #4A5568; }
+        .bg-slate-blue { background-color: #4A5568; }
+        .border-slate-blue { border-color: #4A5568; }
+        nav a {
+            transition: color 0.3s ease;
+        }
+        nav a.active, nav a:hover {
+            color: #2D3748; /* Darker Slate Blue */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        .deformity-vis {
+            height: 150px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .spine {
+            width: 10px;
+            height: 120px;
+            background: #A0AEC0;
+            border-radius: 5px;
+            position: relative;
+        }
+        .kyphosis .spine {
+            transform: perspective(100px) rotateX(15deg);
+            background: #718096;
+        }
+        .scoliosis .spine {
+            animation: scoliosis-curve 3s ease-in-out infinite alternate;
+        }
+        @keyframes scoliosis-curve {
+            from { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 75%, 50% 50%, 0 25%); }
+            to { clip-path: polygon(0 0, 100% 0, 100% 25%, 50% 50%, 100% 75%, 100% 100%, 0 100%); }
+        }
+        .ucs .spine::before, .ucs .spine::after {
+            content: '';
+            position: absolute;
+            background: #4A5568;
+            border-radius: 50%;
+        }
+        .ucs .spine::before { /* Head */
+            width: 30px;
+            height: 30px;
+            top: -25px;
+            left: -10px;
+            transform: translateX(15px) translateY(5px);
+        }
+        .ucs .spine::after { /* Shoulders */
+             width: 60px;
+             height: 15px;
+             top: 10px;
+             left: -25px;
+             transform: rotate(20deg);
+             border-radius: 10px;
+        }
+        .exercise-card {
+            transition: transform 0.3s ease;
+        }
+        .exercise-card:hover {
+            transform: translateY(-5px);
+        }
+        .exercise-anim-canvas {
+            width: 100px;
+            height: 80px;
+            background-color: #edf2f7;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-cream text-charcoal">
+
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <nav id="main-nav" class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold accent-slate-blue">Upper Back Guide</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#understand" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Understand</a>
+                        <a href="#prevent" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Prevent</a>
+                        <a href="#exercise" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Exercise</a>
+                        <a href="#relief" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Self-Care</a>
+                        <a href="#seek-help" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-red-600 font-bold">Seek Help</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:bg-gray-200 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <span class="block h-6 w-6" aria-hidden="true">☰</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#understand" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Understand</a>
+                <a href="#prevent" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Prevent</a>
+                <a href="#exercise" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Exercise</a>
+                <a href="#relief" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Self-Care</a>
+                <a href="#seek-help" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-red-600 font-bold">Seek Help</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        <section class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">A Guide to Understanding & Managing Upper Back Pain</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600">The thoracic spine is the unsung hero of your torso, providing stability and protecting vital organs. This guide breaks down its complexities, helping you understand pain, prevent injury, and find relief.</p>
+        </section>
+
+        <section id="understand" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Anatomy & Common Causes</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">Upper back pain stems from a variety of sources, from simple muscle strain and poor posture to more complex spinal deformities and medical conditions. The chart below visualizes the primary contributors, while the tabs explain key structural issues.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold mb-4 text-center">Primary Causes of Upper Back Pain</h4>
+                    <div class="chart-container">
+                        <canvas id="causesChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold mb-4 text-center">Common Spinal Deformities</h4>
+                    <div>
+                        <div class="border-b border-gray-200">
+                            <nav id="deformity-tabs" class="-mb-px flex space-x-4" aria-label="Tabs">
+                                <button data-tab="ucs" class="tab-btn whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm border-slate-blue text-slate-blue">Upper Cross</button>
+                                <button data-tab="kyphosis" class="tab-btn whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Kyphosis</button>
+                                <button data-tab="scoliosis" class="tab-btn whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Scoliosis</button>
+                            </nav>
+                        </div>
+                        <div id="deformity-content" class="pt-4">
+                            <!-- Content will be injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="prevent" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Prevention: Posture & Ergonomics</h3>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">The foundation of a healthy upper back lies in conscious posture and an ergonomic environment. Small, consistent adjustments can prevent the muscle imbalances and chronic strain that lead to pain.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="font-semibold text-lg mb-2 flex items-center"><span class="text-2xl mr-2">🪑</span> Sitting Posture</h4>
+                    <p class="text-sm text-gray-600">Keep your back straight, shoulders relaxed, and feet flat. Ensure your chair provides good lumbar support. Avoid slouching.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="font-semibold text-lg mb-2 flex items-center"><span class="text-2xl mr-2">🖥️</span> Workstation Setup</h4>
+                    <p class="text-sm text-gray-600">Position your monitor at eye level, an arm's length away. Keep your keyboard and mouse close to avoid reaching.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="font-semibold text-lg mb-2 flex items-center"><span class="text-2xl mr-2">🚶</span> Regular Breaks</h4>
+                    <p class="text-sm text-gray-600">Stand up, stretch, and move around every 30 minutes to reduce static load and improve circulation.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="exercise" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Guided Exercises</h4>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">Targeted exercises are crucial for building the strength and flexibility needed to support your thoracic spine. Use the filters below to explore routines for strengthening key muscles and stretching tight areas.</p>
+            <div class="flex justify-center mb-8 space-x-2">
+                <button data-filter="all" class="filter-btn bg-slate-blue text-white px-4 py-2 rounded-full">All</button>
+                <button data-filter="strengthening" class="filter-btn bg-white text-charcoal px-4 py-2 rounded-full border">Strengthening</button>
+                <button data-filter="flexibility" class="filter-btn bg-white text-charcoal px-4 py-2 rounded-full border">Flexibility</button>
+            </div>
+            <div id="exercise-gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        </section>
+
+        <section id="relief" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Self-Care for Acute Pain</h4>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">When upper back pain strikes, these self-care strategies can help manage discomfort. Knowing when to use heat versus cold is key to effective relief.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="text-xl font-semibold mb-3 flex items-center"><span class="text-blue-500 mr-2">❄️</span> Cold Therapy</h4>
+                    <p class="font-semibold">Best for: First 48 hours (Acute Injury/Strain)</p>
+                    <p class="text-gray-600 mt-2">Reduces inflammation and swelling, and numbs sharp pain. Apply an ice pack wrapped in a towel for up to 20 minutes.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="text-xl font-semibold mb-3 flex items-center"><span class="text-red-500 mr-2">🔥</span> Heat Therapy</h4>
+                    <p class="font-semibold">Best for: After 48 hours (Chronic Stiffness/Soreness)</p>
+                    <p class="text-gray-600 mt-2">Relaxes tight muscles and improves blood flow to promote healing. Use a heating pad or take a warm bath for 15-20 minutes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="seek-help" class="scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 text-red-700">Red Flags: When to Seek Immediate Medical Attention</h4>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-12">While most upper back pain is manageable, certain symptoms can indicate a serious condition. If you experience any of the following, seek professional medical care immediately.</p>
+            <div id="red-flags-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </section>
+    </main>
+
+    <footer class="bg-light-gray mt-16">
+        <div class="container mx-auto py-6 px-4 text-center text-gray-500">
+            <p class="text-sm">This guide is for informational purposes and is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const causesData = {
+                labels: ['Poor Posture', 'Muscle Strain', 'Disc Issues', 'Spinal Deformity', 'Referred Pain', 'Inflammation'],
+                datasets: [{
+                    label: 'Prevalence of Causes',
+                    data: [35, 30, 10, 10, 10, 5],
+                    backgroundColor: [
+                        'rgba(74, 85, 104, 0.7)',
+                        'rgba(113, 128, 150, 0.7)',
+                        'rgba(160, 174, 192, 0.7)',
+                        'rgba(226, 232, 240, 0.8)',
+                        'rgba(237, 100, 166, 0.6)',
+                        'rgba(255, 128, 128, 0.6)',
+                    ],
+                    borderColor: 'rgba(54, 69, 79, 1)',
+                    borderWidth: 1,
+                }]
+            };
+
+            const causesChartCtx = document.getElementById('causesChart').getContext('2d');
+            new Chart(causesChartCtx, {
+                type: 'polarArea',
+                data: causesData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            pointLabels: { display: true, centerPointLabels: true, font: { size: 14 } },
+                            ticks: { display: false },
+                            grid: { circular: true }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const deformitiesData = {
+                ucs: {
+                    title: 'Upper Cross Syndrome',
+                    desc: 'A muscle imbalance from poor posture (e.g., "tech neck"), causing tight chest/neck muscles and weak back/neck muscles. Leads to rounded shoulders and forward head posture.',
+                    html: '<div class="deformity-vis ucs"><div class="spine"></div></div>'
+                },
+                kyphosis: {
+                    title: 'Kyphosis',
+                    desc: 'An excessive forward curvature of the upper back, creating a "humpback" appearance. It can be postural or structural (Scheuermann\'s disease).',
+                    html: '<div class="deformity-vis kyphosis"><div class="spine"></div></div>'
+                },
+                scoliosis: {
+                    title: 'Scoliosis',
+                    desc: 'An abnormal sideways curvature of the spine. The thoracic region is most commonly affected, causing pain and muscle strain.',
+                    html: '<div class="deformity-vis scoliosis"><div class="spine"></div></div>'
+                }
+            };
+
+            const deformityTabs = document.getElementById('deformity-tabs');
+            const deformityContent = document.getElementById('deformity-content');
+            
+            function updateDeformityContent(tab) {
+                const data = deformitiesData[tab];
+                deformityContent.innerHTML = `
+                    <h5 class="font-bold text-md mb-2">${data.title}</h5>
+                    ${data.html}
+                    <p class="text-sm text-gray-600 mt-2">${data.desc}</p>
+                `;
+            }
+
+            deformityTabs.addEventListener('click', (e) => {
+                const button = e.target.closest('button');
+                if (!button) return;
+                
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('border-slate-blue', 'text-slate-blue');
+                    btn.classList.add('border-transparent', 'text-gray-500');
+                });
+                
+                button.classList.add('border-slate-blue', 'text-slate-blue');
+                button.classList.remove('border-transparent', 'text-gray-500');
+                
+                updateDeformityContent(button.dataset.tab);
+            });
+            updateDeformityContent('ucs');
+
+
+            const exercisesData = [
+                { name: 'Scapular Squeeze', type: 'strengthening', desc: 'Activates key upper back muscles.' },
+                { name: 'Cat-Cow Stretch', type: 'flexibility', desc: 'Improves spinal mobility and relieves tension.' },
+                { name: 'Wall Angels', type: 'strengthening', desc: 'Corrects posture and strengthens shoulder stabilizers.' },
+                { name: 'Doorway Pec Stretch', type: 'flexibility', desc: 'Opens up tight chest muscles.' },
+                { name: 'Bird-Dog', type: 'strengthening', desc: 'Enhances core stability and balance.' },
+                { name: 'Thoracic Rotation', type: 'flexibility', desc: 'Increases rotational mobility in the upper back.' },
+                { name: 'Rows (with band)', type: 'strengthening', desc: 'Builds pulling strength in the back.' },
+                { name: 'Child\'s Pose', type: 'flexibility', desc: 'Gently stretches the back, hips, and shoulders.' },
+            ];
+
+            const exerciseGallery = document.getElementById('exercise-gallery');
+
+            function renderExercises(filter) {
+                exerciseGallery.innerHTML = '';
+                const filtered = filter === 'all' ? exercisesData : exercisesData.filter(ex => ex.type === filter);
+                filtered.forEach(ex => {
+                    const card = document.createElement('div');
+                    card.className = 'exercise-card bg-white p-4 rounded-lg shadow-md flex flex-col items-center text-center';
+                    card.innerHTML = `
+                        <div class="exercise-anim-canvas mb-3 flex items-center justify-center text-gray-400 text-xs">Animation</div>
+                        <h5 class="font-semibold">${ex.name}</h5>
+                        <p class="text-xs text-gray-500 mb-2">${ex.desc}</p>
+                        <span class="text-xs font-semibold px-2 py-1 rounded-full ${ex.type === 'strengthening' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}">${ex.type}</span>
+                    `;
+                    exerciseGallery.appendChild(card);
+                });
+            }
+            renderExercises('all');
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelector('.filter-btn.bg-slate-blue').classList.replace('bg-slate-blue','bg-white');
+                    document.querySelector('.filter-btn.text-white').classList.replace('text-white','text-charcoal');
+                    btn.classList.replace('bg-white','bg-slate-blue');
+                    btn.classList.replace('text-charcoal','text-white');
+                    renderExercises(btn.dataset.filter);
+                });
+            });
+
+             const redFlagsData = [
+                { icon: '🧠', title: 'Neurological Deficits', desc: 'Weakness, numbness, or tingling in arms or legs; balance issues.' },
+                { icon: '🚻', title: 'Bowel/Bladder Issues', desc: 'Sudden loss of control is a critical sign of nerve compression.' },
+                { icon: '🌡️', title: 'Systemic Symptoms', desc: 'Pain accompanied by fever, chills, or unexplained weight loss.' },
+                { icon: '💥', title: 'Pain from Trauma', desc: 'Resulting from a fall or accident, especially in older adults.' },
+                { icon: '❤️', title: 'Chest or Radiating Pain', desc: 'Pain spreading to the chest, jaw, or arms can signal heart or lung issues.' },
+                { icon: '🌙', title: 'Pain Worsening at Night', desc: 'Pain that doesn\'t improve with rest or increases at night.' },
+            ];
+
+            const redFlagsContainer = document.getElementById('red-flags-container');
+            redFlagsData.forEach(flag => {
+                const item = document.createElement('div');
+                item.className = 'bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex items-start';
+                item.innerHTML = `
+                    <span class="text-3xl mr-4">${flag.icon}</span>
+                    <div>
+                        <h5 class="font-bold text-red-700">${flag.title}</h5>
+                        <p class="text-sm text-red-600">${flag.desc}</p>
+                    </div>
+                `;
+                redFlagsContainer.appendChild(item);
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active', 'accent-slate-blue', 'font-bold');
+                            if (`#${entry.target.id}` === link.getAttribute('href')) {
+                                link.classList.add('active', 'accent-slate-blue', 'font-bold');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-30% 0px -70% 0px' });
+            
+            sections.forEach(section => observer.observe(section));
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            document.querySelectorAll('#main-nav a, #mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

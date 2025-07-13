@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: A Guide to Knee Health</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a logical narrative designed for easy digestion: 1) A bold introduction hooks the user. 2) "Understanding the Causes" uses a donut chart to provide a quick, proportional overview of pain origins. 3) "Top Risk Factors" uses a bar chart to rank the most significant threats, guiding preventative focus. 4) "Your Proactive Playbook" offers actionable prevention advice through icon-based cards and a clear diagram of key muscle groups. 5) The narrative culminates in the most critical section, "Urgent Warnings," which uses a high-contrast design to emphasize red flag symptoms, ensuring this vital safety information is unmissable. -->
+    <!-- Visualization & Content Choices: 
+        1.  Primary Causes of Knee Pain -> Goal: Compare -> Viz: Donut Chart (Chart.js/Canvas) -> Justification: To provide a quick, proportional overview of the main sources of knee pain (traumatic vs. overuse vs. degenerative). NO SVG.
+        2.  Key Lifestyle Risk Factors -> Goal: Rank/Compare -> Viz: Horizontal Bar Chart (Chart.js/Canvas) -> Justification: To visually rank the impact of major modifiable risk factors like excess weight and muscle weakness, making the most significant threats immediately clear. NO SVG.
+        3.  Prevention Strategies -> Goal: Organize/Instruct -> Viz: HTML/CSS diagram with Unicode icons -> Justification: To present clear, scannable "do vs. don't" style guides for critical prevention strategies like safe lifting and choosing footwear. NO SVG/Mermaid JS.
+        4.  Red Flag Symptoms -> Goal: Warn/Inform -> Viz: High-contrast alert-style cards (HTML/CSS) -> Justification: To create a visually arresting section that conveys the seriousness and urgency of critical medical symptoms, prioritizing user safety. NO SVG/Mermaid JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFF8F0; /* Creamy off-white */
+            color: #1F1300; /* Dark Brown/Black */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .text-accent-yellow { color: #FFC15E; }
+        .bg-accent-yellow { background-color: #FFC15E; }
+        
+        .text-accent-orange-light { color: #F7B05B; }
+        .bg-accent-orange-light { background-color: #F7B05B; }
+
+        .text-accent-orange-mid { color: #F7934C; }
+        .bg-accent-orange-mid { background-color: #F7934C; }
+        
+        .text-accent-orange-dark { color: #CC5803; }
+        .bg-accent-orange-dark { background-color: #CC5803; }
+
+        .header-gradient {
+            background: linear-gradient(135deg, #F7934C, #FFC15E);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-black text-accent-orange-dark mb-4 tracking-tight">FORTIFY YOUR KNEES</h1>
+            <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">A visual guide to understanding knee pain, building resilience, and knowing when to seek help.</p>
+        </header>
+
+        <section id="causes" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-accent-orange-dark">What Causes Knee Pain?</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">Knee pain is a widespread issue stemming from a variety of sources. While traumatic injuries are a major factor, chronic overuse and degenerative "wear-and-tear" conditions also play a significant role in knee health.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="bg-white p-6 rounded-xl shadow-2xl border-t-4 border-accent-orange-dark">
+                    <h3 class="text-xl font-semibold mb-4 text-center">Primary Categories of Knee Pain</h3>
+                    <div class="chart-container">
+                        <canvas id="causesChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-500 text-center mt-4">A look at the proportional breakdown of common knee pain origins.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-2xl border-t-4 border-accent-orange-dark">
+                    <h3 class="text-xl font-semibold mb-4 text-center">Top Risk Factors for Knee Issues</h3>
+                    <div class="chart-container">
+                        <canvas id="riskFactorsChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-500 text-center mt-4">Certain lifestyle and biomechanical factors significantly increase the risk of developing knee pain.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="prevention" class="mb-20 bg-amber-50 p-8 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-10 text-accent-orange-dark">Your Proactive Playbook for Prevention</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">The most effective strategy against knee pain is prevention. Simple, consistent habits can build powerful resilience against injury and chronic pain. Strengthening the muscles around the knee provides crucial stability and support.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-start">
+                <div>
+                    <h3 class="font-bold text-xl mb-4 text-center">Key Lifestyle Habits</h3>
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md flex items-start">
+                            <span class="text-4xl mr-4">⚖️</span>
+                            <div>
+                                <h4 class="font-bold text-lg">Manage Weight</h4>
+                                <p class="text-gray-600 text-sm">Every extra pound adds 3-5 lbs of pressure on your knees. Maintaining a healthy weight is the most impactful way to protect them.</p>
+                            </div>
+                        </div>
+                         <div class="bg-white p-6 rounded-lg shadow-md flex items-start">
+                            <span class="text-4xl mr-4">👟</span>
+                            <div>
+                                <h4 class="font-bold text-lg">Choose Proper Footwear</h4>
+                                <p class="text-gray-600 text-sm">Wear supportive, well-cushioned shoes. Poor footwear disrupts alignment, sending stress straight to your knees.</p>
+                            </div>
+                        </div>
+                         <div class="bg-white p-6 rounded-lg shadow-md flex items-start">
+                             <span class="text-4xl mr-4">🏋️</span>
+                            <div>
+                                <h4 class="font-bold text-lg">Lift Smart</h4>
+                                <p class="text-gray-600 text-sm">Always lift with your legs, not your back. Bend your knees, keep the load close, and never twist while lifting.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-accent-orange-mid">
+                    <h3 class="font-bold text-xl mb-4 text-center">Knee Stability All-Stars</h3>
+                    <p class="text-sm text-gray-600 text-center mb-6">Strong muscles act as shock absorbers and stabilizers for the knee. Focus on these four key groups.</p>
+                    <div class="space-y-4">
+                        <div class="bg-accent-orange-dark text-white p-3 rounded-lg shadow-md text-center">
+                            <h4 class="font-bold">Quadriceps (Front Thigh)</h4>
+                            <p class="text-xs">Crucial for knee extension and stabilization.</p>
+                        </div>
+                         <div class="bg-accent-orange-mid text-white p-3 rounded-lg shadow-md text-center">
+                            <h4 class="font-bold">Hamstrings (Back Thigh)</h4>
+                            <p class="text-xs">Controls knee flexion and supports the ACL.</p>
+                        </div>
+                         <div class="bg-accent-orange-light text-white p-3 rounded-lg shadow-md text-center">
+                            <h4 class="font-bold">Glutes (Hips/Buttocks)</h4>
+                            <p class="text-xs">Prevents inward knee collapse and ensures proper alignment.</p>
+                        </div>
+                         <div class="bg-gray-700 text-white p-3 rounded-lg shadow-md text-center">
+                            <h4 class="font-bold">Calves</h4>
+                            <p class="text-xs">Supports the entire lower kinetic chain from the ground up.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="red-flags" class="header-gradient text-dark p-8 rounded-xl shadow-2xl">
+            <h2 class="text-3xl font-black text-center mb-4 tracking-tight text-white">URGENT WARNINGS: SEEK HELP NOW</h2>
+            <p class="text-center font-semibold text-lg text-yellow-100 mb-8">If you experience knee pain with any of these symptoms, seek IMMEDIATE medical care.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-dark">
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">💥</span> Inability to Bear Weight</h4>
+                    <p class="text-sm">Could indicate a fracture, dislocation, or severe ligament tear.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">🌡️</span> Fever with Swelling</h4>
+                    <p class="text-sm">A sign of a serious joint infection (septic arthritis).</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">🧠</span> Severe Numbness</h4>
+                    <p class="text-sm">Suggests serious nerve compression or damage.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">🦵</span> Obvious Deformity</h4>
+                    <p class="text-sm">The knee joint is visibly out of place or misshapen.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">🩸</span> Calf Pain & Swelling</h4>
+                    <p class="text-sm">Could be a sign of a DVT (blood clot), a medical emergency.</p>
+                </div>
+                <div class="bg-white/90 p-5 rounded-lg shadow-lg transform hover:scale-105 transition-transform">
+                    <h4 class="font-bold text-lg flex items-center mb-2"><span class="text-3xl mr-3">🚽</span> Loss of Bladder Control</h4>
+                    <p class="text-sm">A critical sign of Cauda Equina Syndrome.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: { size: 12, family: 'Poppins' },
+                        color: '#1F1300'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#1F1300',
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#FFFFFF',
+                    callbacks: { title: tooltipTitleCallback },
+                    bodyFont: { family: 'Poppins' },
+                    titleFont: { family: 'Poppins', weight: 'bold' }
+                }
+            }
+        };
+
+        const causesChartCtx = document.getElementById('causesChart').getContext('2d');
+        new Chart(causesChartCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Traumatic Injuries', 'Overuse Syndromes', 'Degenerative Conditions'],
+                datasets: [{
+                    label: 'Pain Categories',
+                    data: [40, 35, 25],
+                    backgroundColor: ['#F7934C', '#F7B05B', '#CC5803'],
+                    borderColor: '#ffffff',
+                    borderWidth: 5,
+                    hoverOffset: 10
+                }]
+            },
+            options: { ...commonChartOptions, cutout: '60%' }
+        });
+
+        const riskFactorsCtx = document.getElementById('riskFactorsChart').getContext('2d');
+        new Chart(riskFactorsCtx, {
+            type: 'bar',
+            data: {
+                labels: [['Excess Weight &', 'Obesity'], ['Muscle Weakness &', 'Imbalances'], ['Previous Injury', 'History'], ['Sedentary', 'Lifestyle']],
+                datasets: [{
+                    label: 'Relative Risk Impact',
+                    data: [95, 85, 70, 60],
+                    backgroundColor: ['#CC5803', '#F7934C', '#F7B05B', '#FFC15E'],
+                    borderRadius: 6,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.7,
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                },
+                scales: {
+                    x: { 
+                        display: false, 
+                        beginAtZero: true, 
+                        max: 100 
+                    },
+                    y: { 
+                        grid: { display: false, drawBorder: false },
+                        ticks: { 
+                            font: { size: 13, weight: 'bold', family: 'Poppins' }, 
+                            color: '#1F1300' 
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

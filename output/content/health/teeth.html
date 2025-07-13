@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Oral & Dental Health</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Blue Accent -->
+    <!-- Application Structure Plan: The SPA is designed as a user-guided journey through oral health. It starts with foundational anatomy ('Explore Your Mouth'), moves to common issues ('Common Problems') presented in an interactive accordion, then highlights the critical 'Mouth-Body Connection' with a visual diagram. The final sections are actionable: 'Your Preventative Toolkit' with filterable tips, and a high-visibility 'When to See a Dentist' section for urgent symptoms. This thematic flow prioritizes understanding and action over the linear structure of the source report, making complex information digestible and user-friendly. -->
+    <!-- Visualization & Content Choices: 1. Common Oral Conditions -> Goal: Organize/Inform -> Viz: Interactive Accordion (HTML/CSS/JS) -> Justification: Breaks down dense information on multiple conditions into manageable, user-triggered sections, preventing information overload. 2. Gum Disease Progression -> Goal: Compare -> Viz: Side-by-side comparison cards (HTML/CSS) -> Justification: Clearly contrasts Gingivitis and Periodontitis to emphasize the importance of early intervention. 3. Mouth-Body Connection -> Goal: Relationships -> Viz: Custom Diagram (HTML/CSS) -> Justification: Visually represents the report's key theme of systemic links in an engaging way that a simple list could not achieve. 4. Preventative Diet -> Goal: Instruct -> Viz: Two-column 'Good vs. Bad' card layout -> Justification: Provides clear, actionable dietary guidance. CONFIRMATION: NO SVG/Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .bg-cream { background-color: #FDFBF5; }
+        .text-dark-brown { color: #433A31; }
+        .text-warm-gray-600 { color: #57534E; }
+        .accent-blue { color: #3B82F6; }
+        .bg-accent-blue { background-color: #3B82F6; }
+        .border-accent-blue { border-color: #3B82F6; }
+        nav a.active {
+            color: #2563EB;
+            font-weight: 600;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+        }
+        .accordion-content.open {
+            max-height: 1000px; /* Adjust as needed */
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .filter-btn.active {
+            background-color: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
+        }
+        .card-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-cream text-dark-brown">
+
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <nav id="main-nav" class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold accent-blue">Oral Health Guide</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#anatomy" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Anatomy</a>
+                        <a href="#problems" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Problems</a>
+                        <a href="#connection" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Connection</a>
+                        <a href="#prevention" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Prevention</a>
+                        <a href="#urgent" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-red-600 font-bold">Urgent Care</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:bg-gray-200 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <span class="block h-6 w-6" aria-hidden="true">☰</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#anatomy" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Anatomy</a>
+                <a href="#problems" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Problems</a>
+                <a href="#connection" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Connection</a>
+                <a href="#prevention" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Prevention</a>
+                <a href="#urgent" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-red-600 font-bold">Urgent Care</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <section class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Your Mouth, Your Health: An Interactive Guide</h2>
+            <p class="max-w-3xl mx-auto text-lg text-warm-gray-600">Discover the vital role your oral health plays in your overall well-being. This guide breaks down complex topics into easy-to-understand, actionable insights.</p>
+        </section>
+
+        <section id="anatomy" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-12">Explore Your Mouth: The Foundation of Health</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h4 class="text-xl font-semibold mb-4 text-center">Tooth Anatomy</h4>
+                    <div class="relative p-4 border-2 border-gray-200 rounded-lg">
+                        <div class="bg-blue-100 p-4 rounded-t-lg text-center font-semibold">Enamel (Outer Shell)</div>
+                        <div class="bg-yellow-100 p-4 text-center font-semibold">Dentin (Inner Layer)</div>
+                        <div class="bg-red-100 p-4 text-center font-semibold">Pulp (Nerve & Blood Supply)</div>
+                        <div class="bg-green-100 p-4 rounded-b-lg text-center font-semibold">Cementum & Periodontal Ligament (Root & Anchor)</div>
+                    </div>
+                    <p class="text-sm text-warm-gray-600 mt-4">Each tooth has layers: protective **Enamel**, sensitive **Dentin**, vital **Pulp**, and anchoring **Cementum**. Understanding this structure helps you grasp how decay and sensitivity occur.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                     <h4 class="text-xl font-semibold mb-4 text-center">Your Teeth: A Specialized Toolkit</h4>
+                     <ul class="space-y-3">
+                         <li class="flex items-start">
+                             <span class="text-2xl mr-3">🔪</span>
+                             <div><strong class="text-dark-brown">Incisors (8):</strong> Your front teeth, designed for cutting and biting into food.</div>
+                         </li>
+                         <li class="flex items-start">
+                             <span class="text-2xl mr-3">🦁</span>
+                             <div><strong class="text-dark-brown">Canines (4):</strong> The pointed teeth next to incisors, used for tearing tough foods.</div>
+                         </li>
+                         <li class="flex items-start">
+                             <span class="text-2xl mr-3">🔨</span>
+                             <div><strong class="text-dark-brown">Premolars (8):</strong> Between canines and molars, for tearing and crushing.</div>
+                         </li>
+                         <li class="flex items-start">
+                            <span class="text-2xl mr-3">맷</span>
+                             <div><strong class="text-dark-brown">Molars (12):</strong> Your back teeth, designed for grinding food into fine particles.</div>
+                         </li>
+                     </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="problems" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-12">Common Oral Problems: A Closer Look</h3>
+            <div id="accordion-container" class="max-w-4xl mx-auto space-y-4">
+            </div>
+        </section>
+
+        <section id="connection" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-12">The Mouth-Body Connection: More Than Just a Smile</h3>
+             <p class="max-w-3xl mx-auto text-center text-warm-gray-600 mb-12">Your oral health is a gateway to your overall systemic health. Bacteria and inflammation from the mouth can travel throughout the body, impacting vital organs and contributing to chronic diseases.</p>
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-2xl relative">
+                <div class="text-center mb-8">
+                    <div class="inline-block bg-accent-blue text-white font-bold py-3 px-6 rounded-full shadow-lg">Oral Health Hub</div>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 text-center">
+                    <div class="flex flex-col items-center">
+                        <span class="text-4xl mb-2">❤️</span>
+                        <h5 class="font-semibold">Cardiovascular Disease</h5>
+                        <p class="text-xs text-warm-gray-600">Oral bacteria linked to heart infections, clogged arteries, and stroke.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-4xl mb-2">🧠</span>
+                        <h5 class="font-semibold">Alzheimer's Disease</h5>
+                        <p class="text-xs text-warm-gray-600">Gum disease bacteria found in brains of Alzheimer's patients.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-4xl mb-2">🩸</span>
+                        <h5 class="font-semibold">Diabetes</h5>
+                        <p class="text-xs text-warm-gray-600">Gum disease makes blood sugar harder to control, and vice-versa.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-4xl mb-2">🫁</span>
+                        <h5 class="font-semibold">Respiratory Infections</h5>
+                        <p class="text-xs text-warm-gray-600">Bacteria from the mouth can be inhaled, causing pneumonia.</p>
+                    </div>
+                     <div class="flex flex-col items-center">
+                        <span class="text-4xl mb-2">🤰</span>
+                        <h5 class="font-semibold">Pregnancy Outcomes</h5>
+                        <p class="text-xs text-warm-gray-600">Severe gum disease is linked to preterm birth and low birth weight.</p>
+                    </div>
+                     <div class="flex flex-col items-center">
+                        <span class="text-4xl mb-2">🦴</span>
+                        <h5 class="font-semibold">Osteoporosis</h5>
+                        <p class="text-xs text-warm-gray-600">Bone loss in the jaw can lead to tooth loss. Dental x-rays can be a screening tool.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="prevention" class="mb-16 scroll-mt-20">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8">Your Preventative Toolkit</h3>
+            <p class="max-w-3xl mx-auto text-center text-warm-gray-600 mb-12">Building a strong defense against oral health problems involves consistent daily habits, smart dietary choices, and healthy lifestyle decisions.</p>
+            <div id="prevention-tabs" class="flex justify-center flex-wrap gap-2 mb-8">
+                <button data-tab="hygiene" class="filter-btn active px-4 py-2 rounded-full text-sm font-medium">Daily Hygiene</button>
+                <button data-tab="diet" class="filter-btn bg-white text-dark-brown px-4 py-2 rounded-full text-sm font-medium border">Diet & Nutrition</button>
+                <button data-tab="lifestyle" class="filter-btn bg-white text-dark-brown px-4 py-2 rounded-full text-sm font-medium border">Lifestyle Factors</button>
+            </div>
+            <div id="prevention-content" class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+            </div>
+        </section>
+
+        <section id="urgent" class="scroll-mt-20">
+             <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 text-red-700">When to See a Dentist: Urgent vs. Routine</h3>
+            <p class="max-w-3xl mx-auto text-center text-warm-gray-600 mb-12">Knowing when a dental issue is an emergency is key. While many problems can wait for a routine appointment, some require immediate care to prevent serious complications.</p>
+             <div id="urgent-care-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+             </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-[#F5F2EF] mt-16">
+        <div class="container mx-auto py-6 px-4 text-center text-warm-gray-600">
+            <p class="text-sm">This interactive guide is for informational purposes only and does not constitute medical advice. Always consult with a qualified dental or medical professional for diagnosis and treatment.</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const accordionData = [
+            { 
+                title: 'Tooth Decay (Cavities)', 
+                content: `
+                    <p class="text-sm text-warm-gray-600 mb-4">A progressive disease where acid from bacteria erodes tooth enamel.</p>
+                    <div class="text-left text-sm space-y-2">
+                        <p><strong>Symptoms:</strong> Toothache, sensitivity, visible holes or stains.</p>
+                        <p><strong>Causes:</strong> Sugary foods/drinks, poor oral hygiene.</p>
+                        <p><strong>Treatment:</strong> Fillings, root canals, or extraction in severe cases. Fluoride can reverse early decay.</p>
+                    </div>
+                ` 
+            },
+            { 
+                title: 'Gum Disease (Gingivitis & Periodontitis)', 
+                content: `
+                    <p class="text-sm text-warm-gray-600 mb-4">An infection of the tissues that hold your teeth in place, starting with reversible gum inflammation (gingivitis) and progressing to irreversible bone loss (periodontitis).</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-left">
+                        <div class="border p-4 rounded-lg">
+                            <h5 class="font-bold mb-2">Gingivitis (Reversible)</h5>
+                            <ul class="list-disc list-inside text-warm-gray-600">
+                                <li>Red, swollen, bleeding gums.</li>
+                                <li>Caused by plaque buildup.</li>
+                                <li>Treated with professional cleanings & home care.</li>
+                            </ul>
+                        </div>
+                         <div class="border p-4 rounded-lg border-red-300 bg-red-50">
+                            <h5 class="font-bold mb-2 text-red-700">Periodontitis (Irreversible Damage)</h5>
+                            <ul class="list-disc list-inside text-red-600">
+                                <li>Gums pull away from teeth.</li>
+                                <li>Loose teeth, bone loss.</li>
+                                <li>Requires deep cleaning or surgery to manage.</li>
+                            </ul>
+                        </div>
+                    </div>` 
+            },
+            { 
+                title: 'Bruxism (Teeth Grinding)', 
+                content: `
+                    <p class="text-sm text-warm-gray-600 mb-4">The subconscious clenching or grinding of teeth, often during sleep.</p>
+                    <div class="text-left text-sm space-y-2">
+                        <p><strong>Symptoms:</strong> Worn/chipped teeth, jaw pain, headaches.</p>
+                        <p><strong>Causes:</strong> Stress, anxiety, sleep disorders, lifestyle habits (caffeine, alcohol).</p>
+                        <p><strong>Treatment:</strong> Custom mouth guards, stress management, lifestyle changes.</p>
+                    </div>` 
+            },
+            {
+                title: 'Oral Cancer',
+                content: `<p class="text-sm text-warm-gray-600 mb-4">A serious cancer of the mouth or back of the throat. Early detection is critical.</p>
+                    <div class="text-left text-sm space-y-2">
+                        <p><strong>Symptoms:</strong> Sores that don't heal, red/white patches, lumps, difficulty chewing/swallowing.</p>
+                        <p><strong>Risk Factors:</strong> Tobacco and alcohol use, HPV, sun exposure (lips).</p>
+                        <p><strong>Management:</strong> Regular dental screenings for early detection are key. Treatment depends on stage.</p>
+                    </div>`
+            }
+        ];
+
+        const accordionContainer = document.getElementById('accordion-container');
+        accordionData.forEach((item, index) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'border border-gray-200 rounded-lg bg-white overflow-hidden';
+            wrapper.innerHTML = `
+                <button class="accordion-header w-full text-left p-4 flex justify-between items-center transition duration-300 ease-in-out hover:bg-gray-50">
+                    <span class="font-semibold text-dark-brown">${item.title}</span>
+                    <span class="transform transition-transform duration-300 ease-in-out text-accent-blue">▼</span>
+                </button>
+                <div class="accordion-content px-4">
+                    ${item.content}
+                </div>
+            `;
+            accordionContainer.appendChild(wrapper);
+        });
+
+        accordionContainer.addEventListener('click', e => {
+            const header = e.target.closest('.accordion-header');
+            if (header) {
+                const content = header.nextElementSibling;
+                const arrow = header.querySelector('span:last-child');
+                const isOpen = content.classList.contains('open');
+
+                document.querySelectorAll('.accordion-content.open').forEach(openContent => {
+                    openContent.classList.remove('open');
+                    openContent.previousElementSibling.querySelector('span:last-child').classList.remove('rotate-180');
+                });
+                
+                if (!isOpen) {
+                    content.classList.add('open');
+                    arrow.classList.add('rotate-180');
+                }
+            }
+        });
+
+        const preventionContent = {
+            hygiene: `
+                <h4 class="text-lg font-bold mb-4">Core Daily Habits</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                    <div>
+                        <h5 class="font-semibold mb-2">Brushing Basics</h5>
+                        <ul class="list-disc list-inside space-y-1 text-warm-gray-600">
+                            <li>Brush 2x daily for 2 minutes.</li>
+                            <li>Use fluoride toothpaste.</li>
+                            <li>Use a soft-bristled brush at a 45° angle to gums.</li>
+                            <li>Don't rinse with water immediately after—let fluoride work.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2">Interdental Cleaning</h5>
+                        <ul class="list-disc list-inside space-y-1 text-warm-gray-600">
+                            <li>Floss daily to remove plaque between teeth.</li>
+                            <li>Curve floss in a 'C' shape against each tooth.</li>
+                            <li>Consider water flossers or interdental brushes if traditional floss is difficult.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2">Mouthwash Use</h5>
+                        <ul class="list-disc list-inside space-y-1 text-warm-gray-600">
+                            <li>Therapeutic mouthwashes can fight plaque and gingivitis.</li>
+                            <li>It's a supplement to, not a replacement for, brushing and flossing.</li>
+                            <li>Use at a different time than brushing for max fluoride benefit.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2">Tongue Cleaning</h5>
+                        <ul class="list-disc list-inside space-y-1 text-warm-gray-600">
+                            <li>Scrape or brush your tongue daily.</li>
+                            <li>Removes bacteria that cause bad breath.</li>
+                            <li>Improves overall oral cleanliness.</li>
+                        </ul>
+                    </div>
+                </div>`,
+            diet: `
+                <h4 class="text-lg font-bold mb-4">Fueling a Healthy Smile</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h5 class="font-semibold text-green-800 mb-3 text-center">Foods to Embrace</h5>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-center"><span class="text-xl mr-2">💧</span><div><strong>Water (Fluoridated):</strong> Rinses away food and strengthens enamel.</div></li>
+                            <li class="flex items-center"><span class="text-xl mr-2">🧀</span><div><strong>Dairy & Leafy Greens:</strong> Rich in Calcium and Vitamin D for strong teeth and bones.</div></li>
+                            <li class="flex items-center"><span class="text-xl mr-2">🥕</span><div><strong>Crunchy Veggies & Fruits:</strong> High in fiber, naturally scrub teeth.</div></li>
+                            <li class="flex items-center"><span class="text-xl mr-2">🍗</span><div><strong>Lean Proteins:</strong> Provide phosphorus to protect enamel.</div></li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-lg">
+                        <h5 class="font-semibold text-red-800 mb-3 text-center">Foods to Limit</h5>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-center"><span class="text-xl mr-2">🍬</span><div><strong>Sugary/Sticky Foods:</strong> Fuel acid-producing bacteria, leading to cavities.</div></li>
+                            <li class="flex items-center"><span class="text-xl mr-2">🥤</span><div><strong>Acidic Drinks (Soda, Juice):</strong> Erode and weaken tooth enamel.</div></li>
+                            <li class="flex items-center"><span class="text-xl mr-2">🍞</span><div><strong>Refined Carbs (White Bread):</strong> Break down into sugars that feed plaque.</div></li>
+                             <li class="flex items-center"><span class="text-xl mr-2">🍷</span><div><strong>Alcohol/Caffeine:</strong> Can lead to dry mouth, increasing decay risk.</div></li>
+                        </ul>
+                    </div>
+                </div>`,
+            lifestyle: `
+                <h4 class="text-lg font-bold mb-4">Beyond Brushing: Holistic Health Choices</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                    <div class="bg-yellow-50 p-4 rounded-lg">
+                        <h5 class="font-semibold text-yellow-800 mb-2">🚬 Tobacco Cessation</h5>
+                        <p class="text-warm-gray-600">Smoking is the biggest risk factor for gum disease and oral cancer. Quitting significantly improves oral health and treatment success.</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h5 class="font-semibold text-blue-800 mb-2">🧘 Stress Management</h5>
+                        <p class="text-warm-gray-600">Chronic stress is linked to teeth grinding (bruxism). Practices like meditation and exercise can reduce jaw tension and protect teeth.</p>
+                    </div>
+                     <div class="bg-purple-50 p-4 rounded-lg">
+                        <h5 class="font-semibold text-purple-800 mb-2">⚖️ Weight Management</h5>
+                        <p class="text-warm-gray-600">Obesity increases inflammation, which can worsen gum disease. A healthy weight supports both oral and systemic health.</p>
+                    </div>
+                     <div class="bg-gray-100 p-4 rounded-lg">
+                        <h5 class="font-semibold text-gray-800 mb-2">🗓️ Regular Dental Visits</h5>
+                        <p class="text-warm-gray-600">Professional cleanings and check-ups are essential for removing tartar and detecting problems early, before they become serious.</p>
+                    </div>
+                </div>`
+        };
+        const preventionTabs = document.getElementById('prevention-tabs');
+        const preventionContainer = document.getElementById('prevention-content');
+
+        function renderPreventionContent(tab) {
+            preventionContainer.innerHTML = preventionContent[tab];
+        }
+
+        preventionTabs.addEventListener('click', (e) => {
+            if(e.target.tagName === 'BUTTON') {
+                const tab = e.target.dataset.tab;
+                document.querySelectorAll('#prevention-tabs .filter-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                renderPreventionContent(tab);
+            }
+        });
+
+        const urgentCareData = [
+            { urgent: true, title: 'Dental Emergency: Seek Immediate Care', items: [
+                'Severe, persistent toothache or pain',
+                'A knocked-out or broken tooth',
+                'Uncontrolled bleeding from the mouth',
+                'Swelling in the face, cheek, or gums (sign of abscess)',
+                'Trauma to the jaw or face'
+            ]},
+            { urgent: false, title: 'Routine Visit: Schedule an Appointment', items: [
+                'Mild tooth sensitivity',
+                'Gums that bleed when brushing/flossing',
+                'Persistent bad breath',
+                'A chipped tooth without pain',
+                'Any sores or patches that don\'t heal in 2 weeks'
+            ]}
+        ];
+
+        const urgentCareContainer = document.getElementById('urgent-care-container');
+        urgentCareData.forEach(item => {
+            const card = document.createElement('div');
+            const cardClass = item.urgent ? 'bg-red-100 border-red-500' : 'bg-blue-100 border-blue-500';
+            const titleClass = item.urgent ? 'text-red-800' : 'text-blue-800';
+            const icon = item.urgent ? '🚨' : '✅';
+            card.className = `p-6 rounded-lg border-l-4 card-item ${cardClass}`;
+            let listItems = item.items.map(li => `<li>${li}</li>`).join('');
+            card.innerHTML = `
+                <h4 class="font-bold text-lg mb-3 flex items-center ${titleClass}"><span class="text-2xl mr-2">${icon}</span>${item.title}</h4>
+                <ul class="list-disc list-inside text-sm text-warm-gray-600 space-y-1">${listItems}</ul>
+            `;
+            urgentCareContainer.appendChild(card);
+        });
+        
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('#main-nav a, #mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('main section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (`#${entry.target.id}` === link.getAttribute('href')) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, { rootMargin: '-30% 0px -70% 0px' });
+
+        sections.forEach(section => observer.observe(section));
+
+        renderPreventionContent('hygiene');
+    });
+    </script>
+</body>
+</html>
