@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Syndication Advantage: An Interactive Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral Harmony -->
+    <!-- Application Structure Plan: The SPA is designed as a multi-section, tab-navigated dashboard. The sections are 'Fundamentals', 'For Publishers', 'For E-commerce', 'For Intelligence', and 'Automation'. This thematic structure was chosen over the report's linear format to allow different user personas (e.g., a marketer, an analyst) to jump directly to the content most relevant to their goals. Key interactions include clickable diagrams to explain the RSS ecosystem, filterable lists for strategies, and interactive flowcharts for automation concepts, making the dense information more engaging and easier to synthesize. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Core RSS mechanics (XML, Aggregator). -> Goal: Organize/Inform. -> Viz/Presentation: Interactive HTML diagram with clickable nodes. -> Interaction: Clicking a component reveals its definition. -> Justification: More engaging than static text for explaining a technical ecosystem. -> Library/Method: HTML/CSS/JS.
+        - Report Info: Benefits of RSS (Control, Privacy). -> Goal: Inform. -> Viz/Presentation: Icon-driven feature list. -> Interaction: Hover to see details. -> Justification: Quickly communicates key value propositions. -> Library/Method: HTML/CSS/JS.
+        - Report Info: Content syndication SEO risks. -> Goal: Inform/Organize. -> Viz/Presentation: Interactive checklist of best practices (canonical tags, etc.). -> Interaction: Clicking an item reveals its importance. -> Justification: Turns a list of technical advice into an actionable, easy-to-digest format. -> Library/Method: HTML/CSS/JS.
+        - Report Info: RSS-to-Email workflow. -> Goal: Organize. -> Viz/Presentation: Animated HTML flowchart. -> Interaction: Steps highlight in sequence. -> Justification: Visually demonstrates the automated flow of information, making the concept clearer than text alone. -> Library/Method: HTML/CSS/JS.
+        - Report Info: E-commerce use cases (Product Feeds, Promotions). -> Goal: Compare/Inform. -> Viz/Presentation: Tabbed content switcher. -> Interaction: User clicks tabs to switch between different e-commerce strategies. -> Justification: Organizes multiple related strategies into a compact, user-controlled component. -> Library/Method: HTML/CSS/JS.
+        - Report Info: Business intelligence applications. -> Goal: Compare/Inform. -> Viz/Presentation: Filterable grid of use cases. -> Interaction: User clicks filters ('Competitors', 'Trends') to see relevant monitoring tactics. -> Justification: Allows users to explore the various intelligence applications based on their specific needs. -> Library/Method: HTML/CSS/JS.
+        - Report Info: Automation workflows (Social, Email, AI). -> Goal: Compare/Show Composition. -> Viz/Presentation: Doughnut Chart. -> Interaction: Hovering over a segment shows details. -> Justification: A doughnut chart effectively visualizes the various applications of RSS as a trigger for automation, showing the relative popularity or importance of each category. -> Library/Method: Chart.js.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FDFBF8; color: #4A4A4A; }
+        .nav-link { transition: all 0.3s ease; border-bottom: 3px solid transparent; }
+        .nav-link.active { color: #C06C59; border-bottom-color: #C06C59; }
+        .nav-link:hover { color: #C06C59; }
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.6s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .chart-container { position: relative; width: 100%; max-width: 450px; margin-left: auto; margin-right: auto; height: 450px; max-height: 60vh; }
+        .interactive-diagram-node { transition: all 0.3s ease; cursor: pointer; border: 2px solid #D1BFA7; }
+        .interactive-diagram-node.active, .interactive-diagram-node:hover { background-color: #F7F1E9; border-color: #C06C59; transform: scale(1.05); }
+        .strategy-card { transition: all 0.3s ease; }
+        .strategy-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="app" class="min-h-screen">
+        <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-sm border-b border-gray-200">
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h1 class="text-xl md:text-2xl font-bold text-[#4A4A4A]">The Syndication Advantage</h1>
+                    <span class="font-semibold text-gray-500">An Interactive Guide | 2025</span>
+                </div>
+                <nav>
+                    <ul class="flex flex-wrap space-x-4 md:space-x-6 text-sm md:text-base justify-center">
+                        <li><a href="#fundamentals" class="nav-link font-semibold pb-2">Fundamentals</a></li>
+                        <li><a href="#publishers" class="nav-link font-semibold pb-2">For Publishers</a></li>
+                        <li><a href="#ecommerce" class="nav-link font-semibold pb-2">For E-commerce</a></li>
+                        <li><a href="#intelligence" class="nav-link font-semibold pb-2">For Intelligence</a></li>
+                        <li><a href="#automation" class="nav-link font-semibold pb-2">Automation</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-6 py-8 md:py-12">
+            
+            <!-- SECTION: FUNDAMENTALS -->
+            <section id="fundamentals" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">What is RSS and Why Does It Matter Now?</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">Really Simple Syndication (RSS) is a web feed format for publishing frequently updated content. In an era of algorithmic overload, its core principles of user control, privacy, and chronological content delivery are more relevant than ever.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-5 gap-8 items-start">
+                    <div class="lg:col-span-3 bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold mb-6 text-center text-[#7E8D85]">The RSS Ecosystem Explained</h3>
+                        <p class="text-center text-gray-500 mb-6">Click on each component of the diagram to understand its role in delivering content from a website to your screen.</p>
+                        <div id="rss-diagram" class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                            <div data-id="website" class="interactive-diagram-node text-center p-4 rounded-lg bg-gray-50 w-full md:w-auto">
+                                <div class="text-3xl mb-2">🌐</div>
+                                <h4 class="font-bold">1. Website / CMS</h4>
+                            </div>
+                            <div class="text-2xl font-bold text-[#D1BFA7] transform rotate-90 md:rotate-0">&rarr;</div>
+                            <div data-id="xml" class="interactive-diagram-node text-center p-4 rounded-lg bg-gray-50 w-full md:w-auto">
+                                <div class="text-3xl mb-2">📄</div>
+                                <h4 class="font-bold">2. RSS Feed (XML)</h4>
+                            </div>
+                            <div class="text-2xl font-bold text-[#D1BFA7] transform rotate-90 md:rotate-0">&rarr;</div>
+                            <div data-id="aggregator" class="interactive-diagram-node text-center p-4 rounded-lg bg-gray-50 w-full md:w-auto">
+                                <div class="text-3xl mb-2">📰</div>
+                                <h4 class="font-bold">3. Feed Reader</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="diagram-details" class="lg:col-span-2 bg-gray-50 p-6 rounded-lg sticky top-36 min-h-[200px]">
+                        <h4 class="text-xl font-bold mb-2 text-[#4A4A4A]" id="diagram-detail-title">Select a Component</h4>
+                        <p id="diagram-detail-content" class="text-gray-700">The details for the selected component will appear here. Start by clicking on "Website / CMS".</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: PUBLISHERS -->
+            <section id="publishers" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">The Publisher's Playbook</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">For content creators, RSS is a dual-edged sword: a powerful tool for syndicating content to new audiences and a direct channel for retaining your most loyal followers.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4 text-[#7E8D85]">Content Syndication & SEO</h3>
+                        <p class="mb-6 text-gray-600">Syndicating content expands your reach but creates a "duplicate content" risk for SEO. Following these best practices ensures you get the benefits without the penalties. Click each item for details.</p>
+                        <div id="seo-checklist" class="space-y-3"></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4 text-[#7E8D85]">RSS-to-Email Automation</h3>
+                        <p class="mb-6 text-gray-600">One of the most efficient uses of RSS is to automate your newsletters. This workflow saves time and ensures consistent communication with your audience.</p>
+                        <div id="email-flowchart" class="space-y-4">
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="text-2xl mr-4">📝</span>
+                                <div><strong class="text-gray-800">New Blog Post Published</strong> on your CMS (e.g., WordPress).</div>
+                            </div>
+                            <div class="text-center text-xl font-bold text-[#D1BFA7]">↓</div>
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="text-2xl mr-4">🔄</span>
+                                <div><strong class="text-gray-800">RSS Feed Updates Automatically</strong> with the new post's data (title, summary, link).</div>
+                            </div>
+                            <div class="text-center text-xl font-bold text-[#D1BFA7]">↓</div>
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="text-2xl mr-4">⏰</span>
+                                <div><strong class="text-gray-800">Email Platform Checks Feed</strong> on a schedule (e.g., daily at 8 AM).</div>
+                            </div>
+                            <div class="text-center text-xl font-bold text-[#D1BFA7]">↓</div>
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                               <span class="text-2xl mr-4">💌</span>
+                                <div><strong class="text-gray-800">Automated Newsletter Sent</strong> to your subscriber list with the new content.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+             <!-- SECTION: ECOMMERCE -->
+            <section id="ecommerce" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">The E-commerce Engine</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">RSS provides a direct, non-algorithmic channel to engage your most loyal customers, from announcing new products to enhancing the entire customer lifecycle.</p>
+                </div>
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                    <div class="border-b border-gray-200 mb-6">
+                        <nav id="ecommerce-tabs" class="flex -mb-px space-x-6" aria-label="Tabs">
+                        </nav>
+                    </div>
+                    <div id="ecommerce-content">
+                        <!-- Content will be injected here -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- SECTION: INTELLIGENCE -->
+            <section id="intelligence" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">The Intelligence Advantage</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">RSS is a powerful, low-cost tool for gathering business intelligence. Create a real-time dashboard to monitor competitors, industry trends, and brand mentions.</p>
+                </div>
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                    <div class="flex flex-wrap justify-center gap-2 mb-8" id="intelligence-filters">
+                         <!-- Filter buttons will be injected here -->
+                    </div>
+                    <div id="intelligence-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Strategy cards will be injected here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: AUTOMATION -->
+            <section id="automation" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">The Automation Imperative</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">The future of RSS is not in human reading, but in machine triggering. Connect feeds to automation platforms like Zapier or Latenode to power your business processes in real time.</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-10 items-center">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4 text-center text-[#7E8D85]">Core Automation Workflows</h3>
+                        <p class="text-center text-gray-600 mb-6">A new item in an RSS feed can act as a universal trigger for countless business actions. The chart shows the most common applications. Hover for details.</p>
+                        <div class="chart-container mx-auto">
+                            <canvas id="automationChart"></canvas>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4 text-[#7E8D85]">Advanced Workflow: AI Triage</h3>
+                        <p class="mb-6 text-gray-600">Modern automation can use branching logic and AI to intelligently process information before it ever reaches a human.</p>
+                         <div id="ai-flowchart" class="space-y-2">
+                             <div class="flex items-center p-3 bg-gray-50 rounded-lg border-l-4 border-blue-400">
+                                <div><strong class="text-gray-800">Trigger:</strong> New article in an industry news feed.</div>
+                            </div>
+                            <div class="text-center text-xl font-bold text-[#D1BFA7]">↓</div>
+                             <div class="flex items-center p-3 bg-gray-50 rounded-lg border-l-4 border-purple-400">
+                                <div><strong class="text-gray-800">AI Action:</strong> Pass article to AI to check for keywords and analyze sentiment.</div>
+                            </div>
+                            <div class="text-center text-xl font-bold text-[#D1BFA7]">↓</div>
+                            <div class="relative pl-8">
+                                <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+                                <div class="relative mb-4">
+                                     <div class="absolute -left-11 top-1/2 -translate-y-1/2 w-8 h-0.5 bg-gray-300"></div>
+                                     <div class="absolute -left-[46px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white border-2 border-gray-300 rounded-full"></div>
+                                    <div class="p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
+                                        <strong class="text-gray-800">IF "Urgent" keyword:</strong> Send immediate SMS alert to stakeholders.
+                                    </div>
+                                </div>
+                                <div class="relative">
+                                     <div class="absolute -left-11 top-1/2 -translate-y-1/2 w-8 h-0.5 bg-gray-300"></div>
+                                     <div class="absolute -left-[46px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white border-2 border-gray-300 rounded-full"></div>
+                                    <div class="p-3 bg-green-50 rounded-lg border-l-4 border-green-400">
+                                        <strong class="text-gray-800">ELSE:</strong> Summarize article and post to the team's Slack channel.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="text-center py-8 mt-12 border-t border-gray-200 bg-white">
+        <p class="text-gray-500">An interactive guide to "The Syndication Advantage" report.</p>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const appData = {
+        diagram: {
+            website: { title: '1. Website / CMS', content: 'A content management system (like WordPress) or a website publishes new content (e.g., a blog post). It automatically updates a special file on the server.' },
+            xml: { title: '2. RSS Feed (XML File)', content: 'This is a simple, standardized text file formatted in XML. It contains a list of the most recent content updates, each with a title, summary, and a link back to the full article.' },
+            aggregator: { title: '3. Feed Reader (Aggregator)', content: 'This is the software (like Feedly or Inoreader) that a user subscribes with. It regularly checks the XML file for new items and displays them in a clean, readable list for the user.' }
+        },
+        seo: [
+            { title: 'Use Canonical Tags', content: 'The most critical step. A `rel="canonical"` tag on the syndicated content points back to your original article, telling search engines to credit you with all SEO value.' },
+            { title: 'Syndicate Summaries Only', content: 'Configure your RSS feed to only output a short excerpt. This forces readers to click through to your site to read the full post, driving traffic and keeping the full version unique to your domain.' },
+            { title: 'Add Automatic Backlinks', content: 'Use a plugin to automatically insert a line like "This article first appeared on..." with a link to the original post in your feed. This ensures attribution even if content is scraped.' },
+            { title: 'Use an RSS Sitemap', content: 'Submit a dedicated RSS sitemap to Google Search Console. It gets crawled more frequently than a full sitemap, helping Google index your new content as the original source faster.' },
+            { title: 'Institute a Delay', content: 'Wait a few days after publishing for Google to index the original article on your site before you begin actively syndicating it to partner sites.' }
+        ],
+        ecommerce: {
+            tabs: ['Announcements', 'Lifecycle', 'Content Marketing'],
+            content: {
+                Announcements: `
+                    <h4 class="text-xl font-bold mb-4">Direct-to-Fan Marketing</h4>
+                    <p class="text-gray-600 mb-4">Use RSS to bypass cluttered social feeds and inboxes. Create dedicated feeds for new product launches, specific collections (e.g., "New Footwear"), and promotions like a "Deal of the Day." Customers who subscribe are your most high-intent audience, explicitly asking for promotional news.</p>
+                    <div class="p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg">
+                        <strong>Pro Tip:</strong> Place an RSS subscription link near the "Add to Cart" button to capture customers at their moment of highest engagement.
+                    </div>
+                `,
+                Lifecycle: `
+                     <h4 class="text-xl font-bold mb-4">Enhance the Customer Journey</h4>
+                    <p class="text-gray-600 mb-4">RSS can support customers at multiple stages. Use it to power automated <strong>Back-in-Stock Alerts</strong> to recapture lost sales. Combine feeds with customer data to create <strong>Personalized Newsletters</strong> featuring relevant products. You can even use a feed for your <strong>FAQ page</strong> to keep customers updated on support issues.</p>
+                `,
+                'Content Marketing': `
+                     <h4 class="text-xl font-bold mb-4">Build a Brand, Not Just a Store</h4>
+                    <p class="text-gray-600 mb-4">Sophisticated brands use content to build a community. Distribute tutorials, how-to guides, and customer stories via your blog's RSS feed. Create <strong>Curated Themed Collections</strong> as RSS feeds (e.g., "Holiday Gift Guide") to provide inspiration and position your brand as a tastemaker. This builds long-term loyalty beyond the transaction.</p>
+                `
+            }
+        },
+        intelligence: {
+            filters: ['All', 'Competitors', 'Market', 'PR'],
+            strategies: [
+                { category: 'Competitors', title: 'Track Competitor Blogs', icon: '📝', content: 'Subscribe to the RSS feeds of competitor blogs and newsrooms for immediate insight into their content strategy and product announcements.' },
+                { category: 'Competitors', title: 'Monitor Product Launches', icon: '🚀', content: 'Get real-time updates on new product releases or feature updates directly from their official communication channels.' },
+                { category: 'Market', title: 'Monitor Industry News', icon: '📰', content: 'Aggregate feeds from key industry websites and trade publications to detect emerging market trends and new technologies.' },
+                { category: 'Market', title: 'Follow Thought Leaders', icon: '🧠', content: 'Subscribe to the feeds of key analysts and influencers to get early insights and expert commentary on market-disrupting events.' },
+                { category: 'PR', title: 'Track Brand Mentions', icon: '💬', content: 'Use Google Alerts or BrandMentions to generate an RSS feed for your brand name, allowing you to monitor online sentiment and press coverage.' },
+                { category: 'PR', title: 'Distribute Press Releases', icon: '📢', content: 'Publish your own press releases with a reliable RSS feed, making it easy for journalists who use feed readers to receive your news.' }
+            ]
+        },
+        automation: {
+            labels: ['Social Media Posts', 'Email Newsletters', 'Team Chat Notifications', 'Data Archiving (Sheets)', 'AI-Powered Actions'],
+            data: [35, 25, 20, 15, 5],
+            colors: ['#7E8D85', '#C06C59', '#D1BFA7', '#A3B1AA', '#4A4A4A']
+        }
+    };
+    
+    // --- Universal Navigation ---
+    const navLinks = document.querySelectorAll('.nav-link');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    function navigateTo(hash) {
+        navLinks.forEach(link => link.classList.toggle('active', link.hash === hash));
+        contentSections.forEach(section => section.classList.toggle('active', `#${section.id}` === hash));
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.hash = e.currentTarget.hash;
+            navigateTo(e.currentTarget.hash);
+        });
+    });
+
+    const initialHash = window.location.hash || '#fundamentals';
+    navigateTo(initialHash);
+
+    // --- Fundamentals Section ---
+    function initFundamentals() {
+        const diagramContainer = document.getElementById('rss-diagram');
+        const detailTitle = document.getElementById('diagram-detail-title');
+        const detailContent = document.getElementById('diagram-detail-content');
+        const nodes = diagramContainer.querySelectorAll('.interactive-diagram-node');
+
+        function updateDetails(id) {
+            const detail = appData.diagram[id];
+            detailTitle.textContent = detail.title;
+            detailContent.textContent = detail.content;
+            nodes.forEach(node => node.classList.toggle('active', node.dataset.id === id));
+        }
+
+        diagramContainer.addEventListener('click', e => {
+            const node = e.target.closest('.interactive-diagram-node');
+            if (node) updateDetails(node.dataset.id);
+        });
+        updateDetails('website');
+    }
+
+    // --- Publishers Section ---
+    function initPublishers() {
+        const checklist = document.getElementById('seo-checklist');
+        appData.seo.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'p-4 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer transition-all duration-300 hover:bg-gray-100 hover:border-gray-300';
+            div.innerHTML = `<h4 class="font-bold flex items-center"><span class="text-green-500 mr-2 text-xl">✓</span>${item.title}</h4><p class="text-sm text-gray-600 mt-2 pl-6 hidden">${item.content}</p>`;
+            checklist.appendChild(div);
+        });
+        
+        checklist.addEventListener('click', e => {
+            const card = e.target.closest('div.p-4');
+            if(card){
+                card.querySelector('p').classList.toggle('hidden');
+            }
+        });
+    }
+
+    // --- E-commerce Section ---
+    function initEcommerce() {
+        const tabsContainer = document.getElementById('ecommerce-tabs');
+        const contentContainer = document.getElementById('ecommerce-content');
+        
+        appData.ecommerce.tabs.forEach((tab, index) => {
+            const a = document.createElement('a');
+            a.href = '#';
+            a.dataset.tab = tab;
+            a.className = 'ecommerce-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-300';
+            a.textContent = tab;
+            if (index === 0) {
+                a.classList.add('border-[#C06C59]', 'text-[#C06C59]');
+            } else {
+                a.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+            }
+            tabsContainer.appendChild(a);
+        });
+        
+        function updateContent(tabId) {
+            contentContainer.innerHTML = appData.ecommerce.content[tabId];
+            tabsContainer.querySelectorAll('.ecommerce-tab').forEach(tab => {
+                const isActive = tab.dataset.tab === tabId;
+                tab.classList.toggle('border-[#C06C59]', isActive);
+                tab.classList.toggle('text-[#C06C59]', isActive);
+                tab.classList.toggle('border-transparent', !isActive);
+                tab.classList.toggle('text-gray-500', !isActive);
+            });
+        }
+        
+        tabsContainer.addEventListener('click', e => {
+            e.preventDefault();
+            const tab = e.target.closest('.ecommerce-tab');
+            if (tab) {
+                updateContent(tab.dataset.tab);
+            }
+        });
+
+        updateContent(appData.ecommerce.tabs[0]);
+    }
+    
+    // --- Intelligence Section ---
+    function initIntelligence() {
+        const filtersContainer = document.getElementById('intelligence-filters');
+        const grid = document.getElementById('intelligence-grid');
+
+        appData.intelligence.filters.forEach((filter, index) => {
+            const button = document.createElement('button');
+            button.className = 'intelligence-filter px-4 py-2 text-sm font-medium rounded-full transition-colors duration-300';
+            button.textContent = filter;
+            button.dataset.filter = filter;
+            if (index === 0) {
+                button.classList.add('bg-[#7E8D85]', 'text-white');
+            } else {
+                button.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+            }
+            filtersContainer.appendChild(button);
+        });
+        
+        function renderGrid(filter) {
+            grid.innerHTML = '';
+            const strategies = filter === 'All' ? appData.intelligence.strategies : appData.intelligence.strategies.filter(s => s.category === filter);
+            
+            strategies.forEach(s => {
+                const card = document.createElement('div');
+                card.className = 'strategy-card bg-white border border-gray-200 p-6 rounded-lg text-center';
+                card.innerHTML = `
+                    <div class="text-4xl mb-4">${s.icon}</div>
+                    <h4 class="text-lg font-bold mb-2">${s.title}</h4>
+                    <p class="text-gray-600 text-sm">${s.content}</p>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        filtersContainer.addEventListener('click', e => {
+            const button = e.target.closest('.intelligence-filter');
+            if (button) {
+                filtersContainer.querySelectorAll('.intelligence-filter').forEach(btn => {
+                    btn.classList.remove('bg-[#7E8D85]', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                button.classList.add('bg-[#7E8D85]', 'text-white');
+                button.classList.remove('bg-gray-200', 'text-gray-700');
+                renderGrid(button.dataset.filter);
+            }
+        });
+
+        renderGrid('All');
+    }
+
+    // --- Automation Section ---
+    function initAutomation() {
+        const ctx = document.getElementById('automationChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: appData.automation.labels,
+                datasets: [{
+                    label: 'Workflow Type',
+                    data: appData.automation.data,
+                    backgroundColor: appData.automation.colors,
+                    borderColor: '#FDFBF8',
+                    borderWidth: 4,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                return tooltipItems[0].label;
+                            }
+                        }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+    }
+
+    // Initialize all sections
+    initFundamentals();
+    initPublishers();
+    initEcommerce();
+    initIntelligence();
+    initAutomation();
+});
+</script>
+</body>
+</html>

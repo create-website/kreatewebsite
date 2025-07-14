@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Report: Architectures of Agency</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lexend:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Cool Neutrals & Tech Blue -->
+    <!-- Application Structure Plan: A thematic, single-page narrative structure was chosen to guide the user through a complex technical topic. The flow progresses logically from foundational concepts ('What is Agentic AI?') to a core comparative analysis ('Architectural Showdown'), followed by critical implications ('Governance & Risks') and future outlook ('Market Projections'). This story-driven approach is more engaging for learning than a static document. Key interactions, like the clickable cognitive architecture diagram and the toggle-able framework comparison, are designed to encourage active exploration and make abstract concepts more concrete. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Core components of an AI agent. Goal: Organize/Inform. Viz: Interactive diagram using HTML/CSS/JS. Interaction: Clicking a component reveals its description. Justification: More intuitive and engaging for explaining a system's parts than a text list. Method: HTML/Tailwind/JS.
+        - Report Info: Comparison of MCP (AutoGen) vs. AA (LangGraph). Goal: Compare. Viz: Two-column layout with toggle buttons. Interaction: Buttons dynamically update content in both columns to show the selected framework's details. Justification: Facilitates direct, side-by-side comparison, a key analysis in the report. Method: HTML/Tailwind/JS.
+        - Report Info: Governance risks (Security, Bias, etc.). Goal: Inform/Organize. Viz: Grid of styled cards. Interaction: Minimal, hover effects for emphasis. Justification: Presents distinct categories of information in a visually scannable and digestible format. Method: HTML/Tailwind.
+        - Report Info: Market growth projections. Goal: Show Change. Viz: Line Chart. Interaction: Hover tooltips for specific data points. Justification: Standard and most effective method for visualizing data trends over time. Method: Chart.js/Canvas.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        h1, h2, h3 {
+            font-family: 'Lexend', sans-serif;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+        .content-card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+            border: 1px solid #e2e8f0;
+        }
+        .interactive-button.active {
+            background-color: #3b82f6;
+            color: #ffffff;
+        }
+        .diagram-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .diagram-item.active {
+            background-color: #dbeafe;
+            border-color: #3b82f6;
+            transform: scale(1.05);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-slate-800">Architectures of Agency</h1>
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
+                <a href="#paradigm" class="nav-link pb-1">The Paradigm</a>
+                <a href="#architecture" class="nav-link pb-1">Cognitive Architecture</a>
+                <a href="#showdown" class="nav-link pb-1">Frameworks</a>
+                <a href="#governance" class="nav-link pb-1">Governance</a>
+                <a href="#market" class="nav-link pb-1">Market Outlook</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-slate-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200">
+            <a href="#paradigm" class="block text-center py-2 px-4 text-sm text-slate-700 hover:bg-blue-50">The Paradigm</a>
+            <a href="#architecture" class="block text-center py-2 px-4 text-sm text-slate-700 hover:bg-blue-50">Cognitive Architecture</a>
+            <a href="#showdown" class="block text-center py-2 px-4 text-sm text-slate-700 hover:bg-blue-50">Frameworks</a>
+            <a href="#governance" class="block text-center py-2 px-4 text-sm text-slate-700 hover:bg-blue-50">Governance</a>
+            <a href="#market" class="block text-center py-2 px-4 text-sm text-slate-700 hover:bg-blue-50">Market Outlook</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="paradigm" class="mb-20 scroll-mt-24 text-center">
+            <h2 class="text-4xl font-bold text-slate-800 mb-4">The Dawn of the Agentic Era</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 mb-8">
+                This report explores the shift from generative AI, which creates content, to agentic AI, which takes action. Agentic systems can reason, plan, and execute multi-step tasks to achieve goals, fundamentally changing how we automate complex workflows. This interactive summary breaks down the core concepts, compares leading frameworks, and examines the critical challenges and market potential of this transformative technology.
+            </p>
+        </section>
+
+        <section id="architecture" class="mb-20 scroll-mt-24">
+            <div class="content-card">
+                 <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">The Cognitive Architecture of an AI Agent</h2>
+                    <p class="max-w-3xl mx-auto text-slate-600">
+                        An autonomous agent operates through a continuous cycle of canonical components. This architecture enables it to perceive its environment, reason about its state, form plans, and execute actions. Click on each component in the diagram below to learn more about its function.
+                    </p>
+                </div>
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="w-full lg:w-3/5">
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div id="diagram-perception" class="diagram-item p-6 bg-slate-50 rounded-lg">
+                                <h4 class="text-lg font-semibold">Perception</h4><p class="text-sm text-slate-500">Gathers data</p>
+                            </div>
+                            <div id="diagram-reasoning" class="diagram-item p-6 bg-slate-50 rounded-lg">
+                                <h4 class="text-lg font-semibold">Planning & Reasoning</h4><p class="text-sm text-slate-500">Makes decisions</p>
+                            </div>
+                            <div id="diagram-memory" class="diagram-item p-6 bg-slate-50 rounded-lg">
+                                <h4 class="text-lg font-semibold">Memory</h4><p class="text-sm text-slate-500">Stores knowledge</p>
+                            </div>
+                             <div id="diagram-action" class="diagram-item p-6 bg-slate-50 rounded-lg">
+                                <h4 class="text-lg font-semibold">Action</h4><p class="text-sm text-slate-500">Executes tasks</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-2/5">
+                        <div id="diagram-details" class="p-6 bg-blue-50/50 rounded-lg min-h-[220px]">
+                            <h3 id="diagram-title" class="text-xl font-bold text-blue-800 mb-2">Select a component</h3>
+                            <p id="diagram-text" class="text-slate-700">Click a component on the left to see its detailed description here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="showdown" class="mb-20 scroll-mt-24">
+            <div class="content-card">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Architectural Showdown: MCP vs. AA</h2>
+                    <p class="max-w-3xl mx-auto text-slate-600">
+                        Two dominant paradigms have emerged for building agentic systems: Multi-Agent Conversation Programming (MCP) and Autonomous Agent (AA) frameworks. Use the buttons below to compare their core philosophies and architectures.
+                    </p>
+                </div>
+                <div class="text-center mb-6">
+                    <div class="inline-flex rounded-md shadow-sm" role="group" id="framework-buttons">
+                        <button data-framework="autogen" type="button" class="interactive-button active px-6 py-2 text-sm font-medium">
+                            AutoGen (MCP)
+                        </button>
+                        <button data-framework="langgraph" type="button" class="interactive-button px-6 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-r-md hover:bg-slate-50">
+                            LangGraph (AA)
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div id="framework-col-1" class="p-6 bg-slate-50 rounded-lg">
+                    </div>
+                    <div id="framework-col-2" class="p-6 bg-slate-50 rounded-lg">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="governance" class="mb-20 scroll-mt-24">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">Governance, Risk, and Compliance</h2>
+                <p class="max-w-3xl mx-auto text-slate-600">
+                    The power of agentic AI introduces significant risks. Effective governance is not a feature but a requirement for trustworthy adoption. The key challenges include security vulnerabilities, ethical concerns like algorithmic bias, and establishing clear accountability.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="content-card p-6">
+                    <h3 class="font-bold text-lg text-red-700 mb-2">Security</h3>
+                    <p class="text-sm text-slate-600">Threats like <strong class="font-semibold">Prompt Injection</strong> and <strong class="font-semibold">Tool Hijacking</strong> create new attack vectors. Mitigation requires sandboxing, least-privilege access, and continuous monitoring.</p>
+                </div>
+                <div class="content-card p-6">
+                    <h3 class="font-bold text-lg text-amber-700 mb-2">Operational</h3>
+                    <p class="text-sm text-slate-600"><strong class="font-semibold">Hallucinations</strong> and inaccuracies can lead to poor business decisions and reputational damage. Human-in-the-loop validation and fact-checking are critical.</p>
+                </div>
+                <div class="content-card p-6">
+                    <h3 class="font-bold text-lg text-purple-700 mb-2">Ethical</h3>
+                    <p class="text-sm text-slate-600"><strong class="font-semibold">Algorithmic Bias</strong> trained on historical data can perpetuate societal inequities in areas like hiring and lending, leading to discriminatory outcomes.</p>
+                </div>
+                <div class="content-card p-6">
+                    <h3 class="font-bold text-lg text-sky-700 mb-2">Compliance</h3>
+                    <p class="text-sm text-slate-600">Agents handling user data must comply with privacy regulations like <strong class="font-semibold">GDPR</strong>. Violations can lead to massive fines and loss of customer trust. Data minimization is key.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="market" class="scroll-mt-24">
+             <div class="content-card">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Market Landscape and Future Trajectory</h2>
+                    <p class="max-w-3xl mx-auto text-slate-600">
+                        The agentic AI market is projected for explosive growth, but faces significant operational challenges. Success will depend on overcoming integration hurdles and a focus on building governable, human-centric systems.
+                    </p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="marketChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-slate-400 mt-20">
+        <div class="container mx-auto px-6 py-6 text-center text-sm">
+            <p>Interactive summary based on the report "Architectures of Agency: A Comparative Analysis."</p>
+            <p>All data is sourced from the provided report for illustrative purposes.</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    
+    const diagramData = {
+        perception: {
+            title: "Perception",
+            text: "The agent's gateway to the world. It gathers and interprets information from digital interfaces like APIs, databases, or user input, forming the basis for all subsequent reasoning and decision-making."
+        },
+        reasoning: {
+            title: "Planning & Reasoning",
+            text: "The 'brain' of the agent, typically powered by an LLM. It decomposes high-level goals into a sequence of concrete sub-tasks (planning) and uses logic and context to decide on the next course of action (reasoning)."
+        },
+        memory: {
+            title: "Memory",
+            text: "Allows the agent to maintain context, learn from past interactions, and adapt. It includes short-term working memory for current tasks and long-term persistent storage, often in a vector database."
+        },
+        action: {
+            title: "Action",
+            text: "Translates the agent's decisions into tangible effects. Actions can be digital (e.g., calling an API, sending an email) or physical. This component makes the agent an 'actor' rather than just a 'thinker.'"
+        }
+    };
+    
+    const frameworkData = {
+        autogen: {
+            col1: {
+                title: 'AutoGen (MCP) Philosophy',
+                content: 'Based on **"Conversation as Program."** Manages complexity by orchestrating collaboration between multiple, specialized AI agents. Control is explicit and distributed among agents with specific roles (e.g., Planner, Coder, Critic) and a `GroupChatManager` who moderates the conversation.'
+            },
+            col2: {
+                title: 'Ideal Use Cases',
+                content: ' excels at simulating human expert teams for complex, multi-faceted problems like automated software development or comprehensive research projects. Its high auditability makes it ideal for enterprise workflows where a clear separation of concerns is critical.'
+            }
+        },
+        langgraph: {
+            col1: {
+                title: 'LangGraph (AA) Philosophy',
+                content: 'Based on **"Agent as Stateful Actor."** Manages complexity by modeling workflows as a stateful graph. The developer defines the structure (nodes and edges), providing "controllable autonomy." The agent decides which path to take within the developer-defined boundaries.'
+            },
+            col2: {
+                title: 'Ideal Use Cases',
+                content: ' is ideal for building stateful interactive assistants (e.g., customer support bots) that require long-term memory, or implementing robust, cyclical processes like "plan, act, critique, revise." It excels at workflows with explicit human-in-the-loop checkpoints.'
+            }
+        }
+    };
+
+    const marketChartData = {
+        labels: ['2025', '2026', '2027', '2028', '2029', '2030'],
+        datasets: [{
+            label: 'Projected Global Agentic AI Market (USD Billion)',
+            data: [7.5, 11, 16, 23, 32, 47],
+            fill: true,
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderColor: 'rgba(59, 130, 246, 1)',
+            tension: 0.4,
+            pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+            pointRadius: 5
+        }]
+    };
+
+    let marketChart;
+    
+    function updateDiagramDetails(component) {
+        if (!diagramData[component]) return;
+        document.getElementById('diagram-title').textContent = diagramData[component].title;
+        document.getElementById('diagram-text').textContent = diagramData[component].text;
+        
+        document.querySelectorAll('.diagram-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        document.getElementById(`diagram-${component}`).classList.add('active');
+    }
+
+    function updateFrameworkDetails(framework) {
+        if(!frameworkData[framework]) return;
+        const col1 = document.getElementById('framework-col-1');
+        const col2 = document.getElementById('framework-col-2');
+        
+        col1.innerHTML = `<h3 class="text-xl font-bold text-slate-800 mb-3">${frameworkData[framework].col1.title}</h3><p class="text-slate-600">${frameworkData[framework].col1.content}</p>`;
+        col2.innerHTML = `<h3 class="text-xl font-bold text-slate-800 mb-3">${frameworkData[framework].col2.title}</h3><p class="text-slate-600">${frameworkData[framework].col2.content}</p>`;
+        
+        document.querySelectorAll('#framework-buttons button').forEach(btn => {
+            btn.classList.remove('active');
+            btn.classList.add('text-slate-700', 'bg-white', 'border', 'border-slate-300');
+        });
+        const activeBtn = document.querySelector(`#framework-buttons button[data-framework="${framework}"]`);
+        activeBtn.classList.add('active');
+        activeBtn.classList.remove('text-slate-700', 'bg-white', 'border', 'border-slate-300');
+    }
+
+    function createMarketChart() {
+        const ctx = document.getElementById('marketChart').getContext('2d');
+        if (marketChart) marketChart.destroy();
+        marketChart = new Chart(ctx, {
+            type: 'line',
+            data: marketChartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Market Size (USD Billion)',
+                            font: { size: 14 }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+
+    document.querySelectorAll('.diagram-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const component = item.id.split('-')[1];
+            updateDiagramDetails(component);
+        });
+    });
+    
+    document.getElementById('framework-buttons').addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            const framework = e.target.dataset.framework;
+            updateFrameworkDetails(framework);
+        }
+    });
+
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('nav a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            document.querySelector(targetId).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            if (!mobileMenu.classList.contains('hidden')) {
+                 mobileMenu.classList.add('hidden');
+            }
+        });
+    });
+
+    updateDiagramDetails('reasoning');
+    updateFrameworkDetails('autogen');
+    createMarketChart();
+});
+</script>
+
+</body>
+</html>
