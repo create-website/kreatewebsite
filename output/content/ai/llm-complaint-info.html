@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Architecting an LLM-Powered Complaint Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic is structured as a top-to-bottom narrative scroll. It begins with a high-level hook, then visually breaks down the system's 5-layer architecture using a custom HTML/CSS flowchart. It proceeds to a "Technology Showdown" section with comparative charts for STT and LLM providers, making data from the report's tables easily digestible. The narrative then moves to the strategic "Implementation Roadmap" and concludes by highlighting the critical outputs (structured JSON) and feedback loops (HITL). This linear, story-driven flow is ideal for an infographic, guiding the user logically through a complex technical topic. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: 5-Layer System Architecture. Goal: Organize. Chosen Visualization: HTML/CSS Flowchart. Justification: Visually represents the process flow clearly without using prohibited SVG/Mermaid. It's a static but effective way to show sequence and components. Library/Method: HTML/CSS with Tailwind. NO SVG.
+        - Data Point: STT API Developer Experience (Table 1). Goal: Compare. Chosen Visualization: Horizontal Bar Chart. Justification: Best way to compare a single metric (DevEx Score) across multiple categories (Providers), making rankings instantly clear. Library/Method: Chart.js/Canvas. NO SVG.
+        - Data Point: LLM Zero-Shot Performance (Table 2). Goal: Relationships. Chosen Visualization: Combined Bar and Line Chart. Justification: Perfectly illustrates the trade-offs between a primary metric (Accuracy - Bar) and secondary metrics (Cost/Speed - Lines), which is a core finding of the report. Library/Method: Chart.js/Canvas. NO SVG.
+        - Data Point: Phased Implementation Strategy. Goal: Organize. Chosen Visualization: Side-by-side styled cards. Justification: Clearly delineates the two distinct phases (API-first vs. Fine-tuning) for easy comparison. Library/Method: HTML/CSS with Tailwind. NO SVG.
+        - Data Point: Structured JSON Output. Goal: Inform. Chosen Visualization: Styled code block. Justification: Directly and accurately presents the technical detail of the required JSON output, which is a key concept. Library/Method: HTML/CSS with Tailwind. NO SVG.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #00A6ED, #72D148);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .flow-arrow {
+            font-size: 2.5rem;
+            color: #FF7300;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <header class="text-center my-8 md:my-12">
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">
+                <span class="gradient-text">Blueprint for an AI Complaint System</span>
+            </h1>
+            <p class="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-gray-600">
+                A visual guide to architecting an LLM-powered solution that turns customer feedback into actionable intelligence, based on the comprehensive technical report.
+            </p>
+        </header>
+
+        <main>
+            <section id="architecture" class="mb-16 md:mb-24">
+                <h2 class="text-3xl font-bold text-center mb-2">The 5-Layer System Architecture</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">The system is a cyclical ecosystem, not just a linear pipeline, ensuring data flows from ingestion to analysis and back to improve the model over time.</p>
+                
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="text-center p-4 bg-white rounded-lg shadow-md w-full md:w-48 h-48 flex flex-col justify-center border-t-4 border-[#00A6ED]">
+                        <div class="text-4xl">📥</div>
+                        <h3 class="font-bold mt-2">1. Ingestion</h3>
+                        <p class="text-sm text-gray-500">Collects emails & call recordings.</p>
+                    </div>
+                    <div class="flow-arrow hidden md:block">&rarr;</div>
+                    <div class="text-center p-4 bg-white rounded-lg shadow-md w-full md:w-48 h-48 flex flex-col justify-center border-t-4 border-[#72D148]">
+                        <div class="text-4xl">✍️</div>
+                        <h3 class="font-bold mt-2">2. Transcription & PII Redaction</h3>
+                        <p class="text-sm text-gray-500">Converts audio to text & secures data.</p>
+                    </div>
+                    <div class="flow-arrow hidden md:block">&rarr;</div>
+                    <div class="text-center p-4 bg-white rounded-lg shadow-md w-full md:w-48 h-48 flex flex-col justify-center border-t-4 border-[#FFD100]">
+                        <div class="text-4xl">🧠</div>
+                        <h3 class="font-bold mt-2">3. Core AI Layer</h3>
+                        <p class="text-sm text-gray-500">Summarizes & classifies complaints.</p>
+                    </div>
+                    <div class="flow-arrow hidden md:block">&rarr;</div>
+                    <div class="text-center p-4 bg-white rounded-lg shadow-md w-full md:w-48 h-48 flex flex-col justify-center border-t-4 border-[#FF7300]">
+                        <div class="text-4xl">📊</div>
+                        <h3 class="font-bold mt-2">4. Analysis & Action</h3>
+                        <p class="text-sm text-gray-500">Finds root causes & triggers alerts.</p>
+                    </div>
+                    <div class="flow-arrow hidden md:block">&rarr;</div>
+                    <div class="text-center p-4 bg-white rounded-lg shadow-md w-full md:w-48 h-48 flex flex-col justify-center border-t-4 border-[#FF2D55]">
+                        <div class="text-4xl">🧑‍💻</div>
+                        <h3 class="font-bold mt-2">5. Human-in-the-Loop</h3>
+                        <p class="text-sm text-gray-500">Validates AI & provides feedback.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tech-showdown" class="mb-16 md:mb-24">
+                <h2 class="text-3xl font-bold text-center mb-12">Technology Showdown</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-bold text-center mb-2">Speech-to-Text (STT) API Friendliness</h3>
+                        <p class="text-center text-sm text-gray-600 mb-6">A smooth developer experience is key for fast integration. This chart compares leading STT providers on their ease of use, based on technical reviews.</p>
+                        <div class="chart-container">
+                            <canvas id="sttChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-bold text-center mb-2">LLM Performance vs. Cost Trade-Offs</h3>
+                        <p class="text-center text-sm text-gray-600 mb-6">Choosing an LLM involves balancing accuracy, cost, and speed. This chart visualizes the zero-shot classification performance of top models.</p>
+                        <div class="chart-container">
+                            <canvas id="llmChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="roadmap" class="mb-16 md:mb-24">
+                <h2 class="text-3xl font-bold text-center mb-12">The Implementation Roadmap: A Phased Approach</h2>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-lg shadow-md p-8 border-l-8 border-[#00A6ED]">
+                        <h3 class="text-2xl font-bold">Phase 1: API-First Deployment</h3>
+                        <p class="mt-4 text-gray-600">Launch quickly using a leading commercial LLM API. This delivers immediate value and begins the crucial process of data collection via the Human-in-the-Loop workflow.</p>
+                        <ul class="mt-4 space-y-2 font-medium">
+                            <li class="flex items-center"><span class="text-[#00A6ED] mr-2">✓</span> Fast Time-to-Market</li>
+                            <li class="flex items-center"><span class="text-[#00A6ED] mr-2">✓</span> Low Initial Cost</li>
+                            <li class="flex items-center"><span class="text-[#00A6ED] mr-2">✓</span> No Training Data Required</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-8 border-l-8 border-[#72D148]">
+                        <h3 class="text-2xl font-bold">Phase 2: Data-Driven Fine-Tuning</h3>
+                        <p class="mt-4 text-gray-600">Use the human-validated data from Phase 1 to train a smaller, specialized model. This boosts accuracy on niche terms and significantly reduces long-term costs at scale.</p>
+                        <ul class="mt-4 space-y-2 font-medium">
+                            <li class="flex items-center"><span class="text-[#72D148] mr-2">✓</span> Higher Accuracy</li>
+                            <li class="flex items-center"><span class="text-[#72D148] mr-2">✓</span> Lower Cost at Scale</li>
+                            <li class="flex items-center"><span class="text-[#72D148] mr-2">✓</span> Creates a Strategic Asset</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="output" class="mb-16 md:mb-24">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="bg-white rounded-lg shadow-md p-8">
+                        <h3 class="text-2xl font-bold mb-4">The Engine's Output: Structured JSON</h3>
+                        <p class="text-gray-600 mb-6">To be a reliable engineering component, the LLM must produce a predictable, structured JSON output. This single API call efficiently delivers all necessary data, eliminating fragile parsing and enabling seamless integration with other enterprise systems.</p>
+                        <div class="bg-gray-800 text-white rounded-lg p-4 font-mono text-xs overflow-x-auto">
+<pre><code>{
+  "summary": "Concise summary of issue...",
+  "is_complaint": true,
+  "sentiment": "negative",
+  "primary_topic": "Billing",
+  "secondary_topics": ["Late Fee"],
+  "suggested_next_action": "Route to billing dept."
+}
+</code></pre>
+                        </div>
+                    </div>
+                    <div class="text-center p-8">
+                         <div class="text-6xl mb-4">🔁</div>
+                         <h3 class="text-2xl font-bold mb-2">The Critical Feedback Loop</h3>
+                         <p class="text-gray-600 max-w-md mx-auto">The Human-in-the-Loop (HITL) process is the lynchpin. Every human correction is high-quality training data, feeding back into the system to make it smarter and more accurate over time. This transforms the system into a self-improving asset.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <script>
+        function wrapLabels(label, maxWidth) {
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > maxWidth) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const sttData = {
+            labels: ['AssemblyAI', 'Deepgram', 'Gladia', 'AWS Transcribe', 'Google Cloud STT', 'Microsoft Azure'],
+            datasets: [{
+                label: 'Developer Experience Score (1-5)',
+                data: [5, 5, 4, 3, 3, 3],
+                backgroundColor: ['#72D148', '#00A6ED', '#FFD100', '#FF7300', '#FF2D55', '#A0A0A0'],
+                borderColor: 'rgba(255, 255, 255, 0.5)',
+                borderWidth: 1,
+                barThickness: 25,
+            }]
+        };
+
+        const sttConfig = {
+            type: 'bar',
+            data: sttData,
+            options: {
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: { title: tooltipTitleCallback }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 5,
+                        grid: { color: '#E0E0E0' },
+                        ticks: { color: '#333' }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: '#333', font: { weight: 'bold' } }
+                    }
+                }
+            }
+        };
+        
+        const sttChartCtx = document.getElementById('sttChart');
+        if (sttChartCtx) new Chart(sttChartCtx, sttConfig);
+
+        const llmData = {
+            labels: ['Claude 3.5 Sonnet', 'GPT-4o', 'DeepSeek-V3', 'Claude 3.5 Haiku', 'GPT-4o-mini'].map(l => wrapLabels(l, 16)),
+            datasets: [{
+                type: 'bar',
+                label: 'Accuracy (F1-Score)',
+                data: [0.762, 0.736, 0.737, 0.722, 0.693],
+                backgroundColor: '#00A6ED',
+                yAxisID: 'y',
+                order: 2
+            }, {
+                type: 'line',
+                label: 'Cost per 1k ($)',
+                data: [0.64, 0.45, 0.01, 0.17, 0.03],
+                borderColor: '#FF2D55',
+                backgroundColor: '#FF2D55',
+                yAxisID: 'y1',
+                tension: 0.3,
+                order: 1
+            }]
+        };
+
+        const llmConfig = {
+            data: llmData,
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: { title: tooltipTitleCallback }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#333', font: { weight: 'bold' } }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: { display: true, text: 'Accuracy (F1)', color: '#00A6ED' },
+                        min: 0.65,
+                        max: 0.8,
+                        grid: { color: '#E0E0E0' },
+                        ticks: { color: '#00A6ED' }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: { display: true, text: 'Cost per 1k ($)', color: '#FF2D55' },
+                        grid: { drawOnChartArea: false },
+                        min: 0,
+                        ticks: { color: '#FF2D55' }
+                    }
+                }
+            }
+        };
+        
+        const llmChartCtx = document.getElementById('llmChart');
+        if (llmChartCtx) new Chart(llmChartCtx, llmConfig);
+    </script>
+</body>
+</html>

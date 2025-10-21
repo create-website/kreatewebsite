@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diwali Card Creator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .card-font {
+            font-family: 'Dancing Script', cursive;
+        }
+        .title-font {
+             font-family: 'Playfair Display', serif;
+        }
+        /* Hide view by default */
+        .hidden-view {
+            display: none;
+        }
+        /* Simple animation for showing views */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .view {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 bg-cover bg-center bg-no-repeat" style="background-image: url('https://storage.googleapis.com/kreatewebsite/banner/Diwali1.jpg');">
+    <div class="min-h-screen flex items-center justify-center p-4 bg-black bg-opacity-50">
+
+        <!-- View 1: Card Creation Form -->
+        <div id="creatorView" class="view w-full max-w-lg">
+            <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl shadow-xl p-8 text-white space-y-6 border border-white border-opacity-20">
+                <h1 class="text-4xl font-bold text-center title-font text-amber-300">Create a Diwali Card</h1>
+                <p class="text-center text-gray-200">Personalize your message and share the light of Diwali with your loved ones.</p>
+                
+                <form id="cardForm" class="space-y-4">
+                    <div>
+                        <label for="recipientName" class="block mb-2 font-semibold">Recipient's Name:</label>
+                        <input type="text" id="recipientName" name="recipientName" class="w-full bg-white bg-opacity-20 border border-amber-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-amber-400" placeholder="e.g., Priya" required>
+                    </div>
+                    <div>
+                        <label for="personalMessage" class="block mb-2 font-semibold">Your Personal Message:</label>
+                        <textarea id="personalMessage" name="personalMessage" rows="4" class="w-full bg-white bg-opacity-20 border border-amber-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-amber-400" placeholder="Wishing you joy and light..." required></textarea>
+                    </div>
+                    <div>
+                        <label for="senderName" class="block mb-2 font-semibold">Your Name:</label>
+                        <input type="text" id="senderName" name="senderName" class="w-full bg-white bg-opacity-20 border border-amber-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-amber-400" placeholder="e.g., Rohan" required>
+                    </div>
+                    <button type="submit" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold py-3 px-4 rounded-lg transition duration-300 transform hover:scale-105">
+                        Generate Card Link
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Link Display Area -->
+            <div id="linkContainer" class="hidden-view mt-6 bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 text-center border border-white border-opacity-20">
+                <h2 class="text-2xl font-bold text-amber-300 title-font">Your Card is Ready!</h2>
+                <p class="text-gray-200 mt-2">Copy the link below and send it to your friend.</p>
+                <div class="mt-4 flex items-center bg-gray-900 bg-opacity-50 rounded-lg p-2">
+                    <input type="text" id="generatedLink" class="w-full bg-transparent text-white border-none focus:outline-none" readonly>
+                    <button id="copyButton" class="ml-4 bg-amber-400 text-gray-900 font-semibold py-2 px-4 rounded-lg hover:bg-amber-500 transition">
+                        Copy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View 2: Displaying the Personalized Card -->
+        <div id="cardView" class="hidden-view view w-full max-w-lg">
+             <div class="bg-cover bg-center rounded-2xl shadow-xl p-8 text-center text-gray-800 border-4 border-amber-300" style="background-image: url('https://storage.googleapis.com/kreatewebsite/banner/Laxmi-Puja.jpg');">
+                <div class="bg-black bg-opacity-50 rounded-xl p-8">
+                    <h2 class="text-5xl card-font text-amber-200" id="cardRecipient"></h2>
+                    <p class="text-lg text-white mt-6 mb-8 mx-auto max-w-md" id="cardMessage"></p>
+                    <p class="text-3xl card-font text-amber-200" id="cardSender"></p>
+                </div>
+             </div>
+             <div class="text-center mt-6">
+                <a href="diwali_card_creator.html" class="bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold py-2 px-6 rounded-lg transition duration-300">Create Your Own Card!</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const creatorView = document.getElementById('creatorView');
+        const cardView = document.getElementById('cardView');
+        const cardForm = document.getElementById('cardForm');
+        const linkContainer = document.getElementById('linkContainer');
+        const generatedLinkInput = document.getElementById('generatedLink');
+        const copyButton = document.getElementById('copyButton');
+
+        // This function runs when the page loads
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const to = params.get('to');
+            const msg = params.get('msg');
+            const from = params.get('from');
+
+            // If URL has card details, show the card
+            if (to && msg && from) {
+                document.getElementById('cardRecipient').textContent = `Dear ${decodeURIComponent(to)},`;
+                document.getElementById('cardMessage').textContent = decodeURIComponent(msg);
+                document.getElementById('cardSender').textContent = `With love, ${decodeURIComponent(from)}`;
+                
+                creatorView.classList.add('hidden-view');
+                cardView.classList.remove('hidden-view');
+            } else { // Otherwise, show the creator form
+                creatorView.classList.remove('hidden-view');
+                cardView.classList.add('hidden-view');
+            }
+        };
+
+        // Handle form submission to generate the link
+        cardForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const recipientName = document.getElementById('recipientName').value;
+            const personalMessage = document.getElementById('personalMessage').value;
+            const senderName = document.getElementById('senderName').value;
+
+            // Base URL (removes any existing query params)
+            const baseUrl = window.location.href.split('?')[0];
+            
+            // Create the personalized link
+            const generatedUrl = `${baseUrl}?to=${encodeURIComponent(recipientName)}&msg=${encodeURIComponent(personalMessage)}&from=${encodeURIComponent(senderName)}`;
+            
+            generatedLinkInput.value = generatedUrl;
+            linkContainer.classList.remove('hidden-view');
+        });
+
+        // Handle copy button click
+        copyButton.addEventListener('click', function() {
+            generatedLinkInput.select();
+            generatedLinkInput.setSelectionRange(0, 99999); // For mobile devices
+
+            try {
+                document.execCommand('copy');
+                copyButton.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyButton.textContent = 'Copy';
+                }, 2000);
+            } catch (err) {
+                console.error('Unable to copy link', err);
+            }
+        });
+    </script>
+
+</body>
+</html>

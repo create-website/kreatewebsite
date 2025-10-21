@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/B Test Sample Size Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Sand & Sage -->
+    <!-- Application Structure Plan: A single-column, task-oriented SPA is designed for simplicity and directness, guiding the user from top to bottom. The flow is: 1) Title/Intro for context, 2) Interactive Input Panel with sliders for intuitive parameter exploration, 3) Prominent Output Card for a clear answer, and 4) a Dynamic Visualization (bar chart) to illustrate how the Minimum Detectable Effect impacts sample size. This structure is chosen to make a complex statistical tool feel accessible and educational, allowing users to both get a quick calculation and understand the trade-offs involved. An FAQ section at the bottom provides deeper context without cluttering the main tool. -->
+    <!-- Visualization & Content Choices: 1. Inputs (Baseline Rate, MDE): Goal=Inform/Interact. Method=HTML Sliders + Number Inputs. Interaction=Real-time updates trigger calculation. Justification=Allows easy exploration of scenarios. 2. Output (Sample Size): Goal=Inform. Method=Dynamic text in a highlighted card. Interaction=Updates on input change. Justification=Provides the primary answer clearly. 3. MDE vs. Sample Size Relationship: Goal=Compare/Relationships. Method=Bar Chart (Chart.js/Canvas). Interaction=Chart redraws when baseline rate, significance, or power changes. Justification=Visually demonstrates the crucial concept that detecting smaller effects requires exponentially larger samples, which is a key takeaway for test planning. All text is designed to be explanatory and educational. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .slider-thumb::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #4A5568;
+            cursor: pointer;
+            border-radius: 50%;
+            margin-top: -6px;
+        }
+        .slider-thumb::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #4A5568;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .btn-active {
+            background-color: #A3B18A;
+            color: #FFFFFF;
+        }
+        .btn-inactive {
+            background-color: #EFEFEF;
+            color: #4A5568;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800">A/B Test Sample Size Calculator</h1>
+            <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Determine the right audience size for your experiments to achieve statistically significant results.</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-bold mb-6 text-gray-700">Test Parameters</h2>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label for="baseline" class="flex justify-between items-center text-sm font-medium text-gray-700 mb-2">
+                            <span>Baseline Conversion Rate</span>
+                            <span id="baseline-value" class="font-semibold text-gray-900">5.0%</span>
+                        </label>
+                        <input id="baseline" type="range" min="0.1" max="50" value="5" step="0.1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb">
+                    </div>
+                    
+                    <div>
+                        <label for="mde" class="flex justify-between items-center text-sm font-medium text-gray-700 mb-2">
+                            <span>Minimum Detectable Effect (Relative)</span>
+                            <span id="mde-value" class="font-semibold text-gray-900">10.0%</span>
+                        </label>
+                        <input id="mde" type="range" min="1" max="100" value="10" step="0.5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Statistical Significance</label>
+                        <div id="significance-group" class="grid grid-cols-3 gap-2">
+                            <button data-value="0.10" class="p-2 text-sm rounded-md transition-colors btn-inactive">90%</button>
+                            <button data-value="0.05" class="p-2 text-sm rounded-md transition-colors btn-active">95%</button>
+                            <button data-value="0.025" class="p-2 text-sm rounded-md transition-colors btn-inactive">97.5%</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Statistical Power</label>
+                        <div id="power-group" class="grid grid-cols-3 gap-2">
+                            <button data-value="0.8" class="p-2 text-sm rounded-md transition-colors btn-active">80%</button>
+                            <button data-value="0.9" class="p-2 text-sm rounded-md transition-colors btn-inactive">90%</button>
+                            <button data-value="0.99" class="p-2 text-sm rounded-md transition-colors btn-inactive">99%</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-2 space-y-8">
+                <div class="bg-[#DAD7CD]/50 p-6 md:p-8 rounded-2xl text-center border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-600 mb-2">Sample Size per Variation</h3>
+                    <p id="sample-size-result" class="text-5xl md:text-6xl font-bold text-[#3A5A40]">15,345</p>
+                    <p class="mt-4 text-gray-700 max-w-2xl mx-auto" id="result-summary">
+                        You need at least <strong class="font-semibold">15,345</strong> users per variation to have a <strong class="font-semibold">80%</strong> chance of detecting a <strong class="font-semibold">10.0%</strong> relative increase from a <strong class="font-semibold">5.0%</strong> baseline, with <strong class="font-semibold">95%</strong> statistical significance.
+                    </p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold text-gray-700 mb-1">Impact of Minimum Detectable Effect</h3>
+                    <p class="text-sm text-gray-500 mb-4">See how the required sample size changes for different MDEs, given your current settings. Smaller effects require larger sample sizes.</p>
+                    <div class="chart-container">
+                        <canvas id="mde-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="mt-12 pt-8 border-t border-gray-200">
+             <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">Understanding the Concepts</h2>
+             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
+                <div class="bg-white p-5 rounded-lg border border-gray-200">
+                    <h4 class="font-semibold text-gray-800 mb-2">Baseline Conversion Rate</h4>
+                    <p class="text-gray-600">This is the current conversion rate of your control group (the 'A' in A/B test). A reliable baseline is crucial for an accurate sample size calculation.</p>
+                </div>
+                <div class="bg-white p-5 rounded-lg border border-gray-200">
+                    <h4 class="font-semibold text-gray-800 mb-2">Minimum Detectable Effect (MDE)</h4>
+                    <p class="text-gray-600">The smallest improvement you want to be able to detect. If the true effect is smaller than the MDE, your test might not find it. A smaller MDE requires a larger sample size.</p>
+                </div>
+                <div class="bg-white p-5 rounded-lg border border-gray-200">
+                    <h4 class="font-semibold text-gray-800 mb-2">Statistical Significance</h4>
+                    <p class="text-gray-600">Often set at 95%, this is the probability that you won't have a "false positive" – declaring a winner when there's actually no difference between the variations.</p>
+                </div>
+                <div class="bg-white p-5 rounded-lg border border-gray-200">
+                    <h4 class="font-semibold text-gray-800 mb-2">Statistical Power</h4>
+                    <p class="text-gray-600">Typically 80%, this is the probability that your test will correctly detect a true effect if it exists. It's your defense against a "false negative".</p>
+                </div>
+             </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const baselineSlider = document.getElementById('baseline');
+            const mdeSlider = document.getElementById('mde');
+            const significanceGroup = document.getElementById('significance-group');
+            const powerGroup = document.getElementById('power-group');
+
+            const baselineValueSpan = document.getElementById('baseline-value');
+            const mdeValueSpan = document.getElementById('mde-value');
+            const sampleSizeResultEl = document.getElementById('sample-size-result');
+            const resultSummaryEl = document.getElementById('result-summary');
+
+            const Z_SCORES = {
+                significance: { '0.10': 1.645, '0.05': 1.96, '0.025': 2.24 },
+                power: { '0.8': 0.84, '0.9': 1.28, '0.99': 2.33 }
+            };
+            
+            let chartInstance = null;
+            
+            const state = {
+                baseline: 5.0,
+                mde: 10.0,
+                alpha: 0.05,
+                power: 0.8
+            };
+
+            function normalCdf(x) {
+                const t = 1 / (1 + 0.2316419 * Math.abs(x));
+                const d = 0.3989423 * Math.exp(-x * x / 2);
+                let prob = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+                return x > 0 ? 1 - prob : prob;
+            }
+
+            function getZScore(p) {
+                if (p < 0.5) return -getZScore(1 - p);
+                if (p > 0.999999) return 6;
+                let low = 0, high = 6;
+                while (high - low > 1e-9) {
+                    const mid = (low + high) / 2;
+                    if (normalCdf(mid) < p) low = mid;
+                    else high = mid;
+                }
+                return (low + high) / 2;
+            }
+
+            function calculateSampleSize() {
+                const p1 = state.baseline / 100;
+                const relativeMde = state.mde / 100;
+                const p2 = p1 * (1 + relativeMde);
+                
+                if (p1 <= 0 || p1 >= 1 || p2 <= 0 || p2 >= 1) {
+                    sampleSizeResultEl.textContent = 'N/A';
+                    resultSummaryEl.textContent = 'Invalid parameters. Conversion rates must be between 0% and 100%.';
+                    return 0;
+                }
+
+                const zAlpha = getZScore(1 - state.alpha / 2);
+                const zBeta = getZScore(state.power);
+
+                const pooledVariance = p1 * (1 - p1) + p2 * (1 - p2);
+                const delta = p2 - p1;
+
+                if (delta === 0) {
+                    return Infinity;
+                }
+                
+                const sampleSize = (Math.pow(zAlpha + zBeta, 2) * pooledVariance) / Math.pow(delta, 2);
+                
+                return Math.ceil(sampleSize);
+            }
+
+            function updateUI() {
+                const sampleSize = calculateSampleSize();
+                
+                baselineValueSpan.textContent = `${state.baseline.toFixed(1)}%`;
+                mdeValueSpan.textContent = `${state.mde.toFixed(1)}%`;
+                
+                if (sampleSize > 0 && isFinite(sampleSize)) {
+                    sampleSizeResultEl.textContent = sampleSize.toLocaleString();
+                    resultSummaryEl.innerHTML = `
+                        You need at least <strong class="font-semibold">${sampleSize.toLocaleString()}</strong> users per variation 
+                        to have a <strong class="font-semibold">${Math.round(state.power * 100)}%</strong> chance 
+                        of detecting a <strong class="font-semibold">${state.mde.toFixed(1)}%</strong> relative increase 
+                        from a <strong class="font-semibold">${state.baseline.toFixed(1)}%</strong> baseline, 
+                        with <strong class="font-semibold">${(1 - state.alpha) * 100}%</strong> statistical significance.`;
+                } else if (sampleSize === 0) {
+                    sampleSizeResultEl.textContent = 'N/A';
+                } else {
+                     sampleSizeResultEl.textContent = 'Large';
+                     resultSummaryEl.textContent = 'The required sample size is extremely large. Consider increasing the MDE.';
+                }
+                updateChart();
+            }
+
+            function calculateSampleSizeForMde(mde) {
+                 const p1 = state.baseline / 100;
+                 const relativeMde = mde / 100;
+                 const p2 = p1 * (1 + relativeMde);
+                 if (p1 <= 0 || p1 >= 1 || p2 <= 0 || p2 >= 1) return 0;
+                 const zAlpha = getZScore(1 - state.alpha / 2);
+                 const zBeta = getZScore(state.power);
+                 const pooledVariance = p1 * (1 - p1) + p2 * (1 - p2);
+                 const delta = p2 - p1;
+                 if (delta === 0) return Infinity;
+                 const sampleSize = (Math.pow(zAlpha + zBeta, 2) * pooledVariance) / Math.pow(delta, 2);
+                 return Math.ceil(sampleSize);
+            }
+
+            function updateChart() {
+                const ctx = document.getElementById('mde-chart').getContext('2d');
+                
+                const mdeValues = [state.mde / 2, state.mde * 0.75, state.mde, state.mde * 1.25, state.mde * 1.5].map(v => Math.round(v * 2) / 2);
+                const sampleSizes = mdeValues.map(mde => calculateSampleSizeForMde(mde));
+                
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: mdeValues.map(v => `${v.toFixed(1)}%`),
+                        datasets: [{
+                            label: 'Sample Size per Variation',
+                            data: sampleSizes,
+                            backgroundColor: mdeValues.map(v => v === state.mde ? '#A3B18A' : '#DAD7CD'),
+                            borderColor: mdeValues.map(v => v === state.mde ? '#3A5A40' : '#A3B18A'),
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `Sample Size: ${context.parsed.y.toLocaleString()}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Required Sample Size'
+                                },
+                                ticks: {
+                                    callback: function(value, index, values) {
+                                        if (value >= 1000000) return (value / 1000000) + 'M';
+                                        if (value >= 1000) return (value / 1000) + 'k';
+                                        return value;
+                                    }
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Minimum Detectable Effect (Relative)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            baselineSlider.addEventListener('input', (e) => {
+                state.baseline = parseFloat(e.target.value);
+                updateUI();
+            });
+
+            mdeSlider.addEventListener('input', (e) => {
+                state.mde = parseFloat(e.target.value);
+                updateUI();
+            });
+
+            function handleButtonGroupClick(groupElement, stateKey) {
+                groupElement.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'BUTTON') {
+                        Array.from(groupElement.children).forEach(btn => {
+                            btn.classList.remove('btn-active');
+                            btn.classList.add('btn-inactive');
+                        });
+                        e.target.classList.add('btn-active');
+                        e.target.classList.remove('btn-inactive');
+                        state[stateKey] = parseFloat(e.target.dataset.value);
+                        updateUI();
+                    }
+                });
+            }
+
+            handleButtonGroupClick(significanceGroup, 'alpha');
+            handleButtonGroupClick(powerGroup, 'power');
+
+            updateUI();
+        });
+    </script>
+</body>
+</html>

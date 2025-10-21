@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akshaya Tritiya: Guide and Overview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Golden Sands & Terracotta -->
+    <!-- Application Structure Plan: A thematic, single-page application with a sticky top navigation for easy access to key sections: a 'Home' hero, 'Beliefs & Stories' for the spiritual context, 'Traditions' for cultural practices, and 'Modern Impact' for economic analysis. This structure is chosen over a linear report format to allow users to explore facets of the festival based on their interest, enhancing engagement and comprehension. Interactions include tabbed content for comparing religious views, a clickable map for regional traditions, and dynamic charts for visualizing economic data, creating a guided yet flexible user journey. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Duality of 'Akshaya' (spiritual vs. material). Goal: Compare. Viz: Interactive toggle/tab. Interaction: Click to switch views. Justification: Simplifies a core philosophical concept. Method: HTML/CSS/JS.
+        - Report Info: Regional celebrations. Goal: Organize/Explore. Viz: Clickable map of India. Interaction: Click on a state to reveal a modal with its specific customs. Justification: More engaging and spatially intuitive than a list. Method: HTML/CSS/JS.
+        - Report Info: 2025 Gold sales data (Value vs. Volume). Goal: Compare. Viz: Grouped Bar Chart. Interaction: Hover tooltips for precise data. Justification: Clearly shows the divergence between sales value and volume. Library: Chart.js.
+        - Report Info: 2025 Commercial sales data (Real Estate, Auto). Goal: Inform. Viz: Bar Chart. Interaction: Hover tooltips. Justification: Provides a quick, clear view of the festival's economic scale in key sectors. Library: Chart.js.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8; /* Warm off-white */
+            color: #4A4A4A;
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #E57373; /* Terracotta accent */
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-30 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-[#D35400]">Akshaya Tritiya</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link text-gray-700 hover:text-[#D35400] font-medium active">Home</a>
+                <a href="#beliefs" class="nav-link text-gray-700 hover:text-[#D35400] font-medium">Beliefs & Stories</a>
+                <a href="#traditions" class="nav-link text-gray-700 hover:text-[#D35400] font-medium">Traditions</a>
+                <a href="#impact" class="nav-link text-gray-700 hover:text-[#D35400] font-medium">Modern Impact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                <span class="text-3xl">☰</span>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#home" class="block py-2 text-gray-700 hover:text-[#D35400]">Home</a>
+            <a href="#beliefs" class="block py-2 text-gray-700 hover:text-[#D35400]">Beliefs & Stories</a>
+            <a href="#traditions" class="block py-2 text-gray-700 hover:text-[#D35400]">Traditions</a>
+            <a href="#impact" class="block py-2 text-gray-700 hover:text-[#D35400]">Modern Impact</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="min-h-screen flex items-center bg-amber-50">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-[#D35400] mb-4">The Festival of Imperishable Fortune</h1>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                    Explore the ancient traditions, celestial alignments, and modern significance of Akshaya Tritiya, a day where spiritual merit and material prosperity are believed to last an eternity.
+                </p>
+                <a href="#beliefs" class="bg-[#E57373] text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-[#D35400] transition-colors duration-300">
+                    Discover the Story
+                </a>
+            </div>
+        </section>
+
+        <section id="beliefs" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Beliefs & Stories: The 'Why'</h2>
+                    <p class="text-gray-600 mt-4 max-w-2xl mx-auto">This section delves into the festival's spiritual core. It explores the foundational concept of 'Akshaya' (imperishable), its distinct interpretations in Hinduism and Jainism, the powerful myths that shape its character, and the astrological alignments that make it uniquely auspicious.</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">The Core of 'Akshaya': Two Paths to Eternity</h3>
+                        <p class="text-gray-600 mb-6">The Sanskrit word 'Akshaya' means "imperishable" or "never-diminishing." This core principle has evolved into two powerful, co-existing interpretations: one focused on eternal spiritual merit through selfless acts, and the other on securing lasting material wealth.</p>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <div class="flex border-b">
+                                <button id="spiritual-btn" class="flex-1 p-3 font-semibold text-center text-white bg-[#E57373] rounded-t-md">Spiritual Merit (Punya)</button>
+                                <button id="material-btn" class="flex-1 p-3 font-semibold text-center text-gray-600 bg-gray-200 rounded-t-md">Material Wealth (Dhan)</button>
+                            </div>
+                            <div id="spiritual-content" class="p-4">
+                                <p class="text-gray-700">The original emphasis is that positive deeds like charity (*Daana*), chanting (*Japa*), and offerings to ancestors performed on this day yield spiritual benefits (*punya*) that never fade, remaining with the soul eternally.</p>
+                            </div>
+                            <div id="material-content" class="p-4 hidden">
+                                <p class="text-gray-700">The concept of "imperishable" is also applied to tangible assets that hold value, like gold. Acquiring such assets is believed to secure a fortune that will never decrease, linking the ritual to lasting material prosperity.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">The Celestial Mandate</h3>
+                        <p class="text-gray-600 mb-6">Astrologically, Akshaya Tritiya is a rare day when the Sun and Moon are simultaneously in their most powerful positions (exaltation) — the Sun in Aries and the Moon in Taurus. This alignment is believed to maximize positive celestial energy, making the entire day auspicious for new beginnings without needing a specific time (*muhurta*).</p>
+                        <div class="bg-white p-6 rounded-lg shadow-md flex justify-around items-center text-center">
+                            <div>
+                                <span class="text-6xl">☀️</span>
+                                <p class="font-bold text-lg mt-2 text-amber-600">Sun in Aries</p>
+                                <p class="text-sm text-gray-500">Peak Strength</p>
+                            </div>
+                            <div>
+                                <span class="text-6xl">🌕</span>
+                                <p class="font-bold text-lg mt-2 text-sky-600">Moon in Taurus</p>
+                                <p class="text-sm text-gray-500">Peak Dignity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-12 mb-16">
+                     <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Hindu Significance</h3>
+                        <p class="text-gray-600 mb-6 text-center">In Hinduism, the day marks cosmic creation and divine intervention. It is celebrated as the start of the *Treta Yuga* and the birthday of Lord Vishnu's sixth avatar, **Parashurama**. The sacred river Ganges is also believed to have descended to Earth on this day.</p>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-center"><span class="text-xl mr-3 text-[#D35400]">❖</span><span>Beginning of a new cosmic age (*Yuga*)</span></li>
+                            <li class="flex items-center"><span class="text-xl mr-3 text-[#D35400]">❖</span><span>Birth of Parashurama, preserver of Dharma</span></li>
+                            <li class="flex items-center"><span class="text-xl mr-3 text-[#D35400]">❖</span><span>Descent of the holy river Ganges</span></li>
+                        </ul>
+                    </div>
+                     <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Jain Significance</h3>
+                        <p class="text-gray-600 mb-6 text-center">For Jains, the day commemorates a pivotal moment of asceticism. It marks the day the first Tirthankara, **Rishabhanatha**, ended his year-long fast by accepting sugarcane juice, establishing the proper way to offer food (*Ahara Daan*) to monks.</p>
+                         <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-center"><span class="text-xl mr-3 text-[#D35400]">❖</span><span>Commemoration of Rishabhanatha's fast</span></li>
+                            <li class="flex items-center"><span class="text-xl mr-3 text-[#D35400]">❖</span><span>Focus on spiritual gain through compassion</span></li>
+                            <li class="flex items-center"><span class="text-xl mr-3 text-[#D35400]">❖</span><span>Centrality of *Ahara Daan* (gift of food)</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Mythological Narratives</h3>
+                     <div class="grid md:grid-cols-3 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                            <h4 class="font-bold text-lg text-[#D35400] mb-2">The Akshaya Patra</h4>
+                            <p class="text-gray-600">The Pandavas received a divine vessel that produced an endless supply of food, symbolizing limitless abundance for the purpose of sharing and hospitality.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                            <h4 class="font-bold text-lg text-[#D35400] mb-2">Krishna & Sudama</h4>
+                            <p class="text-gray-600">Impoverished Sudama offered a handful of rice to Lord Krishna, who in return blessed him with immense wealth, highlighting the power of pure-hearted giving.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                            <h4 class="font-bold text-lg text-[#D35400] mb-2">Genesis of the Mahabharata</h4>
+                            <p class="text-gray-600">The sage Veda Vyasa began dictating the epic Mahabharata to Lord Ganesha on this day, marking it as auspicious for new, monumental ventures.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="traditions" class="py-20 bg-amber-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Traditions: The 'How'</h2>
+                    <p class="text-gray-600 mt-4 max-w-2xl mx-auto">This section showcases how Akshaya Tritiya is celebrated. It covers the core pan-Indian rituals that form the festival's foundation and then invites you to explore the rich tapestry of unique regional customs through an interactive map, illustrating how universal themes are adapted locally.</p>
+                </div>
+
+                <div class="mb-16">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Pan-Indian Observances</h3>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                            <div class="text-4xl mb-3 text-[#E57373]">🕊️</div>
+                            <h4 class="font-bold text-lg">Purity & Worship</h4>
+                            <p class="text-sm text-gray-600">Sacred baths and prayers to Lord Vishnu, Lakshmi, and Ganesha for blessings.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                            <div class="text-4xl mb-3 text-[#E57373]">🎁</div>
+                            <h4 class="font-bold text-lg">Charity (Daana)</h4>
+                            <p class="text-sm text-gray-600">Donating food, clothing, and money to earn inexhaustible spiritual merit.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                            <div class="text-4xl mb-3 text-[#E57373]">🚀</div>
+                            <h4 class="font-bold text-lg">New Ventures</h4>
+                            <p class="text-sm text-gray-600">Starting businesses, buying property, and getting married on this auspicious day.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                            <div class="text-4xl mb-3 text-[#E57373]">🧘</div>
+                            <h4 class="font-bold text-lg">Fasting (Vrata)</h4>
+                            <p class="text-sm text-gray-600">Observing fasts to cleanse the body and mind and seek divine grace.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-6 text-center">A Tapestry of Regional Customs</h3>
+                    <p class="text-center text-gray-600 mb-8">Click on a state to discover its unique Akshaya Tritiya traditions.</p>
+                    <div class="w-full max-w-4xl mx-auto p-4 bg-white rounded-lg shadow-lg">
+                        <div class="relative">
+                            <div class="aspect-w-4 aspect-h-3">
+                                <div class="bg-amber-100 rounded-md grid grid-cols-3 grid-rows-3 gap-1">
+                                    <div class="col-start-1 row-start-1 flex items-center justify-center"><button class="map-dot" data-region="rajasthan">Rajasthan</button></div>
+                                    <div class="col-start-1 row-start-2 flex items-center justify-center"><button class="map-dot" data-region="gujarat">Gujarat</button></div>
+                                    <div class="col-start-2 row-start-2 flex items-center justify-center"><button class="map-dot" data-region="maharashtra">Maharashtra</button></div>
+                                    <div class="col-start-2 row-start-1 flex items-center justify-center"><button class="map-dot" data-region="up">Uttar Pradesh</button></div>
+                                    <div class="col-start-3 row-start-1 flex items-center justify-center"><button class="map-dot" data-region="bengal">West Bengal</button></div>
+                                    <div class="col-start-3 row-start-2 flex items-center justify-center"><button class="map-dot" data-region="odisha">Odisha</button></div>
+                                    <div class="col-start-2 row-start-3 flex items-center justify-center"><button class="map-dot" data-region="telugu">Telugu States</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Modern Impact: The 'Now'</h2>
+                    <p class="text-gray-600 mt-4 max-w-2xl mx-auto">This section analyzes the festival's contemporary transformation into a major economic event. Interactive charts visualize the significant commercial activity in the gold, real estate, and automotive sectors, illustrating the powerful interplay between ancient faith and modern consumerism.</p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8 mb-16 text-center">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-lg font-semibold text-gray-500">Total Gold Sales (2025)</h3>
+                        <p class="text-3xl font-bold text-[#D35400]">₹12-16k Crore</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-lg font-semibold text-gray-500">Real Estate Bookings (Nashik)</h3>
+                        <p class="text-3xl font-bold text-[#D35400]">₹250 Crore</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-lg font-semibold text-gray-500">Auto Sales (Nashik)</h3>
+                        <p class="text-3xl font-bold text-[#D35400]">₹255 Crore</p>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Gold Market: Value vs. Volume (YoY Change 2025)</h3>
+                        <div class="chart-container">
+                            <canvas id="goldChart"></canvas>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4 text-center">Despite high prices boosting sales value, the actual quantity of gold sold decreased, showing a shift in consumer strategy.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Major Asset Purchases (Nashik, 2025)</h3>
+                        <div class="chart-container">
+                            <canvas id="assetChart"></canvas>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4 text-center">The festival drives significant investment in high-value assets beyond gold, including property and vehicles.</p>
+                    </div>
+                </div>
+                
+                <div class="mt-16 bg-white p-8 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Analysis: The Interplay of Faith and Market Forces</h3>
+                    <p class="text-gray-600 leading-relaxed">The modern Akshaya Tritiya is a fascinating case study of ancient belief meeting modern capitalism. The spiritual concept of 'imperishable returns' has been masterfully mapped onto the material promise of appreciating assets. A day once focused on securing eternal grace through giving has evolved into one largely defined by seeking eternal prosperity through consumption. This synthesis, where a purchase becomes an act of faith and a financial decision a ritual of hope, has cemented Akshaya Tritiya's role as a cornerstone of India's faith-driven consumer economy.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+<!--   
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Interactive Report. All data synthesized from the source report.</p>
+            <p class="text-sm text-gray-400 mt-2">Designed to make complex information accessible and engaging.</p>
+        </div>
+    </footer>
+<!--
+
+    <div id="region-modal" class="modal-backdrop">
+        <div class="bg-white rounded-lg shadow-2xl w-11/12 max-w-lg p-6 relative modal-content">
+            <button id="close-modal" class="absolute top-3 right-4 text-2xl font-bold text-gray-500 hover:text-gray-800">&times;</button>
+            <h3 id="modal-title" class="text-2xl font-bold text-[#D35400] mb-4"></h3>
+            <div id="modal-body" class="text-gray-700 space-y-3"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            const spiritualBtn = document.getElementById('spiritual-btn');
+            const materialBtn = document.getElementById('material-btn');
+            const spiritualContent = document.getElementById('spiritual-content');
+            const materialContent = document.getElementById('material-content');
+
+            spiritualBtn.addEventListener('click', () => {
+                spiritualContent.classList.remove('hidden');
+                materialContent.classList.add('hidden');
+                spiritualBtn.classList.add('bg-[#E57373]', 'text-white');
+                spiritualBtn.classList.remove('bg-gray-200', 'text-gray-600');
+                materialBtn.classList.add('bg-gray-200', 'text-gray-600');
+                materialBtn.classList.remove('bg-[#E57373]', 'text-white');
+            });
+
+            materialBtn.addEventListener('click', () => {
+                materialContent.classList.remove('hidden');
+                spiritualContent.classList.add('hidden');
+                materialBtn.classList.add('bg-[#E57373]', 'text-white');
+                materialBtn.classList.remove('bg-gray-200', 'text-gray-600');
+                spiritualBtn.classList.add('bg-gray-200', 'text-gray-600');
+                spiritualBtn.classList.remove('bg-[#E57373]', 'text-white');
+            });
+
+            const regionalData = {
+                odisha: {
+                    title: "Odisha",
+                    content: `
+                        <p>The festival is deeply tied to the agricultural cycle. Farmers perform <strong>Akhi Muthi Anukula</strong>, the ceremonial first sowing of rice seeds.</p>
+                        <p>It also marks the official start of construction for the massive chariots used in the world-famous <strong>Rath Yatra of Lord Jagannath</strong> in Puri.</p>
+                    `
+                },
+                maharashtra: {
+                    title: "Maharashtra",
+                    content: `
+                        <p>Married women exchange packets of <strong>haldi (turmeric) and kumkum (vermilion)</strong>, praying to Goddess Gauri for their husbands' well-being.</p>
+                        <p>It's also a day for culinary celebration, with families sharing traditional sweets like <strong>Shrikhand-Puri</strong>.</p>
+                    `
+                },
+                telugu: {
+                    title: "Telugu States",
+                    content: `
+                        <p>At the famous Simhachalam Temple, this is the only day of the year the deity's idol is displayed in its true form (<strong>Nija Roopa Darshanam</strong>), without its usual sandalwood paste coating.</p>
+                        <p>Households offer sacred foods like <strong>Panakam</strong> (jaggery drink) and <strong>Vadapappu</strong> (soaked moong dal salad).</p>
+                    `
+                },
+                bengal: {
+                    title: "West Bengal",
+                    content: `
+                        <p>For the business community, the day is celebrated as <strong>Halkhata</strong>, the ceremonial opening of new financial ledgers.</p>
+                        <p>Merchants worship Lord Ganesha and Goddess Lakshmi to seek blessings for a prosperous new financial year.</p>
+                    `
+                },
+                up: {
+                    title: "Uttar Pradesh (Vrindavan)",
+                    content: `
+                        <p>In the sacred town of Vrindavan, the feet of the idol of Lord Krishna at the renowned <strong>Banke Bihari Temple</strong>, normally covered, are unveiled for public viewing (darshan).</p>
+                    `
+                },
+                rajasthan: {
+                    title: "Rajasthan & Gujarat",
+                    content: `
+                        <p>Known as <strong>Akha Teej</strong>, it is considered one of the most auspicious days for weddings.</p>
+                        <p>Thousands of marriages are solemnized on this day, often without needing detailed astrological consultations due to the day's inherent auspiciousness.</p>
+                    `
+                },
+                gujarat: {
+                    title: "Rajasthan & Gujarat",
+                    content: `
+                        <p>Known as <strong>Akha Teej</strong>, it is considered one of the most auspicious days for weddings.</p>
+                        <p>Thousands of marriages are solemnized on this day, often without needing detailed astrological consultations due to the day's inherent auspiciousness.</p>
+                    `
+                }
+            };
+
+            const modal = document.getElementById('region-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+
+            document.querySelectorAll('.map-dot').forEach(dot => {
+                dot.addEventListener('click', (e) => {
+                    const region = e.target.dataset.region;
+                    const data = regionalData[region];
+                    if (data) {
+                        modalTitle.textContent = data.title;
+                        modalBody.innerHTML = data.content;
+                        modal.style.display = 'flex';
+                    }
+                });
+            });
+
+            closeModalBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            const goldCtx = document.getElementById('goldChart').getContext('2d');
+            new Chart(goldCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Value Change', 'Volume Change'],
+                    datasets: [{
+                        label: 'Positive Change (%)',
+                        data: [25, 0], 
+                        backgroundColor: 'rgba(52, 152, 219, 0.6)',
+                        borderColor: 'rgba(52, 152, 219, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Negative Change (%)',
+                        data: [0, -19],
+                        backgroundColor: 'rgba(231, 76, 60, 0.6)',
+                        borderColor: 'rgba(231, 76, 60, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Year-on-Year Change'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            const assetCtx = document.getElementById('assetChart').getContext('2d');
+            new Chart(assetCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Real Estate', 'Four-Wheelers', 'Two-Wheelers'],
+                    datasets: [{
+                        label: 'Sales Value in Crore (₹)',
+                        data: [250, 225, 30],
+                        backgroundColor: [
+                            'rgba(26, 188, 156, 0.6)',
+                            'rgba(241, 196, 15, 0.6)',
+                            'rgba(155, 89, 182, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(26, 188, 156, 1)',
+                            'rgba(241, 196, 15, 1)',
+                            'rgba(155, 89, 182, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Sales Value in Crore (₹)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

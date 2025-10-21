@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint for Enterprise AI in Financial Services on Azure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Slate Blue -->
+    <!-- Application Structure Plan: The application is structured as an interactive journey, mirroring the 4-phase strategic recommendation from the report's conclusion (Foundation, Pilot, Scale, Innovate). This is more intuitive than a linear chapter-by-chapter format. Two critical, overarching themes, Security and FinOps, are given their own dedicated sections accessible from the main navigation. This structure allows users to either follow a logical implementation path or jump directly to a specific area of concern. The user flow is managed via a sticky top navigation that smoothly scrolls to content sections. Within each section, a card-based layout and interactive diagrams are used to present complex information in a digestible, layered format, encouraging exploration through clicks and hovers. -->
+    <!-- Visualization & Content Choices: The report's dense text is synthesized into concise summaries and key takeaways. Complex architectures (e.g., Landing Zones, MLOps lifecycle) are transformed into interactive diagrams built with HTML/CSS and JS, replacing static text for better comprehension. For comparative data (e.g., RAG vs. Fine-Tuning, Cost Models), Chart.js bar charts are used to visually highlight trade-offs. The report's tables (Regulatory Mapping, FinOps Workloads) are converted into dynamic UI components where users can select an item to filter and view relevant information, making the data more engaging and accessible. This approach prioritizes user interaction and visual storytelling over passive reading. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+            color: #212529;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #3B82F6;
+            background-color: #EFF6FF;
+        }
+        .content-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl md:text-2xl font-bold text-gray-800">Enterprise AI Blueprint for Finance</h1>
+                </div>
+                <nav id="main-nav" class="hidden md:flex items-center space-x-1">
+                    <a href="#foundation" data-target="foundation" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Foundation</a>
+                    <a href="#pilot" data-target="pilot" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Pilot</a>
+                    <a href="#scale" data-target="scale" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Scale</a>
+                    <a href="#innovate" data-target="innovate" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Innovate</a>
+                    <a href="#security" data-target="security" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Security</a>
+                    <a href="#finops" data-target="finops" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">FinOps</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        <section id="intro" class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">An Interactive Guide to Building AI on Azure</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600">
+                This application translates the definitive blueprint for building enterprise-grade AI in financial services into an actionable, explorable journey. Navigate through the strategic phases to understand how to build a secure, compliant, and scalable platform on Microsoft Azure, from foundational setup to advanced autonomous systems.
+            </p>
+        </section>
+
+        <section id="foundation" class="mb-20 scroll-mt-20">
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Phase 1: Establish the Compliant Core</h3>
+            <p class="text-gray-600 mb-8">The journey into AI must begin with a secure and compliant foundation. This phase is about building the mandatory, auditable "runway" for all future AI initiatives, ensuring regulatory demands are met by design, not as an afterthought.</p>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="content-card p-6 rounded-lg">
+                    <h4 class="font-semibold text-lg mb-3 text-blue-600">The FSI Landing Zone Architecture</h4>
+                    <p class="text-sm text-gray-600 mb-4">The Azure Financial Services Industry (FSI) Landing Zone is a prescriptive, secure-by-default environment. It codifies compliance into the infrastructure itself. Explore the key components below.</p>
+                    <div class="space-y-3 text-sm">
+                        <div class="p-3 bg-gray-50 rounded-md border border-gray-200">
+                            <strong>1. Cloud Adoption Framework (CAF):</strong> Aligns cloud strategy with business goals, ensuring every decision is purposeful and de-risked.
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-md border border-gray-200">
+                            <strong>2. Enterprise-Scale Landing Zone:</strong> The technical foundation, deployed via Infrastructure-as-Code for consistency and auditability. Separates platform and application resources.
+                        </div>
+                        <div class="p-3 bg-blue-50 rounded-md border border-blue-300">
+                            <strong>3. FSI-Specific Guardrails:</strong> The crucial layer for finance. This adds automated controls for data sovereignty, operational transparency, and high resiliency, making the environment regulator-ready.
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card p-6 rounded-lg">
+                    <h4 class="font-semibold text-lg mb-3 text-blue-600">Key Foundational Pillars</h4>
+                    <p class="text-sm text-gray-600 mb-4">The FSI Landing Zone is built on several core principles that ensure a robust and governable cloud estate.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-3 mt-1">➔</span>
+                            <div><strong>Governed Agility:</strong> Empowers development teams with autonomy inside pre-secured subscriptions, balancing innovation speed with central control.</div>
+                        </li>
+                        <li class="flex items-start">
+                             <span class="text-blue-500 mr-3 mt-1">➔</span>
+                            <div><strong>Segregation of Duties:</strong> Uses a specific management group hierarchy and dedicated subscriptions (Management, Connectivity, Identity) to enforce clear operational boundaries.</div>
+                        </li>
+                        <li class="flex items-start">
+                             <span class="text-blue-500 mr-3 mt-1">➔</span>
+                            <div><strong>Policy-Driven Governance:</strong> Leverages Azure Policy to automate compliance, ensuring the environment cannot drift from its secure state.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="pilot" class="mb-20 scroll-mt-20">
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Phase 2: Pilot & Learn</h3>
+            <p class="text-gray-600 mb-8">With the foundation in place, the next step is to demonstrate value through a controlled pilot project. This phase focuses on building a governed data estate and exploring foundational AI capabilities like Generative AI.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 content-card p-6 rounded-lg">
+                    <h4 class="font-semibold text-lg mb-3 text-blue-600">Building the Governed Data Estate</h4>
+                    <p class="text-sm text-gray-600 mb-4">AI is fueled by data. This architecture transforms siloed data into a trusted, centralized asset using key Azure services.</p>
+                     <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 text-center">
+                        <div class="flex-1 p-4 bg-gray-50 rounded-lg">
+                            <div class="text-3xl mb-2">🗄️</div>
+                            <h5 class="font-semibold">Azure Data Lake</h5>
+                            <p class="text-xs text-gray-500">Central repository for all data (structured/unstructured).</p>
+                        </div>
+                        <div class="flex items-center justify-center text-2xl text-gray-400">→</div>
+                        <div class="flex-1 p-4 bg-gray-50 rounded-lg">
+                            <div class="text-3xl mb-2">⚙️</div>
+                            <h5 class="font-semibold">Data Factory & Synapse Link</h5>
+                            <p class="text-xs text-gray-500">Orchestrates data ingestion from any source into the lake.</p>
+                        </div>
+                        <div class="flex items-center justify-center text-2xl text-gray-400">→</div>
+                        <div class="flex-1 p-4 bg-gray-50 rounded-lg">
+                            <div class="text-3xl mb-2">🗺️</div>
+                            <h5 class="font-semibold">Microsoft Purview</h5>
+                            <p class="text-xs text-gray-500">Provides unified governance, auto-classifying data and tracking lineage.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card p-6 rounded-lg">
+                    <h4 class="font-semibold text-lg mb-3 text-blue-600">Core AI Services</h4>
+                    <p class="text-sm text-gray-600 mb-4">Azure provides a suite of services to build powerful AI applications, all unified within the Azure AI Foundry.</p>
+                    <ul class="text-sm space-y-2">
+                        <li><strong>Azure OpenAI:</strong> Secure access to models like GPT-4.</li>
+                        <li><strong>Azure AI Search:</strong> Powers information retrieval for RAG.</li>
+                        <li><strong>Azure AI Services:</strong> Pre-built intelligence (e.g., Document Intelligence).</li>
+                        <li><strong>Azure Machine Learning:</strong> End-to-end custom model development.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 content-card p-6 rounded-lg">
+                <h4 class="font-semibold text-lg mb-3 text-center text-blue-600">GenAI Strategy: RAG vs. Fine-Tuning</h4>
+                <p class="text-sm text-gray-600 mb-4 text-center max-w-2xl mx-auto">A critical decision is how to adapt LLMs with your private data. Retrieval Augmented Generation (RAG) is the recommended starting point for most financial use cases due to its cost-effectiveness and traceability.</p>
+                <div class="chart-container h-80 max-h-[350px]">
+                    <canvas id="ragChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="scale" class="mb-20 scroll-mt-20">
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Phase 3: Scale & Operationalize</h3>
+            <p class="text-gray-600 mb-8">Moving from a successful pilot to an enterprise capability requires industrializing AI development. This phase is about implementing MLOps and LLMOps to make AI repeatable, reliable, and auditable at scale.</p>
+            <div class="content-card p-6 rounded-lg">
+                <h4 class="font-semibold text-lg mb-3 text-blue-600">The MLOps/LLMOps Lifecycle</h4>
+                <p class="text-sm text-gray-600 mb-6">This automated lifecycle ensures quality and governance, transforming AI from a "science project" into a managed software asset. Click each stage to see the key Azure tools involved.</p>
+                <div class="flex flex-col md:flex-row items-center justify-around space-y-6 md:space-y-0 text-center">
+                    <div class="lifecycle-stage" data-details="ci-details">
+                        <div class="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg border-2 border-blue-200 cursor-pointer">CI</div>
+                        <p class="mt-2 font-semibold">Continuous Integration</p>
+                    </div>
+                    <div class="text-2xl text-gray-300 hidden md:block">→</div>
+                    <div class="lifecycle-stage" data-details="cd-details">
+                        <div class="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg border-2 border-blue-200 cursor-pointer">CD</div>
+                        <p class="mt-2 font-semibold">Continuous Delivery</p>
+                    </div>
+                    <div class="text-2xl text-gray-300 hidden md:block">→</div>
+                    <div class="lifecycle-stage" data-details="ct-details">
+                        <div class="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg border-2 border-blue-200 cursor-pointer">CT</div>
+                        <p class="mt-2 font-semibold">Continuous Training</p>
+                    </div>
+                     <div class="text-2xl text-gray-300 hidden md:block">→</div>
+                    <div class="lifecycle-stage" data-details="cm-details">
+                        <div class="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg border-2 border-blue-200 cursor-pointer">CM</div>
+                        <p class="mt-2 font-semibold">Continuous Monitoring</p>
+                    </div>
+                </div>
+                <div id="lifecycle-details" class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200 hidden">
+                    <div id="ci-details" class="detail-content hidden">
+                        <h5 class="font-bold">Continuous Integration Tools</h5>
+                        <p class="text-sm">Automates testing of code and prompt changes. Key tools: <strong>Azure DevOps/GitHub Actions</strong> for orchestration, and <strong>Azure ML Prompt Flow</strong> for prompt evaluation.</p>
+                    </div>
+                    <div id="cd-details" class="detail-content hidden">
+                        <h5 class="font-bold">Continuous Delivery Tools</h5>
+                        <p class="text-sm">Automates the deployment of models and apps to staging and production. Key tools: <strong>Azure DevOps/GitHub Actions</strong> for release pipelines and <strong>Azure ML Managed Endpoints</strong> for hosting.</p>
+                    </div>
+                    <div id="ct-details" class="detail-content hidden">
+                        <h5 class="font-bold">Continuous Training Tools</h5>
+                        <p class="text-sm">Automates model retraining when performance degrades or new data is available. Key tools: <strong>Azure ML Pipelines</strong> triggered by <strong>Azure Monitor</strong> drift detection alerts.</p>
+                    </div>
+                    <div id="cm-details" class="detail-content hidden">
+                        <h5 class="font-bold">Continuous Monitoring Tools</h5>
+                        <p class="text-sm">Tracks operational performance, model drift, and responsible AI metrics in production. Key tools: <strong>Azure Monitor & Application Insights</strong> for performance, and <strong>Azure AI Studio</strong> for content safety and quality.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="innovate" class="mb-20 scroll-mt-20">
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Phase 4: Innovate with Autonomous Automation</h3>
+            <p class="text-gray-600 mb-8">With a mature platform, you can explore the next frontier: agentic AI. These are autonomous systems that can plan and execute actions to achieve a goal, shifting the paradigm from decision support to end-to-end process automation.</p>
+            <div class="content-card p-6 rounded-lg">
+                <h4 class="font-semibold text-lg mb-3 text-blue-600">Reference Architecture for Agentic AI</h4>
+                <p class="text-sm text-gray-600 mb-6">A production-ready agentic system integrates several key services to provide reasoning, orchestration, memory, and a secure interface to enterprise systems.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                    <div class="p-4 bg-gray-50 rounded-lg border">
+                        <div class="text-3xl mb-2">🧠</div>
+                        <h5 class="font-semibold">Reasoning Engine</h5>
+                        <p class="text-xs text-gray-500"><strong>Azure OpenAI (GPT-4o)</strong> provides the core intelligence for planning and tool use.</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border">
+                        <div class="text-3xl mb-2">⚡</div>
+                        <h5 class="font-semibold">Orchestration</h5>
+                        <p class="text-xs text-gray-500"><strong>Azure AI Agent Service & Azure Functions</strong> manage the agent's lifecycle and execute tools.</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border">
+                        <div class="text-3xl mb-2">💾</div>
+                        <h5 class="font-semibold">State & Memory</h5>
+                        <p class="text-xs text-gray-500"><strong>Azure Cosmos DB</strong> provides a low-latency database for storing conversation history and task state.</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border">
+                        <div class="text-3xl mb-2">🛡️</div>
+                        <h5 class="font-semibold">Secure Gateway</h5>
+                        <p class="text-xs text-gray-500"><strong>Azure API Management</strong> exposes internal systems as secure, governable tools for the agent to use.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="security" class="mb-20 scroll-mt-20">
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Overarching Theme: Zero Trust Security</h3>
+            <p class="text-gray-600 mb-8">Security is the non-negotiable prerequisite. A Zero Trust model, which assumes no user or service is inherently secure, must be applied. This architecture maps specific Azure controls to key financial regulations.</p>
+            <div class="content-card p-6 rounded-lg">
+                <h4 class="font-semibold text-lg mb-3 text-blue-600">Interactive Regulatory Control Mapper</h4>
+                <p class="text-sm text-gray-600 mb-4">Select a regulatory requirement to see the corresponding Azure controls and services used to address it.</p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <button class="req-btn bg-blue-500 text-white px-4 py-2 rounded-full text-sm">Data Sovereignty</button>
+                    <button class="req-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-full text-sm">Access Control</button>
+                    <button class="req-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-full text-sm">Audit Trail</button>
+                    <button class="req-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-full text-sm">Network Isolation</button>
+                </div>
+                <div id="security-details" class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                </div>
+            </div>
+        </section>
+
+        <section id="finops" class="scroll-mt-20">
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Overarching Theme: FinOps Framework</h3>
+            <p class="text-gray-600 mb-8">Long-term viability depends on disciplined financial management. FinOps brings financial accountability to the cloud, enabling data-driven trade-offs between cost, performance, and value.</p>
+             <div class="content-card p-6 rounded-lg">
+                <h4 class="font-semibold text-lg mb-3 text-center text-blue-600">Optimizing AI Workload Costs</h4>
+                <p class="text-sm text-gray-600 mb-4 text-center max-w-3xl mx-auto">The right pricing model depends on the workload's usage pattern. Select a workload below to see the recommended Azure pricing model and rationale.</p>
+                <div class="text-center mb-6">
+                    <select id="finops-selector" class="p-2 border rounded-md">
+                        <option value="exp">ML Model Experimentation</option>
+                        <option value="train">Production ML Retraining</option>
+                        <option value="dev">GenAI App Development</option>
+                        <option value="inf_high">High-Volume LLM Inference</option>
+                    </select>
+                </div>
+                <div class="grid md:grid-cols-3 gap-6 text-center">
+                    <div>
+                        <h5 class="font-semibold text-gray-700">Usage Pattern</h5>
+                        <p id="finops-pattern" class="mt-2 p-3 bg-gray-100 rounded-md text-sm"></p>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold text-gray-700">Recommended Model</h5>
+                        <p id="finops-model" class="mt-2 p-3 bg-blue-100 text-blue-800 font-bold rounded-md text-sm"></p>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold text-gray-700">Rationale</h5>
+                        <p id="finops-rationale" class="mt-2 p-3 bg-gray-100 rounded-md text-sm"></p>
+                    </div>
+                </div>
+                <div class="chart-container mt-8 h-80 max-h-[350px]">
+                    <canvas id="costOptimizationChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const navLinks = document.querySelectorAll('#main-nav a');
+            const sections = document.querySelectorAll('main section');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('data-target') === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+            
+            const ragVsFineTuningData = {
+                labels: ['Cost', 'Implementation Speed', 'Traceability', 'Complexity'],
+                datasets: [{
+                    label: 'RAG (Recommended)',
+                    data: [2, 4, 5, 2],
+                    backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Fine-Tuning',
+                    data: [5, 2, 1, 5],
+                    backgroundColor: 'rgba(107, 114, 128, 0.7)',
+                    borderColor: 'rgba(107, 114, 128, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            const ragCtx = document.getElementById('ragChart').getContext('2d');
+            new Chart(ragCtx, {
+                type: 'bar',
+                data: ragVsFineTuningData,
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: 'Relative Comparison (1=Low, 5=High)' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    const value = context.raw;
+                                    const scale = ['Very Low', 'Low', 'Medium', 'High', 'Very High'];
+                                    if (value > 0 && value <= 5) {
+                                        label += scale[value-1];
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { beginAtZero: true, max: 5, ticks: { stepSize: 1 } },
+                    }
+                }
+            });
+
+            const lifecycleStages = document.querySelectorAll('.lifecycle-stage');
+            const detailsContainer = document.getElementById('lifecycle-details');
+            const detailContents = document.querySelectorAll('.detail-content');
+
+            lifecycleStages.forEach(stage => {
+                stage.addEventListener('click', () => {
+                    const targetId = stage.dataset.details;
+                    detailsContainer.classList.remove('hidden');
+                    detailContents.forEach(content => {
+                        content.classList.toggle('hidden', content.id !== targetId);
+                    });
+                });
+            });
+
+            const securityData = {
+                'Data Sovereignty': {
+                    service: 'Azure Policy, Resource Deployment',
+                    detail: "Implement 'Allowed Locations' policies to restrict all resource deployments to approved sovereign regions (e.g., specific EU or India regions)."
+                },
+                'Access Control': {
+                    service: 'Microsoft Entra ID (MFA, PIM, Conditional Access)',
+                    detail: 'Enforce phishing-resistant MFA for all users. Use PIM for just-in-time administrative access. Configure Conditional Access to block access from non-compliant devices or risky locations.'
+                },
+                'Audit Trail': {
+                    service: 'Microsoft Sentinel, Azure Monitor',
+                    detail: 'Ingest all activity logs from Azure resources, Microsoft Entra ID, and applications into a central Microsoft Sentinel workspace with immutable storage policies.'
+                },
+                'Network Isolation': {
+                    service: 'Azure VNet, Private Link, Azure Firewall',
+                    detail: 'Disable public endpoints on all PaaS AI services. Force all traffic through Private Endpoints within the VNet. Route all outbound traffic through a central Azure Firewall for inspection.'
+                }
+            };
+
+            const reqBtns = document.querySelectorAll('.req-btn');
+            const securityDetailsContainer = document.getElementById('security-details');
+
+            function updateSecurityDetails(req) {
+                const data = securityData[req];
+                securityDetailsContainer.innerHTML = `
+                    <h5 class="font-bold text-gray-800">${req}</h5>
+                    <p class="text-sm mt-1"><strong>Azure Control/Service:</strong> ${data.service}</p>
+                    <p class="text-sm mt-1"><strong>Implementation Detail:</strong> ${data.detail}</p>
+                `;
+            }
+
+            reqBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    reqBtns.forEach(b => {
+                        b.classList.remove('bg-blue-500', 'text-white');
+                        b.classList.add('bg-gray-200', 'text-gray-800');
+                    });
+                    btn.classList.add('bg-blue-500', 'text-white');
+                    btn.classList.remove('bg-gray-200', 'text-gray-800');
+                    updateSecurityDetails(btn.textContent);
+                });
+            });
+            updateSecurityDetails('Data Sovereignty');
+
+            const finopsData = {
+                exp: { pattern: 'Sporadic, Interruptible', model: 'Spot VMs', rationale: 'Provides the deepest discount for fault-tolerant workloads like R&D and hyperparameter tuning.' },
+                train: { pattern: 'Predictable, Consistent', model: 'Reserved Instances', rationale: 'Offers significant savings for stable, recurring production training jobs, providing cost predictability.' },
+                dev: { pattern: 'Variable, Unpredictable', model: 'Pay-As-You-Go', rationale: 'Flexible, consumption-based pricing with no commitment, ideal for iterative development.' },
+                inf_high: { pattern: 'Consistent, High Throughput', model: 'Provisioned Throughput Units (PTUs)', rationale: 'Guarantees performance and latency at a predictable, lower cost for stable production traffic.' }
+            };
+
+            const finopsSelector = document.getElementById('finops-selector');
+            const patternEl = document.getElementById('finops-pattern');
+            const modelEl = document.getElementById('finops-model');
+            const rationaleEl = document.getElementById('finops-rationale');
+
+            function updateFinopsDetails(workload) {
+                const data = finopsData[workload];
+                patternEl.textContent = data.pattern;
+                modelEl.textContent = data.model;
+                rationaleEl.textContent = data.rationale;
+            }
+
+            finopsSelector.addEventListener('change', (e) => {
+                updateFinopsDetails(e.target.value);
+            });
+            updateFinopsDetails('exp');
+
+            const costOptData = {
+                labels: ['Pay-As-You-Go', 'Reserved Instances (3-yr)', 'Spot VMs'],
+                datasets: [{
+                    label: 'Relative Compute Cost',
+                    data: [100, 30, 15],
+                    backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(54, 162, 235, 0.7)', 'rgba(75, 192, 192, 0.7)'],
+                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)'],
+                    borderWidth: 1
+                }]
+            };
+
+            const costCtx = document.getElementById('costOptimizationChart').getContext('2d');
+            new Chart(costCtx, {
+                type: 'bar',
+                data: costOptData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: 'Compute Cost Comparison for Training Workloads' },
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { callback: value => value + '%' } }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

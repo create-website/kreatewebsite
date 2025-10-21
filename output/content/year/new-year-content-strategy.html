@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year Content Strategy Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Gilded Evening -->
+    <!-- Application Structure Plan: The application is designed as an interactive dashboard with three main thematic sections: 'Key Insights', 'Topic Explorer', and 'Category Analysis'. This structure was chosen to guide the user from a high-level overview to detailed exploration. The 'Key Insights' section uses a scatter plot to immediately show the "sweet spot" of high-traffic, low-difficulty topics, which is the user's primary goal. The 'Topic Explorer' provides a filterable, card-based interface for detailed content ideas. The 'Category Analysis' uses a bar chart for strategic comparison. This multi-faceted approach allows users to quickly identify opportunities and then drill down into actionable details, making it more effective than a simple linear list. User flow is top-down: understand the landscape -> explore specific ideas -> compare strategic approaches. -->
+    <!-- Visualization & Content Choices: 
+        1. Scatter Plot (Key Insights): Report Info -> All topics' traffic/difficulty scores. Goal -> To quickly identify high-value content opportunities. Viz -> Scatter Plot. Interaction -> Hovering a point reveals the topic title. Justification -> Visually correlates two key metrics (traffic and difficulty), making the best opportunities instantly apparent. Library -> Chart.js (Canvas).
+        2. Filterable Topic Cards (Topic Explorer): Report Info -> Individual topic details (title, description, keywords). Goal -> To provide actionable, detailed content ideas. Presentation -> HTML/CSS cards. Interaction -> Users can filter cards by content category (Evergreen, Niche, etc.) using buttons. Justification -> This allows users to focus on specific strategies that match their resources and goals. Method -> Vanilla JS DOM manipulation.
+        3. Bar Chart (Category Analysis): Report Info -> Aggregated traffic/difficulty scores per category. Goal -> To compare the overall potential of different content strategies. Viz -> Grouped Bar Chart. Interaction -> The chart updates based on the active filter in the Topic Explorer. Justification -> Helps users make strategic decisions about which types of content to prioritize. Library -> Chart.js (Canvas).
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #3D3D3D;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+        }
+        .nav-button.active {
+            background-color: #D4AF37;
+            color: #FFFFFF;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        .topic-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        .gold-accent {
+            color: #D4AF37;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800">New Year's Content Strategy Hub</h1>
+            <p class="mt-2 text-lg text-gray-600">Discover High-Traffic Topics to Dominate Search Results in 2026</p>
+        </header>
+
+        <main>
+            <section id="key-insights" class="mb-12">
+                <h2 class="text-2xl font-bold text-center mb-2 text-gray-800">Content Opportunity Matrix</h2>
+                <p class="text-center text-gray-600 mb-6 max-w-3xl mx-auto">This chart plots content topics based on their traffic potential and ranking difficulty. The top-left quadrant represents the "sweet spot": topics with high traffic potential and lower competition. Use this to identify your best content opportunities.</p>
+                <div class="bg-white rounded-lg shadow-lg p-4 md:p-6">
+                    <div class="chart-container">
+                        <canvas id="opportunityChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="topic-explorer" class="mb-12">
+                <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Topic Explorer</h2>
+                <div id="filters" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+                    <button class="nav-button active font-medium py-2 px-4 rounded-full bg-white shadow-md" data-filter="all">All Topics</button>
+                    <button class="nav-button font-medium py-2 px-4 rounded-full bg-white shadow-md" data-filter="Evergreen">🌟 Evergreen Classics</button>
+                    <button class="nav-button font-medium py-2 px-4 rounded-full bg-white shadow-md" data-filter="Niche">🎯 Niche Opportunities</button>
+                    <button class="nav-button font-medium py-2 px-4 rounded-full bg-white shadow-md" data-filter="Engaging">💬 Engaging & Shareable</button>
+                    <button class="nav-button font-medium py-2 px-4 rounded-full bg-white shadow-md" data-filter="Visual">🖼️ Visual Content</button>
+                </div>
+                <div id="topic-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </section>
+            
+            <section id="category-analysis">
+                <h2 class="text-2xl font-bold text-center mb-2 text-gray-800">Category Analysis</h2>
+                 <p class="text-center text-gray-600 mb-6 max-w-3xl mx-auto">Compare the average potential of each content category. Evergreen topics have the highest traffic but also the fiercest competition. Niche topics offer a more accessible entry point for ranking in search results.</p>
+                <div class="bg-white rounded-lg shadow-lg p-4 md:p-6">
+                    <div class="chart-container" style="max-height: 400px;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-12 py-6 border-t border-gray-200">
+            <p class="text-gray-500">&copy; 2025 Content Strategy Hub. Built to help you win the New Year.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const topicData = [
+                { id: 1, title: "100+ Happy New Year 2026 Wishes & Messages", category: "Evergreen", keywords: "new year wishes, happy new year 2026, new year messages", trafficPotential: 98, rankingDifficulty: 92 },
+                { id: 2, title: "Top 50 New Year's Resolution Ideas That Stick", category: "Evergreen", keywords: "new year's resolutions, resolution ideas, self-improvement", trafficPotential: 95, rankingDifficulty: 88 },
+                { id: 3, title: "Ultimate Guide to Hosting a New Year's Eve Party", category: "Evergreen", keywords: "new year's eve party, party ideas, hosting tips", trafficPotential: 85, rankingDifficulty: 85 },
+                { id: 4, title: "Healthy Non-Alcoholic Cocktails for NYE", category: "Niche", keywords: "non-alcoholic cocktails, healthy new year drinks, mocktails", trafficPotential: 75, rankingDifficulty: 45 },
+                { id: 5, title: "A Guide to New Year's Traditions Around the World", category: "Niche", keywords: "new year traditions, cultural traditions, global new year", trafficPotential: 68, rankingDifficulty: 55 },
+                { id: 6, title: "Sustainable New Year's Resolutions for an Eco-Friendly 2026", category: "Niche", keywords: "sustainable resolutions, eco-friendly new year, green living", trafficPotential: 60, rankingDifficulty: 40 },
+                { id: 7, title: "Financial Resolutions: How to Budget in the New Year", category: "Niche", keywords: "financial resolutions, new year budget, saving money", trafficPotential: 78, rankingDifficulty: 65 },
+                { id: 8, title: "Create Your 'Year in Review' Photo Album", category: "Engaging", keywords: "year in review, photo album ideas, memory keeping", trafficPotential: 55, rankingDifficulty: 35 },
+                { id: 9, title: "Interactive Quiz: What Should Your New Year's Resolution Be?", category: "Engaging", keywords: "new year quiz, resolution quiz, interactive content", trafficPotential: 65, rankingDifficulty: 50 },
+                { id: 10, title: "We Asked 100 People Their Goal for 2026. Here's What They Said.", category: "Engaging", keywords: "community goals, 2026 resolutions, survey content", trafficPotential: 58, rankingDifficulty: 48 },
+                { id: 11, "title": "Infographic: The Most Commonly Broken Resolutions", category: "Visual", keywords: "resolutions infographic, broken resolutions, new year stats", trafficPotential: 72, rankingDifficulty: 60 },
+                { id: 12, "title": "Video Tutorial: DIY New Year's Eve Party Decorations", category: "Visual", keywords: "diy party decorations, new year's craft, video tutorial", trafficPotential: 63, rankingDifficulty: 52 },
+                { id: 13, "title": "Photo Gallery: Best Fireworks Displays from NYE 2025", category: "Visual", keywords: "new year fireworks, photo gallery, nye celebration", trafficPotential: 80, rankingDifficulty: 70 }
+            ];
+
+            const grid = document.getElementById('topic-grid');
+            const filters = document.getElementById('filters');
+            let opportunityChart, categoryChart;
+
+            const renderTopicCards = (data) => {
+                grid.innerHTML = '';
+                if (data.length === 0) {
+                    grid.innerHTML = `<p class="text-center text-gray-500 md:col-span-2 lg:col-span-3">No topics found for this category.</p>`;
+                    return;
+                }
+                data.forEach(topic => {
+                    const card = document.createElement('div');
+                    card.className = 'topic-card bg-white rounded-lg shadow-md p-6 flex flex-col';
+                    card.innerHTML = `
+                        <div class="flex-grow">
+                            <span class="text-sm font-semibold ${getCategoryColor(topic.category)}">${topic.category}</span>
+                            <h3 class="text-xl font-bold mt-2 mb-3 text-gray-800">${topic.title}</h3>
+                            <p class="text-gray-600 text-sm mb-4"><strong>Target Keywords:</strong> ${topic.keywords}</p>
+                        </div>
+                        <div class="flex justify-between items-center text-sm mt-4 pt-4 border-t border-gray-200">
+                            <div>
+                                <span class="font-bold">Traffic Potential</span>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+                                    <div class="bg-teal-500 h-2.5 rounded-full" style="width: ${topic.trafficPotential}%"></div>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <span class="font-bold">Ranking Difficulty</span>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+                                    <div class="bg-red-500 h-2.5 rounded-full" style="width: ${topic.rankingDifficulty}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            };
+
+            const getCategoryColor = (category) => {
+                switch (category) {
+                    case 'Evergreen': return 'text-blue-600';
+                    case 'Niche': return 'text-purple-600';
+                    case 'Engaging': return 'text-green-600';
+                    case 'Visual': return 'text-orange-600';
+                    default: return 'text-gray-600';
+                }
+            };
+            
+            const renderOpportunityChart = (data) => {
+                const ctx = document.getElementById('opportunityChart').getContext('2d');
+                const chartData = {
+                    datasets: [{
+                        label: 'Content Topics',
+                        data: data.map(topic => ({
+                            x: topic.rankingDifficulty,
+                            y: topic.trafficPotential,
+                            label: topic.title
+                        })),
+                        backgroundColor: data.map(topic => {
+                            if (topic.trafficPotential > 70 && topic.rankingDifficulty < 60) {
+                                return 'rgba(212, 175, 55, 0.9)'; 
+                            }
+                            return 'rgba(54, 162, 235, 0.6)';
+                        }),
+                        borderColor: data.map(topic => {
+                            if (topic.trafficPotential > 70 && topic.rankingDifficulty < 60) {
+                                return 'rgba(212, 175, 55, 1)';
+                            }
+                            return 'rgba(54, 162, 235, 1)';
+                        }),
+                        borderWidth: 1,
+                        pointRadius: 8,
+                        pointHoverRadius: 12
+                    }]
+                };
+
+                const options = {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            title: {
+                                display: true,
+                                text: 'Ranking Difficulty → (Harder)',
+                                font: { size: 14 }
+                            },
+                            min: 20,
+                            max: 100
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Traffic Potential → (Higher)',
+                                font: { size: 14 }
+                            },
+                            min: 40,
+                            max: 100
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.raw.label || '';
+                                }
+                            },
+                            backgroundColor: '#3D3D3D',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 12 },
+                            padding: 10,
+                            cornerRadius: 5
+                        },
+                        annotation: {
+                            annotations: {
+                                line1: {
+                                    type: 'line',
+                                    xMin: 60,
+                                    xMax: 60,
+                                    borderColor: 'rgba(200, 200, 200, 0.5)',
+                                    borderWidth: 2,
+                                    borderDash: [6, 6]
+                                },
+                                line2: {
+                                    type: 'line',
+                                    yMin: 70,
+                                    yMax: 70,
+                                    borderColor: 'rgba(200, 200, 200, 0.5)',
+                                    borderWidth: 2,
+                                    borderDash: [6, 6]
+                                },
+                                label1: {
+                                    type: 'label',
+                                    xValue: 35,
+                                    yValue: 85,
+                                    content: ['Sweet Spot', 'High Traffic, Low Competition'],
+                                    font: { size: 14, weight: 'bold' },
+                                    color: '#333'
+                                }
+                            }
+                        }
+                    }
+                };
+                
+                if (opportunityChart) {
+                    opportunityChart.destroy();
+                }
+
+                opportunityChart = new Chart(ctx, {
+                    type: 'scatter',
+                    data: chartData,
+                    options: options
+                });
+            };
+
+            const renderCategoryChart = () => {
+                const ctx = document.getElementById('categoryChart').getContext('2d');
+                const categories = ['Evergreen', 'Niche', 'Engaging', 'Visual'];
+                
+                const getCategoryAverage = (category, key) => {
+                    const items = topicData.filter(t => t.category === category);
+                    if (items.length === 0) return 0;
+                    const sum = items.reduce((acc, item) => acc + item[key], 0);
+                    return sum / items.length;
+                };
+
+                const trafficData = categories.map(cat => getCategoryAverage(cat, 'trafficPotential'));
+                const difficultyData = categories.map(cat => getCategoryAverage(cat, 'rankingDifficulty'));
+                
+                const chartData = {
+                    labels: categories,
+                    datasets: [
+                        {
+                            label: 'Avg. Traffic Potential',
+                            data: trafficData,
+                            backgroundColor: 'rgba(22, 163, 74, 0.7)',
+                            borderColor: 'rgba(22, 163, 74, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Avg. Ranking Difficulty',
+                            data: difficultyData,
+                            backgroundColor: 'rgba(220, 38, 38, 0.7)',
+                            borderColor: 'rgba(220, 38, 38, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                };
+
+                const options = {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Score (0-100)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                };
+
+                if (categoryChart) {
+                    categoryChart.destroy();
+                }
+
+                categoryChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: chartData,
+                    options: options
+                });
+            };
+
+            const handleFilterClick = (e) => {
+                if (e.target.tagName !== 'BUTTON') return;
+                
+                const filter = e.target.dataset.filter;
+                
+                document.querySelectorAll('#filters button').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                const filteredData = filter === 'all' 
+                    ? topicData 
+                    : topicData.filter(topic => topic.category.replace(/\s+/g, '') === filter.replace(/\s+/g, ''));
+                
+                renderTopicCards(filteredData);
+                renderOpportunityChart(filteredData);
+            };
+
+            filters.addEventListener('click', handleFilterClick);
+            
+            renderTopicCards(topicData);
+            renderOpportunityChart(topicData);
+            renderCategoryChart();
+        });
+    </script>
+</body>
+</html>

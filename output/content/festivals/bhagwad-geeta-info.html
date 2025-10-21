@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Wisdom of the Bhagavad Gita</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues & Oranges -->
+    <!-- Infographic Narrative Plan: The infographic tells the story of the Gita in a linear, scrollable narrative. It begins with the dramatic context (Hook), moves to a quantitative overview (Data), explains the core philosophical framework (The Three Yogas), presents the narrative structure (Chapter Journey), visualizes the dialogue's composition (Speaker Analysis), and concludes with a glossary of key terms. This top-down approach, from broad context to specific details, is designed for easy user comprehension, making a complex text digestible in a single-page format. -->
+    <!-- Visualization & Content Choices: 1. Gita at a Glance -> Goal: Inform -> Viz: Single Big Number cards (HTML/CSS) -> Justification: Provides a quick, high-impact summary of the text's scale. NO SVG. 2. Chapter Journey -> Goal: Organize/Change -> Viz: Flowchart (HTML/CSS with Tailwind) -> Justification: Visually structures the 18 chapters into a narrative arc, making the Gita's progression easier to follow than a simple list. NO SVG/Mermaid. 3. Speaker Analysis -> Goal: Compare -> Viz: Donut Chart (Chart.js/Canvas) -> Justification: Effectively shows the composition of the dialogue, highlighting Krishna's role as the primary teacher. It's a simple, powerful part-to-whole visualization. NO SVG. 4. The Three Yogas -> Goal: Organize -> Viz: Three-column card layout with Unicode icons (HTML/CSS) -> Justification: Clearly delineates and explains the three core paths for easy comparison. NO SVG. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; 
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Lora', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 450px;
+        }
+        .flow-line {
+            width: 2px;
+            background-color: #bc5090; 
+            flex-grow: 1;
+        }
+        .flow-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #ffa600; 
+            border: 3px solid #f0f4f8;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <main class="container mx-auto px-4 md:px-8 py-12">
+
+        <section class="text-center mb-20">
+            <h1 class="text-4xl md:text-6xl font-bold" style="color: #003f5c;">The Wisdom of the Battlefield</h1>
+            <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto" style="color: #58508d;">
+                An infographic journey into the Bhagavad Gita, the timeless dialogue between Prince Arjuna and Lord Krishna concerning duty, action, and the nature of reality.
+            </p>
+        </section>
+
+        <section class="mb-20">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold" style="color: #003f5c;">The Gita at a Glance</h2>
+                <p class="mt-2 text-md" style="color: #58508d;">The scripture's core components by the numbers.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white p-8 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
+                    <div class="text-6xl font-bold" style="color: #ff6361;">18</div>
+                    <h3 class="mt-2 text-2xl font-semibold" style="color: #003f5c;">Chapters</h3>
+                    <p class="mt-1 text-gray-600">Each exploring a unique path or 'Yoga' to enlightenment.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
+                    <div class="text-6xl font-bold" style="color: #bc5090;">700</div>
+                    <h3 class="mt-2 text-2xl font-semibold" style="color: #003f5c;">Verses</h3>
+                    <p class="mt-1 text-gray-600">A rich dialogue woven into the epic poem, the Mahabharata.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
+                    <div class="text-6xl font-bold" style="color: #ffa600;">2</div>
+                    <h3 class="mt-2 text-2xl font-semibold" style="color: #003f5c;">Main Speakers</h3>
+                    <p class="mt-1 text-gray-600">The divine teacher, Krishna, and his devoted disciple, Arjuna.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold" style="color: #003f5c;">The Three Paths to Liberation</h2>
+                <p class="mt-2 text-md" style="color: #58508d;">The Gita outlines three primary spiritual disciplines, or 'Yogas'.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg border-t-4" style="border-color: #ff6361;">
+                    <div class="text-4xl mb-4">⚙️</div>
+                    <h3 class="text-2xl font-bold mb-2" style="color: #003f5c;">Karma Yoga</h3>
+                    <p class="text-gray-600">The Path of Selfless Action. Performing one's duties without attachment to the outcome, dedicating the results to a higher purpose.</p>
+                </div>
+                 <div class="bg-white p-8 rounded-xl shadow-lg border-t-4" style="border-color: #bc5090;">
+                    <div class="text-4xl mb-4">❤️</div>
+                    <h3 class="text-2xl font-bold mb-2" style="color: #003f5c;">Bhakti Yoga</h3>
+                    <p class="text-gray-600">The Path of Devotion. Directing one's love and emotions towards the Divine through prayer, worship, and seeing the sacred in all beings.</p>
+                </div>
+                 <div class="bg-white p-8 rounded-xl shadow-lg border-t-4" style="border-color: #ffa600;">
+                    <div class="text-4xl mb-4">🧠</div>
+                    <h3 class="text-2xl font-bold mb-2" style="color: #003f5c;">Jñāna Yoga</h3>
+                    <p class="text-gray-600">The Path of Knowledge. Discriminating between the eternal Self (Atman) and the temporary material world through study, contemplation, and self-inquiry.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold" style="color: #003f5c;">A Journey Through the Chapters</h2>
+                <p class="mt-2 text-md" style="color: #58508d;">The 18 chapters unfold as a progressive revelation, guiding Arjuna from despair to decisive action.</p>
+            </div>
+            <div class="relative flex flex-col items-center w-full max-w-3xl mx-auto">
+                <div class="flow-line absolute h-full top-0 left-1/2 -translate-x-1/2"></div>
+                
+                <div class="w-full flex justify-center items-center my-4">
+                    <div class="w-5/12 text-right pr-8">
+                        <h4 class="font-bold text-lg" style="color: #58508d;">Chapters 1-2</h4>
+                        <p>Arjuna's Despair & The Eternal Soul</p>
+                    </div>
+                    <div class="flow-dot"></div>
+                    <div class="w-5/12 pl-8"></div>
+                </div>
+
+                <div class="w-full flex justify-center items-center my-4">
+                    <div class="w-5/12 pr-8"></div>
+                    <div class="flow-dot"></div>
+                    <div class="w-5/12 pl-8">
+                        <h4 class="font-bold text-lg" style="color: #58508d;">Chapters 3-6</h4>
+                        <p>The Paths of Action & Meditation</p>
+                    </div>
+                </div>
+
+                <div class="w-full flex justify-center items-center my-4">
+                     <div class="w-5/12 text-right pr-8">
+                        <h4 class="font-bold text-lg" style="color: #58508d;">Chapters 7-12</h4>
+                        <p>The Nature of God & The Path of Devotion</p>
+                    </div>
+                    <div class="flow-dot"></div>
+                    <div class="w-5/12 pl-8"></div>
+                </div>
+                
+                 <div class="w-full flex justify-center items-center my-4">
+                    <div class="w-5/12 pr-8"></div>
+                    <div class="flow-dot"></div>
+                    <div class="w-5/12 pl-8">
+                        <h4 class="font-bold text-lg" style="color: #58508d;">Chapters 13-17</h4>
+                        <p>Matter, Spirit, & The Three Gunas</p>
+                    </div>
+                </div>
+
+                <div class="w-full flex justify-center items-center my-4">
+                     <div class="w-5/12 text-right pr-8">
+                        <h4 class="font-bold text-lg" style="color: #58508d;">Chapter 18</h4>
+                        <p>Conclusion & The Perfection of Renunciation</p>
+                    </div>
+                    <div class="flow-dot"></div>
+                    <div class="w-5/12 pl-8"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="bg-white p-8 md:p-12 rounded-xl shadow-lg">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: #003f5c;">The Voice of the Gita</h2>
+                        <p class="text-gray-600">The Gita is primarily a discourse delivered by Lord Krishna. This chart visualizes the distribution of the 700 verses among the main speakers, clearly showing Krishna's role as the divine teacher who guides the conversation and imparts the core teachings of the text.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="speaker-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold" style="color: #003f5c;">Core Philosophical Concepts</h2>
+                <p class="mt-2 text-md" style="color: #58508d;">Key terms to understand the Gita's profound wisdom.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-lg" style="color: #ff6361;">Dharma</h3>
+                    <p class="text-gray-600 mt-1">One's righteous duty, ethics, or inherent nature. Fulfilling one's Dharma is central to a meaningful life.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-lg" style="color: #bc5090;">Karma</h3>
+                    <p class="text-gray-600 mt-1">The universal law of action and reaction. Every action has a corresponding consequence.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-lg" style="color: #ffa600;">Atman</h3>
+                    <p class="text-gray-600 mt-1">The eternal, unchanging soul or individual Self, distinct from the temporary body and mind.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-lg" style="color: #ff6361;">Moksha</h3>
+                    <p class="text-gray-600 mt-1">Liberation from the cycle of birth, death, and rebirth (samsara).</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-lg" style="color: #bc5090;">Gunas</h3>
+                    <p class="text-gray-600 mt-1">The three qualities of material nature: Sattva (purity), Rajas (passion), and Tamas (ignorance).</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-lg" style="color: #ffa600;">Brahman</h3>
+                    <p class="text-gray-600 mt-1">The ultimate, all-pervading reality; the Supreme Cosmic Spirit from which all things originate.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+<!--
+    <footer class="text-center py-8 mt-12" style="background-color: #003f5c;">
+        <p class="text-white">An infographic by Canvas Infographics</p>
+    </footer>
+-->
+
+    <script>
+        const speakerData = {
+            labels: ['Krishna', 'Arjuna', 'Sanjaya', 'Dhritarashtra'],
+            datasets: [{
+                label: 'Verses',
+                data: [574, 85, 40, 1],
+                backgroundColor: [
+                    '#58508d',
+                    '#ff6361',
+                    '#ffa600',
+                    '#bc5090'
+                ],
+                hoverOffset: 4
+            }]
+        };
+
+        const speakerConfig = {
+            type: 'doughnut',
+            data: speakerData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+        };
+
+        window.onload = function() {
+            const ctx = document.getElementById('speaker-chart').getContext('2d');
+            new Chart(ctx, speakerConfig);
+        };
+    </script>
+
+</body>
+</html>

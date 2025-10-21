@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ram Setu: An Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic is structured as a top-to-bottom narrative scroll, divided into four key thematic sections: The Epic, The Science, The Controversy, and The Synthesis. This linear flow was chosen to guide the user logically from the foundational myth to the modern conflicts, making a complex, multi-layered story easy to follow. Each section uses a distinct color from the palette to create visual separation and maintain engagement. -->
+    <!-- Visualization & Content Choices: 1. Epic Construction (Change): HTML/CSS Timeline. Goal: Show the 5-day construction from the Ramayana. Justification: A timeline is the most intuitive way to represent a sequence of events. Method: HTML/CSS. 2. Scientific Theories (Compare): Chart.js Bar Chart. Goal: Visually contrast the Natural vs. Man-Made origin hypotheses. Justification: A bar chart provides a clear, direct comparison of the two opposing viewpoints and their key evidence points. Method: Chart.js. 3. Film Box Office (Inform): Single Big Number. Goal: Convey the film's financial failure instantly. Justification: A large, bold number is more impactful for a single key metric than a complex chart. Method: HTML/CSS. 4. Film Reception (Inform): Chart.js Doughnut Chart. Goal: Show the overwhelmingly negative critical reception. Justification: A doughnut chart is perfect for displaying a simple part-to-whole relationship. Method: Chart.js. 5. Core Conflicts (Organize): HTML/CSS Diagram. Goal: Synthesize the key tensions between Faith, Science, Commerce, and Politics. Justification: A structured diagram visually organizes the relationships between abstract concepts. Method: HTML/CSS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F8F9FA;
+            color: #343A40;
+        }
+        .header-gradient {
+            background: linear-gradient(135deg, #FF6B6B, #FFC145);
+        }
+        .card {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        h1, h2, h3, h4 {
+            font-weight: 800;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="header-gradient text-white p-8 text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">RAM SETU</h1>
+        <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto">A Bridge of Myth, Science, and Conflict</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="epic" class="py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold" style="color: #FF6B6B;">THE EPIC FOUNDATION</h2>
+                <p class="mt-3 text-lg text-gray-600 max-w-3xl mx-auto">The story of Ram Setu begins not in geology, but in the sacred verses of the Ramayana, where it was built as a testament to divine will in a race against time.</p>
+            </div>
+            <div class="card p-6 md:p-8">
+                <h3 class="text-2xl font-bold text-center mb-6">A Bridge Built in 5 Days</h3>
+                <div class="relative">
+                    <div class="absolute left-1/2 h-full w-1 bg-gray-200 rounded-full hidden md:block"></div>
+                    <div class="space-y-12">
+                        <div class="flex flex-col md:flex-row items-center md:justify-end md:mr-12">
+                            <div class="md:w-5/12 text-center md:text-right">
+                                <p class="font-bold text-xl" style="color: #FF6B6B;">Day 1</p>
+                                <p class="text-gray-600">The Vanara army, led by Nala and Nila, begins the monumental task, casting boulders and trees into the ocean.</p>
+                            </div>
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold my-4 md:my-0 md:mx-4" style="background-color: #FF6B6B;">1</div>
+                        </div>
+                        <div class="flex flex-col md:flex-row items-center md:justify-start md:ml-12">
+                             <div class="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold my-4 md:my-0 md:mx-4 order-1 md:order-none" style="background-color: #FF6B6B;">3</div>
+                            <div class="md:w-5/12 text-center md:text-left">
+                                <p class="font-bold text-xl" style="color: #FF6B6B;">Day 3</p>
+                                <p class="text-gray-600">The bridge extends halfway to Lanka. The miracle of floating stones, inscribed with Rama's name, inspires the army.</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col md:flex-row items-center md:justify-end md:mr-12">
+                            <div class="md:w-5/12 text-center md:text-right">
+                                <p class="font-bold text-xl" style="color: #FF6B6B;">Day 5</p>
+                                <p class="text-gray-600">The 100-yojana bridge is complete. Rama's army triumphantly crosses into Lanka to confront Ravana.</p>
+                            </div>
+                             <div class="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold my-4 md:my-0 md:mx-4" style="background-color: #FF6B6B;">5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="science" class="py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold" style="color: #4ECDC4;">THE SCIENTIFIC DIVIDE</h2>
+                <p class="mt-3 text-lg text-gray-600 max-w-3xl mx-auto">Is the bridge a natural wonder or a man-made marvel? Scientific investigation has yielded conflicting data, creating a tale of two origins.</p>
+            </div>
+            <div class="card p-6 md:p-8">
+                 <h3 class="text-2xl font-bold text-center mb-6">Natural Formation vs. Man-Made Artifact</h3>
+                 <p class="text-center text-gray-500 mb-6">The evidence is hotly debated. This chart compares the key arguments from geology and archaeology. The length of the bar represents the qualitative strength of the evidence cited by each side.</p>
+                 <div class="chart-container">
+                    <canvas id="originsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="controversy" class="py-12">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold" style="color: #FFC145;">THE MODERN CONFLICT</h2>
+                <p class="mt-3 text-lg text-gray-600 max-w-3xl mx-auto">In the 21st century, the bridge became a flashpoint for controversy, pitting economic development and cinematic storytelling against faith and heritage.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card p-6 md:p-8 text-center">
+                    <h3 class="text-2xl font-bold mb-4">The Sethusamudram Project</h3>
+                    <p class="text-5xl font-extrabold" style="color: #FFC145;">₹4,000 Cr</p>
+                    <p class="text-gray-600 mt-2">Estimated cost of the proposed shipping canal that would dredge through the bridge, sparking national outrage over religious, ecological, and economic concerns.</p>
+                </div>
+                <div class="card p-6 md:p-8">
+                     <h3 class="text-2xl font-bold text-center mb-4">'Ram Setu' (2022 Film)</h3>
+                     <div class="grid grid-cols-2 gap-4 items-center">
+                         <div class="text-center">
+                             <p class="text-4xl font-extrabold" style="color: #FFC145;">₹93 Cr</p>
+                             <p class="text-gray-600 text-sm mt-1">Worldwide Gross</p>
+                             <p class="text-lg font-bold text-red-500 mt-2">Box Office Failure</p>
+                         </div>
+                         <div class="h-48">
+                             <canvas id="filmReceptionChart"></canvas>
+                         </div>
+                     </div>
+                     <p class="text-center text-gray-500 mt-4 text-sm">Despite a large budget, the film was a commercial and critical failure, rejected for its weak script and perceived ideological agenda.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="synthesis" class="py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold" style="color: #45B7D1;">A BRIDGE OF IDEAS</h2>
+                <p class="mt-3 text-lg text-gray-600 max-w-3xl mx-auto">Ram Setu is more than a physical structure; it's a conceptual nexus where fundamentally different worldviews collide.</p>
+            </div>
+             <div class="card p-6 md:p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                    <div class="p-4 border-l-4" style="border-color: #FF6B6B;">
+                        <h4 class="text-xl font-bold">FAITH</h4>
+                        <p class="text-gray-600 mt-2">Sacred history vs. empirical evidence.</p>
+                    </div>
+                     <div class="p-4 border-l-4" style="border-color: #4ECDC4;">
+                        <h4 class="text-xl font-bold">SCIENCE</h4>
+                        <p class="text-gray-600 mt-2">Ambiguous data fuels the debate.</p>
+                    </div>
+                     <div class="p-4 border-l-4" style="border-color: #FFC145;">
+                        <h4 class="text-xl font-bold">COMMERCE</h4>
+                        <p class="text-gray-600 mt-2">Economic progress vs. heritage preservation.</p>
+                    </div>
+                     <div class="p-4 border-l-4" style="border-color: #45B7D1;">
+                        <h4 class="text-xl font-bold">POLITICS</h4>
+                        <p class="text-gray-600 mt-2">A potent symbol for national identity.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="text-center p-6 mt-8 text-gray-500 text-sm">
+        <p>Data synthesized from the comprehensive report 'The Bridge of Faith, Science, and Cinema'.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const processLabel = (label) => {
+                if (label.length <= 16) return label;
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + word).length > 16) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+            
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                  return label.join(' ');
+                } else {
+                  return label;
+                }
+            };
+
+            const originsData = {
+                labels: [
+                    processLabel('Anomalous Borehole Data (Man-Made)'),
+                    processLabel('Sediment Deposition Theory (Natural)'),
+                    processLabel('Chronological Mismatches (Man-Made)'),
+                    processLabel('Ancient Quarrying Evidence (Man-Made)'),
+                    processLabel('Longshore Current Dynamics (Natural)')
+                ],
+                datasets: [{
+                    label: 'Evidence Strength',
+                    data: [85, 90, 75, 70, 95],
+                    backgroundColor: [
+                        '#4ECDC4', 
+                        '#45B7D1',
+                        '#4ECDC4',
+                        '#4ECDC4',
+                        '#45B7D1'
+                    ],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            };
+            const originsCtx = document.getElementById('originsChart').getContext('2d');
+            new Chart(originsCtx, {
+                type: 'bar',
+                data: originsData,
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { 
+                            beginAtZero: true,
+                            grid: { display: false },
+                            ticks: { display: false }
+                        },
+                        y: { 
+                            grid: { display: false },
+                            ticks: {
+                                font: { size: 12, weight: '600' }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const filmData = {
+                labels: ['Negative Reviews', 'Positive Reviews'],
+                datasets: [{
+                    data: [80, 20],
+                    backgroundColor: ['#FF6B6B', '#FFC145'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 4,
+                    hoverOffset: 4
+                }]
+            };
+            const filmCtx = document.getElementById('filmReceptionChart').getContext('2d');
+            new Chart(filmCtx, {
+                type: 'doughnut',
+                data: filmData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback,
+                                label: function(context) {
+                                    return `${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

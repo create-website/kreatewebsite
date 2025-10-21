@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building High-Impact AI Data Product Teams in Financial Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral Harmony -->
+    <!-- Application Structure Plan: The SPA is designed as a guided journey for a strategic leader. It transforms the linear report into five interactive, thematic modules: 1) 'The AI Imperative' sets the stage, 2) 'Assemble Your Team' is an interactive explorer for key roles, 3) 'Select Your Model' uses a dynamic chart for comparing organizational structures, 4) 'Execute the Roadmap' presents a clickable timeline for implementation, and 5) 'Manage AI Risk' offers an interactive matrix for risk mitigation. This structure was chosen to align with a user's decision-making process (Understand -> Staff -> Structure -> Plan -> Govern), making the dense information more digestible, engaging, and actionable than a simple document view. -->
+    <!-- Visualization & Content Choices: 1. Team Roles (Report Section II) -> Goal: Organize/Inform -> Viz: Interactive Card Grid -> Interaction: Click-to-reveal details -> Justification: More engaging and less overwhelming than a large table. Method: HTML/CSS/JS. 2. Operating Models (Section III) -> Goal: Compare -> Viz: Dynamic Radar Chart -> Interaction: User selects model, chart updates -> Justification: Visually represents multi-dimensional trade-offs more effectively than a static table. Library: Chart.js. 3. Roadmap (Section IV) -> Goal: Change/Process -> Viz: Interactive Timeline -> Interaction: Click-to-expand phase details -> Justification: Turns a static list into an explorable process flow. Method: HTML/CSS/JS. 4. Risk Matrix (Section V) -> Goal: Inform/Organize -> Viz: Interactive Grid -> Interaction: Click-to-reveal mitigation strategies -> Justification: Breaks down complex risk data into manageable, on-demand chunks. Method: HTML/CSS/JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #3D405B;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #81B29A;
+            transition: width 0.3s ease;
+        }
+        .nav-link.active::after, .nav-link:hover::after {
+            width: 100%;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+        }
+        .card-shadow-hover:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07);
+            transform: translateY(-4px);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .modal-overlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-content {
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-xl font-bold text-[#3D405B]">AI in Finance Blueprint</div>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#imperative" class="nav-link text-gray-600 hover:text-[#3D405B]">The Imperative</a>
+                    <a href="#team" class="nav-link text-gray-600 hover:text-[#3D405B]">The Team</a>
+                    <a href="#model" class="nav-link text-gray-600 hover:text-[#3D405B]">The Model</a>
+                    <a href="#roadmap" class="nav-link text-gray-600 hover:text-[#3D405B]">The Roadmap</a>
+                    <a href="#risk" class="nav-link text-gray-600 hover:text-[#3D405B]">The Risk</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="hero" class="text-center mb-24">
+            <h1 class="text-4xl md:text-6xl font-bold text-[#3D405B] mb-4">Architecting the Future of Finance</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">An interactive guide to building high-impact AI data product teams, leveraging Generative and Agentic AI to redefine value in financial services.</p>
+        </section>
+
+        <section id="imperative" class="mb-24 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 text-[#3D405B]">The AI Imperative</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">The financial industry is shifting from managing data to creating intelligent, autonomous 'data products'. This section introduces the core concepts driving this transformation. Understanding the distinction between Generative AI (which synthesizes insights) and Agentic AI (which takes automated action) is the first step in harnessing their power to move from simple reporting to the productization of intelligence itself.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="font-bold text-xl mb-2 text-[#81B29A]">Data Product</h3>
+                    <p class="text-gray-600">A trusted, reusable data asset engineered to solve a specific business problem. It's discoverable, understandable, and secure, moving beyond raw data to deliver actionable insights or power specific functions.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="font-bold text-xl mb-2 text-[#E07A5F]">Generative AI (GenAI)</h3>
+                    <p class="text-gray-600">Acts as a powerful augmentation layer. It generates new content, like natural language summaries of complex risk models or personalized client communications, making insights more accessible and actions more efficient.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="font-bold text-xl mb-2 text-[#3D405B]">Agentic AI</h3>
+                    <p class="text-gray-600">A paradigm shift to active autonomy. AI agents perceive their environment, make independent decisions, and take actions to achieve goals with minimal human oversight, such as executing a hedging trade or rebalancing a portfolio.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="team" class="mb-24 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 text-[#3D405B]">Assemble Your AI Team</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">Building sophisticated AI data products requires a purpose-built, cross-functional team. Traditional silos are inadequate; success depends on integrating technical, business, and governance expertise. Explore the core roles below to understand the anatomy of a modern, high-performing AI team in finance. Click on any role to see detailed responsibilities and required skills.</p>
+            <div id="team-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+        <section id="model" class="mb-24 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 text-[#3D405B]">Select Your Operating Model</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">How you structure your AI teams within the firm has profound implications for innovation, governance, and scale. The optimal model balances control with agility. This section allows you to compare the three primary operating models. Select a model to see its characteristics visualized on the chart and read a summary of its pros and cons. The report strongly recommends the Hybrid model for most large financial institutions.</p>
+            <div class="flex justify-center space-x-2 md:space-x-4 mb-8">
+                <button id="btn-centralized" class="model-btn bg-[#E07A5F] text-white px-4 py-2 rounded-full font-semibold transition">Centralized</button>
+                <button id="btn-decentralized" class="model-btn bg-white text-[#3D405B] px-4 py-2 rounded-full font-semibold transition">Decentralized</button>
+                <button id="btn-hybrid" class="model-btn bg-white text-[#3D405B] px-4 py-2 rounded-full font-semibold transition">Hybrid</button>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8 items-center">
+                <div class="chart-container bg-white p-4 rounded-lg card-shadow">
+                    <canvas id="modelComparisonChart"></canvas>
+                </div>
+                <div id="model-details" class="bg-white p-6 rounded-lg card-shadow">
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="mb-24 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 text-[#3D405B]">Execute the Implementation Roadmap</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">A successful AI initiative requires a deliberate, phased approach to manage complexity, demonstrate value, and build momentum. This interactive timeline outlines a strategic roadmap from initial foundation-building to enterprise-wide scaling. Click each phase to expand and explore the key activities, objectives, and timelines involved in the journey.</p>
+            <div id="roadmap-timeline" class="relative">
+            </div>
+        </section>
+
+        <section id="risk" class="scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 text-[#3D405B]">Manage AI Risk</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">The power and autonomy of Generative and Agentic AI introduce new vectors of risk that require a proactive, adaptive governance framework. This is not a barrier to innovation but its essential foundation. Explore the key risk categories below. Click on each to understand its specific manifestation in finance and the critical strategies for mitigation.</p>
+            <div id="risk-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+    </main>
+
+<!--
+    <footer class="bg-white mt-24">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-500">
+            <p>Interactive Blueprint for AI in Financial Services</p>
+            <p class="text-sm mt-2">This application is a dynamic visualization of the report "Architecting the Future: A Blueprint for Building High-Impact AI Data Product Teams in Financial Services".</p>
+        </div>
+    </footer>
+--> 
+
+    <div id="modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
+        <div id="modal-content" class="modal-content bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8 transform scale-95">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modal-title" class="text-2xl font-bold text-[#3D405B]"></h3>
+                <button id="modal-close" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+            </div>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const teamData = [
+                {
+                    role: "AI Product Manager",
+                    category: "Business & Governance",
+                    color: "#E07A5F",
+                    description: "The 'CEO' of the data product. Defines the vision and roadmap, ensuring alignment with business objectives and translating needs into technical requirements.",
+                    details: `
+                        <h4 class="font-semibold text-lg mb-2">Primary Responsibilities:</h4>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 mb-4">
+                            <li>Define product vision, strategy, and roadmap.</li>
+                            <li>Prioritize features based on ROI and feasibility.</li>
+                            <li>Manage the entire product lifecycle from ideation to iteration.</li>
+                            <li>Act as the liaison between business stakeholders and the technical team.</li>
+                        </ul>
+                        <h4 class="font-semibold text-lg mb-2">Key Skills:</h4>
+                        <p class="text-gray-600">Deep financial domain expertise, stakeholder management, strategic thinking, data analysis, and exceptional communication.</p>
+                    `
+                },
+                {
+                    role: "ML Engineer",
+                    category: "Technical",
+                    color: "#3D405B",
+                    description: "Bridges the gap between data science and production software. Designs, builds, and deploys scalable ML systems, focusing on LLMs and agentic architectures.",
+                    details: `
+                        <h4 class="font-semibold text-lg mb-2">Primary Responsibilities:</h4>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 mb-4">
+                            <li>Design, build, and deploy scalable LLM/Agentic models.</li>
+                            <li>Implement MLOps pipelines for automation and monitoring.</li>
+                            <li>Optimize models for low-latency inference and cost.</li>
+                            <li>Manage model lifecycle and versioning.</li>
+                        </ul>
+                        <h4 class="font-semibold text-lg mb-2">Key Skills:</h4>
+                        <p class="text-gray-600">Python, PyTorch/TensorFlow, LangChain, Kubernetes/Docker, Cloud Platforms (AWS, Azure, GCP), MLOps practices.</p>
+                    `
+                },
+                {
+                    role: "Data Scientist",
+                    category: "Technical",
+                    color: "#3D405B",
+                    description: "The architect of the model's intelligence. Develops predictive algorithms, performs prompt engineering, fine-tunes models, and generates synthetic data.",
+                    details: `
+                        <h4 class="font-semibold text-lg mb-2">Primary Responsibilities:</h4>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 mb-4">
+                            <li>Develop predictive and prescriptive algorithms.</li>
+                            <li>Conduct sophisticated prompt engineering and model fine-tuning.</li>
+                            <li>Apply generative techniques for synthetic data generation.</li>
+                            <li>Design experiments, validate hypotheses, and interpret results.</li>
+                        </ul>
+                        <h4 class="font-semibold text-lg mb-2">Key Skills:</h4>
+                        <p class="text-gray-600">Python/R, Statistics, Probability, Deep Learning, NLP, SQL, GenAI frameworks like Hugging Face.</p>
+                    `
+                },
+                {
+                    role: "Data Engineer",
+                    category: "Technical",
+                    color: "#3D405B",
+                    description: "Lays the foundation for all AI development. Designs, builds, and maintains the data infrastructure, ensuring a reliable flow of high-quality data.",
+                    details: `
+                        <h4 class="font-semibold text-lg mb-2">Primary Responsibilities:</h4>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 mb-4">
+                            <li>Build and maintain robust ETL/ELT data pipelines.</li>
+                            <li>Manage data warehouses and data lakes.</li>
+                            <li>Implement processes for data quality, consistency, and security.</li>
+                            <li>Ensure compliance with data privacy regulations.</li>
+                        </ul>
+                        <h4 class="font-semibold text-lg mb-2">Key Skills:</h4>
+                        <p class="text-gray-600">SQL/NoSQL, Apache Spark/Hadoop, Airflow, Cloud data services (Redshift, BigQuery), data modeling.</p>
+                    `
+                },
+                {
+                    role: "Financial Domain Expert",
+                    category: "Business & Governance",
+                    color: "#E07A5F",
+                    description: "Provides the indispensable subject matter expertise that grounds AI models in financial reality, preventing plausible but nonsensical or harmful outputs.",
+                    details: `
+                        <h4 class="font-semibold text-lg mb-2">Primary Responsibilities:</h4>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 mb-4">
+                            <li>Collaborate with data scientists to frame problems correctly.</li>
+                            <li>Validate assumptions underlying the models.</li>
+                            <li>Curate high-quality evaluation datasets.</li>
+                            <li>Interpret model outputs against expert standards.</li>
+                        </ul>
+                        <h4 class="font-semibold text-lg mb-2">Key Skills:</h4>
+                        <p class="text-gray-600">Years of experience in a specific field (e.g., credit risk, portfolio management), financial modeling, analytical skills.</p>
+                    `
+                },
+                {
+                    role: "AI Ethicist & Governance Officer",
+                    category: "Business & Governance",
+                    color: "#E07A5F",
+                    description: "Serves as the moral and regulatory compass. Develops and oversees the Responsible AI framework to mitigate risks of bias, fairness, and privacy.",
+                    details: `
+                        <h4 class="font-semibold text-lg mb-2">Primary Responsibilities:</h4>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 mb-4">
+                            <li>Develop and implement the firm's Responsible AI framework.</li>
+                            <li>Conduct formal ethics reviews and bias/fairness audits.</li>
+                            <li>Ensure compliance with AI regulations (e.g., EU AI Act).</li>
+                            <li>Monitor data privacy and transparency.</li>
+                        </ul>
+                        <h4 class="font-semibold text-lg mb-2">Key Skills:</h4>
+                        <p class="text-gray-600">Multidisciplinary background in ethics, law, and technology; understanding of ML algorithms and fairness toolkits.</p>
+                    `
+                }
+            ];
+
+            const riskData = [
+                {
+                    category: "Model Hallucination",
+                    manifestation: "Generating incorrect financial analysis, fabricating transaction details, or providing non-compliant advice.",
+                    mitigation: "Implement Retrieval-Augmented Generation (RAG) to ground responses in verified internal documents; rigorous fact-checking protocols.",
+                    responsible: "Data Scientist, ML Engineer, Domain Expert."
+                },
+                {
+                    category: "Algorithmic Bias",
+                    manifestation: "AI credit scoring models unfairly discriminating against protected groups, leading to regulatory penalties.",
+                    mitigation: "Conduct fairness audits on training data; use fairness KPIs (e.g., disparate impact analysis); implement Explainable AI (XAI) for transparency.",
+                    responsible: "AI Ethicist, Data Scientist, Legal."
+                },
+                {
+                    category: "Data Privacy Breach",
+                    manifestation: "An autonomous agent accesses and leaks sensitive PII while interacting with external APIs.",
+                    mitigation: "Enforce the principle of least privilege for agents; use data anonymization/masking; conduct regular security audits of agent capabilities.",
+                    responsible: "ML Engineer, Data Engineer, AI Ethicist."
+                },
+                {
+                    category: "Goal Misalignment",
+                    manifestation: "A portfolio management agent maximizes trading volume to meet a KPI, inadvertently increasing transaction costs and violating the client's true goal of net returns.",
+                    mitigation: "Rigorous and continuous monitoring of agent behavior against a balanced scorecard of metrics; implement human-in-the-loop for strategic decisions.",
+                    responsible: "AI Product Manager, Domain Expert, ML Engineer."
+                },
+                {
+                    category: "Systemic/Cascading Failure",
+                    manifestation: "Multiple autonomous trading agents react to the same false news signal, leading to herd behavior and market instability.",
+                    mitigation: "Introduce diversity in models and data sources; implement circuit breakers; conduct multi-agent simulations ('red-teaming') to identify unforeseen interactions.",
+                    responsible: "ML Engineer, AI Ethicist, Risk Management Function."
+                },
+                {
+                    category: "Security Vulnerability",
+                    manifestation: "Malicious actors use prompt injection to hijack an agent, making it execute unauthorized transactions or exfiltrate data.",
+                    mitigation: "Implement robust input validation and sanitization; design prompts with strict constraints ('prompt hardening'); conduct adversarial testing.",
+                    responsible: "ML Engineer, Cybersecurity Team."
+                }
+            ];
+
+            const roadmapData = [
+                {
+                    phase: "Phase 1: Foundation & Strategy",
+                    duration: "Months 1-3",
+                    title: "Establish the Strategic Mandate",
+                    details: [
+                        "Establish the AI Governance Board with senior leadership.",
+                        "Develop a clear, actionable AI strategic roadmap.",
+                        "Define the core technology stack and data strategy.",
+                        "Initiate a dual-pronged talent strategy: external hiring and internal upskilling."
+                    ]
+                },
+                {
+                    phase: "Phase 2: Pilot Execution",
+                    duration: "Months 4-9",
+                    title: "Demonstrate Value and Build Trust",
+                    details: [
+                        "Identify high-impact, low-risk pilot use cases.",
+                        "Build the Minimum Viable Team and Product (MVP).",
+                        "Define and measure success with clear, business-outcome-focused KPIs.",
+                        "Communicate pilot success to build organizational momentum."
+                    ]
+                },
+                {
+                    phase: "Phase 3: Scaling & Industrialization",
+                    duration: "Months 10-24",
+                    title: "Embed AI into the Organization",
+                    details: [
+                        "Expand the team and replicate pilot success in other business areas.",
+                        "Develop a centralized Data Product Catalog for discoverability and reuse.",
+                        "Foster an AI-ready culture through leadership championship and broad AI literacy programs.",
+                        "Codify best practices into a playbook for accelerated deployment."
+                    ]
+                },
+                 {
+                    phase: "Phase 4: Enterprise Integration",
+                    duration: "Ongoing",
+                    title: "Achieve AI-First Operations",
+                    details: [
+                        "Fully integrate AI into core business processes.",
+                        "Establish a mature, federated 'hub-and-spoke' operating model.",
+                        "Continuously monitor and refine the Responsible AI framework.",
+                        "Evolve into an AI-first institution where human-AI collaboration is the norm."
+                    ]
+                }
+            ];
+
+            const modelComparisonData = {
+                labels: ['Speed & Agility', 'Governance', 'Cost Efficiency', 'Scalability', 'Innovation', 'Business Alignment'],
+                datasets: [
+                    {
+                        label: 'Centralized',
+                        data: [2, 5, 5, 4, 3, 3],
+                        backgroundColor: 'rgba(224, 122, 95, 0.2)',
+                        borderColor: 'rgba(224, 122, 95, 1)',
+                        pointBackgroundColor: 'rgba(224, 122, 95, 1)',
+                    },
+                    {
+                        label: 'Decentralized',
+                        data: [5, 2, 2, 2, 5, 5],
+                        backgroundColor: 'rgba(129, 178, 154, 0.2)',
+                        borderColor: 'rgba(129, 178, 154, 1)',
+                        pointBackgroundColor: 'rgba(129, 178, 154, 1)',
+                    },
+                    {
+                        label: 'Hybrid',
+                        data: [4, 5, 4, 5, 5, 5],
+                        backgroundColor: 'rgba(61, 64, 91, 0.2)',
+                        borderColor: 'rgba(61, 64, 91, 1)',
+                        pointBackgroundColor: 'rgba(61, 64, 91, 1)',
+                    }
+                ]
+            };
+            
+            const modelDetailsData = {
+                centralized: {
+                    title: "Centralized: The AI Center of Excellence (CoE)",
+                    pros: "Offers maximum control, consistency, and cost efficiency. Consolidates expertise and ensures uniform standards for security and compliance.",
+                    cons: "Can become a bureaucratic bottleneck, slow to respond to specific business unit needs, and may develop solutions that lack practical relevance.",
+                    bestFor: "Early-stage AI adoption; firms prioritizing control and standardization."
+                },
+                decentralized: {
+                    title: "Decentralized: The Embedded AI Model",
+                    pros: "High agility and speed. Teams are close to business problems, leading to highly relevant and quickly iterated solutions.",
+                    cons: "Risks chaotic proliferation of standards, resource duplication, and knowledge siloing. Difficult to manage enterprise-wide risk and compliance.",
+                    bestFor: "Highly diversified firms; mature AI organizations with strong local governance."
+                },
+                hybrid: {
+                    title: "Hybrid: The Federated 'Hub-and-Spoke' Model",
+                    pros: "Best of both worlds. Provides robust central governance and scalable infrastructure while empowering business units to innovate with speed and relevance.",
+                    cons: "Requires careful coordination between the central 'hub' and distributed 'spokes' to avoid friction.",
+                    bestFor: "Most large firms seeking a balance between governance and agility; the recommended model for scaling AI responsibly."
+                }
+            };
+
+            const teamGrid = document.getElementById('team-grid');
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            const modalClose = document.getElementById('modal-close');
+
+            teamData.forEach(member => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-6 rounded-lg card-shadow card-shadow-hover cursor-pointer transition-all duration-300';
+                card.innerHTML = `
+                    <div class="flex items-center mb-3">
+                        <span class="w-3 h-3 rounded-full mr-3" style="background-color: ${member.color};"></span>
+                        <h3 class="font-bold text-xl text-[#3D405B]">${member.role}</h3>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-3">${member.category}</p>
+                    <p class="text-gray-600">${member.description}</p>
+                `;
+                card.addEventListener('click', () => {
+                    modalTitle.textContent = member.role;
+                    modalBody.innerHTML = member.details;
+                    modal.classList.remove('opacity-0', 'pointer-events-none');
+                    modalContent.classList.remove('scale-95');
+                });
+                teamGrid.appendChild(card);
+            });
+
+            const riskGrid = document.getElementById('risk-grid');
+            riskData.forEach(risk => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-6 rounded-lg card-shadow card-shadow-hover cursor-pointer transition-all duration-300';
+                card.innerHTML = `<h3 class="font-bold text-xl text-[#3D405B]">${risk.category}</h3>`;
+                card.addEventListener('click', () => {
+                    modalTitle.textContent = risk.category;
+                    modalBody.innerHTML = `
+                        <h4 class="font-semibold text-lg mb-2 text-[#E07A5F]">Financial Manifestation:</h4>
+                        <p class="text-gray-600 mb-4">${risk.manifestation}</p>
+                        <h4 class="font-semibold text-lg mb-2 text-[#81B29A]">Primary Mitigation Strategy:</h4>
+                        <p class="text-gray-600 mb-4">${risk.mitigation}</p>
+                        <h4 class="font-semibold text-lg mb-2 text-[#3D405B]">Key Team Members Responsible:</h4>
+                        <p class="text-gray-600">${risk.responsible}</p>
+                    `;
+                    modal.classList.remove('opacity-0', 'pointer-events-none');
+                    modalContent.classList.remove('scale-95');
+                });
+                riskGrid.appendChild(card);
+            });
+
+            modalClose.addEventListener('click', () => {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modalContent.classList.add('scale-95');
+            });
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('opacity-0', 'pointer-events-none');
+                    modalContent.classList.add('scale-95');
+                }
+            });
+
+            const roadmapTimeline = document.getElementById('roadmap-timeline');
+            roadmapData.forEach((item, index) => {
+                const isLast = index === roadmapData.length - 1;
+                const timelineItem = document.createElement('div');
+                timelineItem.className = 'roadmap-item mb-8 pl-12 relative';
+                timelineItem.innerHTML = `
+                    <div class="absolute left-0 top-1 w-6 h-6 bg-white border-4 border-[#81B29A] rounded-full z-10"></div>
+                    ${!isLast ? '<div class="absolute left-[10px] top-7 h-full border-l-2 border-dashed border-gray-300"></div>' : ''}
+                    <div class="cursor-pointer">
+                        <p class="text-sm text-gray-500">${item.duration}</p>
+                        <h4 class="font-bold text-xl text-[#3D405B]">${item.phase}</h4>
+                        <p class="text-gray-600 font-medium">${item.title}</p>
+                    </div>
+                    <div class="roadmap-details overflow-hidden max-h-0 transition-all duration-500 ease-in-out mt-2 pl-4">
+                        <ul class="list-disc list-outside text-gray-600 space-y-2">
+                            ${item.details.map(d => `<li>${d}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                roadmapTimeline.appendChild(timelineItem);
+
+                timelineItem.querySelector('.cursor-pointer').addEventListener('click', () => {
+                    const details = timelineItem.querySelector('.roadmap-details');
+                    const circle = timelineItem.querySelector('.absolute.left-0');
+                    if (details.style.maxHeight && details.style.maxHeight !== '0px') {
+                        details.style.maxHeight = '0px';
+                        circle.classList.remove('bg-[#81B29A]');
+                        circle.classList.add('bg-white');
+                    } else {
+                        document.querySelectorAll('.roadmap-details').forEach(d => d.style.maxHeight = '0px');
+                        document.querySelectorAll('.roadmap-item .absolute.left-0').forEach(c => {
+                            c.classList.remove('bg-[#81B29A]');
+                            c.classList.add('bg-white');
+                        });
+                        details.style.maxHeight = details.scrollHeight + "px";
+                        circle.classList.add('bg-[#81B29A]');
+                        circle.classList.remove('bg-white');
+                    }
+                });
+            });
+
+            const ctx = document.getElementById('modelComparisonChart').getContext('2d');
+            const modelChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: modelComparisonData.labels,
+                    datasets: []
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.r !== null) {
+                                        label += context.parsed.r;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: '#e2e8f0'
+                            },
+                            grid: {
+                                color: '#e2e8f0'
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                },
+                                color: '#4a5568'
+                            },
+                            ticks: {
+                                backdropColor: 'rgba(255, 255, 255, 0.75)',
+                                stepSize: 1,
+                                max: 5,
+                                min: 0
+                            }
+                        }
+                    }
+                }
+            });
+
+            const modelDetailsContainer = document.getElementById('model-details');
+            const modelButtons = document.querySelectorAll('.model-btn');
+
+            function updateModelView(modelName) {
+                const data = modelComparisonData.datasets.find(d => d.label.toLowerCase() === modelName);
+                modelChart.data.datasets = [data];
+                modelChart.update();
+
+                const details = modelDetailsData[modelName];
+                modelDetailsContainer.innerHTML = `
+                    <h3 class="text-2xl font-bold mb-4 text-[#3D405B]">${details.title}</h3>
+                    <div class="mb-4">
+                        <h4 class="font-semibold text-lg text-[#81B29A]">Pros:</h4>
+                        <p class="text-gray-600">${details.pros}</p>
+                    </div>
+                    <div class="mb-4">
+                        <h4 class="font-semibold text-lg text-[#E07A5F]">Cons:</h4>
+                        <p class="text-gray-600">${details.cons}</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg text-[#3D405B]">Best For:</h4>
+                        <p class="text-gray-600">${details.bestFor}</p>
+                    </div>
+                `;
+                
+                modelButtons.forEach(btn => {
+                    if(btn.id.includes(modelName)) {
+                        btn.classList.add('bg-[#3D405B]', 'text-white');
+                        btn.classList.remove('bg-white', 'text-[#3D405B]');
+                    } else {
+                        btn.classList.remove('bg-[#3D405B]', 'text-white');
+                        btn.classList.add('bg-white', 'text-[#3D405B]');
+                    }
+                });
+            }
+
+            document.getElementById('btn-centralized').addEventListener('click', () => updateModelView('centralized'));
+            document.getElementById('btn-decentralized').addEventListener('click', () => updateModelView('decentralized'));
+            document.getElementById('btn-hybrid').addEventListener('click', () => updateModelView('hybrid'));
+            
+            updateModelView('hybrid');
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+            
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 120) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

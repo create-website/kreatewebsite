@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: A Framework for Evaluating Agentic AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a narrative structure designed for progressive disclosure. It starts with a high-level hook, defines the 'Four Pillars' to establish foundational knowledge, illustrates the 'Agentic Loop' process flow, presents the core 'Evaluation Framework' as the central data visualization piece, compares different AI types to clarify concepts, and concludes with tangible case study comparisons. This top-down approach makes a dense report accessible to a broader audience. -->
+    <!-- Visualization & Content Choices: 1. Pillars: Goal: Inform. Method: Styled HTML cards with Unicode icons. Justification: Clear, scannable, and requires no complex charts. 2. Agentic Loop: Goal: Organize (Process Flow). Method: HTML/CSS with Tailwind flexbox. Justification: Effectively shows a sequence without SVG/Mermaid. 3. Evaluation Framework: Goal: Compare/Organize. Method: A horizontal bar chart (Chart.js) to show the 'fingerprints' of different case studies. Justification: Bar charts are excellent for comparing rankings/scores across multiple categories (the 5 dimensions) and for multiple subjects (the case studies). This is more direct than a radar chart for comparing multiple profiles at once. 4. AI Paradigm Comparison: Goal: Compare. Method: Styled HTML table. Justification: A table is the clearest way to present a direct feature-by-feature comparison. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDF6E3; /* Creamy background */
+            color: #1E293B; /* Dark Slate */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 500px;
+            max-height: 600px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #FF4E50, #F9D423);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .flow-step {
+            background-color: #ffffff;
+            border: 2px solid #FFC947; /* Gold */
+            color: #1E293B;
+            padding: 1rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .flow-arrow {
+            font-size: 2rem;
+            color: #FFC947; /* Gold */
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+        <section class="text-center mb-24">
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4">
+                <span class="gradient-text">Decoding Agentic AI</span>
+            </h1>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-slate-600">Moving beyond the buzzwords. A visual framework for understanding, evaluating, and classifying the true capabilities of intelligent systems.</p>
+        </section>
+
+        <section class="mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">The Four Pillars of Agency</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="stat-card">
+                    <div class="text-5xl mb-4">🎯</div>
+                    <h3 class="text-xl font-bold mb-2">Goal-Orientation</h3>
+                    <p class="text-slate-600">Systems driven by a purpose, actively working towards a specific objective rather than passively responding to commands.</p>
+                </div>
+                <div class="stat-card">
+                    <div class="text-5xl mb-4">⚙️</div>
+                    <h3 class="text-xl font-bold mb-2">Autonomy</h3>
+                    <p class="text-slate-600">The capacity to operate and execute complex, multi-step tasks with limited or no direct human intervention.</p>
+                </div>
+                <div class="stat-card">
+                    <div class="text-5xl mb-4">🧠</div>
+                    <h3 class="text-xl font-bold mb-2">Adaptability</h3>
+                    <p class="text-slate-600">The ability to learn from experience, adjust strategies in response to new information, and improve performance over time.</p>
+                </div>
+                <div class="stat-card">
+                    <div class="text-5xl mb-4">⚡️</div>
+                    <h3 class="text-xl font-bold mb-2">Proactivity</h3>
+                    <p class="text-slate-600">Takes initiative to perceive its environment and act upon it, often using external tools like APIs to achieve its goals.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">The Engine of Autonomy: The Agentic Loop</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-slate-600 mb-16">Agentic behavior isn't a single action, but a continuous, iterative cycle. This loop is what enables an AI to think, act, and learn in a dynamic world.</p>
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                <div class="flow-step">Perception</div>
+                <div class="flow-arrow">&rarr;</div>
+                <div class="flow-step">Reasoning</div>
+                <div class="flow-arrow">&rarr;</div>
+                <div class="flow-step">Planning</div>
+                <div class="flow-arrow">&rarr;</div>
+                <div class="flow-step">Action</div>
+                <div class="flow-arrow">&rarr;</div>
+                <div class="flow-step">Learning</div>
+            </div>
+        </section>
+
+        <section class="mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">The Spectrum of Agency: An Evaluation</h2>
+            <p class="max-w-4xl mx-auto text-center text-lg text-slate-600 mb-12">Not all "agents" are created equal. This framework measures capability across five key dimensions, creating a unique "fingerprint" for any AI system. Here's how three real-world use cases compare, rated on a scale of 0 (Non-Agentic) to 4 (Fully Autonomous).</p>
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="chart-container">
+                    <canvas id="evaluationChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Agentic AI vs. The Alternatives</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-slate-600 mb-16">Understanding the key differences between agentic systems and other AI paradigms is crucial for proper classification and expectation setting.</p>
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-max text-left bg-white rounded-2xl shadow-lg">
+                    <thead>
+                        <tr class="border-b border-slate-200">
+                            <th class="p-6 text-lg font-bold">Feature</th>
+                            <th class="p-6 text-lg font-bold bg-slate-50">Generative AI</th>
+                            <th class="p-6 text-lg font-bold bg-amber-50">Reactive/Rule-Based</th>
+                            <th class="p-6 text-lg font-bold bg-rose-50">Agentic AI</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-slate-200">
+                            <td class="p-6 font-semibold">Primary Function</td>
+                            <td class="p-6 bg-slate-50">Content Creation</td>
+                            <td class="p-6 bg-amber-50">Task Execution (Fixed Rules)</td>
+                            <td class="p-6 bg-rose-50">Goal-Oriented Action</td>
+                        </tr>
+                        <tr class="border-b border-slate-200">
+                            <td class="p-6 font-semibold">Decision Logic</td>
+                            <td class="p-6 bg-slate-50">Probabilistic Generation</td>
+                            <td class="p-6 bg-amber-50">If-Then Conditions</td>
+                            <td class="p-6 bg-rose-50">Dynamic Planning & Reasoning</td>
+                        </tr>
+                        <tr>
+                            <td class="p-6 font-semibold">Example</td>
+                            <td class="p-6 bg-slate-50">Generating an email draft</td>
+                            <td class="p-6 bg-amber-50">An automated billing system</td>
+                            <td class="p-6 bg-rose-50">An autonomous supply chain manager</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        function wrapText(str) {
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            const maxLen = 16;
+
+            if (str.length <= maxLen) {
+                return str;
+            }
+
+            for (let i = 0; i < words.length; i++) {
+                const word = words[i];
+                if ((currentLine + word).length > maxLen) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const evaluationData = {
+            labels: [
+                wrapText('Autonomy & Human Oversight'),
+                wrapText('Goal & Task Complexity'),
+                wrapText('Planning & Reasoning Sophistication'),
+                wrapText('Learning & Adaptability'),
+                wrapText('Environmental Interaction & Tool Use')
+            ],
+            datasets: [
+                {
+                    label: 'Autonomous SDR',
+                    data: [3, 3, 3, 2, 3],
+                    backgroundColor: 'rgba(255, 78, 80, 0.7)', // Red
+                    borderColor: 'rgba(255, 78, 80, 1)',
+                    borderWidth: 2,
+                    borderRadius: 5,
+                },
+                {
+                    label: 'Supply Chain Manager',
+                    data: [4, 4, 4, 4, 4],
+                    backgroundColor: 'rgba(249, 212, 35, 0.7)', // Yellow
+                    borderColor: 'rgba(249, 212, 35, 1)',
+                    borderWidth: 2,
+                    borderRadius: 5,
+                },
+                {
+                    label: 'Debugging Co-Pilot',
+                    data: [2, 3, 3, 2, 3],
+                    backgroundColor: 'rgba(255, 140, 0, 0.7)', // Orange
+                    borderColor: 'rgba(255, 140, 0, 1)',
+                    borderWidth: 2,
+                    borderRadius: 5,
+                }
+            ]
+        };
+
+        const config = {
+            type: 'bar',
+            data: evaluationData,
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 4,
+                        ticks: {
+                            stepSize: 1,
+                            font: {
+                                weight: '600',
+                                size: 14
+                            },
+                            callback: function(value, index, ticks) {
+                                return 'Level ' + value;
+                            }
+                        },
+                        grid: {
+                            color: '#e2e8f0',
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            font: {
+                                weight: '600',
+                                size: 14
+                            },
+                             color: '#334155',
+                        },
+                        grid: {
+                            display: false,
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            },
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.x !== null) {
+                                    label += 'Level ' + context.parsed.x;
+                                }
+                                return label;
+                            }
+                        },
+                        backgroundColor: '#1E293B',
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 12 },
+                        padding: 12,
+                        cornerRadius: 8,
+                    }
+                }
+            }
+        };
+
+        window.addEventListener('load', () => {
+            const evaluationChart = new Chart(
+                document.getElementById('evaluationChart'),
+                config
+            );
+        });
+    </script>
+</body>
+</html>

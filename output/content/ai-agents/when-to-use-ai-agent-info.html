@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The AI Agent Litmus Test: An Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Narrative & Structure Plan: The infographic tells a story to guide a user's decision. It starts with a bold title and a hook (key stats). It then flows into the central "Decision Flowchart," a visual representation of the core questions to ask. This leads directly to a comparative section: "Green Lights" (when to use) vs. "Red Flags" (when not to use). The narrative concludes with actionable "Lessons Learned." This structure logically moves the user from high-level consideration to detailed analysis and final takeaways. -->
+    <!-- Visualization & Content Choices: Data Point: Key stats on AI impact -> Goal: Inform -> Chosen Viz: Big Number & Donut Chart -> Justification: These are high-impact visuals for single data points, perfect for an infographic hook. Library: Chart.js for the canvas-based donut chart. NO SVG. Data Point: Core decision questions -> Goal: Organize -> Chosen Viz: Flowchart -> Justification: A flowchart visually represents a process, making the decision-making steps intuitive. Method: Implemented with structured HTML and Tailwind CSS for styling. NO SVG/Mermaid. Data Point: Use cases vs. non-use cases -> Goal: Compare -> Chosen Viz: Side-by-side lists with icons -> Justification: A direct comparison is the most effective way to show contrast. Method: Styled HTML lists with Unicode characters. NO SVG. Data Point: Lessons learned -> Goal: Organize -> Chosen Viz: Icon-based cards -> Justification: Cards break up content into digestible, memorable chunks. Method: Styled HTML with Unicode characters. NO SVG. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            height: 300px;
+            margin: auto;
+        }
+        .flow-card {
+            background-color: white;
+            border-left: 5px solid #ff6361;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            position: relative;
+        }
+        .flow-arrow {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #ffa600;
+            line-height: 1;
+            margin: 0.5rem 0;
+        }
+        .kpi-stat {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1;
+            color: #58508d;
+        }
+    </style>
+</head>
+<body class="text-gray-700">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center my-8 md:my-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold" style="color: #003f5c;">The AI Agent Litmus Test</h1>
+            <p class="text-lg md:text-xl mt-4 max-w-3xl mx-auto" style="color: #58508d;">Is an AI agent the right solution for your business? This guide breaks down the key factors to consider before you start your research.</p>
+        </header>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-16">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-center mb-4" style="color: #003f5c;">Impact by the Numbers</h2>
+                <p class="text-center mb-6">AI agents are transforming industries by automating tasks and providing intelligent insights. The potential for efficiency gains is a primary driver for adoption.</p>
+                <div class="text-center">
+                    <div class="kpi-stat">40%</div>
+                    <div class="text-lg font-semibold mt-2" style="color: #58508d;">Potential Productivity Boost</div>
+                    <p class="text-sm mt-1">Reported by businesses successfully implementing AI automation for repetitive tasks.</p>
+                </div>
+            </div>
+             <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-center mb-4" style="color: #003f5c;">Ideal Task Allocation</h2>
+                <p class="text-center mb-6">A significant portion of typical business tasks have characteristics that make them prime candidates for AI agent automation.</p>
+                <div class="chart-container">
+                    <canvas id="taskSuitabilityChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16">
+            <h2 class="text-3xl font-bold text-center mb-10" style="color: #003f5c;">Your Decision Flowchart</h2>
+            <div class="max-w-2xl mx-auto">
+                <div class="flow-card">
+                    <h3 class="font-bold text-lg">1. Define the Task</h3>
+                    <p>Is the task repetitive, rule-based, and well-defined? Does it involve processing large volumes of data?</p>
+                </div>
+                <div class="flow-arrow">▼</div>
+                <div class="flow-card" style="border-color: #bc5090;">
+                    <h3 class="font-bold text-lg">2. Assess Data Availability</h3>
+                    <p>Do you have access to sufficient, high-quality, and relevant data to train or operate the AI agent effectively?</p>
+                </div>
+                <div class="flow-arrow">▼</div>
+                <div class="flow-card" style="border-color: #ffa600;">
+                    <h3 class="font-bold text-lg">3. Evaluate Complexity & Creativity</h3>
+                    <p>Does the task require deep emotional intelligence, complex ethical judgment, or novel, creative thinking?</p>
+                </div>
+                 <div class="flow-arrow">▼</div>
+                <div class="flow-card" style="border-color: #58508d;">
+                    <h3 class="font-bold text-lg">4. Determine Success Metrics</h3>
+                    <p>Are the goals clear and measurable? Can you define what a successful outcome looks like for the agent?</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-lg shadow-lg border-t-4 border-green-500">
+                    <h3 class="text-2xl font-bold mb-4 text-green-700">✅ Green Lights: When to Use an AI Agent</h3>
+                    <ul class="space-y-3 list-inside">
+                        <li class="flex items-start"><span class="text-green-500 font-bold mr-2">✔</span>Automating high-volume, repetitive work like data entry or scheduling.</li>
+                        <li class="flex items-start"><span class="text-green-500 font-bold mr-2">✔</span>Analyzing complex datasets to find patterns and generate reports.</li>
+                        <li class="flex items-start"><span class="text-green-500 font-bold mr-2">✔</span>Providing 24/7 customer support for frequently asked questions.</li>
+                        <li class="flex items-start"><span class="text-green-500 font-bold mr-2">✔</span>Personalizing user experiences based on behavior and data.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg border-t-4 border-red-500">
+                    <h3 class="text-2xl font-bold mb-4 text-red-700">❌ Red Flags: When Not to Use an AI Agent</h3>
+                     <ul class="space-y-3 list-inside">
+                        <li class="flex items-start"><span class="text-red-500 font-bold mr-2">✖</span>Tasks requiring genuine empathy, negotiation, or complex relationship building.</li>
+                        <li class="flex items-start"><span class="text-red-500 font-bold mr-2">✖</span>Strategic decision-making that requires deep contextual business understanding.</li>
+                        <li class="flex items-start"><span class="text-red-500 font-bold mr-2">✖</span>Situations with ill-defined problems or constantly changing, unpredictable rules.</li>
+                         <li class="flex items-start"><span class="text-red-500 font-bold mr-2">✖</span>Critical scenarios where a single error could have severe consequences.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16">
+            <h2 class="text-3xl font-bold text-center mb-10" style="color: #003f5c;">Key Lessons Learned</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-5xl mb-3">🎯</div>
+                    <h4 class="font-bold text-lg" style="color: #003f5c;">Start Small</h4>
+                    <p class="text-sm mt-1">Begin with a well-defined pilot project to prove value and minimize risk.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-5xl mb-3">📈</div>
+                    <h4 class="font-bold text-lg" style="color: #003f5c;">Data is King</h4>
+                    <p class="text-sm mt-1">An agent's performance is directly tied to the quality and relevance of your data.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-5xl mb-3">👥</div>
+                    <h4 class="font-bold text-lg" style="color: #003f5c;">Human in the Loop</h4>
+                    <p class="text-sm mt-1">Always design for human oversight, especially for quality assurance and critical decisions.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-5xl mb-3">💡</div>
+                    <h4 class="font-bold text-lg" style="color: #003f5c;">Iterate & Improve</h4>
+                    <p class="text-sm mt-1">AI implementation is a continuous cycle of monitoring, learning, and refining.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-12 py-6 border-t">
+            <p class="text-sm text-gray-500">Infographic by Canvas Infographics</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('taskSuitabilityChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['High Suitability for AI', 'Requires Human Input'],
+                    datasets: [{
+                        data: [65, 35],
+                        backgroundColor: ['#ff6361', '#ffa600'],
+                        borderColor: '#ffffff',
+                        borderWidth: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 14,
+                                    family: "'Inter', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    } else {
+                                      return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

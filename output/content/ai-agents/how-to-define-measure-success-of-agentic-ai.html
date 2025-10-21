@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI: A Strategic Framework for Measuring Success</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutrals -->
+    <!-- Application Structure Plan: The SPA is structured as a strategic narrative for executives. It starts with a high-level definition of the agentic paradigm, then presents the "Spectrum of Autonomy" to set context. The core of the application is an interactive "KPI Dashboard" for measuring success, followed by a clear "ROI Calculator" to translate performance into financial terms. It concludes with actionable guidance on "Setting Expectations" and "Governance," using accordions for readability. This structure logically moves the user from understanding the 'what' to the 'how' and 'why,' prioritizing actionable insights over a simple report summary. -->
+    <!-- Visualization & Content Choices: 1. Spectrum of Autonomy (Table 2): Goal: Organize/Change. Method: Interactive HTML/CSS timeline. Justification: More engaging than a static table. 2. KPI Dashboard (Table 3): Goal: Inform/Compare. Method: Dashboard with cards and a Chart.js Radar Chart. Justification: A radar chart provides an excellent multi-dimensional "performance fingerprint" for an agent. 3. ROI Calculator: Goal: Inform. Method: Styled HTML display. Justification: Clearly shows the financial model without complex user inputs. 4. Governance/Expectations: Goal: Organize. Method: Accordion sections. Justification: Makes dense text digestible. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4; /* Warm neutral background */
+            color: #44403c; /* stone-700 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active {
+            color: #a5522a; /* A subtle, warm accent */
+            border-bottom-color: #a5522a;
+        }
+        .accordion-button span {
+            transition: transform 0.3s ease;
+        }
+        .accordion-button[aria-expanded="true"] span {
+            transform: rotate(45deg);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -39px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #a5522a;
+            border: 4px solid #f8f7f4;
+        }
+        .kpi-category-btn.active {
+            background-color: #a5522a;
+            color: white;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-stone-800">Agentic AI Success Framework</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#intro" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:text-stone-900 border-b-2 border-transparent">Introduction</a>
+                        <a href="#kpis" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:text-stone-900 border-b-2 border-transparent">KPIs</a>
+                        <a href="#roi" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:text-stone-900 border-b-2 border-transparent">ROI</a>
+                        <a href="#expectations" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:text-stone-900 border-b-2 border-transparent">Expectations</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="intro" class="py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-stone-900">Defining and Measuring Success in Agentic AI</h2>
+                <p class="mt-6 max-w-3xl mx-auto text-lg text-stone-600">The shift to agentic AI requires a new strategic lens. Success is not measured by system outputs, but by business outcomes. This framework provides a multi-dimensional model for defining success, measuring performance, and setting realistic organizational expectations.</p>
+                <a href="#kpis" class="mt-8 inline-block bg-[#a5522a] text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-[#8e4623] transition-colors">Explore the KPI Dashboard</a>
+            </div>
+        </section>
+
+        <section id="spectrum" class="py-20 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl md:text-4xl font-bold text-stone-900">The Spectrum of Autonomy</h3>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-stone-600">Agency is not a binary switch. Understanding these incremental levels of autonomy—and the corresponding human role—is crucial for strategic planning, risk management, and setting clear expectations.</p>
+                </div>
+                <div class="relative max-w-3xl mx-auto border-l-4 border-stone-200 pl-12">
+                     <div id="spectrum-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kpis" class="py-20 md:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl md:text-4xl font-bold text-stone-900">The KPI Dashboard for Agentic AI</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-stone-600">Effective measurement moves beyond simple technical metrics. A balanced scorecard should track performance across four key dimensions to provide a holistic view of an agent's impact. Use the filters to explore the KPIs for each dimension.</p>
+                </div>
+                <div class="flex justify-center mb-8" id="kpi-filters"></div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div id="kpi-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    </div>
+                    <div class="lg:sticky top-24">
+                        <div class="bg-stone-50 p-6 rounded-xl border border-stone-200">
+                            <h4 class="text-xl font-bold text-center mb-2">Agent Performance Profile</h4>
+                            <div class="chart-container">
+                                <canvas id="kpiChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roi" class="py-20 md:py-28">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-stone-900">Calculating Return on Investment (ROI)</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-stone-600">While KPIs track operational performance, ROI translates this into financial terms. A holistic ROI calculation must account for both tangible benefits like cost savings and intangible value like improved decision quality.</p>
+                </div>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div id="roi-inputs" class="bg-white p-8 rounded-2xl shadow-lg border border-stone-200"></div>
+                    <div id="roi-results" class="bg-white p-8 rounded-2xl shadow-lg border border-stone-200 flex flex-col justify-center items-center text-center"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="expectations" class="py-20 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-stone-900">Setting Expectations & Building a Ready Organization</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-stone-600">Successful adoption is less a technical challenge and more a test of organizational readiness. Managing hype, fostering a culture of innovation, and establishing robust governance are the most critical determinants of success.</p>
+                </div>
+                <div id="accordion-container" class="max-w-3xl mx-auto space-y-4"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-stone-800 text-white mt-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+            <p class="text-stone-400">An interactive dashboard based on the "Strategic Framework for Defining, Measuring, and Governing Agentic AI Interventions" report.</p>
+        </div>
+    </footer>
+
+    <script>
+        const appData = {
+            spectrum: [
+                { level: 1, name: 'Assisted Agency', role: 'Operator', description: 'Agent handles single sub-tasks on command.' },
+                { level: 2, name: 'Partial Autonomy', role: 'Supervisor', description: 'Agent executes multi-step workflows with human supervision.' },
+                { level: 3, name: 'Conditional Autonomy', role: 'On-Call Expert', description: 'Agent operates end-to-end within a domain, escalating for edge cases.' },
+                { level: 4, name: 'High Autonomy', role: 'Strategist', description: 'Agent operates with little to no oversight, handling most failures.' },
+                { level: 5, name: 'Full Autonomy', role: 'Auditor/Overseer', description: 'Agent operates across domains, learning and adapting independently.' }
+            ],
+            kpis: [
+                { category: 'Operational & Efficiency', name: 'Task Completion Rate', description: '% of tasks completed without human intervention.' },
+                { category: 'Operational & Efficiency', name: 'Cycle Time Reduction', description: 'Decrease in end-to-end process time.' },
+                { category: 'Operational & Efficiency', name: 'Error Rate Reduction', description: '% decrease in process errors.' },
+                { category: 'System Performance & Reliability', name: 'Uptime / Availability', description: '% of time the system is operational.' },
+                { category: 'System Performance & Reliability', name: 'Latency / Response Time', description: 'Time from task initiation to action.' },
+                { category: 'System Performance & Reliability', name: 'Model Accuracy & Drift', description: 'Correctness of outputs and performance degradation.' },
+                { category: 'User & Customer Experience', name: 'Adoption Rate', description: '% of eligible users actively using the system.' },
+                { category: 'User & Customer Experience', name: 'User Satisfaction (CSAT)', description: 'Direct feedback from users on interactions.' },
+                { category: 'User & Customer Experience', name: 'Escalation Rate', description: 'Frequency agent needs to escalate to a human.' },
+                { category: 'Learning & Adaptability', name: 'Learning Velocity', description: 'Rate of performance improvement over time.' },
+                { category: 'Learning & Adaptability', name: 'Adaptation Velocity', description: 'How quickly the agent adjusts to environmental changes.' },
+                { category: 'Learning & Adaptability', name: 'Edge Case Handling', description: 'Ability to manage novel scenarios without failure.' }
+            ],
+            kpiScores: {
+                'Operational & Efficiency': 85,
+                'System Performance & Reliability': 90,
+                'User & Customer Experience': 75,
+                'Learning & Adaptability': 65
+            },
+            roi: {
+                annualCalls: 100000,
+                automationPercent: 10,
+                avgTimeRoutine: 3,
+                costPerMinute: 0.50,
+                misrouteInefficiency: 1,
+                productivityGainCalls: 4000,
+                productivityGainTime: 5,
+                implementationCost: 40000,
+                maintenanceCost: 5000
+            },
+            expectations: [
+                { title: 'Managing the Hype Cycle', content: 'Ground AI strategy in reality by educating stakeholders with clear frameworks (like the Spectrum of Autonomy), demonstrating limitations with concrete examples, anchoring every initiative to business value, and starting with small pilot projects to prove value and build momentum.' },
+                { title: 'Fostering a Culture of Innovation and Trust', content: 'Build a culture of psychological safety where employees feel safe to experiment and report failures. Create a network of "AI champions" to drive peer-led adoption and involve frontline employees in the co-design of AI solutions to foster ownership.' },
+                { title: 'Establishing Proactive Governance', content: 'Create a cross-functional AI Ethics and Safety Committee with executive authority. Mandate principles of Meaningful Human Control (MHC) and implement robust Human-in-the-Loop (HITL) workflows. Develop a defense-in-depth security strategy to mitigate novel risks like prompt injection and privilege compromise.' },
+                { title: 'Investing in Data and Skills', content: 'Prioritize investment in a high-quality, accessible, and well-governed data foundation. Aggressively upskill the workforce, focusing not only on technical AI literacy but also on critical human-centric skills like creative thinking, emotional intelligence, and ethical judgment.' }
+            ]
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const spectrumContainer = document.getElementById('spectrum-container');
+            appData.spectrum.forEach(item => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'timeline-item relative mb-10';
+                itemEl.innerHTML = `
+                    <div class="p-6 bg-white rounded-xl shadow-md border border-stone-200">
+                        <h4 class="font-bold text-xl mb-1 text-stone-800">Level ${item.level}: ${item.name}</h4>
+                        <p class="text-stone-600"><strong class="text-stone-700">Human Role:</strong> ${item.role}</p>
+                        <p class="text-stone-600 mt-1">${item.description}</p>
+                    </div>
+                `;
+                spectrumContainer.appendChild(itemEl);
+            });
+
+            const kpiFilters = document.getElementById('kpi-filters');
+            const kpiCardsContainer = document.getElementById('kpi-cards-container');
+            const categories = ['All', ...new Set(appData.kpis.map(k => k.category))];
+            
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.textContent = cat;
+                btn.className = 'kpi-category-btn px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 border border-stone-300 hover:bg-stone-100';
+                if (cat === 'All') btn.classList.add('active');
+                btn.dataset.category = cat;
+                kpiFilters.appendChild(btn);
+            });
+
+            function renderKpiCards(filter = 'All') {
+                kpiCardsContainer.innerHTML = '';
+                const filteredKpis = filter === 'All' ? appData.kpis : appData.kpis.filter(k => k.category === filter);
+                filteredKpis.forEach(kpi => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white p-4 rounded-lg shadow-sm border border-stone-200';
+                    card.innerHTML = `
+                        <h5 class="font-bold text-stone-800">${kpi.name}</h5>
+                        <p class="text-sm text-stone-600 mt-1">${kpi.description}</p>
+                    `;
+                    kpiCardsContainer.appendChild(card);
+                });
+            }
+
+            kpiFilters.addEventListener('click', e => {
+                if (e.target.matches('.kpi-category-btn')) {
+                    const category = e.target.dataset.category;
+                    renderKpiCards(category);
+                    document.querySelectorAll('.kpi-category-btn').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                }
+            });
+
+            const kpiChartCtx = document.getElementById('kpiChart').getContext('2d');
+            new Chart(kpiChartCtx, {
+                type: 'radar',
+                data: {
+                    labels: Object.keys(appData.kpiScores),
+                    datasets: [{
+                        label: 'Agent Performance Score',
+                        data: Object.values(appData.kpiScores),
+                        backgroundColor: 'rgba(165, 82, 42, 0.2)',
+                        borderColor: 'rgba(165, 82, 42, 1)',
+                        pointBackgroundColor: 'rgba(165, 82, 42, 1)',
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { r: { min: 0, max: 100, ticks: { stepSize: 25, backdropColor: 'rgba(248, 247, 244, 0.75)' } } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            renderKpiCards();
+
+            const roi = appData.roi;
+            const costRoutine = roi.annualCalls * (roi.automationPercent / 100) * roi.avgTimeRoutine * roi.costPerMinute;
+            const costMisroute = roi.annualCalls * roi.misrouteInefficiency * roi.costPerMinute;
+            const totalInefficiency = costRoutine + costMisroute;
+            const productivityGain = roi.productivityGainCalls * roi.productivityGainTime * roi.costPerMinute;
+            const totalBenefit = costRoutine + costMisroute + productivityGain;
+            const totalCost = roi.implementationCost + roi.maintenanceCost;
+            const netBenefit = totalBenefit - totalCost;
+            const finalROI = (netBenefit / totalCost) * 100;
+
+            document.getElementById('roi-inputs').innerHTML = `
+                <h4 class="text-2xl font-bold text-stone-800 mb-6">Sample Calculation: Call Center</h4>
+                <div class="space-y-4 text-stone-700">
+                    <div><strong class="font-semibold">Tangible Benefits (Annual):</strong></div>
+                    <div class="pl-4 border-l-2 border-stone-200 space-y-2">
+                        <p>Cost Savings (Routine Calls): <span class="font-bold float-right">$${costRoutine.toLocaleString()}</span></p>
+                        <p>Cost Savings (Misrouting): <span class="font-bold float-right">$${costMisroute.toLocaleString()}</span></p>
+                        <p>Productivity Gain (Freed Agents): <span class="font-bold float-right">$${productivityGain.toLocaleString()}</span></p>
+                        <p class="border-t pt-2 mt-2"><strong>Total Annual Benefit:</strong> <span class="font-bold float-right">$${totalBenefit.toLocaleString()}</span></p>
+                    </div>
+                    <div class="pt-4"><strong class="font-semibold">Total Cost of Ownership (Year 1):</strong></div>
+                    <div class="pl-4 border-l-2 border-stone-200 space-y-2">
+                        <p>Implementation & Integration: <span class="font-bold float-right">$${roi.implementationCost.toLocaleString()}</span></p>
+                        <p>Maintenance & Operations: <span class="font-bold float-right">$${roi.maintenanceCost.toLocaleString()}</span></p>
+                        <p class="border-t pt-2 mt-2"><strong>Total First-Year Cost:</strong> <span class="font-bold float-right">$${totalCost.toLocaleString()}</span></p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('roi-results').innerHTML = `
+                <div class="text-stone-600">First-Year Net Benefit</div>
+                <div class="text-6xl font-extrabold text-[#a5522a] my-2">$${netBenefit.toLocaleString()}</div>
+                <div class="text-stone-600">Return on Investment (ROI)</div>
+                <div class="text-7xl font-extrabold text-[#a5522a] mt-2">${Math.round(finalROI)}%</div>
+            `;
+
+            const accordionContainer = document.getElementById('accordion-container');
+            appData.expectations.forEach(item => {
+                const accordionItem = document.createElement('div');
+                accordionItem.className = 'bg-white rounded-lg shadow-sm border border-stone-200';
+                accordionItem.innerHTML = `
+                    <button class="accordion-button w-full flex justify-between items-center text-left p-4 font-semibold hover:bg-stone-50" aria-expanded="false">
+                        <span>${item.title}</span>
+                        <span class="transform transition-transform duration-300 text-[#a5522a] text-2xl font-light">+</span>
+                    </button>
+                    <div class="accordion-content overflow-hidden max-h-0 transition-all duration-500 ease-in-out">
+                        <p class="p-4 pt-0 text-stone-600">${item.content}</p>
+                    </div>
+                `;
+                accordionContainer.appendChild(accordionItem);
+            });
+            
+            accordionContainer.addEventListener('click', e => {
+                const button = e.target.closest('.accordion-button');
+                if (button) {
+                    const content = button.nextElementSibling;
+                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                    button.setAttribute('aria-expanded', !isExpanded);
+                    content.style.maxHeight = isExpanded ? '0px' : content.scrollHeight + 'px';
+                }
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            window.addEventListener('scroll', () => {
+                let current = 'intro';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

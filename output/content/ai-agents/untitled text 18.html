@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Design Patterns Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Slate, Sky, Amber) -->
+    <!-- Application Structure Plan: The application is designed as a thematic, single-page educational journey. It starts with a high-level introduction, then breaks down the core anatomy of an agent, explores fundamental patterns through interactive diagrams, offers a comparative analysis for practical decision-making, and concludes with a simple simulator. This top-down structure was chosen to guide the user from foundational concepts to practical application in a logical, digestible flow, making the abstract topic of agentic design more tangible and understandable. -->
+    <!-- Visualization & Content Choices: 
+        - Core Agent Anatomy: Report Info -> Agent Components -> Goal: Organize/Inform -> Viz: Interactive HTML/CSS diagram -> Interaction: Click to reveal description -> Justification: More engaging than a static list, visually reinforces system structure.
+        - ReAct Pattern: Report Info -> ReAct Loop -> Goal: Explain Process -> Viz: Animated HTML/CSS flowchart -> Interaction: Auto-plays on view to show cycle -> Justification: Dynamically illustrates the feedback loop, which is key to the pattern.
+        - Pattern Comparison: Report Info -> Pattern Trade-offs -> Goal: Compare -> Viz: Bar Chart (Chart.js) & HTML Table -> Interaction: Buttons to toggle chart data (Complexity vs. Autonomy) -> Justification: Chart provides quick quantitative comparison, table gives qualitative details.
+        - Multi-Agent Diagram: Report Info -> Multi-Agent Architectures -> Goal: Show Relationships -> Viz: HTML/CSS diagram with pseudo-element arrows -> Interaction: Hover to highlight agents and their roles -> Justification: Clarifies complex communication flows without needing a complex library.
+        - Simulator: Report Info -> Agent Task Execution -> Goal: Demonstrate -> Viz: Text-based animated log -> Interaction: User triggers simulation -> Justification: Provides a concrete, "live" example of how an agent "thinks" through a problem using a pattern.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 40vh;
+        }
+        .pattern-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .pattern-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .arrow {
+            position: relative;
+        }
+        .arrow::after {
+            content: '→';
+            position: absolute;
+            right: -1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: #64748b;
+        }
+        .step-highlight {
+            background-color: #fef3c7; /* amber-100 */
+            border-left-color: #f59e0b; /* amber-500 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-700">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-slate-800">Agentic Patterns</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#introduction" class="text-slate-600 hover:text-sky-600 transition-colors">Introduction</a>
+                    <a href="#components" class="text-slate-600 hover:text-sky-600 transition-colors">Components</a>
+                    <a href="#patterns" class="text-slate-600 hover:text-sky-600 transition-colors">Patterns</a>
+                    <a href="#comparison" class="text-slate-600 hover:text-sky-600 transition-colors">Comparison</a>
+                    <a href="#simulator" class="text-slate-600 hover:text-sky-600 transition-colors">Simulator</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-slate-600 hover:text-sky-600 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-slate-200">
+            <a href="#introduction" class="block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100">Introduction</a>
+            <a href="#components" class="block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100">Components</a>
+            <a href="#patterns" class="block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100">Patterns</a>
+            <a href="#comparison" class="block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100">Comparison</a>
+            <a href="#simulator" class="block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100">Simulator</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="introduction" class="text-center mb-16 md:mb-24">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">An Interactive Guide to Agentic Design Patterns</h1>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600">
+                Agentic design patterns are reusable architectural blueprints for building sophisticated AI agents. These patterns enable agents to reason, plan, and autonomously use tools to solve complex problems. This guide provides an interactive exploration of the core concepts and popular patterns that power modern AI applications.
+            </p>
+        </section>
+
+        <section id="components" class="mb-16 md:mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Anatomy of an AI Agent</h2>
+                <p class="mt-2 max-w-2xl mx-auto text-slate-600">Before diving into specific patterns, it's essential to understand the building blocks of any agentic system. This section provides an interactive breakdown of the key components that enable an agent to perceive, reason, and act. Click on each component to explore its role.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-4">
+                    <div id="component-diagram" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div data-component="planner" class="component-box border-2 border-sky-500 bg-sky-50 p-4 rounded-lg cursor-pointer text-center">
+                            <h3 class="font-bold text-sky-800">🧠 Planner</h3>
+                            <p class="text-sm text-sky-700">The core reasoning engine.</p>
+                        </div>
+                        <div data-component="memory" class="component-box border-2 border-slate-400 bg-slate-50 p-4 rounded-lg cursor-pointer text-center">
+                            <h3 class="font-bold text-slate-800">💾 Memory</h3>
+                            <p class="text-sm text-slate-700">Stores context and knowledge.</p>
+                        </div>
+                        <div data-component="tools" class="component-box border-2 border-slate-400 bg-slate-50 p-4 rounded-lg cursor-pointer text-center">
+                            <h3 class="font-bold text-slate-800">🛠️ Tools</h3>
+                            <p class="text-sm text-slate-700">External functions and APIs.</p>
+                        </div>
+                        <div data-component="profile" class="component-box border-2 border-slate-400 bg-slate-50 p-4 rounded-lg cursor-pointer text-center">
+                            <h3 class="font-bold text-slate-800">👤 Profile</h3>
+                            <p class="text-sm text-slate-700">Defines the agent's identity.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="component-description" class="bg-white p-6 rounded-lg border border-slate-200 shadow-sm min-h-[200px] flex flex-col justify-center">
+                    <h3 id="desc-title" class="text-xl font-bold text-slate-800 mb-2">🧠 Planner</h3>
+                    <p id="desc-text" class="text-slate-600">The Planner, often powered by a Large Language Model (LLM), is the agent's brain. It analyzes the user's goal, breaks it down into steps, decides which tools to use, and processes observations to determine the next action.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="patterns" class="mb-16 md:mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Key Design Patterns</h2>
+                <p class="mt-2 max-w-2xl mx-auto text-slate-600">Developers use several established patterns to structure agent behavior. These patterns provide frameworks for everything from simple tool use to complex, multi-agent collaboration. Explore some of the most common patterns below.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                <div class="pattern-card bg-white p-6 rounded-lg border border-slate-200">
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">ReAct (Reason + Act)</h3>
+                    <p class="text-slate-600 mb-4">The foundational pattern where an agent externalizes its reasoning process. It generates a "thought" explaining its logic, then an "action" to execute (like calling a tool). This makes the agent's behavior transparent and debuggable.</p>
+                    <div id="react-animation" class="space-y-2 text-sm">
+                        <div class="react-step flex items-center p-2 border-l-4 border-slate-200 rounded-r-md"><span><strong>Thought:</strong> I need to find the weather in Paris.</span></div>
+                        <div class="react-step flex items-center p-2 border-l-4 border-slate-200 rounded-r-md"><span><strong>Action:</strong> `search_weather(city="Paris")`</span></div>
+                        <div class="react-step flex items-center p-2 border-l-4 border-slate-200 rounded-r-md"><span><strong>Observation:</strong> The weather is 15°C and sunny.</span></div>
+                        <div class="react-step flex items-center p-2 border-l-4 border-slate-200 rounded-r-md"><span><strong>Thought:</strong> I have found the weather. The task is complete.</span></div>
+                    </div>
+                </div>
+
+                <div class="pattern-card bg-white p-6 rounded-lg border border-slate-200">
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Reflection & Self-Correction</h3>
+                    <p class="text-slate-600 mb-4">This pattern gives an agent the ability to review and critique its own work. After generating an initial response or plan, a "Critic" agent (or the same agent in a "critique" mode) evaluates the output against specific criteria and suggests improvements.</p>
+                    <div class="flex items-center justify-around text-center text-sm">
+                        <div class="arrow p-3 bg-slate-100 rounded-md">Generate <br> Draft</div>
+                        <div class="arrow p-3 bg-sky-100 rounded-md">Critique <br> Output</div>
+                        <div class="p-3 bg-amber-100 rounded-md">Refine & <br> Improve</div>
+                    </div>
+                </div>
+
+                <div class="pattern-card bg-white p-6 rounded-lg border border-slate-200">
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Multi-Agent Collaboration</h3>
+                    <p class="text-slate-600 mb-4">Complex tasks can be solved by a team of specialized agents. For example, a "Planner" agent creates a high-level plan, an "Executor" agent calls the tools, and a "QA" agent verifies the final result. This division of labor improves reliability.</p>
+                    <div class="flex items-center justify-around text-center text-sm">
+                         <div class="p-3 bg-slate-100 rounded-md">Manager <br> Agent</div>
+                         <div class="arrow p-3 bg-sky-100 rounded-md">Planner <br> Agent</div>
+                         <div class="p-3 bg-amber-100 rounded-md">Executor <br> Agents</div>
+                    </div>
+                </div>
+                
+                <div class="pattern-card bg-white p-6 rounded-lg border border-slate-200">
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Human-in-the-Loop</h3>
+                    <p class="text-slate-600 mb-4">For critical or ambiguous tasks, it's vital to involve a human. This pattern defines points where the agent must pause and ask for human confirmation or input before proceeding. This ensures safety, alignment, and user control.</p>
+                    <div class="flex items-center justify-around text-center text-sm">
+                         <div class="p-3 bg-slate-100 rounded-md">Agent <br> Proposes Plan</div>
+                         <div class="arrow p-3 bg-sky-100 rounded-md text-red-600 font-bold">⚠️ Human <br> Approval</div>
+                         <div class="p-3 bg-amber-100 rounded-md">Agent <br> Executes</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparison" class="mb-16 md:mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Pattern Comparison</h2>
+                <p class="mt-2 max-w-2xl mx-auto text-slate-600">Choosing the right pattern depends on your specific use case. This section provides a comparative view to help you decide. Use the buttons to toggle between comparing implementation complexity and level of autonomy.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
+                <div class="flex justify-center space-x-2 mb-6">
+                    <button id="show-complexity" class="chart-toggle-btn bg-sky-600 text-white py-2 px-4 rounded-md shadow-sm">Show Complexity</button>
+                    <button id="show-autonomy" class="chart-toggle-btn bg-slate-200 text-slate-700 py-2 px-4 rounded-md shadow-sm">Show Autonomy</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="patternsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="simulator" class="mb-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Agent Simulator</h2>
+                <p class="mt-2 max-w-2xl mx-auto text-slate-600">See a simplified agent in action! Enter a goal and watch as the simulator uses the ReAct pattern to break down the problem and log its "thoughts" and "actions". This provides a concrete look at how an agent might process a request.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                    <input id="sim-goal-input" type="text" class="flex-grow p-3 border border-slate-300 rounded-md focus:ring-2 focus:ring-sky-500 focus:border-sky-500" placeholder="e.g., Plan a day trip to Bainbridge Island">
+                    <button id="run-simulation" class="bg-sky-600 text-white font-semibold py-3 px-6 rounded-md hover:bg-sky-700 transition-colors shadow-sm">Run Simulation</button>
+                </div>
+                <div id="simulation-output" class="bg-slate-900 text-white font-mono text-sm p-4 rounded-md min-h-[250px] max-h-[400px] overflow-y-auto">
+                    <p class="text-slate-400">&gt; Awaiting simulation start...</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="border-t border-slate-200 mt-12 py-8">
+        <div class="container mx-auto px-4 text-center text-slate-500">
+            <p>&copy; 2025 Agentic Design Patterns Explorer. An interactive guide created to demystify AI agent architecture.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            const componentBoxes = document.querySelectorAll('.component-box');
+            const descTitle = document.getElementById('desc-title');
+            const descText = document.getElementById('desc-text');
+
+            const descriptions = {
+                planner: {
+                    title: '🧠 Planner',
+                    text: 'The Planner, often powered by a Large Language Model (LLM), is the agent\'s brain. It analyzes the user\'s goal, breaks it down into steps, decides which tools to use, and processes observations to determine the next action.'
+                },
+                memory: {
+                    title: '💾 Memory',
+                    text: 'Memory provides context. Short-term memory holds recent conversations, while long-term memory stores information from past interactions or documents, allowing the agent to learn and maintain consistency.'
+                },
+                tools: {
+                    title: '🛠️ Tools',
+                    text: 'Tools are external functions the agent can use to interact with the world. This can include anything from a simple calculator, a search engine API, to complex internal databases or functions.'
+                },
+                profile: {
+                    title: '👤 Profile',
+                    text: 'The profile defines the agent\'s identity, instructions, and constraints. It tells the agent its purpose, what it should or shouldn\'t do, and its personality, guiding its behavior and responses.'
+                }
+            };
+            
+            componentBoxes.forEach(box => {
+                box.addEventListener('click', () => {
+                    const component = box.dataset.component;
+                    
+                    componentBoxes.forEach(b => {
+                        b.classList.remove('border-sky-500', 'bg-sky-50');
+                        b.classList.add('border-slate-400', 'bg-slate-50');
+                    });
+
+                    box.classList.add('border-sky-500', 'bg-sky-50');
+                    box.classList.remove('border-slate-400', 'bg-slate-50');
+
+                    descTitle.textContent = descriptions[component].title;
+                    descText.textContent = descriptions[component].text;
+                });
+            });
+
+            let reactAnimationTimeout;
+            const reactSteps = document.querySelectorAll('#react-animation .react-step');
+            function animateReact() {
+                let delay = 0;
+                reactSteps.forEach((step, index) => {
+                    step.classList.remove('step-highlight');
+                    reactAnimationTimeout = setTimeout(() => {
+                        step.classList.add('step-highlight');
+                        if (index > 0) {
+                            reactSteps[index-1].classList.remove('step-highlight');
+                        }
+                    }, delay);
+                    delay += 1500;
+                });
+                reactAnimationTimeout = setTimeout(() => {
+                   reactSteps[reactSteps.length - 1].classList.remove('step-highlight');
+                }, delay);
+            }
+            const reactObserver = new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting) {
+                    animateReact();
+                    setInterval(animateReact, (reactSteps.length + 1) * 1500);
+                } else {
+                    clearTimeout(reactAnimationTimeout);
+                }
+            }, { threshold: 0.7 });
+            reactObserver.observe(document.getElementById('react-animation'));
+            
+
+            const ctx = document.getElementById('patternsChart').getContext('2d');
+            let patternsChart;
+
+            const chartData = {
+                labels: ['ReAct', 'Reflection', 'Multi-Agent', 'Human-in-Loop'],
+                complexity: {
+                    label: 'Implementation Complexity',
+                    values: [3, 6, 8, 4],
+                    bgColor: 'rgba(56, 189, 248, 0.6)', // sky-400
+                    borderColor: 'rgba(14, 165, 233, 1)', // sky-500
+                },
+                autonomy: {
+                    label: 'Level of Autonomy',
+                    values: [7, 8, 9, 2],
+                    bgColor: 'rgba(251, 146, 60, 0.6)', // orange-400
+                    borderColor: 'rgba(249, 115, 22, 1)', // orange-500
+                }
+            };
+            
+            function createOrUpdateChart(dataType) {
+                const data = chartData[dataType];
+                if(patternsChart) {
+                    patternsChart.destroy();
+                }
+                patternsChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: chartData.labels,
+                        datasets: [{
+                            label: data.label,
+                            data: data.values,
+                            backgroundColor: data.bgColor,
+                            borderColor: data.borderColor,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 10,
+                                grid: {
+                                    color: '#e2e8f0' // slate-200
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: ${context.raw}/10`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            createOrUpdateChart('complexity');
+            
+            const complexityBtn = document.getElementById('show-complexity');
+            const autonomyBtn = document.getElementById('show-autonomy');
+            complexityBtn.addEventListener('click', () => {
+                createOrUpdateChart('complexity');
+                complexityBtn.classList.add('bg-sky-600', 'text-white');
+                complexityBtn.classList.remove('bg-slate-200', 'text-slate-700');
+                autonomyBtn.classList.remove('bg-sky-600', 'text-white');
+                autonomyBtn.classList.add('bg-slate-200', 'text-slate-700');
+            });
+            autonomyBtn.addEventListener('click', () => {
+                createOrUpdateChart('autonomy');
+                autonomyBtn.classList.add('bg-sky-600', 'text-white');
+                autonomyBtn.classList.remove('bg-slate-200', 'text-slate-700');
+                complexityBtn.classList.remove('bg-sky-600', 'text-white');
+                complexityBtn.classList.add('bg-slate-200', 'text-slate-700');
+            });
+
+
+            const runSimBtn = document.getElementById('run-simulation');
+            const simOutput = document.getElementById('simulation-output');
+            const simGoalInput = document.getElementById('sim-goal-input');
+
+            runSimBtn.addEventListener('click', () => {
+                const goal = simGoalInput.value.trim();
+                if (!goal) {
+                    simOutput.innerHTML = `<p class="text-red-400">&gt; Please enter a goal first.</p>`;
+                    return;
+                }
+
+                runSimBtn.disabled = true;
+                runSimBtn.textContent = 'Simulating...';
+                runSimBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+                simOutput.innerHTML = `<p class="text-green-400">&gt; Simulation started for goal: "${goal}"</p>`;
+
+                const steps = [
+                    { type: 'thought', text: `I need to plan a trip for: "${goal}". First, I should figure out the main activity and location.` },
+                    { type: 'action', text: `search_location_details(query="${goal}")` },
+                    { type: 'observation', text: `Bainbridge Island is accessible via a ferry from Seattle.` },
+                    { type: 'thought', text: `Okay, the primary transport is a ferry. I need to find the ferry schedule.` },
+                    { type: 'action', text: `find_transport_schedule(type="ferry", from="Seattle", to="Bainbridge Island")` },
+                    { type: 'observation', text: `Ferries run every 45-60 minutes from Pier 52.` },
+                    { type: 'thought', text: `Now I should suggest some activities on the island. I'll search for popular attractions.` },
+                    { type: 'action', text: `search_attractions(location="Bainbridge Island")` },
+                    { type: 'observation', text: `Found: Winslow Way (shops/cafes), Bloedel Reserve (gardens), Bainbridge Island Museum of Art.` },
+                    { type: 'thought', text: `I have enough information to form a basic plan.` },
+                    { type: 'action', text: `Final Answer: To plan a day trip to Bainbridge Island, take the ferry from Pier 52 in Seattle (runs every hour). Once there, you can explore the shops on Winslow Way, visit the Bloedel Reserve, or see the Art Museum.` },
+                ];
+                
+                let currentStep = 0;
+                const interval = setInterval(() => {
+                    if (currentStep >= steps.length) {
+                        simOutput.innerHTML += `<p class="text-green-400">&gt; Simulation complete.</p>`;
+                        clearInterval(interval);
+                        runSimBtn.disabled = false;
+                        runSimBtn.textContent = 'Run Simulation';
+                        runSimBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        return;
+                    }
+
+                    const step = steps[currentStep];
+                    let logClass = '';
+                    let logPrefix = '';
+
+                    if (step.type === 'thought') {
+                        logClass = 'text-slate-300';
+                        logPrefix = '[Thought]:';
+                    } else if (step.type === 'action') {
+                        logClass = 'text-amber-400';
+                        logPrefix = '[Action]:';
+                    } else if (step.type === 'observation') {
+                        logClass = 'text-sky-400';
+                        logPrefix = '[Observation]:';
+                    }
+                    
+                    simOutput.innerHTML += `<p class="${logClass}"><span class="font-bold">${logPrefix}</span> ${step.text}</p>`;
+                    simOutput.scrollTop = simOutput.scrollHeight;
+                    currentStep++;
+                }, 1200);
+            });
+        });
+    </script>
+</body>
+</html>

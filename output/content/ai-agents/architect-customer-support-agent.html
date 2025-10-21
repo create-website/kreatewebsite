@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Blueprint: AI Customer Support Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Slate & Sky -->
+    <!-- Application Structure Plan: The application is designed as a guided, top-to-bottom narrative that deconstructs the complex report into logical, interactive modules. It starts with a high-level introduction to RAG, then presents the core "RAG Workflow" as a central, interactive flowchart. This is the main interactive element, allowing users to explore the process non-linearly. Below this, a "Technology Deep Dive" section uses a tabbed interface to present comparative data (the report's tables), making it easy to digest specific technology choices. This is followed by a "Market Landscape" visualization using a Chart.js chart for quick comparison and a "Recommendations" section to conclude. This structure was chosen to transform a dense, linear document into an engaging, explorable journey, catering to both high-level understanding and deep-dive analysis without overwhelming the user. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: RAG End-to-End Workflow (Sec 1.2) -> Goal: Organize/Inform -> Viz: Interactive HTML/CSS Flowchart -> Interaction: Click on stage to reveal detailed explanation -> Justification: Makes a complex, multi-step process intuitive and self-paced. Avoids a boring block of text. -> Method: HTML/Tailwind + JS toggle.
+        - Report Info: Technology Comparison Tables (Tables 1-5) -> Goal: Compare -> Viz: Tabbed HTML Tables -> Interaction: Click tabs to switch between component comparisons (Ingestion, Parsing, etc.) -> Justification: Organizes a large amount of comparative data cleanly. Better UX than scrolling through five separate tables. -> Method: HTML/Tailwind + JS toggle.
+        - Report Info: Competitive Landscape (Table 6) -> Goal: Compare/Analyze -> Viz: Bar Chart (for G2 Rating) + HTML Table -> Interaction: Hover chart for tooltips, view table for details. -> Justification: A bar chart provides an immediate visual comparison of ratings, which is more impactful than numbers in a table alone. -> Library: Chart.js.
+        - Report Info: Key Recommendations (Sec 7.4) -> Goal: Inform -> Viz: Styled list with icons -> Interaction: Static -> Justification: Presents final takeaways in a clear, easily scannable format. -> Method: HTML/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active {
+            border-color: #0284c7;
+            color: #0284c7;
+            background-color: #f0f9ff;
+        }
+        .tab-inactive {
+            border-color: transparent;
+            color: #475569;
+        }
+        .flow-card-active {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border-color: #0284c7;
+        }
+        .arrow {
+            font-size: 2rem;
+            color: #94a3b8;
+        }
+        @media (max-width: 768px) {
+            .arrow-container { display: none; }
+            .flow-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-slate-900">AI Support Blueprint</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#introduction" class="text-slate-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium">Introduction</a>
+                        <a href="#workflow" class="text-slate-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium">RAG Workflow</a>
+                        <a href="#deep-dive" class="text-slate-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium">Tech Deep Dive</a>
+                        <a href="#market" class="text-slate-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium">Market Landscape</a>
+                        <a href="#recommendations" class="text-slate-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium">Recommendations</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="introduction" class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Architecting a Modern AI Customer Support Agent</h1>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600">
+                This interactive application translates a comprehensive technical blueprint for an AI support platform into an explorable experience. At its core is Retrieval-Augmented Generation (RAG), a framework that grounds Large Language Models (LLMs) in your company's specific knowledge, ensuring responses are accurate, relevant, and trustworthy.
+            </p>
+        </section>
+
+        <section id="workflow" class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900 mb-2">The RAG Workflow</h2>
+                <p class="max-w-2xl mx-auto text-slate-600">The RAG process is a multi-stage pipeline that transforms a user's question into a factually grounded answer. Click on each step below to learn more about its role in the system.</p>
+            </div>
+            
+            <div class="flex items-center justify-center space-x-4 md:space-x-2 flow-container">
+                <div id="flow-card-1" class="flow-card flex-1 p-4 bg-white rounded-lg shadow-md border-2 border-transparent cursor-pointer transition-all duration-300">
+                    <div class="flex items-center"><span class="text-2xl mr-3">💬</span><div><h3 class="font-semibold text-slate-900">1. User Query</h3><p class="text-sm text-slate-500">The process starts with a user's question.</p></div></div>
+                </div>
+                <div class="arrow-container"><span class="arrow">&rarr;</span></div>
+                <div id="flow-card-2" class="flow-card flex-1 p-4 bg-white rounded-lg shadow-md border-2 border-transparent cursor-pointer transition-all duration-300">
+                    <div class="flex items-center"><span class="text-2xl mr-3">🔎</span><div><h3 class="font-semibold text-slate-900">2. Retrieval</h3><p class="text-sm text-slate-500">Find relevant info in the knowledge base.</p></div></div>
+                </div>
+                <div class="arrow-container"><span class="arrow">&rarr;</span></div>
+                <div id="flow-card-3" class="flow-card flex-1 p-4 bg-white rounded-lg shadow-md border-2 border-transparent cursor-pointer transition-all duration-300">
+                     <div class="flex items-center"><span class="text-2xl mr-3">✍️</span><div><h3 class="font-semibold text-slate-900">3. Augmentation</h3><p class="text-sm text-slate-500">Combine query with retrieved context.</p></div></div>
+                </div>
+                <div class="arrow-container"><span class="arrow">&rarr;</span></div>
+                <div id="flow-card-4" class="flow-card flex-1 p-4 bg-white rounded-lg shadow-md border-2 border-transparent cursor-pointer transition-all duration-300">
+                    <div class="flex items-center"><span class="text-2xl mr-3">🧠</span><div><h3 class="font-semibold text-slate-900">4. Generation</h3><p class="text-sm text-slate-500">LLM synthesizes an answer from context.</p></div></div>
+                </div>
+            </div>
+
+            <div id="flow-details" class="mt-8 p-6 bg-sky-50 rounded-lg border border-sky-200 min-h-[150px] transition-all duration-300">
+                <h3 id="flow-detail-title" class="font-bold text-lg text-sky-800 mb-2">Select a step</h3>
+                <p id="flow-detail-content" class="text-sky-900">Click on a card above to see the details for that stage of the RAG workflow.</p>
+            </div>
+        </section>
+
+        <section id="deep-dive" class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900 mb-2">Technology Deep Dive</h2>
+                <p class="max-w-2xl mx-auto text-slate-600">Building a robust RAG pipeline involves making critical technology choices at each layer of the stack. Explore the comparisons below to understand the trade-offs between different tools and frameworks.</p>
+            </div>
+
+            <div class="w-full">
+                <div class="border-b border-slate-300 mb-6">
+                    <nav class="-mb-px flex space-x-2 sm:space-x-4 overflow-x-auto" aria-label="Tabs">
+                        <button class="tab-btn whitespace-nowrap py-3 px-2 sm:px-4 border-b-2 font-medium text-sm transition-colors duration-200 tab-active" data-tab="ingestion">Data Ingestion</button>
+                        <button class="tab-btn whitespace-nowrap py-3 px-2 sm:px-4 border-b-2 font-medium text-sm transition-colors duration-200 tab-inactive" data-tab="parsing">Document Parsing</button>
+                        <button class="tab-btn whitespace-nowrap py-3 px-2 sm:px-4 border-b-2 font-medium text-sm transition-colors duration-200 tab-inactive" data-tab="embedding">Embedding Models</button>
+                        <button class="tab-btn whitespace-nowrap py-3 px-2 sm:px-4 border-b-2 font-medium text-sm transition-colors duration-200 tab-inactive" data-tab="database">Vector Databases</button>
+                        <button class="tab-btn whitespace-nowrap py-3 px-2 sm:px-4 border-b-2 font-medium text-sm transition-colors duration-200 tab-inactive" data-tab="orchestration">Orchestration</button>
+                    </nav>
+                </div>
+
+                <div id="tab-content" class="bg-white p-6 rounded-lg shadow-sm">
+                </div>
+            </div>
+        </section>
+
+        <section id="market" class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900 mb-2">Market Landscape</h2>
+                <p class="max-w-2xl mx-auto text-slate-600">The AI customer support market is competitive. This chart shows how leading platforms compare on G2 ratings, providing a snapshot of user satisfaction across the industry.</p>
+            </div>
+            <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+                <div class="chart-container relative h-96 max-h-[400px] w-full max-w-3xl mx-auto">
+                    <canvas id="marketChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section id="recommendations">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900 mb-2">Final Architectural Recommendations</h2>
+                <p class="max-w-2xl mx-auto text-slate-600">Based on the analysis, a successful platform should be built on these core principles to ensure it is robust, scalable, and strategically positioned for success.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-lg text-slate-900 mb-2">1. Modular RAG-First Architecture</h3>
+                    <p class="text-slate-600">Prioritize a superior ingestion and retrieval system. This is the primary driver of quality and the main point of differentiation from competitors.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-lg text-slate-900 mb-2">2. Hybrid Ingestion Strategy</h3>
+                    <p class="text-slate-600">Combine fast static scrapers (Requests) with powerful dynamic ones (Playwright). Use high-performance parsers like PyMuPDF for maximum accuracy.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-lg text-slate-900 mb-2">3. Plan for Fine-Tuning</h3>
+                    <p class="text-slate-600">Start with open-source models (e.g., BGE) and plan to offer embedding model fine-tuning as a premium service to deliver domain-specific excellence.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-lg text-slate-900 mb-2">4. Use a Specialized Orchestrator</h3>
+                    <p class="text-slate-600">Leverage a RAG-optimized framework like LlamaIndex. Its focus provides a more direct and efficient path to a high-quality Q&A system.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-lg text-slate-900 mb-2">5. Engineer for Production Early</h3>
+                    <p class="text-slate-600">Implement secure multi-tenancy, cost-optimization (e.g., tiered LLMs, caching), and reliability features like source citation from day one.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-lg text-slate-900 mb-2">6. Build for the Future</h3>
+                    <p class="text-slate-600">Design a modular system that can evolve to incorporate proactive, agentic, and multimodal support to maintain a long-term competitive edge.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+<!--
+
+    <footer class="bg-slate-800 text-slate-400 mt-16">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p>Interactive Application based on "Architecting a Production-Grade, Multi-Tenant AI Customer Support Platform".</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const flowDetailsData = {
+                "1": {
+                    title: "1. User Query (Prompt)",
+                    content: "The interaction begins when an end-user poses a question through a client application, such as a chat widget. This initial input is the raw prompt that triggers the RAG pipeline. It's the starting signal for the entire system to engage."
+                },
+                "2": {
+                    title: "2. Information Retrieval",
+                    content: "Instead of going directly to an LLM, the query is first sent to a retrieval system (e.g., a vector database). This system searches the company's indexed knowledge base to find the most semantically similar 'chunks' of text. The quality of this step is critical for the final answer's accuracy."
+                },
+                "3": {
+                    title: "3. Prompt Augmentation",
+                    content: "The relevant data chunks retrieved are then combined with the original user query. This creates a new 'augmented prompt' that effectively instructs the LLM: 'Using only the following information, answer this question.' This provides the specific context needed for a grounded response."
+                },
+                "4": {
+                    title: "4. Generation",
+                    content: "The augmented prompt is sent to a powerful LLM (e.g., GPT-4o). The LLM uses its reasoning capabilities to analyze the provided context and synthesize a coherent, human-like answer. It is reasoning over the provided data, not recalling from its general training."
+                }
+            };
+            
+            const flowCards = document.querySelectorAll('.flow-card');
+            const flowDetailTitle = document.getElementById('flow-detail-title');
+            const flowDetailContent = document.getElementById('flow-detail-content');
+
+            flowCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    flowCards.forEach(c => c.classList.remove('flow-card-active'));
+                    card.classList.add('flow-card-active');
+                    
+                    const cardId = card.id.split('-')[2];
+                    flowDetailTitle.textContent = flowDetailsData[cardId].title;
+                    flowDetailContent.textContent = flowDetailsData[cardId].content;
+                });
+            });
+
+            const tabsData = {
+                ingestion: {
+                    title: "Web Scraping Libraries",
+                    headers: ["Library", "Key Strengths", "Key Weaknesses", "Primary Use Case"],
+                    rows: [
+                        ["Requests + Beautiful Soup", "Fast, lightweight, low resource use", "Cannot handle dynamic JS-heavy sites", "Scraping static sites & APIs where speed is priority."],
+                        ["Selenium", "Excellent for dynamic pages, full browser automation", "Slower, high resource use, can be detected", "Scraping complex, interactive websites."],
+                        ["Playwright", "Modern API, cross-browser, strong JS execution", "Resource-intensive, steep learning curve", "Advanced automation of modern web apps."],
+                        ["Scrapy", "Highly scalable & extensible framework", "Steep learning curve, needs plugins for JS", "Large-scale, structured web crawling projects."]
+                    ]
+                },
+                parsing: {
+                    title: "Document Parsing Libraries",
+                    headers: ["Library", "Performance", "Table Extraction", "OCR Integration"],
+                    rows: [
+                        ["PyPDF", "Slow", "Poor", "None (requires external libraries)"],
+                        ["pdfplumber", "Moderate", "Good", "None (requires external libraries)"],
+                        ["PyMuPDF (fitz)", "Very High", "Very Good", "Excellent (direct Tesseract integration)"],
+                        ["Docling", "High", "Excellent", "Fully integrated"]
+                    ]
+                },
+                embedding: {
+                    title: "Text Embedding Models",
+                    headers: ["Model Type", "Examples", "Deployment", "Ideal Use Cases"],
+                    rows: [
+                        ["Proprietary (API)", "OpenAI `text-embedding-3-large`", "API", "High-accuracy semantic search where ease of use is prioritized."],
+                        ["Open-Source (Transformers)", "SentenceTransformers, BGE", "Local or API", "Offline/privacy-sensitive apps, custom fine-tuning."],
+                        ["Open-Source (Static)", "FastText, Word2Vec", "Local", "Baseline NLP, resource-constrained environments."]
+                    ]
+                },
+                database: {
+                    title: "Vector Database Solutions",
+                    headers: ["Solution Type", "Examples", "Key Strengths", "Ideal For"],
+                    rows: [
+                        ["Managed Service", "Pinecone, Zilliz Cloud", "Eliminates operational overhead, high scalability", "Enterprises needing production-grade solutions with minimal ops."],
+                        ["Open-Source (Self-Hosted)", "Weaviate, Qdrant", "Full control, lower cost, customizable", "Teams with strong infra expertise needing max flexibility."],
+                        ["Developer-First (Embedded)", "Chroma, FAISS", "Easy to use for prototyping, Python-native", "Rapid prototyping, local development, smaller-scale apps."]
+                    ]
+                },
+                 orchestration: {
+                    title: "LangChain vs. LlamaIndex",
+                    headers: ["Feature", "LangChain", "LlamaIndex", "Recommendation"],
+                    rows: [
+                        ["Primary Focus", "General-purpose LLM app framework", "Purpose-built for RAG systems", "LlamaIndex's focus aligns perfectly."],
+                        ["Ease of Use", "Steeper learning curve", "Gentler learning curve for RAG", "LlamaIndex for faster prototyping."],
+                        ["Data Handling", "Flexible but less opinionated", "Core strength; optimized indexing", "LlamaIndex for robust knowledge base."],
+                        ["Flexibility", "Significantly more flexible", "More opinionated on RAG pipeline", "LlamaIndex specialization is a benefit here."]
+                    ]
+                }
+            };
+            
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContentContainer = document.getElementById('tab-content');
+
+            function renderTabContent(tabKey) {
+                const data = tabsData[tabKey];
+                let tableHTML = `<h3 class="text-xl font-bold text-slate-900 mb-4">${data.title}</h3><div class="overflow-x-auto"><table class="w-full text-sm text-left text-slate-500">`;
+                tableHTML += `<thead class="text-xs text-slate-700 uppercase bg-slate-100"><tr>`;
+                data.headers.forEach(header => {
+                    tableHTML += `<th scope="col" class="px-6 py-3">${header}</th>`;
+                });
+                tableHTML += `</tr></thead><tbody>`;
+                data.rows.forEach(row => {
+                    tableHTML += `<tr class="bg-white border-b hover:bg-slate-50">`;
+                    row.forEach((cell, index) => {
+                        if (index === 0) {
+                           tableHTML += `<th scope="row" class="px-6 py-4 font-medium text-slate-900 whitespace-nowrap">${cell}</th>`;
+                        } else {
+                           tableHTML += `<td class="px-6 py-4">${cell}</td>`;
+                        }
+                    });
+                    tableHTML += `</tr>`;
+                });
+                tableHTML += `</tbody></table></div>`;
+                tabContentContainer.innerHTML = tableHTML;
+            }
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('tab-active');
+                        btn.classList.add('tab-inactive');
+                    });
+                    button.classList.add('tab-active');
+                    button.classList.remove('tab-inactive');
+                    renderTabContent(button.dataset.tab);
+                });
+            });
+
+            renderTabContent('ingestion');
+
+            const marketData = {
+                labels: ['Pylon', 'Intercom', 'Zendesk', 'Freshdesk', 'Salesforce', 'Zoho Desk'],
+                ratings: [4.9, 4.5, 4.3, 4.4, 4.2, 4.5]
+            };
+
+            const ctx = document.getElementById('marketChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: marketData.labels,
+                    datasets: [{
+                        label: 'G2 Rating',
+                        data: marketData.ratings,
+                        backgroundColor: [
+                            'rgba(2, 132, 199, 0.6)',
+                            'rgba(14, 165, 233, 0.6)',
+                            'rgba(56, 189, 248, 0.6)',
+                            'rgba(125, 211, 252, 0.6)',
+                            'rgba(186, 230, 253, 0.6)',
+                            'rgba(224, 242, 254, 0.6)'
+                        ],
+                        borderColor: [
+                            '#0284c7',
+                            '#0ea5e9',
+                            '#38bdf8',
+                            '#7dd3fc',
+                            '#bae6fd',
+                            '#e0f2fe'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 5,
+                            title: {
+                                display: true,
+                                text: 'G2 Rating (out of 5)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Rating: ${context.parsed.y}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Śabda: The Power of Sacred Sound</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Serene Saffron -->
+    <!-- Application Structure Plan: The application is structured as a single-page dashboard to facilitate non-linear exploration. A sticky header allows easy navigation between thematic sections: Philosophy, an interactive Mantra Explorer, Practice, and Benefits. The core of the app is the 'Mantra Explorer,' which allows users to filter mantras by their intended purpose (e.g., Peace, Prosperity). This task-oriented design is more intuitive than a linear chapter-based structure, enabling users to quickly find relevant information. Content is presented in cards and expandable sections to manage information density and maintain a clean, uncluttered interface. -->
+    <!-- Visualization & Content Choices: Report Info -> Goal -> Viz/Presentation Method -> Interaction -> Justification. 1. Mantra List -> Organize/Inform -> Interactive Filterable Cards -> Click filter buttons to show/hide cards; click card to expand details -> This transforms a static list into a user-driven discovery tool. 2. Japa Practice -> Inform -> HTML/CSS Diagram -> Static visual guide -> Provides a clear, easy-to-understand visual for a physical practice without using images. 3. Benefits List -> Compare/Inform -> 3-Column Layout with Unicode Icons -> Static visual grouping -> Breaks down text-heavy content into scannable, thematic categories for quick comprehension. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFAF0; /* Floral White */
+            color: #4A4A4A; /* Dark Gray for text */
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .mantra-card.expanded .details {
+            max-height: 1000px;
+            opacity: 1;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .mantra-card .details {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-in-out, opacity 0.7s ease-in-out, padding 0.7s ease-in-out;
+        }
+        .active-filter {
+            background-color: #DD6B20; /* Orange-600 */
+            color: #FFFAF0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-amber-100/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-amber-800">Śabda</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#philosophy" class="text-amber-700 hover:text-amber-900 transition-colors">Philosophy</a>
+                <a href="#explorer" class="text-amber-700 hover:text-amber-900 transition-colors">Mantra Explorer</a>
+                <a href="#practice" class="text-amber-700 hover:text-amber-900 transition-colors">The Practice</a>
+                <a href="#benefits" class="text-amber-700 hover:text-amber-900 transition-colors">Benefits</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-amber-50 border border-amber-300 text-amber-800 text-sm rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2.5">
+                    <option value="#hero">Home</option>
+                    <option value="#philosophy">Philosophy</option>
+                    <option value="#explorer">Explorer</option>
+                    <option value="#practice">Practice</option>
+                    <option value="#benefits">Benefits</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+
+        <section id="hero" class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-amber-900 mb-4">The Power of Sacred Sound</h1>
+            <p class="text-lg text-stone-600 max-w-3xl mx-auto">
+                Welcome to an interactive exploration of Hindu Mantras. This guide delves into the ancient science of *Śabda*, where the universe is understood as a symphony of cosmic vibrations. Discover mantras for peace, prosperity, and spiritual growth, and learn the sacred practices that unlock their transformative power.
+            </p>
+        </section>
+
+        <section id="philosophy" class="mb-16 scroll-mt-20">
+            <div class="bg-white/50 rounded-lg p-6 md:p-8 shadow-sm border border-amber-200">
+                <h2 class="text-3xl font-bold text-amber-800 mb-4 text-center">The Sonic Universe: Śabda Brahman</h2>
+                <p class="text-stone-600 mb-4 text-center max-w-4xl mx-auto">
+                    At the heart of mantra science is *Śabda Brahman*, the concept of the Absolute Reality manifested as transcendental sound. This principle posits that the universe is a dynamic vibration, and mantras are potent frequencies of this divine sound. They are tools to attune our consciousness to the cosmic harmony, leading from the audible world back to the silent, unmanifest source of all being.
+                </p>
+                <div class="text-center">
+                    <details class="group max-w-4xl mx-auto">
+                        <summary class="cursor-pointer text-amber-700 font-medium hover:text-amber-900 transition-colors">
+                            Read more about the foundation of sound
+                        </summary>
+                        <div class="mt-4 text-left text-stone-600 space-y-4">
+                            <p>The origins of this concept trace to the Vedas, where the ultimate principle, Brahman, is equated with *Vāc* (speech). The Upaniṣads later distinguished between *Śabda Brahman* ('Brahman with sound') and *Aśabda Brahman* ('soundless Brahman'). The *Aśabda Brahman* is the transcendent, silent source, while *Śabda Brahman* is the first creative impulse, the cosmic sound from which the universe is projected. The primordial sound is *$Oṃ$* (Aum), the root that contains all other sounds and forms.</p>
+                            <p>This philosophy provides the rationale for mantra *sādhana* (spiritual discipline). By engaging with the audible vibrations of a mantra, the practitioner aims to journey inward, transcending the gross sound to realize the silent source, the *Aśabda Brahman*. This explains the progression in *japa* (repetition) from audible chanting to whispered, and finally to silent, mental repetition.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section id="explorer" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-amber-800 mb-2 text-center">Mantra Explorer</h2>
+            <p class="text-stone-600 mb-8 text-center max-w-3xl mx-auto">
+                Discover mantras tailored to specific life goals and spiritual aspirations. Select a purpose below to filter the collection, then click on any mantra card to reveal its full transliteration, detailed meaning, and profound significance.
+            </p>
+
+            <div id="filter-container" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+                <button class="filter-btn active-filter px-4 py-2 text-sm font-medium rounded-full shadow-sm transition-all duration-300 bg-white border border-amber-300 text-amber-700 hover:bg-amber-100" data-filter="all">All Mantras</button>
+                <button class="filter-btn px-4 py-2 text-sm font-medium rounded-full shadow-sm transition-all duration-300 bg-white border border-amber-300 text-amber-700 hover:bg-amber-100" data-filter="illumination">Illumination & Wisdom</button>
+                <button class="filter-btn px-4 py-2 text-sm font-medium rounded-full shadow-sm transition-all duration-300 bg-white border border-amber-300 text-amber-700 hover:bg-amber-100" data-filter="healing">Healing & Protection</button>
+                <button class="filter-btn px-4 py-2 text-sm font-medium rounded-full shadow-sm transition-all duration-300 bg-white border border-amber-300 text-amber-700 hover:bg-amber-100" data-filter="obstacles">Obstacle Removal</button>
+                <button class="filter-btn px-4 py-2 text-sm font-medium rounded-full shadow-sm transition-all duration-300 bg-white border border-amber-300 text-amber-700 hover:bg-amber-100" data-filter="prosperity">Prosperity & Abundance</button>
+                <button class="filter-btn px-4 py-2 text-sm font-medium rounded-full shadow-sm transition-all duration-300 bg-white border border-amber-300 text-amber-700 hover:bg-amber-100" data-filter="peace">Universal Peace</button>
+            </div>
+
+            <div id="mantra-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+        <section id="practice" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-amber-800 mb-8 text-center">The Living Practice of Mantra Sādhana</h2>
+            <p class="text-stone-600 mb-8 text-center max-w-3xl mx-auto">
+                The true power of a mantra is unlocked through *sādhana*, a dedicated and correct practice. This discipline involves the art of repetition (*japa*) and often utilizes a sacred tool, the *japa mālā*, to create the proper environment for spiritual transformation.
+            </p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white/50 rounded-lg p-6 shadow-sm border border-amber-200">
+                    <h3 class="text-2xl font-bold text-amber-800 mb-4">The Art of Japa: Repetition</h3>
+                    <p class="text-stone-600 mb-6">Japa is the meditative practice of chanting a mantra. The practice evolves from the gross to the subtle, reflecting the practitioner's inward journey.</p>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-amber-50 rounded-md border-l-4 border-amber-400">
+                            <h4 class="font-semibold text-amber-900">1. Vācika Japa (Verbal)</h4>
+                            <p class="text-sm text-stone-600">The mantra is chanted aloud. Ideal for beginners to focus the mind and learn pronunciation.</p>
+                        </div>
+                        <div class="p-4 bg-amber-50 rounded-md border-l-4 border-amber-500">
+                            <h4 class="font-semibold text-amber-900">2. Upāṁśu Japa (Whispered)</h4>
+                            <p class="text-sm text-stone-600">The mantra is whispered softly. This internalizes the vibration and requires more concentration.</p>
+                        </div>
+                        <div class="p-4 bg-amber-50 rounded-md border-l-4 border-amber-600">
+                            <h4 class="font-semibold text-amber-900">3. Mānasa Japa (Mental)</h4>
+                            <p class="text-sm text-stone-600">The most advanced form; the mantra is repeated silently in the mind, generating profound spiritual effects.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white/50 rounded-lg p-6 shadow-sm border border-amber-200">
+                    <h3 class="text-2xl font-bold text-amber-800 mb-4">Using the Japa Mālā</h3>
+                    <p class="text-stone-600 mb-6">A *japa mālā* is a string of 108 beads used to count repetitions. It is a sacred tool that becomes imbued with the mantra's energy.</p>
+                    <ul class="list-disc list-inside text-stone-600 space-y-2">
+                        <li>Hold the mālā in your **right hand**, draped over the **middle finger**.</li>
+                        <li>Use your **thumb** to pull each bead towards you after one repetition.</li>
+                        <li>Keep the **index finger** (associated with ego) extended; do not let it touch the beads.</li>
+                        <li>Start at the bead next to the large 'guru' bead.</li>
+                        <li>After 108 repetitions, do not cross the guru bead. Instead, turn the mālā around and go back in the reverse direction.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="benefits" class="scroll-mt-20">
+            <h2 class="text-3xl font-bold text-amber-800 mb-8 text-center">The Resonance of Well-being</h2>
+            <p class="text-stone-600 mb-8 text-center max-w-3xl mx-auto">
+                Dedicated mantra practice yields a spectrum of benefits, harmonizing the body, mind, and spirit. The process is cascading: physiological calm creates a stable foundation for psychological clarity, which opens the path to spiritual experience.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white/50 rounded-lg p-6 shadow-sm border border-amber-200">
+                    <div class="text-4xl mb-4 text-amber-600">✨</div>
+                    <h3 class="text-2xl font-bold text-amber-800 mb-3">Spiritual Benefits</h3>
+                    <p class="text-stone-600">Purifies consciousness, fosters a connection with the divine, increases self-awareness, and serves as a path toward spiritual liberation (*Mokṣa*).</p>
+                </div>
+                <div class="bg-white/50 rounded-lg p-6 shadow-sm border border-amber-200">
+                    <div class="text-4xl mb-4 text-amber-600">🧠</div>
+                    <h3 class="text-2xl font-bold text-amber-800 mb-3">Psychological Benefits</h3>
+                    <p class="text-stone-600">Reduces stress and anxiety, improves focus and concentration, and cultivates a positive mood and emotional resilience.</p>
+                </div>
+                <div class="bg-white/50 rounded-lg p-6 shadow-sm border border-amber-200">
+                    <div class="text-4xl mb-4 text-amber-600">❤️</div>
+                    <h3 class="text-2xl font-bold text-amber-800 mb-3">Physiological Benefits</h3>
+                    <p class="text-stone-600">Regulates heart rate and blood pressure, promotes relaxed brainwave patterns, and enhances the flow of vital energy (*prāṇa*).</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+<!--
+    <footer class="bg-amber-100/80 mt-16">
+        <div class="container mx-auto px-6 py-6 text-center text-amber-700">
+            <p>&copy; 2025 Interactive Mantra Guide. Explore the path of sacred sound.</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mantraData = [
+                {
+                    name: 'Gāyatrī Mantra',
+                    purpose: 'Spiritual Illumination, Wisdom',
+                    deity: 'Savitṛ (Solar Deity)',
+                    tags: ['illumination'],
+                    transliteration: 'oṃ bhūr bhuvaḥ svaḥ<br>tat savitur vareṇyaṃ<br>bhargo devasya dhīmahi<br>dhiyo yo naḥ pracodayāt',
+                    meaning: 'We meditate on the adorable, divine radiance of the creator, Savitṛ, who pervades the physical, mental, and spiritual realms. May that divine light illumine our intellects.',
+                    significance: 'Revered as the "Mother of the Vedas," this is a universal prayer for the awakening of divine wisdom. It is not a petition for material success, but a profound appeal to purify and illuminate the intellect, transforming it into a vehicle for perceiving transcendent truth.'
+                },
+                {
+                    name: 'Mahāmṛtyuñjaya Mantra',
+                    purpose: 'Healing, Protection, Liberation',
+                    deity: 'Lord Shiva',
+                    tags: ['healing'],
+                    transliteration: 'oṃ tryàmbakaṃ yajāmahe sugándhiṃ puṣṭi-várdhanam<br>urvārukám iva bándhanān mṛtyór mukṣīya mā́ \'mṛ́tāt',
+                    meaning: 'We worship the Three-Eyed One (Lord Shiva), who is fragrant and who nourishes all beings. As a ripe cucumber is effortlessly liberated from its bondage to the vine, may He liberate us from death for the sake of immortality.',
+                    significance: 'A profound prayer for ultimate spiritual liberation (*mokṣa*). The central metaphor of the cucumber detaching from the vine illustrates a gentle, natural liberation from worldly bondage, achieved through spiritual maturity. It reframes the path not as a battle against death, but as a blossoming into eternal life.'
+                },
+                {
+                    name: 'Vakratuṇḍa Mahākāya',
+                    purpose: 'Removal of Obstacles, Success',
+                    deity: 'Lord Gaṇeśa',
+                    tags: ['obstacles'],
+                    transliteration: 'vakratuṇḍa mahākāya sūryakoṭi samaprabha<br>nirvighnaṃ kuru me deva sarvakāryeṣu sarvadā',
+                    meaning: 'O Lord with the curved trunk and a mighty body, whose brilliance is equal to that of ten million suns, please make all my endeavors free of obstacles, always.',
+                    significance: 'A direct appeal to Lord Gaṇeśa, the Remover of Obstacles (*Vighnahartā*), to clear the path of all impediments. It is traditionally invoked at the start of any new venture to ensure a smooth and successful journey.'
+                },
+                {
+                    name: 'Gaṇeśa Bīja Mantra',
+                    purpose: 'Auspicious Beginnings',
+                    deity: 'Lord Gaṇeśa',
+                    tags: ['obstacles'],
+                    transliteration: 'oṃ gaṃ gaṇapataye namaḥ',
+                    meaning: 'Salutations to the Lord of the Gaṇas (celestial hosts).',
+                    significance: 'This is the principal *bīja* (seed) mantra of Lord Gaṇeśa. The seed sound *gaṃ* is his vibrational essence. Chanting this potent, concentrated sonic form is believed to remove all negativities and bestow success, wisdom, and good fortune.'
+                },
+                {
+                    name: 'Mahālakṣmī Mantra',
+                    purpose: 'Prosperity, Wealth, Abundance',
+                    deity: 'Goddess Lakṣmī',
+                    tags: ['prosperity'],
+                    transliteration: 'oṃ śrīṃ hrīṃ klīṃ tribhuvana mahālakṣmyai asmākaṃ dāridrya nāśaya pracura dhanaṃ dehi dehi klīṃ hrīṃ śrīṃ oṃ',
+                    meaning: 'O Great Goddess Mahālakṣmī, who pervades the three worlds, destroy our poverty and grant us abundant wealth.',
+                    significance: 'A powerful and direct appeal to the divine bestower of all forms of wealth (*dhanam*) and auspiciousness (*maṅgalam*). This mantra is chanted by devotees seeking to overcome financial hardship and invite stability and abundance into their lives.'
+                },
+                {
+                    name: 'Lakṣmī Bīja Mantra',
+                    purpose: 'Attracting Wealth',
+                    deity: 'Goddess Lakṣmī',
+                    tags: ['prosperity'],
+                    transliteration: 'oṃ śrīṃ mahālakṣmyai namaḥ',
+                    meaning: 'Salutations to the Great Goddess Lakṣmī, whose essence is *Śrīṃ*.',
+                    significance: 'The core of all Lakṣmī mantras is the seed sound *Śrīṃ*, the sonic embodiment of abundance, beauty, and divine grace. Chanting this mantra aligns the practitioner\'s energy with the frequency of prosperity.'
+                },
+                {
+                    name: 'Universal Peace Mantra',
+                    purpose: 'Peace, Harmony, Removal of Suffering',
+                    deity: 'The Principle of Peace (Śānti)',
+                    tags: ['peace'],
+                    transliteration: 'oṃ śāntiḥ śāntiḥ śāntiḥ',
+                    meaning: 'Om, Peace, Peace, Peace.',
+                    significance: 'A profound prayer for holistic harmony. The threefold repetition of *śāntiḥ* is a precise spiritual technology to pacify the three sources of suffering: forces beyond our control (natural disasters), the external world (other beings), and from within ourselves (illness, stress). It is a complete invocation for peace on the cosmic, social, and personal levels.'
+                },
+                {
+                    name: 'Lokāḥ Samastāḥ Sukhino Bhavantu',
+                    purpose: 'Universal Well-being, Compassion',
+                    deity: 'All Beings',
+                    tags: ['peace'],
+                    transliteration: 'lokāḥ samastāḥ sukhino bhavantu',
+                    meaning: 'May all beings everywhere be happy and free.',
+                    significance: 'This mantra expands the practitioner\'s focus from personal peace to a compassionate wish for the welfare of all existence. It is a powerful practice for cultivating universal love and diminishing the ego.'
+                }
+            ];
+
+            const grid = document.getElementById('mantra-grid');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            function renderMantras(filter = 'all') {
+                grid.innerHTML = '';
+                const filteredMantras = filter === 'all' 
+                    ? mantraData 
+                    : mantraData.filter(m => m.tags.includes(filter));
+
+                filteredMantras.forEach(mantra => {
+                    const card = document.createElement('div');
+                    card.className = 'mantra-card bg-white rounded-lg shadow-md border border-amber-200 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1';
+                    card.dataset.tags = mantra.tags.join(',');
+
+                    card.innerHTML = `
+                        <div class="p-5">
+                            <h3 class="text-xl font-bold text-amber-800">${mantra.name}</h3>
+                            <p class="text-sm text-stone-500 mb-2">${mantra.purpose}</p>
+                            <p class="text-xs text-amber-600 font-medium">Associated with: ${mantra.deity}</p>
+                        </div>
+                        <div class="details px-5 text-stone-600">
+                            <div class="border-t border-amber-200 pt-4 mb-4">
+                                <h4 class="font-semibold text-amber-900 mb-2">Transliteration</h4>
+                                <p class="text-sm italic font-serif"><em>${mantra.transliteration}</em></p>
+                            </div>
+                            <div class="border-t border-amber-200 pt-4 mb-4">
+                                <h4 class="font-semibold text-amber-900 mb-2">Meaning</h4>
+                                <p class="text-sm">${mantra.meaning}</p>
+                            </div>
+                             <div class="border-t border-amber-200 pt-4">
+                                <h4 class="font-semibold text-amber-900 mb-2">Significance</h4>
+                                <p class="text-sm">${mantra.significance}</p>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+
+            grid.addEventListener('click', (e) => {
+                const card = e.target.closest('.mantra-card');
+                if (card) {
+                    card.classList.toggle('expanded');
+                }
+            });
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active-filter'));
+                    button.classList.add('active-filter');
+                    const filter = button.dataset.filter;
+                    renderMantras(filter);
+                });
+            });
+            
+            mobileNav.addEventListener('change', (e) => {
+                window.location.hash = e.target.value;
+            });
+
+            renderMantras();
+        });
+    </script>
+</body>
+</html>

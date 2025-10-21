@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahiravan: The Sorcerer of the Underworld</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4B5563; 
+        }
+        .font-sanskrit {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+        }
+        .tab-active {
+            border-color: #D97706;
+            background-color: #FFFBEB;
+            color: #D97706;
+        }
+        .step-item-active {
+            background-color: #D97706;
+            color: #FFFFFF;
+            transform: scale(1.1);
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The SPA is structured as a linear, scrolling story to guide the user through the dramatic tale of Ahiravan. This narrative approach is ideal for a mythological episode, building tension and leading to a climax. The structure is: 1) Introduction to the villain, Ahiravan. 2) The central conflict: the abduction of Rama and Lakshmana. 3) The hero's journey: Hanuman's quest to the underworld, presented as an interactive series of steps. 4) The climax: the final confrontation, broken into tabs for clarity. 5) The resolution: the rescue. This flow makes the story easy to follow and engaging. Interactions like the clickable quest steps and tabs for the final battle are designed to draw the user deeper into the narrative at key moments. -->
+    <!-- Visualization & Content Choices: Report Info: Ahiravan's identity -> Goal: Inform -> Viz/Method: Styled HTML card -> Interaction: Click to reveal details -> Justification: Introduces the antagonist without disrupting the story's flow. | Report Info: Hanuman's journey and challenges -> Goal: Show Process/Journey -> Viz/Method: Interactive HTML/CSS step-based diagram -> Interaction: Click on each step to see a description of that part of the quest -> Justification: Turns a sequence of events into an engaging, explorable journey for the user. | Report Info: The final trick and battle -> Goal: Organize/Compare -> Viz/Method: HTML Tabbed content -> Interaction: Click tabs to switch between 'The Deception' and 'The Battle' -> Justification: Separates the two key parts of the climax, allowing the user to focus on Hanuman's cleverness and then his strength. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-amber-100/30 sticky top-0 z-50 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="font-sanskrit text-2xl font-bold text-amber-800">अहिरावण</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#intro" class="text-stone-600 hover:text-amber-700 transition">The Sorcerer</a>
+                    <a href="#abduction" class="text-stone-600 hover:text-amber-700 transition">The Abduction</a>
+                    <a href="#quest" class="text-stone-600 hover:text-amber-700 transition">The Quest</a>
+                    <a href="#climax" class="text-stone-600 hover:text-amber-700 transition">The Climax</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section class="text-center my-12 md:my-20">
+            <h1 class="font-sanskrit text-5xl md:text-7xl font-bold text-amber-900 leading-tight">The Tale of Ahiravan</h1>
+            <p class="mt-4 text-xl md:text-2xl text-stone-600">The Sorcerer King of the Underworld</p>
+            <p class="mt-6 max-w-3xl mx-auto text-stone-500">
+                During the great war for Lanka, when Ravana's defeat seemed imminent, he called upon his secret weapon: his brother Ahiravan, the powerful and malevolent sorcerer king of Patala, the netherworld. This is the story of his dark plot and the unwavering devotion of Hanuman who journeyed into darkness itself to save his lords.
+            </p>
+        </section>
+
+        <section id="intro" class="my-16 md:my-24 py-12 bg-amber-50/50 rounded-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The King of Patala</h2>
+            <p class="text-center text-stone-600 mb-8 max-w-3xl mx-auto">This section introduces the formidable antagonist. Click the card to learn more about Ahiravan's powers and motivations.</p>
+            <div id="ahiravan-card" class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-stone-200/80 cursor-pointer transition hover:shadow-xl hover:border-amber-400">
+                <h3 class="font-sanskrit text-3xl font-bold text-amber-700">Ahiravan (अहिरावण)</h3>
+                <p class="text-stone-500 mt-2">Master of Illusions and Dark Magic</p>
+                <div id="ahiravan-details" class="hidden mt-4 text-stone-600 space-y-2">
+                    <p>Ahiravan was a master of the dark arts and a fervent devotee of the goddess Mahamaya. He ruled the subterranean realm of Patala and could teleport, create illusions, and shapeshift. Summoned by Ravana, his mission was to eliminate Rama and Lakshmana not on the battlefield, but as a sacrifice in his dark temple to gain ultimate power.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="abduction" class="my-16 md:my-24 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-800">The Night of Deception</h2>
+            <p class="mt-4 text-lg max-w-3xl mx-auto text-stone-600">
+                Aware of the threat, Hanuman created an impenetrable fortress with his tail around Rama and Lakshmana's camp. But Ahiravan was cunning. He took the form of Vibhishana, Ravana's righteous brother and Rama's ally, gaining entry to the camp. Using his powers, he cast a deep spell of slumber over the entire Vanara army and abducted the unconscious Rama and Lakshmana, spiriting them away to his kingdom in Patala to be sacrificed at dawn.
+            </p>
+        </section>
+
+        <section id="quest" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">Hanuman's Descent into Darkness</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Upon discovering the abduction, a grief-stricken Hanuman pledged to rescue his lords. Guided by Vibhishana, he embarked on a perilous journey to the underworld. Follow his path by clicking on each step of his quest.</p>
+            
+            <div>
+                <div class="flex flex-col md:flex-row justify-center items-center md:space-x-4 mb-6">
+                    <button class="step-item step-item-active w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 mb-2 md:mb-0" data-step="1">1. The Entrance</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white mb-2 md:mb-0" data-step="2">2. The Guardian</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white mb-2 md:mb-0" data-step="3">3. The Fortress</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white" data-step="4">4. Infiltration</button>
+                </div>
+
+                <div id="step-details" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md min-h-[150px]">
+                    <h4 id="step-title" class="font-bold text-xl text-amber-700 mb-2">Step 1: The Entrance to Patala</h4>
+                    <p id="step-description" class="text-stone-600">Hanuman located the hidden entrance to the underworld, a deep, dark tunnel. He shrank his form to the size of a thumb and plunged into the abyss, beginning his dangerous descent.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="climax" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Final Confrontation</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Inside Ahiravan's temple, Hanuman found Rama and Lakshmana prepared for sacrifice. To save them, he used both his wit and his might. This section details his clever deception and the epic battle that followed.</p>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="flex border-b border-stone-300 mb-6">
+                    <button class="tab-button tab-active flex-1 text-center font-semibold p-3 border-b-2 transition" data-tab="deception">The Deception</button>
+                    <button class="tab-button flex-1 text-center font-semibold p-3 border-b-2 border-transparent text-stone-500 transition" data-tab="battle">The Battle</button>
+                </div>
+                <div id="tab-content">
+                    <div id="deception-content" class="tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">The Panchmukhi Form</h3>
+                        <p class="text-stone-600">Ahiravan's life force was hidden in five lamps, placed in different directions. To extinguish them all at once, Hanuman revealed his mighty Panchmukhi (five-faced) form: Hanuman, Hayagriva, Narasimha, Garuda, and Varaha. Each face blew in a different direction, extinguishing the lamps simultaneously and breaking Ahiravan's immortality.</p>
+                    </div>
+                    <div id="battle-content" class="hidden tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">Slaying the Sorcerer</h3>
+                        <p class="text-stone-600">With Ahiravan's power broken, Hanuman engaged him in a fierce battle. Resuming his giant form, Hanuman overpowered the sorcerer king. He then placed Rama and Lakshmana on his shoulders and flew back to the surface, returning to the Vanara camp just as the sun rose, having saved his lords from certain doom.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-100 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-stone-500">
+            <p>An interactive retelling of Hanuman's valorous quest into the netherworld.</p>
+            <p class="text-sm mt-2">Inspired by the epic Ramayana.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ahiravanCard = document.getElementById('ahiravan-card');
+            ahiravanCard.addEventListener('click', () => {
+                document.getElementById('ahiravan-details').classList.toggle('hidden');
+            });
+
+            const stepData = {
+                1: { title: 'Step 1: The Entrance to Patala', description: 'Hanuman located the hidden entrance to the underworld, a deep, dark tunnel. He shrank his form to the size of a thumb and plunged into the abyss, beginning his dangerous descent.' },
+                2: { title: 'Step 2: The Guardian', description: 'At the gate of Patala, he was stopped by a strange creature, half-vanara and half-reptile, named Makardhwaja, who revealed himself to be Hanuman\'s son, born from his sweat swallowed by a fish. After a brief duel, Hanuman subdued him and gained entry.' },
+                3: { title: 'Step 3: Navigating the Fortress', description: 'Inside, Hanuman navigated the confusing, maze-like fortress of Ahiravan. He encountered many illusions and magical traps set by the sorcerer, but his sharp intellect and devotion saw him through every obstacle.' },
+                4: { title: 'Step 4: Infiltration', description: 'Finally, he reached the main temple of Mahamaya. Disguising himself as a tiny insect, he found the chamber where Rama and Lakshmana were being held, awaiting the sacrificial ceremony.' }
+            };
+
+            const stepItems = document.querySelectorAll('.step-item');
+            const stepTitle = document.getElementById('step-title');
+            const stepDescription = document.getElementById('step-description');
+
+            stepItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    stepItems.forEach(i => i.classList.remove('step-item-active', 'bg-white'));
+                    stepItems.forEach(i => {
+                        if (i !== item) i.classList.add('bg-white');
+                    });
+                    item.classList.add('step-item-active');
+                    item.classList.remove('bg-white');
+
+                    const step = item.dataset.step;
+                    stepTitle.textContent = stepData[step].title;
+                    stepDescription.textContent = stepData[step].description;
+                });
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+                    button.classList.add('tab-active');
+
+                    const tab = button.dataset.tab;
+                    tabPanes.forEach(pane => {
+                        if (pane.id === `${tab}-content`) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+
+

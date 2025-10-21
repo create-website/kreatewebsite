@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karwa Chauth 2025: Slideshow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Vollkorn:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Subtle Accent -->
+    <!-- Application Structure Plan: A dedicated slideshow page featuring a large, central image viewer. The structure is minimalist to keep the focus entirely on the visuals. It includes essential UI elements like next/previous controls and dot indicators for navigation, with an auto-play feature for passive viewing. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: A collection of banner-style images. Goal: Showcase/Inspire. Method: A JavaScript-powered slideshow that dynamically changes the background image of a container. Interaction: Auto-play, manual next/previous buttons, and clickable dot indicators. Justification: A slideshow is the most direct and engaging way to present a series of large, high-quality images. The controls provide a full user experience for both passive and active browsing. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Vollkorn', serif;
+        }
+        .hindi-title {
+            font-family: 'Tiro Devanagari Hindi', serif;
+        }
+        .slideshow-container {
+            transition: background-image 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-rose-50 text-stone-800">
+
+    <nav class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 border-b border-rose-100">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-2">
+                <div class="flex flex-wrap space-x-4 md:space-x-6 text-sm md:text-base">
+                    <a href="karwa_chauth_homepage_2025.html" class="text-stone-600 hover:text-rose-800 py-2">Home</a>
+                    <a href="karwa_chauth_about_2025.html" class="text-stone-600 hover:text-rose-800 py-2">About</a>
+                    <a href="karwa_chauth_slideshow_2025.html" class="text-rose-800 font-bold border-b-2 border-rose-700 py-2">Slideshow</a>
+                    <a href="karwa_chauth_gallery_2025.html" class="text-stone-600 hover:text-rose-800 py-2">Gallery</a>
+                    <a href="karwa_chauth_rituals_2025.html" class="text-stone-600 hover:text-rose-800 py-2">Rituals</a>
+                    <a href="karwa_chauth_mehndi_2025.html" class="text-stone-600 hover:text-rose-800 py-2">Mehndi</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8 md:py-12">
+        <div class="text-center mb-8">
+             <h1 class="text-4xl md:text-5xl font-bold text-rose-900 hindi-title">उत्सव की झलकियाँ</h1>
+             <h2 class="text-3xl md:text-4xl font-bold text-rose-800 mt-2">Festival Slideshow</h2>
+             <p class="mt-4 text-lg text-stone-700 max-w-2xl mx-auto">Immerse yourself in the colors and emotions of Karwa Chauth through our curated collection of moments.</p>
+        </div>
+
+        <!-- Slideshow container -->
+        <div id="slideshow" class="slideshow-container relative w-full h-[60vh] max-h-[500px] bg-center bg-cover rounded-2xl shadow-lg border border-rose-200" style="background-image: url('https://storage.googleapis.com/kreatewebsite/sites/karwa-chauth.happydiwali.org/Banner/Karwa-Chauth.jpg');">
+            <!-- Prev/Next buttons -->
+            <button id="prevBtn" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/50 hover:bg-white/80 text-rose-800 font-bold p-3 rounded-full shadow-md focus:outline-none">
+                &#10094;
+            </button>
+            <button id="nextBtn" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/50 hover:bg-white/80 text-rose-800 font-bold p-3 rounded-full shadow-md focus:outline-none">
+                &#10095;
+            </button>
+
+            <!-- Dots -->
+            <div id="dotsContainer" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center py-8 mt-12 bg-white/50 border-t border-rose-100">
+        <div class="container mx-auto px-4">
+            <p class="text-stone-600">Designed with ❤️ for a blessed Karwa Chauth.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = [
+                'https://storage.googleapis.com/kreatewebsite/sites/karwa-chauth.happydiwali.org/Banner/Karwa-Chauth.jpg',
+                'https://storage.googleapis.com/kreatewebsite/sites/karwa-chauth.happydiwali.org/Banner/Celebrate-Karwa-Chauth.jpg',
+                'https://storage.googleapis.com/kreatewebsite/sites/karwa-chauth.happydiwali.org/Karwa-Chauth-Images/KarwaChauthCelebration%20(1).jpg',
+                'https://storage.googleapis.com/kreatewebsite/sites/karwa-chauth.happydiwali.org/Karwa-Chauth-Images/Karwa-Chauth-Mehndi.jpg',
+                'https://storage.googleapis.com/kreatewebsite/sites/karwa-chauth.happydiwali.org/Karwa-Chauth-Images/KarwaChauthCelebration%20(5).jpg'
+            ];
+
+            let currentSlideIndex = 0;
+            const slideshowElement = document.getElementById('slideshow');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const dotsContainer = document.getElementById('dotsContainer');
+            let slideInterval;
+
+            function showSlide(index) {
+                // Update background image
+                slideshowElement.style.backgroundImage = `url('${slides[index]}')`;
+
+                // Update dots
+                const dots = document.querySelectorAll('.dot');
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('bg-rose-800', i === index);
+                    dot.classList.toggle('bg-white/60', i !== index);
+                });
+                currentSlideIndex = index;
+            }
+
+            function nextSlide() {
+                const newIndex = (currentSlideIndex + 1) % slides.length;
+                showSlide(newIndex);
+            }
+
+            function prevSlide() {
+                const newIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+                showSlide(newIndex);
+            }
+            
+            function startSlideshow() {
+                slideInterval = setInterval(nextSlide, 4000);
+            }
+
+            function resetInterval() {
+                clearInterval(slideInterval);
+                startSlideshow();
+            }
+
+            // Create dots
+            slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.classList.add('dot', 'w-3', 'h-3', 'rounded-full', 'transition-colors', 'duration-300');
+                dot.addEventListener('click', () => {
+                    showSlide(i);
+                    resetInterval();
+                });
+                dotsContainer.appendChild(dot);
+            });
+
+            // Event Listeners
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                resetInterval();
+            });
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                resetInterval();
+            });
+
+            // Initial setup
+            showSlide(0);
+            startSlideshow();
+        });
+    </script>
+</body>
+</html>

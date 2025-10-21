@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahashivratri Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Saffron Accent -->
+    <!-- Application Structure Plan: A thematic, single-page application with a sticky top navigation for non-linear exploration. The structure is designed to guide the user through the core aspects of the festival in a digestible way: starting with the foundational 'Legends', moving to the deeper 'Philosophy', then the practical 'Rituals', and finally the global 'Celebrations'. This thematic grouping, combined with interactive elements like tabs for myths and a chart for the vigil, is more user-friendly than the report's linear structure. It encourages active exploration over passive reading, making the rich, dense information more accessible and engaging for a general audience. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Four Puranic Legends -> Goal: Present dense narratives without overwhelming the user -> Viz/Method: Tabbed interface (HTML/JS) -> Interaction: Click tabs to reveal story summaries -> Justification: Segments content logically, putting the user in control.
+        - Report Info: Table of the Four Prahars (vigil stages) -> Goal: Visualize the night's progression -> Viz/Method: Horizontal Bar Chart (Chart.js) -> Interaction: Hover over bars for tooltips with detailed rituals -> Justification: More intuitive for time-based data than a static table.
+        - Report Info: Table of Puja offerings' symbolic meanings -> Goal: Explain ritual symbolism interactively -> Viz/Method: Grid of clickable cards (HTML/JS) -> Interaction: Click a card to see its meaning -> Justification: Encourages discovery and engagement.
+        - Report Info: Descriptions of celebrations -> Goal: Showcase geographical diversity -> Viz/Method: Responsive card grid (HTML/Tailwind) -> Interaction: Simple hover effects -> Justification: Clean, scannable, and visually consistent presentation.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF5;
+            color: #3D3522;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #D97706; 
+            border-bottom-color: #D97706;
+        }
+        .tab-btn {
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background-color: #D97706;
+            color: #FFFFFF;
+        }
+        .offering-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .offering-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="home" class="sticky top-0 bg-[#FDFBF5]/80 backdrop-blur-lg z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-[#D97706]">Maha Shivratri</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#legends" class="nav-link font-semibold pb-1">The Legends</a>
+                <a href="#philosophy" class="nav-link font-semibold pb-1">The Path</a>
+                <a href="#practice" class="nav-link font-semibold pb-1">The Practice</a>
+                <a href="#celebrations" class="nav-link font-semibold pb-1">Celebrations</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-white border border-gray-300 rounded-md py-2 px-3 text-gray-700">
+                    <option value="#home">Home</option>
+                    <option value="#legends">The Legends</option>
+                    <option value="#philosophy">The Path</option>
+                    <option value="#practice">The Practice</option>
+                    <option value="#celebrations">Celebrations</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="py-20 md:py-32 text-center bg-gradient-to-b from-[#FDFBF5] to-[#FFF9EB]">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-6xl font-bold tracking-tight mb-4">The Great Night of Shiva</h2>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-600">
+                    An interactive journey into the heart of Maha Shivratri, one of Hinduism's most profound festivals. Explore the ancient myths, deep philosophy, and sacred rituals that define this night of spiritual awakening.
+                </p>
+            </div>
+        </section>
+
+        <section id="legends" class="py-16 md:py-24 bg-[#FFF9EB]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold mb-2">The Foundational Legends</h3>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">The significance of Maha Shivratri is anchored in a rich tapestry of Puranic myths. Each story reveals a different facet of Lord Shiva's divine nature. Click on a legend to explore its story.</p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8" id="tabs-container">
+                        <button class="tab-btn active text-sm md:text-base font-semibold py-2 px-4 rounded-full bg-white shadow-sm" data-tab="marriage">The Divine Marriage</button>
+                        <button class="tab-btn text-sm md:text-base font-semibold py-2 px-4 rounded-full bg-white shadow-sm" data-tab="tandava">The Cosmic Dance</button>
+                        <button class="tab-btn text-sm md:text-base font-semibold py-2 px-4 rounded-full bg-white shadow-sm" data-tab="poison">The Savior of Cosmos</button>
+                        <button class="tab-btn text-sm md:text-base font-semibold py-2 px-4 rounded-full bg-white shadow-sm" data-tab="lingodbhava">The Infinite Pillar</button>
+                    </div>
+                    <div id="tab-content" class="bg-white p-6 md:p-8 rounded-lg shadow-lg min-h-[300px]">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="philosophy" class="py-16 md:py-24 bg-[#FDFBF5]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold mb-2">The Path of Transformation</h3>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">Beyond the myths, the festival holds a deep philosophical core, offering a path to transcend ignorance and experience a higher state of consciousness.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-500">
+                        <h4 class="text-xl font-bold mb-3">From Darkness to Light</h4>
+                        <p class="text-gray-600">The festival symbolizes the spiritual journey to overcome ignorance (avidya) and ego (ahamkara). The all-night vigil on the darkest night of the month is a metaphor for the constant alertness required to find the inner light of knowledge.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-500">
+                        <h4 class="text-xl font-bold mb-3">Union of Shiva & Shakti</h4>
+                        <p class="text-gray-600">Maha Shivratri celebrates the cosmic union of Shiva (pure consciousness) and Shakti (divine energy). This convergence is the source of all creation, and the festival is a reminder to harmonize these two forces within oneself for spiritual wholeness.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-500">
+                        <h4 class="text-xl font-bold mb-3">A Night of Yogic Ascent</h4>
+                        <p class="text-gray-600">Yogic traditions believe this night offers a natural upsurge of spiritual energy. Practices like maintaining an erect spine during the vigil help this energy ascend, purifying the system and elevating consciousness.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="practice" class="py-16 md:py-24 bg-[#FFF9EB]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold mb-2">The Sacred Practice</h3>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">The philosophy is put into practice through a set of well-defined rituals and austerities designed to purify the mind and focus the consciousness.</p>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg mb-16">
+                    <h4 class="text-2xl font-bold text-center mb-2">The All-Night Vigil (Jagran)</h4>
+                    <p class="text-center text-gray-600 mb-8">The night is divided into four 3-hour periods called Prahars, each with specific rituals. Hover over the chart to see the details of each stage.</p>
+                    <div class="chart-container">
+                        <canvas id="praharsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                    <h4 class="text-2xl font-bold text-center mb-2">Symbolism of Offerings (Puja)</h4>
+                    <p class="text-center text-gray-600 mb-8">Each item offered to the Shiva Lingam during worship carries a deep symbolic meaning. Click on a card to learn more.</p>
+                    <div id="offerings-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                    </div>
+                </div>
+                <div id="offering-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
+                    <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative">
+                        <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">&times;</button>
+                        <h5 id="modal-title" class="text-2xl font-bold mb-4"></h5>
+                        <p id="modal-text" class="text-gray-600"></p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="celebrations" class="py-16 md:py-24 bg-[#FDFBF5]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold mb-2">Global Celebrations</h3>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">From ancient temples in India to community centers across the globe, Maha Shivratri is celebrated with immense devotion and unique regional traditions.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="text-xl font-bold mb-3">Varanasi, India</h4>
+                        <p class="text-gray-600">Known as Shiva's earthly abode, Varanasi hosts a grand wedding procession (*Shiva baraat*) and a mesmerizing Ganga Aarti. The atmosphere is vibrant and deeply spiritual.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="text-xl font-bold mb-3">Ujjain, India</h4>
+                        <p class="text-gray-600">Home to the Mahakaleshwar Jyotirlinga, Ujjain is famous for its unique *Bhasma Aarti*, a pre-dawn ritual where the lingam is anointed with sacred ash from a funeral pyre.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="text-xl font-bold mb-3">Somnath, India</h4>
+                        <p class="text-gray-600">The first of the twelve Jyotirlingas, the Somnath temple on the Arabian Sea coast is magnificently decorated, drawing thousands of devotees for prayers and rituals.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="text-xl font-bold mb-3">Mandi, India</h4>
+                        <p class="text-gray-600">Known as "Chhoti Kashi," Mandi hosts a week-long International Shivratri Fair, a tradition started by the royal family 500 years ago that now attracts global visitors.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="text-xl font-bold mb-3">Murudeshwar, India</h4>
+                        <p class="text-gray-600">Famed for its colossal 123-foot statue of a seated Shiva, the second tallest in the world, this coastal temple in Karnataka offers a visually stunning celebration.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-500">
+                        <h4 class="text-xl font-bold mb-3">Seattle, USA (Diaspora)</h4>
+                        <p class="text-gray-600">Hindu communities adapt traditions globally. In Seattle, the festival is a vital, temple-centric event for community building, with precise local timings calculated for rituals. For 2026, it will be observed on Sunday, February 15.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+<!--
+    <footer class="bg-[#3D3522] text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2024 An Interactive Guide to Maha Shivratri. All content synthesized from "The Great Night of Shiva: An Analytical Report".</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const legendsData = {
+                marriage: {
+                    title: "The Divine Marriage of Shiva and Parvati",
+                    content: "The most cherished legend commemorates the celestial wedding of Shiva and Parvati. After the self-immolation of his first wife Sati, a grief-stricken Shiva retreated into deep meditation. Sati was reborn as Parvati and undertook severe penance to win his heart. Their divine union, celebrated on this night, symbolizes the coming together of pure consciousness (Purusha) and divine energy (Prakriti), the two fundamental principles from which all creation manifests."
+                },
+                tandava: {
+                    title: "The Cosmic Dance of Tandava",
+                    content: "Another profound legend states that Maha Shivratri is the night when Shiva performs the Tandava, his divine and vigorous cosmic dance. This is a metaphysical act that governs the eternal cycles of creation, preservation, and destruction. As Nataraja, the Lord of the Dance, Shiva's movements are the very rhythm of cosmic existence. The night's prayers are a way for devotees to align their consciousness with this universal rhythm."
+                },
+                poison: {
+                    title: "The Savior of the Cosmos (Neelkanth)",
+                    content: "This story celebrates Shiva as the ultimate savior. During the churning of the primordial ocean (Samudra Manthan) by gods and demons, a lethal poison called Halahala emerged, threatening to annihilate the universe. Moved by compassion, Shiva consumed the poison. His consort Parvati pressed his throat, trapping the poison there and turning it blue. This act earned him the name Neelkanth (The Blue-Throated One) and is honored as an act of supreme sacrifice."
+                },
+                lingodbhava: {
+                    title: "The Infinite Pillar of Light (Lingodbhava)",
+                    content: "This legend explains the worship of Shiva in his aniconic Lingam form. When a dispute over supremacy arose between Brahma (the creator) and Vishnu (the preserver), Shiva appeared as an infinite, blazing pillar of light (Jyotirlinga). Neither god could find its beginning or end, proving Shiva's infinite nature. This event established the supremacy of Shiva as the formless, beginningless, and endless ultimate reality."
+                }
+            };
+
+            const offeringsData = [
+                { name: "Ritual Bathing", icon: "💧", meaning: "Represents the purification of the devotee's soul." },
+                { name: "Sandalwood Paste", icon: "🌿", meaning: "Represents virtue, purity, and filling oneself with divine fragrance." },
+                { name: "Fruits", icon: "🍎", meaning: "Represents longevity and the gratification of one's desires." },
+                { name: "Incense", icon: "💨", meaning: "Represents the yielding of wealth and the surrender of the senses to the Higher Self." },
+                { name: "Lamp (Diya)", icon: "🔥", meaning: "Represents the attainment of knowledge and the dispelling of ignorance." },
+                { name: "Bilva Leaves", icon: "🍃", meaning: "Represents the surrender of the three gunas (qualities of nature) and is exceptionally dear to Shiva." }
+            ];
+
+            const tabsContainer = document.getElementById('tabs-container');
+            const tabContent = document.getElementById('tab-content');
+            const tabButtons = tabsContainer.querySelectorAll('.tab-btn');
+
+            function updateTabContent(tabId) {
+                const data = legendsData[tabId];
+                tabContent.innerHTML = `
+                    <h4 class="text-2xl font-bold mb-4">${data.title}</h4>
+                    <p class="text-gray-600 leading-relaxed">${data.content}</p>
+                `;
+                tabButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.tab === tabId);
+                });
+            }
+
+            tabsContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('tab-btn')) {
+                    updateTabContent(e.target.dataset.tab);
+                }
+            });
+
+            updateTabContent('marriage');
+
+            const offeringsGrid = document.getElementById('offerings-grid');
+            const modal = document.getElementById('offering-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalText = document.getElementById('modal-text');
+
+            offeringsData.forEach(offering => {
+                const card = document.createElement('div');
+                card.className = 'offering-card bg-white p-4 rounded-lg shadow-sm text-center cursor-pointer border';
+                card.innerHTML = `
+                    <div class="text-4xl mb-2">${offering.icon}</div>
+                    <h5 class="font-semibold">${offering.name}</h5>
+                `;
+                card.addEventListener('click', () => {
+                    modalTitle.textContent = `${offering.icon} ${offering.name}`;
+                    modalText.textContent = offering.meaning;
+                    modal.classList.remove('hidden');
+                });
+                offeringsGrid.appendChild(card);
+            });
+
+            closeModalBtn.addEventListener('click', () => modal.classList.add('hidden'));
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+
+            const praharsCtx = document.getElementById('praharsChart').getContext('2d');
+            const praharsChart = new Chart(praharsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['First Prahar (6-9 PM)', 'Second Prahar (9-12 AM)', 'Third Prahar (12-3 AM)', 'Fourth Prahar (3-6 AM)'],
+                    datasets: [{
+                        label: 'Vigil Stage',
+                        data: [3, 3, 3, 3],
+                        backgroundColor: ['#FBBF24', '#F59E0B', '#D97706', '#B45309'],
+                        borderColor: '#ffffff',
+                        borderWidth: 2,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const tooltips = [
+                                        'Rituals: Abhishek with milk, offering Bilva leaves. Significance: Building focus, detaching from material concerns.',
+                                        'Rituals: Abhishek with yogurt, singing hymns. Significance: Self-inspection and overcoming ego.',
+                                        'Rituals: Abhishek with ghee, deep meditation. Significance: Most powerful period, transcending pleasure and pain.',
+                                        'Rituals: Abhishek with honey, morning aarti. Significance: Dawn of enlightenment and spiritual liberation.'
+                                    ];
+                                    return tooltips[context.dataIndex].split('. ');
+                                }
+                            },
+                            bodyFont: { size: 12 },
+                            padding: 10,
+                            backgroundColor: '#3D3522'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: false,
+                            max: 3.2
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                             ticks: {
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 60) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            mobileNav.addEventListener('change', (e) => {
+                window.location.href = e.target.value;
+            });
+        });
+    </script>
+</body>
+</html>

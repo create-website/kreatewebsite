@@ -1,0 +1,10 @@
+How to Add New AI Updates to the WebpageThis project is set up to dynamically load the latest AI updates. To add a new one, follow these simple steps.1. Create a New Update FileIn the updates/ directory, create a new file.IMPORTANT: Name the file using the format YYYY-MM-DD-your-update-title.htm. For example: 2025-10-21-new-ai-model.htm. This date format is crucial for sorting the updates correctly.2. Add Content to the FileCopy the entire content from an existing update file (like updates/2025-10-20-google-veo.htm) and paste it into your new file.Modify the content inside this new file:Change the <span> tag for the impact category.Update the <h2> for the title.Change the <p> tag for the main description.Update the content within the "Technical Innovations" and "Strategic Implications" sections.3. Update the File List in index.htmlOpen the main index.html file.Find the <script> section at the bottom of the file.Locate the updateFiles array:const updateFiles = [
+    '2025-10-20-google-veo.htm',
+    // ... other files
+];
+Add the filename of your new update to this list. For example:const updateFiles = [
+    '2025-10-21-new-ai-model.htm', // Your new file
+    '2025-10-20-google-veo.htm',
+    // ... other files
+];
+The script will automatically handle the rest, ensuring only the 12 most recent updates are displayed.That's it! Your new update will now appear on the webpage.

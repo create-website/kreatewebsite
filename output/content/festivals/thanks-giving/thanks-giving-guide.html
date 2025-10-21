@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanksgiving: An Interactive Guide to Gratitude and History</title>
+    
+    <!-- Meta Description and Keywords for SEO -->
+    <meta name="description" content="Explore the history, traditions, the first feast, and modern celebrations of the American Thanksgiving festival in this interactive guide.">
+    <meta name="keywords" content="Thanksgiving, history, traditions, Plymouth, Pilgrims, Wampanoag, First Feast, gratitude, holiday">
+
+    <!-- Open Graph (OG) / Social Media Tags -->
+    <meta property="og:title" content="Thanksgiving: An Interactive Guide to Gratitude and History">
+    <meta property="og:description" content="Learn about the origins of Thanksgiving, the 1621 feast, key modern traditions, and the spirit of gratitude celebrated every November.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://example.com/thanksgiving-guide">
+    <meta property="og:image" content="https://placehold.co/1200x630/CD5C5C/FFFFFF?text=Thanksgiving+Guide">
+    <meta property="og:site_name" content="Cultural Festival Explorer">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "Thanksgiving Day",
+      "description": "The national holiday celebrated in the United States and Canada as a day of giving thanks for the harvest and the preceding year.",
+      "image": "https://placehold.co/1200x630/CD5C5C/FFFFFF?text=Thanksgiving+Guide",
+      "startDate": "2025-11-27", 
+      "location": {
+        "@type": "Place",
+        "name": "United States and Canada"
+      }
+    }
+    </script>
+    
+    <!-- Chosen Palette: Autumnal Cranberry & Beige (Harvest Theme) -->
+    <!-- Application Structure Plan: A thematic, single-page application with a sticky top navigation. The structure is designed to tell the story of the holiday: 'Significance' (modern meaning/date), the central 'First Feast' story, 'Key Traditions' presented as interactive steps, a 'Dinner Composition' chart visualizing the menu, and finally, 'Wishes & Quotes'. This sequence guides the user from the holiday's meaning to its history and then its practices. -->
+    <!-- Visualization & Content Choices: 
+        - Significance: Inform -> Text block & Two Image Cards (Placeholders) -> Static -> Justification: Provides contextual modern history alongside visual representations of key holiday elements (Turkey, Harvest). Method: HTML/Tailwind.
+        - First Feast: Inform -> Detailed Story Block -> Static -> Justification: The core historical narrative is presented clearly as the central focus of the app. Method: HTML/Tailwind.
+        - Traditions: Organize/Inform -> Step-by-step card flow -> Scroll/Click -> Justification: Breaks down modern holiday customs (Parade, Feast, Football) into digestible steps. Method: HTML/Tailwind.
+        - Dinner Composition: Inform/Compare -> Donut Chart -> Interactive Tooltips -> Justification: Visually represents the key components of the modern holiday meal. Library: Chart.js/Canvas.
+        - Wishes/Quotes: Inform -> Grid of Text Cards -> Static -> Justification: Provides ready-to-use emotional content as a concluding, shareable resource. Method: HTML/Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FAF6F0; 
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active {
+            color: #B91C1C; 
+            border-bottom-color: #B91C1C;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 450px;
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-2xl font-bold text-red-700">Thanksgiving</h1>
+                <div class="hidden sm:flex sm:space-x-8" id="nav-links">
+                    <a href="#significance" class="nav-link text-gray-600 hover:text-red-600 border-b-2 border-transparent pb-1">Significance</a>
+                    <a href="#feast" class="nav-link text-gray-600 hover:text-red-600 border-b-2 border-transparent pb-1">First Feast</a>
+                    <a href="#traditions" class="nav-link text-gray-600 hover:text-red-600 border-b-2 border-transparent pb-1">Traditions</a>
+                    <a href="#dinner" class="nav-link text-gray-600 hover:text-red-600 border-b-2 border-transparent pb-1">The Dinner</a>
+                    <a href="#quotes" class="nav-link text-gray-600 hover:text-red-600 border-b-2 border-transparent pb-1">Wishes & Quotes</a>
+                </div>
+                <div class="sm:hidden">
+                    <select id="mobile-nav" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500">
+                        <option value="#significance">Significance</option>
+                        <option value="#feast">First Feast</option>
+                        <option value="#traditions">Traditions</option>
+                        <option value="#dinner">The Dinner</option>
+                        <option value="#quotes">Wishes & Quotes</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+
+        <section id="hero" class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-red-800 tracking-tight">Thanksgiving: A Day for Gratitude and Gatherings</h1>
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-stone-600">An interactive exploration of the American holiday celebrating harvest, history, and the spirit of thankfulness.</p>
+        </section>
+
+        <section id="significance" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-red-800">The Modern Holiday</h2>
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                <!-- Text Content -->
+                <div class="md:col-span-2 bg-white p-8 rounded-xl shadow-lg border border-red-100">
+                    <h3 class="text-2xl font-semibold text-red-700 mb-4">Date and Meaning</h3>
+                    <p class="text-lg text-stone-700 leading-relaxed">
+                        In the United States, **Thanksgiving Day** is celebrated annually on the fourth Thursday of November, marking the unofficial start of the winter holiday season. While its origins lie in a complex historical context dating back to the 17th century, the modern holiday centers on themes of **gratitude**, family gathering, and feasting. Families and friends travel great distances to share a traditional meal, typically featuring turkey, stuffing, and pumpkin pie. It serves as a reminder to pause and reflect on the blessings and bounty of the past year.
+                    </p>
+                </div>
+                <!-- Image Cards (Placeholders) -->
+                <div class="md:col-span-1 space-y-4">
+                    <div class="rounded-xl overflow-hidden shadow-xl border border-red-300 bg-red-50">
+                        <img src="https://placehold.co/400x250/F8D7DA/B03A2E?text=Thanksgiving+Turkey" alt="Placeholder image of a cooked turkey." class="w-full h-auto object-cover">
+                        <p class="p-3 text-sm text-center font-medium text-red-800">The Central Feast Item</p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-xl border border-red-300 bg-red-50">
+                        <img src="https://placehold.co/400x250/F3E5AB/A1887F?text=Autumn+Harvest" alt="Placeholder image of an autumn harvest scene." class="w-full h-auto object-cover">
+                         <p class="p-3 text-sm text-center font-medium text-red-800">Celebrating the Autumn Bounty</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="feast" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-red-800">The 1621 First Feast</h2>
+            <div class="bg-white p-8 rounded-xl shadow-2xl max-w-4xl mx-auto border-t-4 border-amber-600">
+                <h3 class="text-2xl font-bold text-amber-700 mb-4">Pilgrims and Wampanoag</h3>
+                <p class="text-stone-700 leading-relaxed">
+                    The historical event often cited as the first Thanksgiving occurred in **November 1621** in Plymouth, Massachusetts. The **Pilgrims**, who had suffered greatly during their first year in the New World, celebrated a successful harvest. They were joined by around 90 **Wampanoag** Native Americans, who had provided crucial agricultural and survival knowledge that allowed the colonists to endure. This feast was a three-day celebration. Historical accounts suggest the menu included venison (provided by the Wampanoag), various fowl (likely duck or goose, not turkey), corn, and possibly shellfish. This event, however, was not called "Thanksgiving" by the Pilgrims; they would have referred to it as a "Harvest Celebration."
+                </p>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-red-800">Core Modern Traditions</h2>
+             <p class="text-center max-w-3xl mx-auto mb-10 text-stone-600">
+                Beyond the feast, Thanksgiving is defined by a few widespread cultural practices that bring communities and families together across the United States.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-red-100 transition-transform transform hover:scale-105 border-b-4 border-red-500">
+                    <h3 class="text-xl font-semibold text-red-700 mb-3"><span class="font-mono text-3xl text-red-400 mr-2">1.</span> Macy's Parade</h3>
+                    <p class="text-stone-600">Held in New York City, this iconic parade features massive balloons, floats, and musical performances, marking the official public start of the day.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-red-100 transition-transform transform hover:scale-105 border-b-4 border-red-500">
+                    <h3 class="text-xl font-semibold text-red-700 mb-3"><span class="font-mono text-3xl text-red-400 mr-2">2.</span> Presidential Pardon</h3>
+                    <p class="text-stone-600">A symbolic and lighthearted tradition where the U.S. President "pardons" a turkey, sparing it from becoming part of the holiday dinner.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-red-100 transition-transform transform hover:scale-105 border-b-4 border-red-500">
+                    <h3 class="text-xl font-semibold text-red-700 mb-3"><span class="font-mono text-3xl text-red-400 mr-2">3.</span> Football Games</h3>
+                    <p class="text-stone-600">Professional and collegiate football games are televised throughout the day, providing traditional entertainment for families gathered together.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-red-100 transition-transform transform hover:scale-105 border-b-4 border-red-500">
+                    <h3 class="text-xl font-semibold text-red-700 mb-3"><span class="font-mono text-3xl text-red-400 mr-2">4.</span> Giving Thanks</h3>
+                    <p class="text-stone-600">Before the meal, many families share a moment where each person expresses something they are genuinely thankful for.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="dinner" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-red-800">Visualizing the Dinner Composition</h2>
+            <p class="text-center max-w-3xl mx-auto mb-10 text-stone-600">
+                The **Thanksgiving dinner** is the centerpiece of the celebration. This chart conceptually breaks down the typical weight and importance of the main components on the modern American dinner plate.
+            </p>
+            <div class="bg-white p-4 sm:p-8 rounded-xl shadow-lg">
+                <div class="chart-container">
+                    <canvas id="dinnerChart"></canvas>
+                </div>
+                <div class="text-center mt-4 text-sm text-stone-500">Hover over the segments to see the role of each dish in the traditional feast.</div>
+            </div>
+        </section>
+        
+        <section id="quotes" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-red-800">20 Thanksgiving Wishes & Quotes</h2>
+            <p class="text-center max-w-3xl mx-auto mb-10 text-stone-600">
+                Share your gratitude! Here are 20 messages and quotes perfect for wishing friends and family a Happy Thanksgiving.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">Wishing you a table full of food and a heart full of joy this Thanksgiving!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">Happy Thanksgiving! May your holiday be blessed with peace and warmth.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">Grateful for you and all your support. Have a wonderful holiday.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">"Gratitude is the memory of the heart." - Jean-Baptiste Massieu</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">May your day be filled with delicious food and great football!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">Thank you for being a bright spot in my life. Happy Turkey Day!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">Sending you the warmest wishes from my family to yours this holiday.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">May the good things of life be yours in abundance. Happy Thanksgiving!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">"The best and most beautiful things cannot be seen or even touched." - Helen Keller</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">Remembering the Pilgrims, the Wampanoag, and the spirit of sharing.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">Time to gather, give thanks, and gain five pounds! Enjoy the feast.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">May you have the joy of a good home and the love of a great family.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">A special thank you to those serving away from home this holiday.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">“We can only be said to be alive in those moments when our hearts are conscious of our treasures.” - Thornton Wilder</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">Wishing you safe travels and meaningful moments with loved ones.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">May the scent of pumpkin pie and the warmth of family fill your day.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">Sending lots of gratitude and cheer across the miles!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">Take a moment today to count your blessings. Happy Thanksgiving!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">"Let us be grateful to the people who make us happy." - Marcel Proust</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-600 text-stone-700">May the stuffing be perfect and the conversation be joyous!</div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-stone-100 mt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-stone-500">
+            <p>&copy; 2025 Thanksgiving Interactive Guide. Cultivating gratitude.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            const activateNav = (id) => {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                });
+                if (mobileNav.value !== `#${id}`) {
+                    mobileNav.value = `#${id}`;
+                }
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        activateNav(entry.target.id);
+                    }
+                });
+            }, { rootMargin: '-30% 0px -70% 0px' });
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            mobileNav.addEventListener('change', (e) => {
+                window.location.href = e.target.value;
+            });
+            
+            const ctx = document.getElementById('dinnerChart').getContext('2d');
+            const dinnerChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Turkey (Protein)', 'Stuffing & Potatoes (Starches)', 'Cranberry Sauce & Sides', 'Dessert (Pie)'],
+                    datasets: [{
+                        label: 'Dinner Composition',
+                        data: [35, 30, 20, 15],
+                        backgroundColor: [
+                            'rgba(185, 28, 28, 0.9)', 
+                            'rgba(245, 158, 11, 0.9)', 
+                            'rgba(67, 133, 35, 0.9)', 
+                            'rgba(251, 191, 36, 0.9)'
+                        ],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: "'Inter', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    let text = '';
+                                    if (label === 'Turkey (Protein)') text = 'The centerpiece, symbolizing the feast.';
+                                    else if (label === 'Stuffing & Potatoes (Starches)') text = 'The bulk of the side dishes, often reflecting early harvests.';
+                                    else if (label === 'Cranberry Sauce & Sides') text = 'Adds color and tartness, often includes green bean casserole.';
+                                    else if (label === 'Dessert (Pie)') text = 'Traditionally pumpkin and pecan pie, marking the sweet end.';
+                                    return `${label}: ${text}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+
+</body>
+</html>

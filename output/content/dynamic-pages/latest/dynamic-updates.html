@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest Updates in Generative AI</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="A curated overview of the latest breakthroughs in Generative and Agentic AI, covering innovations and strategic implications from Google, Anthropic, Stanford, and more.">
+    <meta name="keywords" content="Generative AI, Agentic AI, Google Veo, Gemini, Nano Banana, Claude Skills, Claude Haiku, NanoChat, Stanford ACE, Copilot, HuggingChat, Artificial Intelligence, Machine Learning">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Latest Updates in Generative & Agentic AI">
+    <meta property="og:description" content="A curated overview of the latest breakthroughs in Generative and Agentic AI.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://example.com/">
+    <meta property="og:image" content="https://placehold.co/1200x630/3b82f6/ffffff?text=GenAI+Updates">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Latest Updates in Generative & Agentic AI",
+      "description": "A curated overview of the latest breakthroughs in Generative and Agentic AI, covering innovations and strategic implications from Google, Anthropic, Stanford, and more.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "AI Updates Tracker"
+      }
+    }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9FAFB; /* bg-gray-50 */
+        }
+        .card {
+            background-color: #FFFFFF; /* bg-white */
+            border: 1px solid #E5E7EB; /* border-gray-200 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .accordion-header svg {
+            transition: transform 0.3s ease;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .accordion-content.open {
+            max-height: 1000px; /* Arbitrary large value */
+        }
+        .accordion-header.active svg {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-12">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">Latest Updates in Generative & Agentic AI</h1>
+            <p class="mt-4 text-lg text-gray-600">An overview of recent breakthroughs and their strategic implications.</p>
+        </header>
+
+        <!-- Updates Grid -->
+        <div id="updates-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Loading indicator -->
+            <p id="loading-indicator" class="col-span-full text-center text-gray-500">Loading latest updates...</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLatestUpdates();
+        });
+
+        async function loadLatestUpdates() {
+            const grid = document.getElementById('updates-grid');
+            const loadingIndicator = document.getElementById('loading-indicator');
+
+            // In a real web server environment, you would fetch a list of files.
+            // For this static example, we will list the files manually.
+            // IMPORTANT: Add your new .htm file names to this list.
+            const updateFiles = [
+                '2025-10-20-google-veo.htm',
+                '2025-10-19-gemini-schedule.htm',
+                '2025-10-18-nano-banana.htm',
+                '2025-10-17-claude-skills.htm',
+                '2025-10-16-claude-haiku.htm',
+                '2025-10-15-nanochat.htm',
+                '2025-10-14-stanford-ace.htm',
+                '2025-10-13-copilot-windows.htm',
+                '2025-10-12-huggingchat-omni.htm',
+                // Add more file names here...
+            ];
+
+            // Sort files to get the latest first (descending order) and take the top 12
+            const sortedFiles = updateFiles.sort().reverse().slice(0, 12);
+            
+            if (sortedFiles.length === 0) {
+                 grid.innerHTML = '<p class="col-span-full text-center text-gray-500">No updates found.</p>';
+                 return;
+            }
+
+            // Clear loading indicator
+            loadingIndicator.style.display = 'none';
+
+            for (const file of sortedFiles) {
+                try {
+                    const response = await fetch(`updates/${file}`);
+                    if (!response.ok) {
+                        console.error(`Failed to load update: ${file}`);
+                        continue; // Skip to the next file
+                    }
+                    const html = await response.text();
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+                    grid.appendChild(tempDiv.firstElementChild);
+
+                } catch (error) {
+                    console.error(`Error fetching ${file}:`, error);
+                }
+            }
+            
+            // Re-initialize accordion functionality for the new content
+            initializeAccordions();
+        }
+
+        function initializeAccordions() {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const wasOpen = content.classList.contains('open');
+                    
+                    // Optional: Close all other accordions in the same card
+                    const card = header.closest('.card');
+                    card.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
+                    card.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
+
+                    // Toggle the clicked accordion
+                    if (!wasOpen) {
+                        header.classList.add('active');
+                        content.classList.add('open');
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+

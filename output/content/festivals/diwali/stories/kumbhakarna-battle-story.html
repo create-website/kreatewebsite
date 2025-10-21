@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kumbhakarna's Battle: The Sleeping Giant Awakens</title>
+    <meta name="description" content="The epic Ramayana story of Kumbhakarna, Ravana's giant brother. Learn about his reluctant awakening, his immense power, and his fateful battle against Rama and Lakshmana.">
+    <meta name="keywords" content="Kumbhakarna, Ramayana, Rama, Lakshmana, Ravana, battle, sleeping giant, Hindu mythology, Vanara army">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4B5563; 
+        }
+        .font-sanskrit {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+        }
+        .tab-active {
+            border-color: #D97706;
+            background-color: #FFFBEB;
+            color: #D97706;
+        }
+        .step-item-active {
+            background-color: #D97706;
+            color: #FFFFFF;
+            transform: scale(1.1);
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: This narrative focuses on a single, epic character arc and is structured chronologically to build suspense and awe. 1) A Desperate Summons sets the dire stage for Ravana. 2) The Great Awakening is a unique, interactive section detailing the absurdly difficult task of waking the giant. 3) A Brother's Counsel highlights Kumbhakarna's wisdom and internal conflict before he goes to battle. 4) The Battle begins, presented as a step-by-step interactive narrative of his rampage and eventual defeat. 5) The Giant's Fall provides a tragic but honorable conclusion. This structure effectively portrays Kumbhakarna not just as a monster, but as a complex, duty-bound warrior. -->
+    <!-- Visualization & Content Choices: Report Info: The process of waking Kumbhakarna -> Goal: Show Scale/Process -> Viz/Method: Interactive step-based diagram -> Interaction: Click steps (Drums, Elephants, Feasting) to see the escalating efforts -> Justification: This emphasizes the sheer magnitude of Kumbhakarna's slumber and makes it a memorable, engaging part of the story. | Report Info: Kumbhakarna's confrontation with Ravana -> Goal: Show Character Depth/Conflict -> Viz/Method: Tabbed content -> Interaction: Tabs for "A Fool's Errand" (his criticism) and "A Brother's Vow" (his loyalty) -> Justification: This effectively showcases his internal conflict between wisdom and duty, making him a more compelling character. | Report Info: The battle sequence -> Goal: Detail a large-scale conflict -> Viz/Method: Step-based diagram -> Interaction: Follow the steps from his initial destructive charge to his final confrontation with Rama -> Justification: Breaks down a chaotic battle into a clear, climactic, and easy-to-follow narrative. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-amber-100/30 sticky top-0 z-50 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="font-sanskrit text-2xl font-bold text-amber-800">कुम्भकर्ण-युद्ध</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#summons" class="text-stone-600 hover:text-amber-700 transition">The Summons</a>
+                    <a href="#awakening" class="text-stone-600 hover:text-amber-700 transition">The Awakening</a>
+                    <a href="#battle" class="text-stone-600 hover:text-amber-700 transition">The Battle</a>
+                    <a href="#fall" class="text-stone-600 hover:text-amber-700 transition">The Fall</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="summons" class="text-center my-12 md:my-20">
+            <h1 class="font-sanskrit text-5xl md:text-7xl font-bold text-amber-900 leading-tight">The Sleeping Giant</h1>
+            <p class="mt-4 text-xl md:text-2xl text-stone-600">Lanka's Last Hope</p>
+            <p class="mt-6 max-w-3xl mx-auto text-stone-500">
+                With his greatest generals, sons, and warriors defeated by Rama's army, a desperate Ravana turned to his last resort: his colossal younger brother, Kumbhakarna. Cursed by Brahma to sleep for six months at a time, waking for only a single day, the giant was Lanka's most feared and powerful weapon, a force of nature who could single-handedly turn the tide of the war.
+            </p>
+        </section>
+
+        <section id="awakening" class="my-16 md:my-24 py-12 bg-amber-50/50 rounded-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Great Awakening</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Waking Kumbhakarna before his time was a monumental task. An entire legion of rakshasas was dispatched with a single, seemingly impossible mission: to rouse the sleeping giant from his deep slumber.</p>
+            
+            <div>
+                <div class="flex flex-col md:flex-row justify-center items-center md:space-x-4 mb-6">
+                    <button class="step-item step-item-active w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 mb-2 md:mb-0" data-step="1">1. Sound & Fury</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white mb-2 md:mb-0" data-step="2">2. Brute Force</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white" data-step="3">3. The Aroma of Feasting</button>
+                </div>
+
+                <div id="step-details-awakening" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md min-h-[150px]">
+                    <h4 id="step-title-awakening" class="font-bold text-xl text-amber-700 mb-2">Step 1: Sound & Fury</h4>
+                    <p id="step-description-awakening" class="text-stone-600">First, they tried sound. Thousands of rakshasas beat giant drums, blew massive conches, and screamed into his cavernous ears. The noise was deafening, enough to shake the mountains, but Kumbhakarna merely snored on.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">A Brother's Counsel</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Upon hearing of Ravana's abduction of Sita, Kumbhakarna, despite his loyalty, was furious. He knew his brother's actions were unjust and would lead to ruin.</p>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="flex border-b border-stone-300 mb-6">
+                    <button class="tab-button tab-active flex-1 text-center font-semibold p-3 border-b-2 transition" data-tab="criticism">A Fool's Errand</button>
+                    <button class="tab-button flex-1 text-center font-semibold p-3 border-b-2 border-transparent text-stone-500 transition" data-tab="loyalty">A Brother's Vow</button>
+                </div>
+                <div id="tab-content">
+                    <div id="criticism-content" class="tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">The Voice of Reason</h3>
+                        <p class="text-stone-600">"You have committed a grave sin, brother!" Kumbhakarna thundered. "Your arrogance has brought this calamity upon us. You never sought my counsel when you abducted Sita, but now that you face destruction, you wake me from my sleep. This war is unjust, and Rama is no mere mortal."</p>
+                    </div>
+                    <div id="loyalty-content" class="hidden tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">Unwavering Duty</h3>
+                        <p class="text-stone-600">Despite his condemnation, his loyalty to his elder brother was absolute. "But you are my king and my kin. I will not let you fall while I still live. Put your fears aside. Today, I will feast on your enemies. Rama and Lakshmana will witness my power and their army will be annihilated."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="battle" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Juggernaut of Lanka</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Kumbhakarna strode onto the battlefield like a walking mountain. Wielding a massive trident, he was an unstoppable force, causing terror and devastation in the Vanara ranks.</p>
+            
+            <div>
+                <div class="flex flex-col md:flex-row justify-center items-center md:space-x-4 mb-6">
+                    <button class="step-item-battle step-item-active w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 mb-2 md:mb-0" data-step="1">1. The Rampage</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item-battle w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white mb-2 md:mb-0" data-step="2">2. Duel with Heroes</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item-battle w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white" data-step="3">3. Confronting Rama</button>
+                </div>
+
+                <div id="step-details-battle" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md min-h-[150px]">
+                    <h4 id="step-title-battle" class="font-bold text-xl text-amber-700 mb-2">Step 1: The Rampage</h4>
+                    <p id="step-description-battle" class="text-stone-600">He grabbed Vanaras by the handful, crushing them and casting them aside. He broke their ranks and instilled a fear so profound that even Hanuman and Angada struggled to rally the troops. The ground shook with his every step.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="fall" class="my-16 md:my-24 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-800">An Honorable End</h2>
+            <p class="mt-4 text-lg max-w-3xl mx-auto text-stone-600">
+                Disarmed but still defiant, the giant charged forward, his mouth open to devour everything in his path. In a final, decisive act, Rama unleashed a divine arrow that severed the giant's head. Even in death, his fall was cataclysmic. His body crashed into the sea, causing the waters to rise, and his head fell upon Lanka, crushing buildings beneath it. A great soul, bound by duty to a sinful cause, had finally found release.
+            </p>
+             <div class="text-6xl my-4">🙏</div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-100 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-stone-500">
+            <p>An interactive retelling of the epic battle of Kumbhakarna, the sleeping giant of Lanka.</p>
+            <p class="text-sm mt-2">Inspired by the epic Ramayana.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Awakening Steps
+            const awakeningStepData = {
+                1: { title: 'Step 1: Sound & Fury', description: 'First, they tried sound. Thousands of rakshasas beat giant drums, blew massive conches, and screamed into his cavernous ears. The noise was deafening, enough to shake the mountains, but Kumbhakarna merely snored on.' },
+                2: { title: 'Step 2: Brute Force', description: 'Next, they used force. They prodded him with sharp tridents and pounded his chest with massive clubs. Thousands of elephants were made to march across his colossal body. Still, he did not stir.' },
+                3: { title: 'Step 3: The Aroma of Feasting', description: 'Finally, they brought mountains of food—piles of roasted meat, vats of blood, and fragrant delicacies. The overwhelming aroma finally pierced his consciousness. With a mighty yawn that created a whirlwind, the giant awoke.' }
+            };
+
+            const awakeningStepItems = document.querySelectorAll('#awakening .step-item');
+            const awakeningStepTitle = document.getElementById('step-title-awakening');
+            const awakeningStepDescription = document.getElementById('step-description-awakening');
+
+            awakeningStepItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    awakeningStepItems.forEach(i => i.classList.remove('step-item-active', 'bg-white'));
+                    awakeningStepItems.forEach(i => {
+                        if (i !== item) i.classList.add('bg-white');
+                    });
+                    item.classList.add('step-item-active');
+                    item.classList.remove('bg-white');
+
+                    const step = item.dataset.step;
+                    awakeningStepTitle.textContent = awakeningStepData[step].title;
+                    awakeningStepDescription.textContent = awakeningStepData[step].description;
+                });
+            });
+
+            // Battle Steps
+            const battleStepData = {
+                1: { title: 'Step 1: The Rampage', description: 'He grabbed Vanaras by the handful, crushing them and casting them aside. He broke their ranks and instilled a fear so profound that even Hanuman and Angada struggled to rally the troops. The ground shook with his every step.' },
+                2: { title: 'Step 2: Duel with Heroes', description: 'Lakshmana engaged him with a volley of powerful arrows, but they bounced harmlessly off the giant\'s hide. Kumbhakarna knocked Lakshmana unconscious with a mighty blow. He then faced Sugriva, the Vanara king, and nearly crushed him before Hanuman intervened.' },
+                3: { title: 'Step 3: Confronting Rama', description: 'Seeing the devastation, Rama himself entered the fray. A cosmic battle ensued. With divine arrows, Rama systematically dismembered the giant, first severing his arms as he hurled boulders, then his legs as he charged forward. ' }
+            };
+
+            const battleStepItems = document.querySelectorAll('#battle .step-item-battle');
+            const battleStepTitle = document.getElementById('step-title-battle');
+            const battleStepDescription = document.getElementById('step-description-battle');
+
+            battleStepItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    battleStepItems.forEach(i => i.classList.remove('step-item-active', 'bg-white'));
+                    battleStepItems.forEach(i => {
+                        if (i !== item) i.classList.add('bg-white');
+                    });
+                    item.classList.add('step-item-active');
+                    item.classList.remove('bg-white');
+
+                    const step = item.dataset.step;
+                    battleStepTitle.textContent = battleStepData[step].title;
+                    battleStepDescription.textContent = battleStepData[step].description;
+                });
+            });
+
+            // Tabs
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+                    button.classList.add('tab-active');
+
+                    const tab = button.dataset.tab;
+                    tabPanes.forEach(pane => {
+                        if (pane.id === `${tab}-content`) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            // Smooth scroll for nav links
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+

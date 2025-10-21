@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mysore Dasara: The Royal Festival</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Royal Saffron & Gold -->
+    <!-- Application Structure Plan: The application is designed as a thematic, tabbed single-page application rather than a linear report. This structure was chosen to allow users to explore content based on their interests in a non-linear fashion, which is more intuitive for a guide. The key sections are: Welcome (introduction), History (interactive timeline), The Celebration (day-by-day interactive guide), Key Attractions (visual summary and chart), and a Visitor's Guide (practical tips). This user-centric design breaks down complex information into digestible, interactive modules, enhancing usability and engagement. The user flow is guided by a clear navigation bar, allowing seamless switching between thematic sections without scrolling through irrelevant information. -->
+    <!-- Visualization & Content Choices: 
+        1. History Timeline: Report Info -> Chronological history of Dasara. Goal -> Show evolution over time. Viz/Method -> Interactive HTML/CSS timeline. Interaction -> Clicking a historical period reveals detailed text. Justification -> More engaging and digestible than a long text block for historical data. Method -> HTML, Tailwind, JS.
+        2. 10-Day Celebration Guide: Report Info -> Daily rituals and events of modern Dasara. Goal -> Organize and explain the schedule. Viz/Method -> Interactive day-selector buttons. Interaction -> Clicking a day button updates the content panel with that day's information. Justification -> Breaks down a dense 10-day schedule into manageable pieces. Method -> HTML, Tailwind, JS.
+        3. Attraction Popularity Chart: Report Info -> Major attractions of the festival. Goal -> Compare the perceived scale/popularity of attractions. Viz/Method -> Horizontal Bar Chart. Interaction -> Tooltips on hover provide more context. Justification -> A bar chart provides a quick, quantitative visual comparison that is more impactful than a simple list. Library -> Chart.js (Canvas).
+        CONFIRMATION: All diagrams and layouts are built with HTML and Tailwind. The chart uses Chart.js with a Canvas element. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8E1; 
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        .nav-button.active::after, .nav-button:hover::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background-color: #FFC107; 
+            border-radius: 2px;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 3rem;
+            padding-bottom: 2rem;
+            border-left: 4px solid #D1C4E9;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -12px;
+            top: 0;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background-color: #7E57C2;
+            border: 3px solid #FFF8E1;
+        }
+        .timeline-content-selector {
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .timeline-content-selector.active {
+            background-color: #E1BEE7;
+            color: #4A148C;
+        }
+        .day-selector-btn.active {
+            background-color: #FFC107 !important;
+            color: #424242 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-6xl font-bold text-amber-800">Mysore Dasara</h1>
+            <p class="text-xl text-amber-600 mt-2">The Royal Festival of Karnataka</p>
+        </header>
+
+        <nav class="flex justify-center border-b-2 border-amber-200 mb-8">
+            <button data-target="welcome" class="nav-button active text-sm sm:text-lg font-semibold text-amber-700 py-2 px-4">Welcome</button>
+            <button data-target="history" class="nav-button text-sm sm:text-lg font-semibold text-amber-700 py-2 px-4">History</button>
+            <button data-target="celebration" class="nav-button text-sm sm:text-lg font-semibold text-amber-700 py-2 px-4">Celebration</button>
+            <button data-target="attractions" class="nav-button text-sm sm:text-lg font-semibold text-amber-700 py-2 px-4">Attractions</button>
+            <button data-target="guide" class="nav-button text-sm sm:text-lg font-semibold text-amber-700 py-2 px-4">Guide</button>
+        </nav>
+
+        <main id="main-content">
+            <section id="welcome" class="content-section active p-4 md:p-8 bg-white/50 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-bold text-amber-800 mb-4">A Festival of Grandeur and Tradition</h2>
+                <p class="text-lg leading-relaxed mb-6">
+                    Mysore Dasara, also known as Nadahabba (state-festival), is a 10-day celebration in the city of Mysore, Karnataka. This application is your interactive guide to this magnificent festival, which has a rich history spanning over 400 years. It commemorates the victory of the goddess Chamundeshwari over the demon Mahishasura, symbolizing the triumph of good over evil. Explore the various facets of this grand spectacle, from its historical roots under the Vijayanagara Empire to its modern-day celebrations that attract visitors from across the globe.
+                </p>
+                <div class="grid md:grid-cols-3 gap-6 text-center">
+                    <div class="bg-amber-100 p-6 rounded-lg">
+                        <span class="text-4xl">👑</span>
+                        <h3 class="text-xl font-bold mt-2 text-amber-900">Royal Heritage</h3>
+                        <p class="mt-1 text-amber-700">Experience the legacy of the Wodeyar dynasty and their patronage.</p>
+                    </div>
+                    <div class="bg-purple-100 p-6 rounded-lg">
+                        <span class="text-4xl">🐘</span>
+                        <h3 class="text-xl font-bold mt-2 text-purple-900">Cultural Spectacle</h3>
+                        <p class="mt-1 text-purple-700">Witness the world-famous Jumboo Savari and vibrant processions.</p>
+                    </div>
+                    <div class="bg-orange-100 p-6 rounded-lg">
+                        <span class="text-4xl">💡</span>
+                        <h3 class="text-xl font-bold mt-2 text-orange-900">City of Lights</h3>
+                        <p class="mt-1 text-orange-700">See the Mysore Palace illuminated by nearly 100,000 bulbs.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="history" class="content-section p-4 md:p-8 bg-white/50 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-bold text-amber-800 mb-4">The Evolution of a Royal Tradition</h2>
+                 <p class="text-lg leading-relaxed mb-8">
+                    The history of Mysore Dasara is a fascinating journey through centuries of royal patronage and cultural evolution. It began with the Vijayanagara Kings in the 15th century and was later adopted and scaled by the Wodeyars of Mysore. This interactive timeline allows you to explore the key eras that have shaped the festival into the grand celebration it is today. Click on each period to learn about its unique contribution to the Dasara legacy.
+                </p>
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="md:w-1/3">
+                        <div id="timeline-selectors">
+                             <div class="p-4 rounded-lg timeline-content-selector active" data-target="vijayanagara">
+                                <h3 class="font-bold text-lg">15th-16th Century</h3>
+                                <p class="text-sm">The Vijayanagara Origins</p>
+                            </div>
+                            <div class="p-4 rounded-lg timeline-content-selector" data-target="wodeyar-start">
+                                <h3 class="font-bold text-lg">1610</h3>
+                                <p class="text-sm">Wodeyar Dynasty's Adoption</p>
+                            </div>
+                             <div class="p-4 rounded-lg timeline-content-selector" data-target="tippu">
+                                <h3 class="font-bold text-lg">Late 18th Century</h3>
+                                <p class="text-sm">Interruption and Revival</p>
+                            </div>
+                            <div class="p-4 rounded-lg timeline-content-selector" data-target="krishnaraja">
+                                <h3 class="font-bold text-lg">1805 Onwards</h3>
+                                <p class="text-sm">The Grand Durbar</p>
+                            </div>
+                            <div class="p-4 rounded-lg timeline-content-selector" data-target="modern">
+                                <h3 class="font-bold text-lg">Post-1971</h3>
+                                <p class="text-sm">Transition to a State Festival</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-2/3" id="timeline-content-display">
+                        <div id="vijayanagara" class="timeline-details">
+                            <h3 class="text-2xl font-bold text-purple-800 mb-2">The Vijayanagara Origins</h3>
+                            <p class="leading-relaxed">The tradition of celebrating Dasara with royal pomp and pageantry is believed to have started with the Vijayanagara Empire in the 15th century. Foreign travelers like Domingo Paes wrote vivid accounts of the grand "Mahanavami" festival at Hampi. The core elements of military parades, royal processions, and worship of the state sword and throne were established during this era, setting a precedent for future kingdoms.</p>
+                        </div>
+                        <div id="wodeyar-start" class="timeline-details hidden">
+                             <h3 class="text-2xl font-bold text-purple-800 mb-2">Wodeyar Dynasty's Adoption</h3>
+                            <p class="leading-relaxed">After the fall of the Vijayanagara Empire, Raja Wodeyar I of Mysore revived the tradition in Srirangapatna in 1610. He understood the political and cultural significance of the festival in establishing sovereignty and continuity. He instituted the practice of ascending the royal throne and holding a special durbar (royal court), firmly rooting the Dasara celebrations in the identity of the Mysore Kingdom.</p>
+                        </div>
+                        <div id="tippu" class="timeline-details hidden">
+                             <h3 class="text-2xl font-bold text-purple-800 mb-2">Interruption and Revival</h3>
+                            <p class="leading-relaxed">The celebrations faced a brief hiatus during the reign of Hyder Ali and Tipu Sultan. However, following the death of Tipu Sultan in 1799, the British reinstated the Wodeyar dynasty. The newly crowned Krishnaraja Wodeyar III shifted the capital to Mysore and immediately worked to revive the Dasara festivities with renewed vigor, seeing it as a way to re-establish the cultural authority of his kingdom.</p>
+                        </div>
+                        <div id="krishnaraja" class="timeline-details hidden">
+                            <h3 class="text-2xl font-bold text-purple-800 mb-2">The Grand Durbar</h3>
+                            <p class="leading-relaxed">Under Krishnaraja Wodeyar III, the Dasara Durbar became an elaborate affair. It was an occasion for the king to meet his subjects, receive tributes from feudatory chiefs, and display the military and cultural might of the state. The tradition of the grand procession on Vijayadashami day, which later evolved into the Jumboo Savari, gained prominence during his long reign, making Mysore the undisputed center of Dasara celebrations.</p>
+                        </div>
+                        <div id="modern" class="timeline-details hidden">
+                             <h3 class="text-2xl font-bold text-purple-800 mb-2">Transition to a State Festival</h3>
+                            <p class="leading-relaxed">After India's independence and the abolition of the princely states, the festival's future was uncertain. However, the Government of Karnataka took over the responsibility of conducting the festival, preserving its cultural essence while adapting it for a modern, democratic era. It was designated as the 'Nadahabba' or State Festival. While the royal family continues its private traditions, the public spectacle, including the grand procession, is now a state-sponsored event that celebrates the heritage of Karnataka.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="celebration" class="content-section p-4 md:p-8 bg-white/50 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-bold text-amber-800 mb-4">The Ten Days of Splendor</h2>
+                 <p class="text-lg leading-relaxed mb-8">
+                    The modern Mysore Dasara is a meticulously planned 10-day event, with each day holding special significance. The festivities begin with rituals at the Chamundi Hills and the Mysore Palace and culminate in the grand procession on Vijayadashami. This section provides a glimpse into the daily events that make up the festival. Use the buttons below to explore the schedule and discover the rituals and cultural programs of each day.
+                </p>
+                <div class="flex flex-wrap justify-center gap-2 mb-6" id="day-selectors">
+                </div>
+                <div id="day-content" class="bg-amber-50 p-6 rounded-lg min-h-[200px]">
+                </div>
+            </section>
+
+            <section id="attractions" class="content-section p-4 md:p-8 bg-white/50 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-bold text-amber-800 mb-4">Must-See Attractions</h2>
+                <p class="text-lg leading-relaxed mb-8">
+                    Mysore Dasara is not just a single event but a collection of spectacular attractions that transform the entire city. From the breathtaking illumination of the Mysore Palace to the world-renowned Jumboo Savari, each element offers a unique experience. This section highlights the key attractions. The chart below visualizes the relative visitor interest in these major events, giving you an idea of the festival's most popular components.
+                </p>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                         <ul class="space-y-4">
+                            <li class="p-4 bg-amber-100 rounded-lg">
+                                <h3 class="font-bold text-lg text-amber-900">Jumboo Savari (The Elephant Procession)</h3>
+                                <p class="text-amber-800">The grand finale on Vijayadashami day, featuring the lead elephant carrying the idol of Goddess Chamundeshwari in a 750kg Golden Howdah.</p>
+                            </li>
+                            <li class="p-4 bg-purple-100 rounded-lg">
+                                <h3 class="font-bold text-lg text-purple-900">Mysore Palace Illumination</h3>
+                                <p class="text-purple-800">The entire palace is lit up with nearly 100,000 bulbs every evening, creating a truly magical sight.</p>
+                            </li>
+                             <li class="p-4 bg-orange-100 rounded-lg">
+                                <h3 class="font-bold text-lg text-orange-900">Dasara Exhibition</h3>
+                                <p class="text-orange-800">A massive exhibition that starts during Dasara and lasts for several months, featuring stalls, food, and amusement rides.</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="attractionsChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="guide" class="content-section p-4 md:p-8 bg-white/50 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-bold text-amber-800 mb-4">Your Visitor's Guide</h2>
+                 <p class="text-lg leading-relaxed mb-6">
+                    Planning a trip to witness Mysore Dasara can be an exciting experience. To help you make the most of your visit, this guide provides essential information and practical tips. From the best time to visit to navigating the city during the festive rush, these insights will help ensure a memorable and hassle-free trip to the heart of the celebrations.
+                </p>
+                 <div class="space-y-4">
+                    <div class="border border-amber-200 rounded-lg">
+                        <button class="w-full text-left p-4 bg-amber-100 hover:bg-amber-200 font-bold text-lg text-amber-800 focus:outline-none accordion-toggle">When to Visit?</button>
+                        <div class="accordion-content p-4 bg-white hidden">
+                            <p>Dasara is celebrated for ten days in the Hindu month of Ashvin, which typically falls in September or October. The final day, Vijayadashami, is the most spectacular. It's best to check the official dates for the specific year you plan to visit. Book your accommodation and travel well in advance as the city gets extremely crowded.</p>
+                        </div>
+                    </div>
+                     <div class="border border-amber-200 rounded-lg">
+                        <button class="w-full text-left p-4 bg-amber-100 hover:bg-amber-200 font-bold text-lg text-amber-800 focus:outline-none accordion-toggle">Getting Around</button>
+                        <div class="accordion-content p-4 bg-white hidden">
+                            <p>During Dasara, many roads in the city center, especially around the palace, are closed for the procession. It's advisable to use public transport or walk. Auto-rickshaws and app-based taxi services are available but may have surge pricing. The best way to experience the festivities is on foot.</p>
+                        </div>
+                    </div>
+                     <div class="border border-amber-200 rounded-lg">
+                        <button class="w-full text-left p-4 bg-amber-100 hover:bg-amber-200 font-bold text-lg text-amber-800 focus:outline-none accordion-toggle">Insider Tips</button>
+                        <div class="accordion-content p-4 bg-white hidden">
+                           <ul class="list-disc list-inside space-y-2">
+                                <li><strong>Gold Card:</strong> The Karnataka State Tourism Development Corporation (KSTDC) often sells a 'Gold Card' which provides entry to all major Dasara events and tourist spots, helping you bypass long queues.</li>
+                                <li><strong>Palace Illumination:</strong> The palace is lit from 7 PM to 10 PM. Arrive early to find a good spot for photos.</li>
+                                <li><strong>Jumboo Savari Route:</strong> The procession covers a 5 km route from the palace to Bannimantap. Find a spot along the route early to get a good view.</li>
+                                <li><strong>Local Cuisine:</strong> Don't miss trying Mysore's famous sweets like Mysore Pak and savory dishes during your visit.</li>
+                           </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navButtons = document.querySelectorAll('.nav-button');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    contentSections.forEach(section => {
+                        if (section.id === targetId) {
+                            section.classList.add('active');
+                        } else {
+                            section.classList.remove('active');
+                        }
+                    });
+                });
+            });
+            
+            const timelineSelectors = document.querySelectorAll('.timeline-content-selector');
+            const timelineDetails = document.querySelectorAll('.timeline-details');
+
+            timelineSelectors.forEach(selector => {
+                selector.addEventListener('click', () => {
+                    const targetId = selector.dataset.target;
+                    
+                    timelineSelectors.forEach(s => s.classList.remove('active'));
+                    selector.classList.add('active');
+                    
+                    timelineDetails.forEach(detail => {
+                         if (detail.id === targetId) {
+                            detail.classList.remove('hidden');
+                        } else {
+                            detail.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            const dayData = [
+                { day: 1, title: 'Inauguration & Rituals', description: 'The festival begins with a puja performed to Goddess Chamundeshwari atop the Chamundi Hills. This is inaugurated by a prominent personality, followed by the private durbar of the royal family at the Mysore Palace.' },
+                { day: 2, title: 'Cultural Programs Begin', description: 'Various cultural programs, including classical music and dance performances by artists from all over India, commence at venues across the city, most notably in front of the illuminated Mysore Palace.' },
+                { day: 3, title: 'Music and Dance Fest', description: 'The cultural evenings continue, showcasing a diverse range of Indian performing arts. The city buzzes with artistic energy and traditional performances.' },
+                { day: 4, title: 'Royal Processions & Arts', description: 'The royal family conducts its private rituals. Public events include folk art performances, wrestling tournaments (Vajra Mushti Kalaga), and food festivals.' },
+                { day: 5, title: 'Saraswati Puja', description: 'Special pujas are dedicated to Goddess Saraswati, the deity of knowledge and arts. The royal family worships the ancient scriptures and the royal sword.' },
+                { day: 6, title: 'Military and Police Bands', description: 'Spectacular performances by military and police bands are held. The city continues to be a hub of cultural activity with concerts and dance dramas.' },
+                { day: 7, title: 'Kusti - Traditional Wrestling', description: 'The famous Dasara wrestling tournament attracts wrestlers from across the country, keeping an ancient tradition alive in a vibrant atmosphere.' },
+                { day: 8, title: 'Durga Ashtami', description: 'This day is marked by special pujas to Goddess Durga. It is a significant day of worship within the nine nights of Navaratri.' },
+                { day: 9, title: 'Mahanavami & Ayudha Puja', description: 'Known as Ayudha Puja, this day involves the worship of instruments and tools. From vehicles to computers, everything is worshipped as a symbol of one\'s livelihood.' },
+                { day: 10, title: 'Vijayadashami - The Grand Finale', description: 'The culmination of the festival is the world-famous Jumboo Savari, a grand procession of elephants, horses, cultural troupes, and the idol of Chamundeshwari in a golden howdah.' }
+            ];
+
+            const daySelectorsContainer = document.getElementById('day-selectors');
+            const dayContentContainer = document.getElementById('day-content');
+
+            dayData.forEach((day, index) => {
+                const button = document.createElement('button');
+                button.className = 'day-selector-btn px-3 py-2 text-sm md:px-4 md:py-2 rounded-full font-semibold bg-white text-gray-700 hover:bg-amber-100 transition shadow-sm';
+                button.textContent = `Day ${day.day}`;
+                button.dataset.index = index;
+                if (index === 0) {
+                    button.classList.add('active');
+                }
+                daySelectorsContainer.appendChild(button);
+            });
+            
+            function updateDayContent(index) {
+                const data = dayData[index];
+                dayContentContainer.innerHTML = `
+                    <h3 class="text-2xl font-bold text-purple-800 mb-2">${data.title} (Day ${data.day})</h3>
+                    <p class="text-lg leading-relaxed">${data.description}</p>
+                `;
+            }
+            
+            daySelectorsContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('day-selector-btn')) {
+                    const allBtns = daySelectorsContainer.querySelectorAll('.day-selector-btn');
+                    allBtns.forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                    updateDayContent(e.target.dataset.index);
+                }
+            });
+
+            updateDayContent(0);
+
+            const ctx = document.getElementById('attractionsChart').getContext('2d');
+            const attractionsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jumboo Savari', 'Palace Illumination', 'Dasara Exhibition', 'Cultural Programs', 'Torchlight Parade'],
+                    datasets: [{
+                        label: 'Relative Visitor Interest',
+                        data: [95, 92, 80, 75, 85],
+                        backgroundColor: [
+                            'rgba(126, 87, 194, 0.6)',
+                            'rgba(255, 193, 7, 0.6)',
+                            'rgba(255, 152, 0, 0.6)',
+                            'rgba(239, 108, 0, 0.6)',
+                            'rgba(211, 47, 47, 0.6)'
+                        ],
+                        borderColor: [
+                             'rgba(126, 87, 194, 1)',
+                             'rgba(255, 193, 7, 1)',
+                             'rgba(255, 152, 0, 1)',
+                             'rgba(239, 108, 0, 1)',
+                             'rgba(211, 47, 47, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Interest Level (Arbitrary Units)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Popularity of Key Dasara Attractions',
+                            font: {
+                                size: 18,
+                                family: "'Lora', serif"
+                            }
+                        }
+                    }
+                }
+            });
+
+            const accordionToggles = document.querySelectorAll('.accordion-toggle');
+            accordionToggles.forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const isVisible = !content.classList.contains('hidden');
+                    
+                    document.querySelectorAll('.accordion-content').forEach(el => el.classList.add('hidden'));
+
+                    if (!isVisible) {
+                        content.classList.remove('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

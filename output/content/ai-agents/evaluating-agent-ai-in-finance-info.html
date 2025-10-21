@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Agentic AI Evaluation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Corporate Calm -->
+    <!-- Application Structure Plan: A tab-based single-page application. This structure cleanly separates the three core pillars of the topic (Metrics, Lifecycle, Methods) into distinct, self-contained views. This prevents the cognitive load of a long scrolling page and encourages users to focus on one concept at a time. The primary interaction is a "Build Your Own Agent Profile" tool in the Metrics tab, which actively engages the user in understanding the trade-offs of different evaluation priorities. This structure was chosen for its clarity and for promoting a more deliberate, educational user journey. -->
+    <!-- Visualization & Content Choices: 
+        1. Metrics: Report Info -> Key metric categories. Goal -> Engage & Inform. Viz -> Four interactive sliders linked to a dynamic Doughnut Chart (Chart.js). Interaction -> Users adjust sliders to set the importance of each metric category, and the doughnut chart updates in real-time to visualize their custom "Agent Evaluation Profile". Justification -> This turns passive information consumption into an active learning tool about priority trade-offs.
+        2. Lifecycle: Report Info -> The stages of AI evaluation. Goal -> Organize & Explain. Viz -> A horizontal stepper/timeline component built with HTML/CSS. Interaction -> Clicking on a step number reveals detailed information about that stage. Justification -> A horizontal flow is a more intuitive and modern UI pattern for representing a sequential process than a simple vertical list.
+        3. Methods: Report Info -> Different evaluation techniques. Goal -> Compare & Analyze. Viz -> A grouped Bar Chart (Chart.js). Interaction -> The chart displays all methods against all criteria simultaneously. A dropdown allows the user to highlight a specific method's bars for easier focus. Justification -> A grouped bar chart offers a richer, more immediate comparison across multiple dimensions than a chart that requires user input to switch criteria.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6f9;
+            color: #334155;
+        }
+        .tab-button {
+            transition: all 0.2s ease-in-out;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-button.active {
+            border-bottom-color: #2563eb;
+            color: #2563eb;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .step-item.active .step-circle {
+            background-color: #2563eb;
+            color: white;
+            transform: scale(1.1);
+        }
+        .step-item.active .step-title {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        .step-line {
+            height: 2px;
+            background-color: #d1d5db;
+        }
+        .slider-thumb::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #2563eb;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .slider-thumb::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #2563eb;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .chart-container {
+             position: relative; 
+             width: 100%; 
+             max-width: 600px; 
+             margin-left: auto; 
+             margin-right: auto; 
+             height: 350px;
+             max-height: 400px;
+        }
+        @media (min-width: 768px) { 
+            .chart-container { 
+                height: 400px; 
+            } 
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="app" class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-800">Agentic AI in Finance</h1>
+            <p class="mt-3 text-lg text-slate-600 max-w-3xl mx-auto">An interactive guide to the metrics, lifecycle, and methods for evaluating autonomous financial agents.</p>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-lg">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex justify-center space-x-4 md:space-x-8" aria-label="Tabs">
+                    <button class="tab-button active whitespace-nowrap py-4 px-1 text-base font-medium" data-tab="metrics">Core Metrics</button>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 text-base font-medium" data-tab="lifecycle">Evaluation Lifecycle</button>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 text-base font-medium" data-tab="methods">Evaluation Methods</button>
+                </nav>
+            </div>
+
+            <div class="p-6 md:p-10">
+                <div id="metrics" class="tab-content active">
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl font-bold text-slate-800">Build Your Agent Evaluation Profile</h2>
+                        <p class="mt-2 text-slate-600">Different financial agents require different evaluation priorities. Use the sliders to define what's most important for a hypothetical agent, and see your custom evaluation profile visualized in the chart.</p>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div class="space-y-6">
+                            <div>
+                                <label for="success-slider" class="flex justify-between font-medium text-slate-700"><span>📈 Task Success</span><span id="success-value">50%</span></label>
+                                <input id="success-slider" type="range" min="0" max="100" value="50" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb">
+                                <p class="text-sm text-slate-500 mt-1">Measures goal completion and accuracy.</p>
+                            </div>
+                            <div>
+                                <label for="economic-slider" class="flex justify-between font-medium text-slate-700"><span>💰 Economic Impact</span><span id="economic-value">50%</span></label>
+                                <input id="economic-slider" type="range" min="0" max="100" value="50" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb">
+                                <p class="text-sm text-slate-500 mt-1">Quantifies P&L, ROI, and cost savings.</p>
+                            </div>
+                             <div>
+                                <label for="operational-slider" class="flex justify-between font-medium text-slate-700"><span>⚙️ Operational Efficiency</span><span id="operational-value">50%</span></label>
+                                <input id="operational-slider" type="range" min="0" max="100" value="50" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb">
+                                <p class="text-sm text-slate-500 mt-1">Assesses latency and computational cost.</p>
+                            </div>
+                            <div>
+                                <label for="safety-slider" class="flex justify-between font-medium text-slate-700"><span>🛡️ Safety & Compliance</span><span id="safety-value">50%</span></label>
+                                <input id="safety-slider" type="range" min="0" max="100" value="50" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb">
+                                <p class="text-sm text-slate-500 mt-1">Checks for regulatory adherence and errors.</p>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="metricsDoughnutChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="lifecycle" class="tab-content">
+                    <div class="text-center mb-12">
+                        <h2 class="text-2xl font-bold text-slate-800">The Continuous Evaluation Lifecycle</h2>
+                        <p class="mt-2 text-slate-600">Agent evaluation is an ongoing process, not a one-off check. Follow the lifecycle from initial design to live monitoring by clicking on each step to learn more.</p>
+                    </div>
+                    <div class="w-full max-w-4xl mx-auto">
+                        <div class="flex items-center">
+                            <div class="step-item active flex-1 text-center cursor-pointer" data-step="1">
+                                <div class="step-circle mx-auto h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-lg text-slate-600 transition-all duration-300">1</div>
+                                <p class="step-title mt-2 text-sm md:text-base font-medium text-slate-600 transition-colors">Define Goals</p>
+                            </div>
+                            <div class="step-line flex-1"></div>
+                            <div class="step-item flex-1 text-center cursor-pointer" data-step="2">
+                                <div class="step-circle mx-auto h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-lg text-slate-600 transition-all duration-300">2</div>
+                                <p class="step-title mt-2 text-sm md:text-base font-medium text-slate-600 transition-colors">Offline Tests</p>
+                            </div>
+                            <div class="step-line flex-1"></div>
+                             <div class="step-item flex-1 text-center cursor-pointer" data-step="3">
+                                <div class="step-circle mx-auto h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-lg text-slate-600 transition-all duration-300">3</div>
+                                <p class="step-title mt-2 text-sm md:text-base font-medium text-slate-600 transition-colors">Human Review</p>
+                            </div>
+                             <div class="step-line flex-1"></div>
+                            <div class="step-item flex-1 text-center cursor-pointer" data-step="4">
+                                <div class="step-circle mx-auto h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-lg text-slate-600 transition-all duration-300">4</div>
+                                <p class="step-title mt-2 text-sm md:text-base font-medium text-slate-600 transition-colors">Staged Rollout</p>
+                            </div>
+                             <div class="step-line flex-1"></div>
+                            <div class="step-item flex-1 text-center cursor-pointer" data-step="5">
+                                <div class="step-circle mx-auto h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-lg text-slate-600 transition-all duration-300">5</div>
+                                <p class="step-title mt-2 text-sm md:text-base font-medium text-slate-600 transition-colors">Monitor Live</p>
+                            </div>
+                        </div>
+                        <div id="lifecycle-details" class="mt-8 p-6 bg-slate-50 rounded-lg min-h-[150px]">
+                            <h3 id="lifecycle-title" class="text-lg font-semibold text-slate-800">1. Define Goals & Metrics</h3>
+                            <p id="lifecycle-description" class="mt-2 text-slate-600">The crucial first step is to translate business objectives into specific, measurable performance metrics for the agent. This ensures technical development is aligned with tangible business value from the very beginning.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="methods" class="tab-content">
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl font-bold text-slate-800">Comparative Analysis of Evaluation Methods</h2>
+                        <p class="mt-2 text-slate-600">Each evaluation method offers a unique balance of cost, realism, safety, and scalability. The chart below compares common methods across these criteria. Use the dropdown to highlight a specific method.</p>
+                    </div>
+                     <div class="flex justify-end mb-4">
+                        <label for="method-highlighter" class="text-sm font-medium text-slate-700 mr-2 self-center">Highlight Method:</label>
+                        <select id="method-highlighter" class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            <option value="all">Show All</option>
+                            <option value="0">Backtesting</option>
+                            <option value="1">Simulation</option>
+                            <option value="2">Human-in-the-Loop</option>
+                            <option value="3">A/B Testing</option>
+                        </select>
+                    </div>
+                    <div class="chart-container h-[400px] max-h-[500px]">
+                        <canvas id="methodsBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="text-center py-6 mt-8">
+            <p class="text-sm text-slate-500">A dynamic learning tool for Agentic AI Evaluation Frameworks.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-button');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
+
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab).classList.add('active');
+                });
+            });
+
+            let doughnutChart;
+            const sliders = {
+                success: document.getElementById('success-slider'),
+                economic: document.getElementById('economic-slider'),
+                operational: document.getElementById('operational-slider'),
+                safety: document.getElementById('safety-slider'),
+            };
+            const values = {
+                success: document.getElementById('success-value'),
+                economic: document.getElementById('economic-value'),
+                operational: document.getElementById('operational-value'),
+                safety: document.getElementById('safety-value'),
+            };
+
+            const setupDoughnutChart = () => {
+                const ctx = document.getElementById('metricsDoughnutChart').getContext('2d');
+                doughnutChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Task Success', 'Economic Impact', 'Operational Efficiency', 'Safety & Compliance'],
+                        datasets: [{
+                            label: 'Evaluation Profile Weighting',
+                            data: [50, 50, 50, 50],
+                            backgroundColor: ['#3b82f6', '#16a34a', '#f97316', '#ef4444'],
+                            borderColor: '#ffffff',
+                            borderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '60%',
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                        const value = context.raw;
+                                        const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                        return `${context.label}: ${percentage}%`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            };
+            
+            const updateDoughnutChart = () => {
+                const data = Object.keys(sliders).map(key => parseInt(sliders[key].value, 10));
+                doughnutChart.data.datasets[0].data = data;
+                doughnutChart.update();
+
+                const total = data.reduce((a, b) => a + b, 0);
+                Object.keys(sliders).forEach((key, index) => {
+                    const percentage = total > 0 ? ((data[index] / total) * 100).toFixed(0) : 0;
+                    values[key].textContent = `${percentage}%`;
+                });
+            };
+
+            Object.values(sliders).forEach(slider => {
+                slider.addEventListener('input', updateDoughnutChart);
+            });
+            
+            setupDoughnutChart();
+            updateDoughnutChart();
+
+            const lifecycleData = {
+                '1': { title: '1. Define Goals & Metrics', description: 'The crucial first step is to translate business objectives into specific, measurable performance metrics for the agent. This ensures technical development is aligned with tangible business value from the very beginning.' },
+                '2': { title: '2. Offline Evaluation', description: 'In this "sandbox" phase, the agent is tested on historical data (backtesting) and in simulated environments. This allows for rigorous performance assessment and failure analysis in a safe, risk-free setting.' },
+                '3': { title: '3. Human-in-the-Loop Review', description: 'The agent proposes actions, but a human expert must review and approve them before execution. This is a critical safety step that builds trust and allows for capturing expert feedback to refine the agent\'s logic.' },
+                '4': { title: '4. Staged Rollout', description: 'The agent is deployed gradually, perhaps in "shadow mode" (running without executing trades) or in an A/B test with a small amount of capital. This minimizes risk and provides a performance baseline against existing systems.' },
+                '5': { title: '5. Continuous Live Monitoring', description: 'Once fully deployed, the agent is monitored in real-time for performance, operational health, and model drift. Automated alerts are crucial to flag anomalies and ensure the system remains safe and effective.' },
+            };
+
+            const stepItems = document.querySelectorAll('.step-item');
+            const lifecycleTitle = document.getElementById('lifecycle-title');
+            const lifecycleDescription = document.getElementById('lifecycle-description');
+            
+            stepItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    stepItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    
+                    const stepData = lifecycleData[item.dataset.step];
+                    lifecycleTitle.textContent = stepData.title;
+                    lifecycleDescription.textContent = stepData.description;
+                });
+            });
+
+            let barChart;
+            const methodsData = {
+                labels: ['Backtesting', 'Simulation', 'Human-in-the-Loop', 'A/B Testing'],
+                datasets: [
+                    { label: 'Cost (Lower is Better)', data: [2, 4, 8, 7], backgroundColor: '#60a5fa', stack: 'Cost' },
+                    { label: 'Fidelity (Realism)', data: [5, 7, 9, 9], backgroundColor: '#4ade80', stack: 'Fidelity' },
+                    { label: 'Safety Assessment', data: [3, 6, 9, 8], backgroundColor: '#f87171', stack: 'Safety' },
+                    { label: 'Scalability', data: [9, 8, 3, 6], backgroundColor: '#facc15', stack: 'Scalability' },
+                ]
+            };
+            const baseColors = ['#60a5fa', '#4ade80', '#f87171', '#facc15'];
+            const highlightColor = '#020617';
+
+            const setupBarChart = () => {
+                const ctx = document.getElementById('methodsBarChart').getContext('2d');
+                barChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: JSON.parse(JSON.stringify(methodsData)),
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, max: 10, title: { display: true, text: 'Relative Score (1-10)' } },
+                            x: {}
+                        },
+                        plugins: {
+                            legend: { position: 'top' },
+                            tooltip: { mode: 'index', intersect: false }
+                        },
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                    }
+                });
+            };
+
+            const methodHighlighter = document.getElementById('method-highlighter');
+            methodHighlighter.addEventListener('change', (e) => {
+                const selectedIndex = e.target.value;
+                
+                barChart.data.datasets.forEach((dataset, i) => {
+                    const newColors = new Array(methodsData.labels.length).fill(baseColors[i] + '80');
+                    if(selectedIndex !== 'all') {
+                         newColors[selectedIndex] = baseColors[i];
+                    } else {
+                        newColors.fill(baseColors[i]);
+                    }
+                    dataset.backgroundColor = newColors;
+                    dataset.borderColor = newColors.map(c => c.slice(0, 7));
+                    dataset.borderWidth = selectedIndex === 'all' ? 0 : 1;
+                });
+                barChart.update();
+            });
+
+            setupBarChart();
+        });
+    </script>
+</body>
+</html>

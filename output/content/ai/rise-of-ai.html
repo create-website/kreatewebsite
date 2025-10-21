@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Rise of Artificial Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Narrative & Structure Plan: The infographic tells the story of AI's ascent from a historical concept to a modern-day powerhouse. It starts with a powerful hook (market size) to grab attention. It then moves chronologically through key milestones to provide context. The structure then deconstructs AI into its core components for better understanding, followed by its real-world impact across industries. Finally, it addresses the societal dimension with public perception data and looks toward the future. This narrative flow guides the user logically from 'what it is' to 'why it matters'. -->
+    <!-- Visualization & Content Choices:
+        - AI Market Size: Data Point -> Projected 2030 market value. Goal -> Inform. Chosen Visualization -> Single Big Number. Justification -> Maximum impact for a single, powerful statistic. Method -> HTML/CSS.
+        - AI Milestones: Data Point -> Key historical events. Goal -> Show Change. Chosen Visualization -> Vertical Timeline. Justification -> Clearly shows progress over time in a scannable format. Method -> Structured HTML/CSS with Tailwind (NO SVG).
+        - Core AI Disciplines: Data Point -> Breakdown of AI fields by focus/investment. Goal -> Compare/Organize. Chosen Visualization -> Donut Chart. Justification -> Excellent for showing parts of a whole, making the complex field of AI digestible. Library -> Chart.js (Canvas).
+        - Industry Adoption: Data Point -> AI adoption rates by sector. Goal -> Compare. Chosen Visualization -> Bar Chart. Justification -> The best tool for comparing distinct categories (industries) against a common metric (adoption %). Library -> Chart.js (Canvas).
+        - Future of AI: Data Point -> Key future trends. Goal -> Organize. Chosen Visualization -> Styled Cards. Justification -> Allows for clear separation and explanation of distinct qualitative concepts. Method -> HTML/CSS with Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #073B4C; 
+            color: #F7F7F7;
+        }
+        .font-roboto-mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 0.25rem;
+            left: -0.625rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            background-color: #FFD166;
+            border-radius: 9999px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="container mx-auto px-6 py-12">
+        
+        <header class="text-center my-16">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">The Rise of <span class="text-[#06D6A0]">Artificial Intelligence</span></h1>
+            <p class="max-w-3xl mx-auto text-lg text-gray-300">
+                From theoretical concept to global powerhouse, AI is reshaping our world. This infographic explores the key milestones, applications, and future trajectory of this transformative technology.
+            </p>
+        </header>
+
+        <section id="hook" class="my-24">
+            <div class="bg-[#118AB2] p-8 md:p-12 rounded-lg shadow-2xl text-center">
+                <p class="text-2xl md:text-3xl font-semibold text-gray-200 mb-2">Projected Global AI Market Size by 2030</p>
+                <h2 class="text-6xl md:text-8xl font-bold font-roboto-mono text-white tracking-tighter text-[#FFD166]">$1.8 Trillion</h2>
+                <p class="text-lg text-gray-300 mt-4">Fueling innovation across every conceivable industry.</p>
+            </div>
+        </section>
+        
+        <section id="timeline" class="my-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">A Journey Through Time</h2>
+                <p class="max-w-2xl mx-auto text-gray-300 mt-2">Key milestones that paved the way for the modern AI revolution.</p>
+            </div>
+            <div class="relative max-w-2xl mx-auto">
+                <div class="absolute top-0 h-full w-0.5 bg-[#118AB2] left-2"></div>
+                <div class="space-y-12">
+                    <div class="timeline-item relative pl-10">
+                        <h3 class="font-bold text-xl text-[#FFD166]">1950 - The Turing Test</h3>
+                        <p class="text-gray-300">Alan Turing proposes a test for machine intelligence, laying the philosophical groundwork for AI.</p>
+                    </div>
+                    <div class="timeline-item relative pl-10">
+                        <h3 class="font-bold text-xl text-[#FFD166]">1997 - Deep Blue vs. Kasparov</h3>
+                        <p class="text-gray-300">IBM's Deep Blue chess computer defeats world champion Garry Kasparov, a landmark moment for AI in strategic competition.</p>
+                    </div>
+                     <div class="timeline-item relative pl-10">
+                        <h3 class="font-bold text-xl text-[#FFD166]">2011 - Watson Wins Jeopardy!</h3>
+                        <p class="text-gray-300">IBM's Watson demonstrates mastery of natural language processing and knowledge retrieval on a popular quiz show.</p>
+                    </div>
+                    <div class="timeline-item relative pl-10">
+                        <h3 class="font-bold text-xl text-[#FFD166]">2016 - AlphaGo's Victory</h3>
+                        <p class="text-gray-300">Google DeepMind's AlphaGo defeats Go champion Lee Sedol, showcasing the power of deep reinforcement learning.</p>
+                    </div>
+                     <div class="timeline-item relative pl-10">
+                        <h3 class="font-bold text-xl text-[#FFD166]">2022 - Generative AI Goes Mainstream</h3>
+                        <p class="text-gray-300">Advanced models like GPT-3 and DALL-E 2 become widely accessible, enabling creation of human-like text and images.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="components" class="my-24">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="text-center lg:text-left">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">What is Modern AI?</h2>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        Today's AI is not a single entity, but a collection of powerful disciplines. Machine Learning forms the backbone, enabling systems to learn from data. Natural Language Processing allows them to understand and generate human language, while Computer Vision gives them the ability to "see" and interpret the visual world.
+                    </p>
+                </div>
+                <div class="bg-[#118AB2] p-6 rounded-lg shadow-2xl">
+                    <div class="chart-container relative w-full max-w-md mx-auto h-80 md:h-96">
+                        <canvas id="disciplinesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="adoption" class="my-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">AI in Action: Industry Adoption</h2>
+                <p class="max-w-2xl mx-auto text-gray-300 mt-2">AI is no longer theoretical; it's a practical tool driving efficiency and innovation across sectors.</p>
+            </div>
+            <div class="bg-[#118AB2] p-6 rounded-lg shadow-2xl">
+                 <div class="chart-container relative w-full max-w-4xl mx-auto h-[50vh] min-h-[400px]">
+                    <canvas id="adoptionChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="future" class="my-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">The Road Ahead</h2>
+                <p class="max-w-2xl mx-auto text-gray-300 mt-2">The future of AI promises even greater integration into our lives, alongside important ethical considerations.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-[#FF6B6B] p-6 rounded-lg shadow-xl text-center">
+                    <h3 class="text-2xl font-bold text-white mb-2">Hyper-Personalization</h3>
+                    <p class="text-white/90">AI will deliver experiences and products tailored precisely to individual needs in real-time.</p>
+                </div>
+                 <div class="bg-[#06D6A0] p-6 rounded-lg shadow-xl text-center">
+                    <h3 class="text-2xl font-bold text-dark mb-2 text-[#073B4C]">Ethical Frameworks</h3>
+                    <p class="text-[#073B4C]/90">Developing rules for fairness, transparency, and accountability will be crucial for responsible AI deployment.</p>
+                </div>
+                 <div class="bg-[#FFD166] p-6 rounded-lg shadow-xl text-center">
+                    <h3 class="text-2xl font-bold text-[#073B4C] mb-2">Human-AI Collaboration</h3>
+                    <p class="text-[#073B4C]/90">The focus will shift from automation to augmentation, with AI enhancing human capabilities.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+<!--
+    
+    <footer class="border-t border-[#118AB2] mt-16">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-400">
+            <p>Data-driven insights on Artificial Intelligence.</p>
+        </div>
+    </footer>
+
+-->
+
+    <script>
+        function wrapLabels(label) {
+            if (typeof label === 'string' && label.length > 16) {
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > 16) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            }
+            return label;
+        }
+
+        const tooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const disciplinesCtx = document.getElementById('disciplinesChart').getContext('2d');
+            new Chart(disciplinesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Machine Learning', 'Natural Language Processing (NLP)', 'Computer Vision', 'Robotics & Automation'],
+                    datasets: [{
+                        label: 'AI Disciplines by Research Focus',
+                        data: [45, 25, 20, 10],
+                        backgroundColor: ['#FF6B6B', '#FFD166', '#06D6A0', '#4ECDC4'],
+                        borderColor: '#118AB2',
+                        borderWidth: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                             labels: { color: '#F7F7F7', font: { size: 14 } }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Core AI Disciplines by Focus',
+                            color: '#F7F7F7',
+                            font: { size: 18, weight: 'bold' }
+                        },
+                        tooltip: {
+                            callbacks: { title: tooltipTitleCallback }
+                        }
+                    }
+                }
+            });
+
+            const adoptionCtx = document.getElementById('adoptionChart').getContext('2d');
+            const adoptionLabels = ['Technology, Media, and Telecom', 'Financial Services', 'Healthcare & Pharma', 'Retail & Consumer Goods', 'Automotive & Manufacturing'];
+            new Chart(adoptionCtx, {
+                type: 'bar',
+                data: {
+                    labels: adoptionLabels.map(wrapLabels),
+                    datasets: [{
+                        label: 'AI Adoption Rate (%)',
+                        data: [75, 68, 55, 52, 45],
+                        backgroundColor: '#06D6A0',
+                        borderColor: '#05A983',
+                        borderWidth: 2,
+                        borderRadius: 5,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            ticks: { color: '#F7F7F7', font: { size: 14 } },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#F7F7F7', font: { size: 14 }, callback: (value) => value + '%' },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: 'AI Adoption Rate by Industry',
+                            color: '#F7F7F7',
+                            font: { size: 18, weight: 'bold' }
+                        },
+                        tooltip: {
+                            callbacks: { title: tooltipTitleCallback }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

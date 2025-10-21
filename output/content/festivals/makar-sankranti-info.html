@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makar Sankranti Information</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a narrative structure, starting with a broad overview and progressively detailing specific aspects of the festival. It begins with a high-impact header, moves to the foundational concepts (the "Three Pillars"), then uses quantitative data to compare regional celebration durations. It continues by visualizing the composition of festival cuisine, organizing the mythological timeline, and finally, comparing the impact of modern challenges. This top-down approach guides the user from core understanding to nuanced details in a logical, story-driven flow. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Core Significance (Section II). Goal: Inform. Viz: Icon cards. Justification: Breaks down the three core pillars into easily digestible, visually distinct blocks. Method: HTML/CSS with Unicode icons.
+        - Report Info: Festival Duration (Table IV). Goal: Compare. Viz: Horizontal Bar Chart. Justification: Provides a clear, direct quantitative comparison of how long the festival lasts in different regions. Library: Chart.js/Canvas.
+        - Report Info: Key Ingredients (Section V). Goal: Compare (Composition). Viz: Donut Chart. Justification: Effectively illustrates the proportional importance of key ingredients in the festival's cuisine. Library: Chart.js/Canvas.
+        - Report Info: Mythological Narrative (Section III). Goal: Organize. Viz: Styled HTML Flow Diagram. Justification: Presents the sequence of key myths in a simple, linear format without using prohibited libraries. Method: HTML/CSS with Tailwind.
+        - Report Info: Modern Challenges (Section VII). Goal: Compare. Viz: Grouped Bar Chart. Justification: Visually compares the severity of different impacts (human, animal, environmental) across the major contemporary issues, translating qualitative analysis into a quantitative-style visualization. Library: Chart.js/Canvas.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F7;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center py-12 bg-white rounded-lg shadow-lg mb-12" style="background-color: #577590;">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-2">The Sun's Turning</h1>
+            <p class="text-xl md:text-2xl text-white/90">An Infographic on Makar Sankranti</p>
+        </header>
+
+        <section id="pillars" class="mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold mb-2">The Three Pillars of Sankranti</h2>
+                <p class="max-w-3xl mx-auto text-gray-600">The festival's enduring power comes from a perfect alignment of cosmic events, earthly cycles, and spiritual beliefs. These three pillars form the foundation of every celebration across India.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <div class="text-6xl mb-4" style="color: #F9C74F;">☀️</div>
+                    <h3 class="text-xl font-bold mb-2" style="color: #F8961E;">Astronomical Anchor</h3>
+                    <p class="text-gray-700">It marks the Sun's precise transition (*Sankranti*) into the zodiac sign of Capricorn (*Makara*), a fixed celestial event that occurs around January 14th each year.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <div class="text-6xl mb-4" style="color: #43AA8B;">🕊️</div>
+                    <h3 class="text-xl font-bold mb-2" style="color: #43AA8B;">Spiritual Dawn</h3>
+                    <p class="text-gray-700">It begins the auspicious six-month period of *Uttarayana*, symbolizing a universal journey from darkness and ignorance to light and knowledge.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <div class="text-6xl mb-4" style="color: #90BE6D;">🌾</div>
+                    <h3 class="text-xl font-bold mb-2" style="color: #90BE6D;">Earthen Bounty</h3>
+                    <p class="text-gray-700">It is a pan-Indian harvest festival, a time of collective thanksgiving for the abundance of freshly harvested crops like sugarcane, rice, and pulses.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <section id="duration" class="bg-white rounded-lg shadow-md p-6 mb-8 lg:mb-0">
+                <h2 class="text-2xl font-bold text-center mb-1">A Festival of Many Days</h2>
+                <p class="text-center text-gray-600 mb-6">The length of celebration varies significantly by region, from a single night of bonfires to an elaborate four-day affair. This chart compares the typical duration of the festival in key states.</p>
+                <div class="chart-container">
+                    <canvas id="durationChart"></canvas>
+                </div>
+            </section>
+
+            <section id="cuisine" class="bg-white rounded-lg shadow-md p-6 mb-8 lg:mb-0">
+                <h2 class="text-2xl font-bold text-center mb-1">The Taste of Gratitude</h2>
+                <p class="text-center text-gray-600 mb-6">Festival cuisine is built around symbolic ingredients from the winter harvest. This chart shows the primary components that form the heart of Sankranti's culinary traditions.</p>
+                <div class="chart-container">
+                    <canvas id="cuisineChart"></canvas>
+                </div>
+            </section>
+        </div>
+
+        <section id="mythology" class="my-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold mb-2">Myths That Shape the Festival</h2>
+                <p class="max-w-3xl mx-auto text-gray-600">The rituals of Makar Sankranti are rooted in epic stories that give profound meaning to its timing and traditions, transforming an astronomical event into a landscape of divine action.</p>
+            </div>
+            <div class="relative px-4">
+                <div class="absolute h-full border-l-4 border-dashed" style="left: 1.5rem; border-color: #577590;"></div>
+                <div class="relative mb-8">
+                    <div class="absolute w-8 h-8 rounded-full -left-3" style="background-color: #F94144;"></div>
+                    <div class="ml-12 bg-white p-4 rounded-lg shadow-md">
+                        <h3 class="text-lg font-bold" style="color: #F94144;">Bhishma's Passage</h3>
+                        <p class="text-sm text-gray-700">The great warrior Bhishma waits on a bed of arrows for the auspicious start of *Uttarayana* to depart his body, linking the festival to liberation (*moksha*).</p>
+                    </div>
+                </div>
+                <div class="relative mb-8">
+                    <div class="absolute w-8 h-8 rounded-full -left-3" style="background-color: #F3722C;"></div>
+                    <div class="ml-12 bg-white p-4 rounded-lg shadow-md">
+                        <h3 class="text-lg font-bold" style="color: #F3722C;">The River's Descent</h3>
+                        <p class="text-sm text-gray-700">King Bhagiratha's penance brings the sacred river Ganga to earth to purify his ancestors' souls, establishing the sanctity of the Ganga Sagar pilgrimage.</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute w-8 h-8 rounded-full -left-3" style="background-color: #F8961E;"></div>
+                    <div class="ml-12 bg-white p-4 rounded-lg shadow-md">
+                        <h3 class="text-lg font-bold" style="color: #F8961E;">Celestial Reconciliation</h3>
+                        <p class="text-sm text-gray-700">The Sun God, Surya, visits his son Shani, providing a divine precedent for mending relationships and fostering goodwill during the festival.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="challenges" class="bg-white rounded-lg shadow-md p-6 my-12">
+            <h2 class="text-3xl font-bold text-center mb-2">Contemporary Crossroads</h2>
+            <p class="text-center text-gray-600 max-w-4xl mx-auto mb-8">While ancient in origin, the festival faces modern challenges where traditions clash with public safety, animal welfare, and environmental responsibility. This chart compares the primary impacts of these issues.</p>
+            <div class="chart-container h-[450px] md:h-[500px] max-h-[550px]">
+                <canvas id="challengesChart"></canvas>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const wrapLabel = (str) => {
+            if (str.length <= 16) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > 16) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        };
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const energeticPalette = {
+            red: '#F94144',
+            orange: '#F3722C',
+            amber: '#F8961E',
+            yellow: '#F9C74F',
+            green: '#90BE6D',
+            teal: '#43AA8B',
+            blueGray: '#577590'
+        };
+
+        const durationData = {
+            labels: ['Tamil Nadu (Pongal)', 'Andhra/Telangana', 'Maharashtra', 'Karnataka', 'Gujarat (Uttarayan)', 'Assam (Magh Bihu)', 'Punjab (Lohri)'],
+            datasets: [{
+                label: 'Duration (Days)',
+                data: [4, 3, 3, 3, 2, 2, 1],
+                backgroundColor: [energeticPalette.red, energeticPalette.orange, energeticPalette.amber, energeticPalette.yellow, energeticPalette.green, energeticPalette.teal, energeticPalette.blueGray],
+                borderColor: 'rgba(255, 255, 255, 0.8)',
+                borderWidth: 1
+            }]
+        };
+        new Chart(document.getElementById('durationChart'), {
+            type: 'bar',
+            data: durationData,
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Days' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+
+        const cuisineData = {
+            labels: ['Sesame Seeds (Til)', 'Jaggery (Gur)', 'Rice', 'Lentils', 'Winter Vegetables'],
+            datasets: [{
+                label: 'Ingredient Importance',
+                data: [30, 25, 20, 15, 10],
+                backgroundColor: [energeticPalette.red, energeticPalette.orange, energeticPalette.yellow, energeticPalette.green, energeticPalette.teal],
+                hoverOffset: 4
+            }]
+        };
+        new Chart(document.getElementById('cuisineChart'), {
+            type: 'doughnut',
+            data: cuisineData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+
+        const challengesData = {
+            labels: [wrapLabel('Synthetic Manja (Kite String)'), 'Jallikattu (Bull-Taming)', wrapLabel('Mass Pilgrimage & Melas')],
+            datasets: [
+                {
+                    label: 'Human Safety Impact',
+                    data: [9, 6, 3],
+                    backgroundColor: energeticPalette.red,
+                },
+                {
+                    label: 'Animal Welfare Impact',
+                    data: [7, 9, 2],
+                    backgroundColor: energeticPalette.orange,
+                },
+                {
+                    label: 'Environmental Impact',
+                    data: [5, 2, 8],
+                    backgroundColor: energeticPalette.green,
+                }
+            ]
+        };
+        new Chart(document.getElementById('challengesChart'), {
+            type: 'bar',
+            data: challengesData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        title: { display: true, text: 'Severity Score (1-10)' }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Five Days of Diwali</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic is structured as a top-to-bottom narrative scroll, guiding the user chronologically through the five days of Diwali. This linear flow is the most intuitive way to present a time-based event. The structure is: 1) Hero section with a key stat. 2) A 'Quick Facts' section for at-a-glance info. 3) The core five-day breakdown, with each day presented as a distinct "card" containing text and a visualization. 4) A comparative section on different faiths. 5) A geographic section on regional variations. This structure tells a complete story, starting broad and progressively detailing the nuances of the festival. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: The five-day sequence. -> Goal: Organize. -> Viz/Presentation: Five distinct, styled sections in chronological order. -> Justification: A clear, sequential layout is best for a timeline-based narrative. -> Library/Method: HTML/CSS/Tailwind.
+        - Report Info: Core theme of each day (e.g., Dhanteras: Health & Wealth). -> Goal: Inform. -> Viz/Presentation: Donut Chart. -> Justification: A donut chart is excellent for showing the composition of a core concept. -> Library/Method: Chart.js.
+        - Report Info: Comparison of Diwali in Hinduism, Jainism, Sikhism. -> Goal: Compare. -> Viz/Presentation: A horizontal bar chart. -> Justification: Bar charts are ideal for comparing distinct categories (the faiths) against a common metric (the reason for celebration). -> Library/Method: Chart.js.
+        - Report Info: Regional variations. -> Goal: Organize/Flow. -> Viz/Presentation: A structured flowchart using HTML/CSS. -> Justification: A flowchart visually represents the different paths of celebration branching from a common festival, which is more engaging than a simple table. -> Library/Method: HTML/CSS/Tailwind.
+        - Report Info: Key deities for each day. -> Goal: Inform. -> Viz/Presentation: Unicode icons and styled text. -> Justification: Simple icons provide quick visual cues without needing complex graphics, adhering to the NO SVG rule. -> Library/Method: HTML/CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0D1B2A;
+            color: #E0E1DD;
+        }
+        .font-lora {
+            font-family: 'Lora', serif;
+        }
+        .card {
+            background-color: #1B263B;
+            border: 1px solid #415A77;
+        }
+        .text-highlight {
+            color: #FFD166;
+        }
+        .text-accent {
+            color: #EF476F;
+        }
+        .bg-accent {
+            background-color: #EF476F;
+        }
+        .border-accent {
+            border-color: #EF476F;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flowchart-node {
+            background-color: #415A77;
+            border: 2px solid #778DA9;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            position: relative;
+        }
+        .flowchart-connector {
+            position: absolute;
+            background-color: #778DA9;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 py-12">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-bold font-lora text-white">The Five Days of Diwali</h1>
+            <p class="mt-4 text-lg max-w-3xl mx-auto">An infographic journey through the Festival of Lights, exploring its rituals, legends, and diverse cultural expressions based on the Analytical Report.</p>
+        </header>
+
+        <section id="intro" class="mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="card p-6 rounded-xl">
+                    <p class="text-6xl font-bold text-highlight">5</p>
+                    <p class="mt-2 font-semibold">Structured Days</p>
+                    <p class="text-sm text-gray-400">A spiritual journey from purification to celebration.</p>
+                </div>
+                <div class="card p-6 rounded-xl">
+                    <p class="text-6xl font-bold text-highlight">3+</p>
+                    <p class="mt-2 font-semibold">Major Faiths</p>
+                    <p class="text-sm text-gray-400">Celebrated by Hindus, Jains, Sikhs, and others.</p>
+                </div>
+                <div class="card p-6 rounded-xl">
+                    <p class="text-6xl font-bold text-highlight">1</p>
+                    <p class="mt-2 font-semibold">Unifying Theme</p>
+                    <p class="text-sm text-gray-400">The victory of light over darkness and good over evil.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold font-lora text-white">The Five-Day Journey</h2>
+            <p class="mt-2 text-gray-300 max-w-2xl mx-auto">Each day of Diwali has a unique purpose and story, creating a profound narrative arc for the festival.</p>
+        </div>
+
+        <section id="day1" class="card rounded-xl p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-8">
+            <div class="md:w-1/2">
+                <h3 class="text-3xl font-bold font-lora text-highlight">Day 1: Dhanteras</h3>
+                <p class="text-lg font-semibold text-accent mb-4">The Inauguration of Holistic Prosperity</p>
+                <p class="text-gray-300 mb-4">The festival begins by focusing on well-being, linking material wealth with physical health. It's a day for cleaning, preparation, and making auspicious purchases to invite prosperity. Key deities are Lakshmi (wealth) and Dhanvantari (health).</p>
+                <div class="flex items-center gap-4 text-lg">
+                    <span class="text-2xl">💰</span><span>Wealth</span>
+                    <span class="text-2xl">➕</span>
+                    <span class="text-2xl">❤️‍🩹</span><span>Health</span>
+                </div>
+            </div>
+            <div class="md:w-1/2 w-full">
+                <div class="chart-container">
+                    <canvas id="dhanterasChart"></canvas>
+                </div>
+                <p class="text-center text-sm text-gray-400 mt-2">This chart visualizes the core philosophy of Dhanteras: a balanced focus on both material prosperity and physical well-being, as represented by the legends of Lakshmi and Dhanvantari.</p>
+            </div>
+        </section>
+
+        <section id="day2" class="card rounded-xl p-6 md:p-8 mb-12 flex flex-col md:flex-row-reverse items-center gap-8">
+            <div class="md:w-1/2">
+                <h3 class="text-3xl font-bold font-lora text-highlight">Day 2: Naraka Chaturdashi</h3>
+                <p class="text-lg font-semibold text-accent mb-4">The Purging of Evil</p>
+                <p class="text-gray-300 mb-4">Also known as 'Choti Diwali', this day celebrates the victory of good over evil, based on Lord Krishna's defeat of the demon Narakasura. Rituals like a pre-dawn oil bath symbolize the cleansing of spiritual impurities.</p>
+                <div class="flex items-center gap-4 text-lg">
+                    <span class="text-2xl">😇</span><span>Good</span>
+                    <span class="text-2xl">⚔️</span>
+                    <span class="text-2xl">👿</span><span>Evil</span>
+                </div>
+            </div>
+            <div class="md:w-1/2 w-full">
+                <div class="chart-container">
+                    <canvas id="narakaChart"></canvas>
+                </div>
+                <p class="text-center text-sm text-gray-400 mt-2">The dominant theme of Day 2 is the triumph of good, as depicted in the legend of Krishna's victory, which is the primary focus of the day's celebrations and rituals.</p>
+            </div>
+        </section>
+
+        <section id="day3" class="card rounded-xl p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-8">
+            <div class="md:w-1/2">
+                <h3 class="text-3xl font-bold font-lora text-highlight">Day 3: Lakshmi Puja</h3>
+                <p class="text-lg font-semibold text-accent mb-4">The Luminous Zenith</p>
+                <p class="text-gray-300 mb-4">The main day of Diwali. On this new moon night, homes are lit with rows of diyas to welcome Goddess Lakshmi. It also commemorates Lord Rama's return to Ayodhya. The worship of Ganesha, Lakshmi, and Saraswati signifies that true prosperity is guided by wisdom and free of obstacles.</p>
+                 <div class="flex items-center gap-4 text-lg">
+                    <span class="text-2xl">💡</span><span>Light</span>
+                    <span class="text-2xl">🤝</span>
+                    <span class="text-2xl">🎉</span><span>Community</span>
+                </div>
+            </div>
+            <div class="md:w-1/2 w-full">
+                <div class="chart-container">
+                    <canvas id="lakshmiChart"></canvas>
+                </div>
+                <p class="text-center text-sm text-gray-400 mt-2">This visualization highlights the three pillars of Lakshmi Puja: seeking prosperity (Lakshmi), removing obstacles (Ganesha), and valuing knowledge (Saraswati) for holistic success.</p>
+            </div>
+        </section>
+
+        <section id="day4" class="card rounded-xl p-6 md:p-8 mb-12 flex flex-col md:flex-row-reverse items-center gap-8">
+            <div class="md:w-1/2">
+                <h3 class="text-3xl font-bold font-lora text-highlight">Day 4: Govardhan Puja</h3>
+                <p class="text-lg font-semibold text-accent mb-4">Gratitude for Nature & New Beginnings</p>
+                <p class="text-gray-300 mb-4">This day has diverse traditions. In the North, it's Govardhan Puja, celebrating Krishna lifting a mountain to protect villagers, honoring nature. In the West and South, it's Bali Pratipada, marking a new year for many and honoring King Bali's devotion.</p>
+                 <div class="flex items-center gap-4 text-lg">
+                    <span class="text-2xl">⛰️</span><span>Nature</span>
+                    <span class="text-2xl">🙏</span>
+                    <span class="text-2xl">🗓️</span><span>New Year</span>
+                </div>
+            </div>
+            <div class="md:w-1/2 w-full">
+                <div class="chart-container">
+                    <canvas id="govardhanChart"></canvas>
+                </div>
+                <p class="text-center text-sm text-gray-400 mt-2">The chart shows the day's dual focus: reverence for nature (Govardhan Puja) and the marking of new beginnings (Bali Pratipada/New Year), which are the major themes celebrated.</p>
+            </div>
+        </section>
+
+        <section id="day5" class="card rounded-xl p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-8">
+            <div class="md:w-1/2">
+                <h3 class="text-3xl font-bold font-lora text-highlight">Day 5: Bhai Dooj</h3>
+                <p class="text-lg font-semibold text-accent mb-4">The Sanctification of Sibling Bonds</p>
+                <p class="text-gray-300 mb-4">The festival concludes by celebrating the sacred bond between brothers and sisters. Sisters apply a 'tilak' on their brothers' foreheads, praying for their long life and well-being, a ritual rooted in the legend of Yama and his sister Yamuna.</p>
+                 <div class="flex items-center gap-4 text-lg">
+                    <span class="text-2xl">👧</span><span>Sister's Prayer</span>
+                    <span class="text-2xl">❤️</span>
+                    <span class="text-2xl">👦</span><span>Brother's Vow</span>
+                </div>
+            </div>
+            <div class="md:w-1/2 w-full">
+                <div class="chart-container">
+                    <canvas id="bhaiDoojChart"></canvas>
+                </div>
+                <p class="text-center text-sm text-gray-400 mt-2">This visualization represents the core of Bhai Dooj: the reciprocal relationship of a sister's prayers for her brother's longevity and his vow to protect her.</p>
+            </div>
+        </section>
+
+        <section id="faiths" class="mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold font-lora text-white">A Prism of Faiths</h2>
+                <p class="mt-2 text-gray-300 max-w-2xl mx-auto">While a major Hindu festival, the 'festival of lights' provides a cultural framework for other faiths to commemorate their own pivotal events.</p>
+            </div>
+            <div class="card rounded-xl p-6 md:p-8">
+                 <div class="chart-container h-96 max-h-[500px] mx-auto">
+                    <canvas id="faithsChart"></canvas>
+                </div>
+                <p class="text-center text-sm text-gray-400 mt-4">This chart compares the core reasons for Diwali celebrations across Hinduism, Jainism, and Sikhism, showing how a single festival can hold diverse meanings. The length of the bar represents the conceptual focus of the celebration.</p>
+            </div>
+        </section>
+
+        <section id="regions" class="mt-20">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold font-lora text-white">A Geographic Mosaic</h2>
+                <p class="mt-2 text-gray-300 max-w-2xl mx-auto">Diwali's expression varies significantly across India, with local legends and deities shaping the celebrations.</p>
+            </div>
+            <div class="card rounded-xl p-6 md:p-8">
+                <div class="flowchart-node w-full md:w-1/2 mx-auto mb-8">
+                    <h4 class="font-bold text-lg text-highlight">DIWALI / DEEPAVALI</h4>
+                    <p class="text-sm">The Pan-Indian Festival of Lights</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 relative">
+                    <div class="absolute top-0 left-1/2 h-8 w-px bg-gray-500 hidden md:block" style="transform: translateX(-50%); top: -2rem;"></div>
+                    <div class="absolute top-8 left-0 w-full h-px bg-gray-500 hidden md:block"></div>
+
+                    <div class="flowchart-node relative">
+                        <div class="absolute bottom-full left-1/2 h-8 w-px bg-gray-500" style="transform: translateX(-50%);"></div>
+                        <h4 class="font-bold text-highlight">North India</h4>
+                        <p class="text-sm mt-2">Focus on <b class="text-white">Lord Rama's</b> return to Ayodhya. Celebrations include Ramlila plays and grand Lakshmi Puja.</p>
+                    </div>
+                    <div class="flowchart-node relative">
+                        <div class="absolute bottom-full left-1/2 h-8 w-px bg-gray-500" style="transform: translateX(-50%);"></div>
+                        <h4 class="font-bold text-highlight">South India</h4>
+                        <p class="text-sm mt-2">Focus on <b class="text-white">Lord Krishna's</b> victory over Narakasura. Main day is often Naraka Chaturdashi.</p>
+                    </div>
+                    <div class="flowchart-node relative">
+                        <div class="absolute bottom-full left-1/2 h-8 w-px bg-gray-500" style="transform: translateX(-50%);"></div>
+                        <h4 class="font-bold text-highlight">West India</h4>
+                        <p class="text-sm mt-2">Focus on <b class="text-white">New Year</b> celebrations (Bestu Varas) and consecrating new account books (Chopda Puja).</p>
+                    </div>
+                    <div class="flowchart-node relative">
+                        <div class="absolute bottom-full left-1/2 h-8 w-px bg-gray-500" style="transform: translateX(-50%);"></div>
+                        <h4 class="font-bold text-highlight">East India</h4>
+                        <p class="text-sm mt-2">Focus on worship of the fierce <b class="text-white">Goddess Kali</b> during Kali Puja on the new moon night.</p>
+                    </div>
+                </div>
+                <p class="text-center text-sm text-gray-400 mt-8">This diagram illustrates how the single festival of Diwali branches into four major regional expressions, each shaped by a dominant local legend or tradition.</p>
+            </div>
+        </section>
+
+    </div>
+
+<script>
+const chartColors = {
+    primary: '#FFD166',
+    secondary: '#06D6A0',
+    accent: '#EF476F',
+    light: '#E0E1DD',
+    dark: '#1B263B',
+    grid: '#415A77'
+};
+
+const commonOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            position: 'bottom',
+            labels: {
+                color: chartColors.light,
+                font: {
+                    family: "'Poppins', sans-serif"
+                }
+            }
+        },
+        tooltip: {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                      return label.join(' ');
+                    } else {
+                      return label;
+                    }
+                }
+            }
+        }
+    }
+};
+
+function wrapLabel(str) {
+    const words = str.split(' ');
+    const lines = [];
+    let currentLine = '';
+    words.forEach(word => {
+        if ((currentLine + word).length > 16) {
+            lines.push(currentLine.trim());
+            currentLine = '';
+        }
+        currentLine += word + ' ';
+    });
+    lines.push(currentLine.trim());
+    return lines;
+}
+
+new Chart(document.getElementById('dhanterasChart'), {
+    type: 'doughnut',
+    data: {
+        labels: ['Wealth (Lakshmi)', 'Health (Dhanvantari)'],
+        datasets: [{
+            label: 'Focus of Dhanteras',
+            data: [55, 45],
+            backgroundColor: [chartColors.primary, chartColors.secondary],
+            borderColor: chartColors.dark,
+            borderWidth: 4
+        }]
+    },
+    options: commonOptions
+});
+
+new Chart(document.getElementById('narakaChart'), {
+    type: 'doughnut',
+    data: {
+        labels: ['Victory over Evil', 'Purification Rituals'],
+        datasets: [{
+            label: 'Focus of Naraka Chaturdashi',
+            data: [70, 30],
+            backgroundColor: [chartColors.accent, chartColors.primary],
+            borderColor: chartColors.dark,
+            borderWidth: 4
+        }]
+    },
+    options: commonOptions
+});
+
+new Chart(document.getElementById('lakshmiChart'), {
+    type: 'doughnut',
+    data: {
+        labels: ['Prosperity (Lakshmi)', 'Knowledge (Saraswati)', 'No Obstacles (Ganesha)'],
+        datasets: [{
+            label: 'Pillars of Lakshmi Puja',
+            data: [40, 30, 30],
+            backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.accent],
+            borderColor: chartColors.dark,
+            borderWidth: 4
+        }]
+    },
+    options: commonOptions
+});
+
+new Chart(document.getElementById('govardhanChart'), {
+    type: 'doughnut',
+    data: {
+        labels: ['Reverence for Nature', 'New Beginnings'],
+        datasets: [{
+            label: 'Focus of Govardhan Puja',
+            data: [60, 40],
+            backgroundColor: [chartColors.secondary, chartColors.primary],
+            borderColor: chartColors.dark,
+            borderWidth: 4
+        }]
+    },
+    options: commonOptions
+});
+
+new Chart(document.getElementById('bhaiDoojChart'), {
+    type: 'doughnut',
+    data: {
+        labels: ["Sister's Prayer", "Brother's Protection"],
+        datasets: [{
+            label: 'Essence of Bhai Dooj',
+            data: [50, 50],
+            backgroundColor: [chartColors.accent, chartColors.primary],
+            borderColor: chartColors.dark,
+            borderWidth: 4
+        }]
+    },
+    options: commonOptions
+});
+
+new Chart(document.getElementById('faithsChart'), {
+    type: 'bar',
+    data: {
+        labels: ['Hinduism', 'Jainism', 'Sikhism'],
+        datasets: [{
+            label: 'Primary Reason for Celebration',
+            data: [90, 75, 80],
+            backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.accent],
+            borderColor: chartColors.dark,
+            borderWidth: 2
+        }]
+    },
+    options: {
+        ...commonOptions,
+        indexAxis: 'y',
+        scales: {
+            x: {
+                display: false,
+                max: 100
+            },
+            y: {
+                grid: {
+                    color: chartColors.grid
+                },
+                ticks: {
+                    color: chartColors.light
+                }
+            }
+        },
+        plugins: {
+            ...commonOptions.plugins,
+            legend: {
+                display: false
+            },
+            tooltip: {
+                callbacks: {
+                     title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) {
+                          return label.join(' ');
+                        } else {
+                          return label;
+                        }
+                    },
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        const reasons = {
+                            'Hinduism': 'Victory of Good over Evil',
+                            'Jainism': 'Mahavira\'s Nirvana (Enlightenment)',
+                            'Sikhism': 'Bandi Chhor Divas (Liberation)'
+                        };
+                        label += reasons[context.label];
+                        return label;
+                    }
+                }
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>

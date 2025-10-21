@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Organizing a Ramleela</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Saffron & Stone -->
+    <!-- Application Structure Plan: The application is designed as a phased guide, using a tabbed navigation (Planning, Execution, Post-Event, Checklist) to mirror the natural progression of event management. This task-oriented flow is more intuitive for users than a simple document. The "Planning" section includes an interactive budget chart for financial insights. The "Execution" section features a timeline for a clear chronological overview. The "Checklist" section transforms the guide into a practical, usable tool. This structure breaks down a complex project into manageable, explorable stages, enhancing user understanding and engagement. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Overall event organization process -> Goal: Organize/Inform -> Viz/Presentation: Tabbed sections -> Interaction: Click to navigate between phases -> Justification: Provides a clear, structured, and non-overwhelming user journey through a complex process -> Method: HTML/JS.
+        - Report Info: Budget allocation -> Goal: Compare/Inform -> Viz/Presentation: Donut Chart -> Interaction: Hover for tooltips on cost categories -> Justification: A donut chart effectively shows the proportional distribution of funds, which is a key planning aspect -> Library: Chart.js (Canvas).
+        - Report Info: Pre-event timeline -> Goal: Organize/Change -> Viz/Presentation: Vertical timeline diagram -> Interaction: Visual progression of tasks -> Justification: A timeline clearly illustrates the chronological sequence and urgency of tasks leading up to the event -> Method: HTML/CSS (Tailwind).
+        - Report Info: Comprehensive task list -> Goal: Organize/Track -> Viz/Presentation: Interactive Checklist -> Interaction: Click to mark tasks as complete (strikethrough/color change) -> Justification: Turns passive information into an active tool for users to track their progress, greatly increasing utility -> Method: HTML/JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FEF3C7; 
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        .nav-link.active {
+            border-bottom-color: #D97706; 
+            color: #92400E; 
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .checklist-item input:checked + label {
+            text-decoration: line-through;
+            color: #6B7280;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #FBBF24;
+            border: 4px solid #FEF3C7;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-amber-800 mb-2">A Practical Guide to Organizing a Ramleela</h1>
+            <p class="text-lg text-stone-600">Your interactive dashboard for planning and executing a memorable performance.</p>
+        </header>
+
+        <nav class="flex justify-center border-b-2 border-amber-200 mb-8">
+            <button class="nav-link active font-semibold py-4 px-6 text-stone-700" data-target="planning">Phase 1: Planning</button>
+            <button class="nav-link font-semibold py-4 px-6 text-stone-700" data-target="execution">Phase 2: Execution</button>
+            <button class="nav-link font-semibold py-4 px-6 text-stone-700" data-target="post-event">Phase 3: Post-Event</button>
+            <button class="nav-link font-semibold py-4 px-6 text-stone-700" data-target="checklist">Interactive Checklist</button>
+        </nav>
+
+        <main>
+            <section id="planning" class="content-section active">
+                <div class="bg-white/50 rounded-lg p-6 md:p-8 shadow-md">
+                    <h2 class="text-3xl font-bold text-amber-700 mb-4">Planning & Pre-Production</h2>
+                    <p class="text-stone-600 mb-8">This initial phase is the foundation of your entire Ramleela production. A well-structured plan ensures a smoother process, better resource management, and a higher quality performance. Here, you will form your core team, establish a budget, and lay the creative groundwork.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-stone-700">Forming the Core Committee</h3>
+                            <p class="text-stone-600 mb-6">Assigning clear roles is crucial. Your core committee will be the pillars of the organization.</p>
+                            <div class="space-y-4">
+                                <div class="bg-amber-100 p-4 rounded-lg">
+                                    <h4 class="font-bold text-amber-800">Director (निर्देशक)</h4>
+                                    <p class="text-sm text-stone-600">The creative visionary. Responsible for casting, rehearsals, and the overall artistic interpretation of the Ramleela.</p>
+                                </div>
+                                <div class="bg-amber-100 p-4 rounded-lg">
+                                    <h4 class="font-bold text-amber-800">Producer / Manager (प्रबंधक)</h4>
+                                    <p class="text-sm text-stone-600">The organizational head. Manages budget, logistics, venue booking, and legal permissions.</p>
+                                </div>
+                                <div class="bg-amber-100 p-4 rounded-lg">
+                                    <h4 class="font-bold text-amber-800">Treasurer (कोषाध्यक्ष)</h4>
+                                    <p class="text-sm text-stone-600">Manages all financial aspects, including fundraising, sponsorships, expense tracking, and financial reporting.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-stone-700">Budget Allocation</h3>
+                            <p class="text-stone-600 mb-4">Visualize a typical budget breakdown. Hover over segments to see details. This chart helps in allocating your funds effectively across different production needs.</p>
+                            <div class="chart-container">
+                                <canvas id="budgetChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="execution" class="content-section">
+                <div class="bg-white/50 rounded-lg p-6 md:p-8 shadow-md">
+                    <h2 class="text-3xl font-bold text-amber-700 mb-4">Execution & Production</h2>
+                    <p class="text-stone-600 mb-8">This is where your planning comes to life. The execution phase involves everything from rehearsals and set construction to marketing and final preparations for the performance days. Follow this timeline to stay on track as the event approaches.</p>
+
+                    <div class="relative pl-8 border-l-2 border-amber-300">
+                        <div class="mb-8 relative timeline-item">
+                            <h4 class="font-bold text-xl text-amber-800">3 Months Out: Casting & Rehearsals</h4>
+                            <p class="text-stone-600">Hold auditions and finalize the cast. Create a detailed rehearsal schedule. Begin with script readings and basic character work.</p>
+                        </div>
+                        <div class="mb-8 relative timeline-item">
+                            <h4 class="font-bold text-xl text-amber-800">2 Months Out: Production Design</h4>
+                            <p class="text-stone-600">Finalize designs for sets, costumes, and props. Start sourcing materials and begin construction/sewing. Book sound and lighting vendors.</p>
+                        </div>
+                        <div class="mb-8 relative timeline-item">
+                            <h4 class="font-bold text-xl text-amber-800">1 Month Out: Marketing & Promotion</h4>
+                            <p class="text-stone-600">Launch your promotional campaign. Distribute flyers, use social media, and contact local news. Start selling tickets if applicable.</p>
+                        </div>
+                        <div class="mb-8 relative timeline-item">
+                            <h4 class="font-bold text-xl text-amber-800">2 Weeks Out: Technical Rehearsals</h4>
+                            <p class="text-stone-600">Begin full run-throughs with costumes, props, sound, and lighting cues. This is crucial for ironing out technical glitches.</p>
+                        </div>
+                        <div class="mb-8 relative timeline-item">
+                            <h4 class="font-bold text-xl text-amber-800">1 Week Out: Dress Rehearsal</h4>
+                            <p class="text-stone-600">Conduct a full dress rehearsal as if it were the actual performance. Invite a small test audience for feedback.</p>
+                        </div>
+                        <div class="relative timeline-item">
+                            <h4 class="font-bold text-xl text-amber-800">Show Day: Final Checks</h4>
+                            <p class="text-stone-600">Venue check, sound check, lighting check, and final briefing with cast, crew, and volunteers. Ensure all arrangements for audience seating and safety are in place.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="post-event" class="content-section">
+                <div class="bg-white/50 rounded-lg p-6 md:p-8 shadow-md">
+                    <h2 class="text-3xl font-bold text-amber-700 mb-4">Post-Event Wrap-Up</h2>
+                    <p class="text-stone-600 mb-8">The work isn't over when the curtains fall. A proper wrap-up ensures financial transparency, acknowledges contributions, and sets the stage for future events. This phase is about closing the project professionally and gracefully.</p>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-stone-700">Financial Reconciliation</h3>
+                            <p class="text-stone-600">The Treasurer should finalize all accounts. Pay any outstanding bills, collect remaining payments, and prepare a final financial report. Transparency is key, especially for community-funded events.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-stone-700">Acknowledge Everyone</h3>
+                            <p class="text-stone-600">Send thank-you notes or emails to all artists, volunteers, sponsors, and vendors. Publicly acknowledge key contributors on social media or in a local newspaper. A small celebration for the cast and crew can be a great morale booster.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-stone-700">Gather Feedback</h3>
+                            <p class="text-stone-600">Conduct a post-mortem meeting with the core committee to discuss what went well and what could be improved. If possible, gather feedback from the audience through a simple survey. This information is invaluable for future planning.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-stone-700">Cleanup and Storage</h3>
+                            <p class="text-stone-600">Ensure the venue is returned to its original condition. Systematically dismantle sets and properly store costumes and props for future use. This saves significant time and money for the next production.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="checklist" class="content-section">
+                <div class="bg-white/50 rounded-lg p-6 md:p-8 shadow-md">
+                    <h2 class="text-3xl font-bold text-amber-700 mb-4">Master Checklist</h2>
+                    <p class="text-stone-600 mb-8">Use this interactive checklist to track your progress through every stage of the organization. Checking off items will help you stay organized and ensure no critical task is forgotten.</p>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-stone-700 border-b-2 border-amber-200 pb-2 mb-4">Planning Phase</h3>
+                            <div class="space-y-2 checklist-item">
+                                <input type="checkbox" id="c1" class="mr-2"><label for="c1">Define vision and scale of the Ramleela.</label>
+                                <input type="checkbox" id="c2" class="mr-2"><label for="c2">Form a core organizing committee.</label>
+                                <input type="checkbox" id="c3" class="mr-2"><label for="c3">Create a preliminary budget.</label>
+                                <input type="checkbox" id="c4" class="mr-2"><label for="c4">Develop a fundraising and sponsorship plan.</label>
+                                <input type="checkbox" id="c5" class="mr-2"><label for="c5">Select the script and music.</label>
+                                <input type="checkbox" id="c6" class="mr-2"><label for="c6">Book the performance venue and rehearsal spaces.</label>
+                                <input type="checkbox" id="c7" class="mr-2"><label for="c7">Apply for all necessary permits and licenses.</label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-2xl font-semibold text-stone-700 border-b-2 border-amber-200 pb-2 mb-4">Execution Phase</h3>
+                            <div class="space-y-2 checklist-item">
+                                <input type="checkbox" id="c8" class="mr-2"><label for="c8">Conduct auditions and finalize cast.</label>
+                                <input type="checkbox" id="c9" class="mr-2"><label for="c9">Create and distribute a detailed rehearsal schedule.</label>
+                                <input type="checkbox" id="c10" class="mr-2"><label for="c10">Finalize set, costume, and prop designs.</label>
+                                <input type="checkbox" id="c11" class="mr-2"><label for="c11">Recruit production crew and volunteers.</label>
+                                <input type="checkbox" id="c12" class="mr-2"><label for="c12">Begin marketing and promotional activities.</label>
+                                <input type="checkbox"id="c13" class="mr-2"><label for="c13">Arrange for sound, lighting, and technical equipment.</label>
+                                <input type="checkbox" id="c14" class="mr-2"><label for="c14">Plan for audience seating, ticketing, and security.</label>
+                                <input type="checkbox" id="c15" class="mr-2"><label for="c15">Conduct technical and dress rehearsals.</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-2xl font-semibold text-stone-700 border-b-2 border-amber-200 pb-2 mb-4">Post-Event Phase</h3>
+                            <div class="space-y-2 checklist-item">
+                                <input type="checkbox" id="c16" class="mr-2"><label for="c16">Complete venue cleanup.</label>
+                                <input type="checkbox" id="c17" class="mr-2"><label for="c17">Pay all final invoices to vendors and artists.</label>
+                                <input type="checkbox" id="c18" class="mr-2"><label for="c18">Send thank-you notes to sponsors, volunteers, and cast.</label>
+                                <input type="checkbox" id="c19" class="mr-2"><label for="c19">Reconcile budget and prepare a final financial report.</label>
+                                <input type="checkbox" id="c20" class="mr-2"><label for="c20">Store costumes, props, and sets properly.</label>
+                                <input type="checkbox" id="c21" class="mr-2"><label for="c21">Hold a post-mortem meeting to document learnings.</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    const targetId = link.getAttribute('data-target');
+                    
+                    navLinks.forEach(navLink => {
+                        navLink.classList.remove('active');
+                    });
+                    link.classList.add('active');
+                    
+                    contentSections.forEach(section => {
+                        if (section.id === targetId) {
+                            section.classList.add('active');
+                        } else {
+                            section.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            const budgetCtx = document.getElementById('budgetChart').getContext('2d');
+            const budgetChart = new Chart(budgetCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Venue & Stage', 'Costumes & Makeup', 'Artists & Crew', 'Sound & Lighting', 'Marketing', 'Miscellaneous'],
+                    datasets: [{
+                        label: 'Budget Allocation',
+                        data: [25, 20, 20, 15, 10, 10],
+                        backgroundColor: [
+                            '#F59E0B',
+                            '#FBBF24',
+                            '#FCD34D',
+                            '#FEF08A',
+                            '#92400E',
+                            '#D97706'
+                        ],
+                        borderColor: '#FEF3C7',
+                        borderWidth: 4,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#374151',
+                                font: {
+                                    family: "'Inter', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const checklistItems = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+            checklistItems.forEach(item => {
+                item.addEventListener('change', (event) => {
+                    const label = event.target.nextElementSibling;
+                    if (event.target.checked) {
+                        label.classList.add('line-through', 'text-gray-500');
+                    } else {
+                        label.classList.remove('line-through', 'text-gray-500');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

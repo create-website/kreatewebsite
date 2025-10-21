@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karwa Chauth: An Interactive Cultural Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,500&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Saffron & Gold -->
+    <!-- Application Structure Plan: The application is designed with a top navigation bar for thematic exploration, allowing users to directly access the content they are most interested in (History, Legends, Rituals, etc.). This non-linear structure is more user-friendly than a long, scrolling document. Key interactions include clickable cards to reveal detailed stories, an interactive step-by-step guide for rituals, and a chart with clickable regions to explore cultural variations. This approach breaks down complex information into digestible, engaging modules, promoting active exploration and better comprehension of the festival's multifaceted nature. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Legends & Stories -> Goal: Organize/Inform -> Viz: Interactive Cards -> Interaction: Click to reveal story text -> Justification: Keeps the UI clean and allows users to self-select content, preventing information overload. -> Method: HTML/JS.
+        - Report Info: Step-by-Step Rituals -> Goal: Guide/Organize -> Viz: Numbered timeline/step cards -> Interaction: Click to show details for each step -> Justification: Transforms a procedural list into an engaging, easy-to-follow guide. -> Method: HTML/JS.
+        - Report Info: Regional Variations -> Goal: Compare/Inform -> Viz: Bar Chart & Dynamic Text -> Interaction: Chart tooltips provide quick stats, and buttons for each region update a detailed text block. -> Justification: The chart offers a quick visual comparison of ritual emphasis, while the dynamic text provides qualitative depth on demand. -> Library: Chart.js/Canvas.
+        - Report Info: History/Significance/Reasons for Fasting -> Goal: Inform -> Viz: Formatted Text Blocks -> Interaction: None, prioritized for readability. -> Justification: Foundational information is best presented clearly and directly without distracting interactions. -> Method: HTML/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8F0; 
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #C05621; 
+            border-bottom-color: #C05621;
+        }
+        .card-flip {
+            perspective: 1000px;
+        }
+        .card-flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card-flip.flipped .card-flip-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="text-orange-900">
+
+    <header class="bg-white/70 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <span class="text-3xl">🌙</span>
+                    <h1 class="text-2xl font-bold text-orange-900">Karwa Chauth</h1>
+                </div>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#overview" class="nav-link active">Overview</a>
+                    <a href="#legends" class="nav-link">Legends</a>
+                    <a href="#rituals" class="nav-link">Rituals</a>
+                    <a href="#significance" class="nav-link">Significance</a>
+                    <a href="#regional" class="nav-link">Variations</a>
+                </nav>
+                <button id="mobile-menu-button" class="md:hidden text-2xl">☰</button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-2">
+             <a href="#overview" class="block py-2 text-center nav-link active">Overview</a>
+             <a href="#legends" class="block py-2 text-center nav-link">Legends</a>
+             <a href="#rituals" class="block py-2 text-center nav-link">Rituals</a>
+             <a href="#significance" class="block py-2 text-center nav-link">Significance</a>
+             <a href="#regional" class="block py-2 text-center nav-link">Variations</a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <section id="overview" class="scroll-mt-24 text-center">
+            <h2 class="text-4xl font-bold text-red-800 mb-4">A Celebration of Love & Devotion</h2>
+            <p class="max-w-3xl mx-auto text-lg leading-relaxed">
+                Karwa Chauth is a cherished Hindu festival where married women observe a day-long fast, from sunrise to moonrise, praying for the longevity, well-being, and prosperity of their husbands. This ancient tradition, steeped in love and sacrifice, has evolved over centuries but remains a powerful symbol of marital devotion. This guide invites you to explore the rich history, captivating legends, intricate rituals, and cultural significance that make Karwa Chauth a unique and enduring celebration.
+            </p>
+        </section>
+
+        <hr class="my-16 border-t-2 border-red-200 border-dashed">
+
+        <section id="legends" class="scroll-mt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-red-800">The Legends Behind the Fast</h2>
+                <p class="max-w-3xl mx-auto text-lg mt-2">Click on a card to read the legendary tale that inspires the devotion of Karwa Chauth.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card-flip h-80 cursor-pointer" data-story="veeravati">
+                    <div class="card-flip-inner">
+                        <div class="card-front bg-red-100 shadow-lg border border-red-200">
+                            <h3 class="text-2xl font-bold">The Story of Queen Veeravati</h3>
+                            <p class="mt-4 text-center">The tale of a loving queen, her seven brothers, and the moon's deception.</p>
+                            <p class="mt-4 font-semibold">(Click to Read More)</p>
+                        </div>
+                        <div class="card-back bg-red-100 shadow-lg border border-red-200 text-left">
+                            <h3 class="text-xl font-bold mb-2">The Story of Queen Veeravati</h3>
+                            <p class="text-sm">Veeravati was the beloved only sister of seven brothers. On her first Karwa Chauth, she was at her parents' home and fasted strictly. By evening, she was faint with thirst and hunger. Seeing her distress, her brothers couldn't bear it. They created a false moon by holding a mirror behind a pipal tree and tricking her into believing the moon had risen. She broke her fast, and immediately, news arrived that her husband, the king, was gravely ill. On her way to him, she met Goddess Parvati, who revealed the deception. The Goddess advised her to re-observe the fast with absolute devotion. Veeravati did so, and Yama, the god of death, was forced to restore her husband to life. This story highlights the importance of observing the fast with unwavering faith.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-flip h-80 cursor-pointer" data-story="savitri">
+                    <div class="card-flip-inner">
+                        <div class="card-front bg-amber-100 shadow-lg border border-amber-200">
+                             <h3 class="text-2xl font-bold">The Legend of Savitri & Satyavan</h3>
+                            <p class="mt-4 text-center">A story of a determined wife who won back her husband's life from the God of Death.</p>
+                            <p class="mt-4 font-semibold">(Click to Read More)</p>
+                        </div>
+                        <div class="card-back bg-amber-100 shadow-lg border border-amber-200 text-left">
+                           <h3 class="text-xl font-bold mb-2">The Legend of Savitri & Satyavan</h3>
+                           <p class="text-sm">The most famous legend is that of Savitri. She was a princess of great virtue who chose to marry Satyavan, a humble woodcutter, even though the sage Narada had predicted he would die in one year. When the fateful day arrived, Savitri followed her husband into the forest. As predicted, Satyavan's life force began to wane. Yama, the God of Death, appeared to take his soul. But Savitri refused to let go. She followed Yama, and impressed by her devotion, intelligence, and unwavering love, Yama granted her several boons—everything except Satyavan's life. For her final boon, she cleverly asked to be blessed with children. As a virtuous wife, she could not have children without her husband, forcing Yama to restore Satyavan's life. This tale symbolizes a wife's power to protect her husband from all harm.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <hr class="my-16 border-t-2 border-red-200 border-dashed">
+
+        <section id="rituals" class="scroll-mt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-red-800">The Day's Sacred Rituals</h2>
+                <p class="max-w-3xl mx-auto text-lg mt-2">Follow the journey of Karwa Chauth from the pre-dawn meal to the sight of the moon. Click each step to learn more.</p>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-start gap-4">
+                <div id="ritual-steps" class="w-full md:w-1/3 space-y-4">
+                </div>
+                <div id="ritual-details" class="w-full md:w-2/3 p-6 bg-white rounded-lg shadow-md border border-red-200 min-h-[300px]">
+                    <h3 id="ritual-title" class="text-2xl font-bold mb-2"></h3>
+                    <p id="ritual-description"></p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-t-2 border-red-200 border-dashed">
+
+        <section id="significance" class="scroll-mt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-red-800">Why the Fast is Observed</h2>
+                <p class="max-w-3xl mx-auto text-lg mt-2">Delve into the cultural, religious, and symbolic layers that give this festival its profound meaning.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-amber-200">
+                    <h3 class="text-xl font-bold mb-3 text-center">Cultural & Social Bonds</h3>
+                    <p>Karwa Chauth fosters a sense of community among women. The gathering for the evening puja (katha) creates a strong social bond. Married women and newly engaged women come together, share stories, and support each other through the fast, strengthening friendships and family ties.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-amber-200">
+                    <h3 class="text-xl font-bold mb-3 text-center">Religious & Spiritual Prayer</h3>
+                    <p>At its core, the fast is a form of prayer (vrat). It's a day of spiritual discipline and devotion dedicated to deities like Lord Shiva, Goddess Parvati, and Lord Ganesha. By forgoing food and water, women seek divine blessings for their husband's health, longevity, and success.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-amber-200">
+                    <h3 class="text-xl font-bold mb-3 text-center">Symbol of Marital Love</h3>
+                    <p>The fast is the ultimate symbol of a wife's selfless love and sacrifice. It represents her commitment and her willingness to endure hardship for the well-being of her partner. This act of devotion is seen as a way to strengthen the marital bond and express profound love and care.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-t-2 border-red-200 border-dashed">
+
+        <section id="regional" class="scroll-mt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-red-800">Celebrations Across India</h2>
+                <p class="max-w-3xl mx-auto text-lg mt-2">While the spirit remains the same, Karwa Chauth traditions vary beautifully across different regions. The chart below shows the emphasis on certain key rituals.</p>
+            </div>
+            <div class="w-full bg-white p-4 md:p-8 rounded-lg shadow-lg border border-red-200">
+                <div class="chart-container">
+                    <canvas id="regionalChart"></canvas>
+                </div>
+                 <div class="mt-8 text-center flex justify-center items-center gap-4">
+                     <button class="region-btn active px-4 py-2 bg-red-500 text-white rounded-md" data-region="punjab">Punjab</button>
+                     <button class="region-btn px-4 py-2 bg-red-200 text-red-800 rounded-md" data-region="rajasthan">Rajasthan</button>
+                     <button class="region-btn px-4 py-2 bg-red-200 text-red-800 rounded-md" data-region="up">Uttar Pradesh</button>
+                 </div>
+                 <div id="regional-details" class="mt-6 max-w-2xl mx-auto">
+                    <h3 id="regional-title" class="text-2xl font-bold text-center mb-2"></h3>
+                    <p id="regional-description" class="text-center"></p>
+                 </div>
+            </div>
+        </section>
+    </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    const updateActiveLink = () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 120) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').substring(1) === current) {
+                link.classList.add('active');
+            }
+        });
+    };
+
+    window.addEventListener('scroll', updateActiveLink);
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+            document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+            if (mobileMenu.classList.contains('hidden') === false) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    });
+
+    const storyCards = document.querySelectorAll('.card-flip');
+    storyCards.forEach(card => {
+        card.addEventListener('click', () => {
+            card.classList.toggle('flipped');
+        });
+    });
+
+    const ritualData = [
+        { title: 'Sargi (Pre-dawn Meal)', description: 'Before sunrise, married women eat a special meal called "Sargi," prepared by their mother-in-law. It\'s a plate of nutrient-rich foods like fruits, sweets, and grains, meant to provide energy for the day-long fast. It signifies the mother-in-law\'s blessings for her daughter-in-law.' },
+        { title: 'The Fast Begins', description: 'After Sargi, the "nirjala" fast starts. This means abstaining completely from both food and water. The fast is observed with prayers and resolve, setting a tone of devotion for the day.' },
+        { title: 'Baya (Gifts)', description: 'In the afternoon, mothers of married women send "Baya"—a collection of gifts like clothes, sweets, and utensils—to their daughter\'s home. This is a gesture of love and support from the woman\'s maternal family.' },
+        { title: 'Evening Puja (Katha)', description: 'In the late afternoon, women gather together, beautifully dressed in traditional attire, to perform the Karwa Chauth puja. They sit in a circle, exchange decorated puja thalis, and narrate or listen to the legends of the festival (the Katha), especially the story of Veeravati.' },
+        { title: 'Sighting the Moon', description: 'The fast is broken only after sighting the moon. Women look at the reflection of the moon through a sieve (chhalni) or a cloth, and then look at their husband\'s face through the same sieve. This is a moment of great anticipation and romance.' },
+        { title: 'Breaking the Fast', description: 'After the moon sighting, the husband offers his wife the first sip of water and the first morsel of food, ending her fast. This completes the ritual, and the family then enjoys a festive dinner together.' }
+    ];
+
+    const ritualStepsContainer = document.getElementById('ritual-steps');
+    const ritualTitle = document.getElementById('ritual-title');
+    const ritualDescription = document.getElementById('ritual-description');
+
+    ritualData.forEach((ritual, index) => {
+        const stepButton = document.createElement('button');
+        stepButton.className = 'ritual-step-btn w-full text-left p-4 rounded-md border transition-all duration-300';
+        stepButton.innerHTML = `<span class="font-bold text-red-600">${index + 1}.</span> ${ritual.title}`;
+        if (index === 0) {
+            stepButton.classList.add('bg-red-500', 'text-white', 'border-red-500');
+        } else {
+            stepButton.classList.add('bg-white', 'hover:bg-red-50', 'border-red-200');
+        }
+        stepButton.dataset.index = index;
+        ritualStepsContainer.appendChild(stepButton);
+    });
+
+    const updateRitualDetails = (index) => {
+        ritualTitle.textContent = ritualData[index].title;
+        ritualDescription.textContent = ritualData[index].description;
+        
+        document.querySelectorAll('.ritual-step-btn').forEach((btn, i) => {
+             btn.classList.remove('bg-red-500', 'text-white', 'border-red-500');
+             btn.classList.add('bg-white', 'hover:bg-red-50', 'border-red-200');
+             if (i == index) {
+                btn.classList.add('bg-red-500', 'text-white', 'border-red-500');
+                btn.classList.remove('bg-white', 'hover:bg-red-50', 'border-red-200');
+             }
+        });
+    };
+
+    ritualStepsContainer.addEventListener('click', (e) => {
+        const button = e.target.closest('.ritual-step-btn');
+        if (button) {
+            updateRitualDetails(button.dataset.index);
+        }
+    });
+    
+    updateRitualDetails(0);
+
+
+    const regionalData = {
+        punjab: {
+            title: 'Punjab',
+            description: 'In Punjab, the festival has a strong community feel. Sargi is a grand affair. The evening katha is a major social gathering. Women often wear elaborate, traditional Punjabi outfits and the day is filled with folk songs.'
+        },
+        rajasthan: {
+            title: 'Rajasthan',
+            description: 'Rajasthani women are known for their distinctive attire, often wearing their wedding lehenga or a special "bandhani" saree. They prepare Karwas (earthen pots) with intricate designs and the fast is broken with traditional dishes like dal-baati-churma.'
+        },
+        up: {
+            title: 'Uttar Pradesh',
+            description: 'In Uttar Pradesh, women create drawings of "Gauri Mata" on the wall and worship her. The exchange of Karwas is an important ritual. The focus is deeply religious, with emphasis on the puja and storytelling.'
+        }
+    };
+
+    const regionalTitle = document.getElementById('regional-title');
+    const regionalDescription = document.getElementById('regional-description');
+    const regionBtns = document.querySelectorAll('.region-btn');
+
+    const updateRegionalDetails = (region) => {
+        regionalTitle.textContent = regionalData[region].title;
+        regionalDescription.textContent = regionalData[region].description;
+
+        regionBtns.forEach(btn => {
+            btn.classList.remove('active', 'bg-red-500', 'text-white');
+            btn.classList.add('bg-red-200', 'text-red-800');
+            if (btn.dataset.region === region) {
+                btn.classList.add('active', 'bg-red-500', 'text-white');
+                btn.classList.remove('bg-red-200', 'text-red-800');
+            }
+        });
+    };
+    
+    regionBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            updateRegionalDetails(btn.dataset.region);
+        });
+    });
+
+    updateRegionalDetails('punjab');
+
+    const ctx = document.getElementById('regionalChart').getContext('2d');
+    const regionalChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Sargi Tradition', 'Community Katha', 'Elaborate Attire', 'Earthen Pot (Karwa) Decor'],
+            datasets: [{
+                label: 'Punjab',
+                data: [9, 8, 7, 5],
+                backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                borderColor: 'rgba(239, 68, 68, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Rajasthan',
+                data: [6, 7, 9, 8],
+                backgroundColor: 'rgba(251, 146, 60, 0.7)',
+                borderColor: 'rgba(251, 146, 60, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Uttar Pradesh',
+                data: [7, 9, 6, 9],
+                backgroundColor: 'rgba(245, 158, 11, 0.7)',
+                borderColor: 'rgba(245, 158, 11, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Emphasis Score (out of 10)'
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Regional Emphasis on Karwa Chauth Rituals',
+                    font: {
+                        size: 16
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.x !== null) {
+                                label += context.parsed.x + ' / 10';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+
+</body>
+</html>

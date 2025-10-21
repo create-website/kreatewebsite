@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Major Festivals of India</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Vibrant India -->
+    <!-- Application Structure Plan: The application is designed as an interactive discovery tool. The core structure features a horizontal selector with prominent festival cards, allowing users to switch contexts easily. Below this, a dynamic content area updates to display detailed information about the selected festival. This is followed by a comparative radar chart. This structure was chosen for its clarity and intuitive user flow. It presents a high-level choice first (which festival to learn about), allows for a deep dive into that choice, and then provides a synthesis view (the chart) that compares all festivals. This task-oriented approach is more engaging and less overwhelming than presenting all information at once. -->
+    <!-- Visualization & Content Choices: 
+        1. Festival Selector -> Goal: Organize & Inform -> Viz/Presentation: A responsive grid of interactive, clickable cards. -> Interaction: On click, a JS function updates the main content area and applies an 'active' style to the selected card. -> Justification: Cards are visually appealing and provide clear, tappable targets, making navigation intuitive on all devices. -> Method: Vanilla JS DOM manipulation.
+        2. Festival Details -> Goal: Inform -> Viz/Presentation: A structured text and information block. -> Interaction: Content is dynamically updated using JS `innerHTML` when a festival card is clicked. -> Justification: This keeps the layout consistent and focuses user attention on one festival at a time, preventing information overload. -> Method: Vanilla JS DOM manipulation.
+        3. Festival Characteristics Comparison -> Goal: Compare & Analyze -> Viz/Presentation: A Radar Chart. -> Interaction: Tooltips on hover provide specific data points for each festival across different dimensions (e.g., Spirituality, Feasting). -> Justification: A radar chart offers a unique "fingerprint" for each festival, allowing for quick, multi-faceted visual comparison that a simple bar chart cannot achieve. -> Library: Chart.js (Canvas).
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8F0;
+            color: #4C3D3D;
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+            color: #8C3333;
+        }
+        .festival-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .festival-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .festival-card.active {
+            border-color: #D3756B;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(211, 117, 107, 0.3);
+        }
+        .content-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 500px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="py-6 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold">Festivals of India</h1>
+        <p class="mt-2 text-lg text-stone-600">An Interactive Guide to India's Vibrant Cultural Celebrations</p>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        
+        <section id="festival-selector" class="mb-10">
+            <h2 class="text-2xl font-bold text-center mb-6">Explore a Festival</h2>
+            <div id="festival-cards-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+            </div>
+        </section>
+        
+        <section id="festival-details-container" class="bg-white/60 p-6 md:p-8 rounded-2xl shadow-lg min-h-[300px]">
+        </section>
+
+        <section id="comparison" class="mt-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold">A Cultural Comparison</h2>
+                <p class="max-w-2xl mx-auto mt-2 text-stone-600">This chart visualizes the distinct character of each festival across five key cultural dimensions. Hover over the chart to explore how each celebration balances spirituality with social joy and public spectacle.</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="festivalChart"></canvas>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-16 py-6 text-center text-stone-500 bg-amber-50/50">
+        <p>Discover the heart of Indian culture, one festival at a time.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const festivalData = {
+                diwali: {
+                    name: "Diwali",
+                    icon: "🪔",
+                    tagline: "The Festival of Lights",
+                    description: "Diwali, or Deepavali, is one of India's biggest and most important festivals. It symbolizes the spiritual victory of light over darkness, good over evil, and knowledge over ignorance. Homes are decorated with clay lamps (diyas) and colorful rangoli art on the floor.",
+                    rituals: "The celebration spans five days, with the main night involving families gathering for 'Lakshmi Puja' – prayers to the goddess of prosperity. This is followed by feasting, exchanging gifts and sweets, and lighting fireworks.",
+                    timing: "Celebrated in autumn (October/November)."
+                },
+                holi: {
+                    name: "Holi",
+                    icon: "🎨",
+                    tagline: "The Festival of Colors",
+                    description: "Holi is a vibrant and joyous festival that marks the arrival of spring. It celebrates fertility, color, love, and the triumph of good over evil. It's a day of exuberant fun where social barriers are broken.",
+                    rituals: "The festival begins the night before with a bonfire (Holika Dahan). On the day of Holi, people take to the streets for a massive color fight, smearing and drenching each other with dry powders and colored water. Singing, dancing, and sharing sweets are integral parts of the celebration.",
+                    timing: "Celebrated in spring (March)."
+                },
+                durgaPuja: {
+                    name: "Durga Puja",
+                    icon: "🕉️",
+                    tagline: "Worship of the Mother Goddess",
+                    description: "Predominantly celebrated in West Bengal and other eastern states, Durga Puja is a ten-day festival honoring the Hindu goddess Durga and her victory over the demon Mahishasur. It's a grand social and cultural event.",
+                    rituals: "Elaborately crafted clay idols of Goddess Durga are worshipped in decorated temporary structures called 'pandals'. The last five days are marked by rituals, feasting, cultural performances, and processions, culminating in the immersion of the idols in a river.",
+                    timing: "Celebrated in autumn (September/October)."
+                },
+                eid: {
+                    name: "Eid-ul-Fitr",
+                    icon: "🌙",
+                    tagline: "The Festival of Breaking the Fast",
+                    description: "Eid-ul-Fitr marks the end of Ramadan, the Islamic holy month of fasting. It is a time of thanksgiving to Allah, forgiveness, and immense joy celebrated by Muslims worldwide.",
+                    rituals: "The day begins with special prayers at a mosque. It is followed by family visits, feasting on delicious food, wearing new clothes, and giving charity (Zakat al-Fitr). Children often receive gifts or money, known as 'Eidi'.",
+                    timing: "Celebrated at the end of Ramadan (date varies)."
+                },
+                christmas: {
+                    name: "Christmas",
+                    icon: "🎄",
+                    tagline: "Celebrating the Birth of Jesus",
+                    description: "Christmas is a significant festival celebrated by Christian communities across India, commemorating the birth of Jesus Christ. It is a time of joy, goodwill, and family gatherings, embraced by people of many faiths.",
+                    rituals: "Traditions include attending midnight mass at church, decorating Christmas trees, singing carols, exchanging gifts, and enjoying a festive feast. Homes are decorated with lights, stars, and nativity scenes.",
+                    timing: "Celebrated on December 25th."
+                }
+            };
+
+            const cardsContainer = document.getElementById('festival-cards-container');
+            const detailsContainer = document.getElementById('festival-details-container');
+
+            function createFestivalCards() {
+                for (const key in festivalData) {
+                    const festival = festivalData[key];
+                    const card = document.createElement('div');
+                    card.className = 'festival-card bg-white p-4 rounded-lg shadow-md cursor-pointer text-center';
+                    card.dataset.key = key;
+                    card.innerHTML = `
+                        <div class="text-4xl">${festival.icon}</div>
+                        <h3 class="font-bold text-lg mt-2">${festival.name}</h3>
+                    `;
+                    card.addEventListener('click', () => displayFestivalDetails(key));
+                    cardsContainer.appendChild(card);
+                }
+            }
+
+            function displayFestivalDetails(key) {
+                const festival = festivalData[key];
+                detailsContainer.innerHTML = `
+                    <div class="content-fade-in">
+                        <div class="text-center mb-4">
+                            <span class="text-5xl">${festival.icon}</span>
+                            <h2 class="text-3xl font-bold mt-2">${festival.name}</h2>
+                            <p class="text-lg text-stone-600">${festival.tagline}</p>
+                        </div>
+                        <div class="md:grid md:grid-cols-2 md:gap-8">
+                            <div>
+                                <h3 class="font-bold text-xl mb-2">Significance</h3>
+                                <p class="text-stone-700 leading-relaxed">${festival.description}</p>
+                            </div>
+                            <div class="mt-4 md:mt-0">
+                                <h3 class="font-bold text-xl mb-2">Celebrations & Rituals</h3>
+                                <p class="text-stone-700 leading-relaxed">${festival.rituals}</p>
+                                <p class="text-sm text-rose-800 font-semibold mt-3">${festival.timing}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.querySelectorAll('.festival-card').forEach(c => c.classList.remove('active'));
+                document.querySelector(`.festival-card[data-key="${key}"]`).classList.add('active');
+            }
+
+            const ctx = document.getElementById('festivalChart').getContext('2d');
+            const festivalChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Spirituality', 'Community', 'Feasting', 'Public Spectacle', 'Color & Joy'],
+                    datasets: [
+                        {
+                            label: 'Diwali',
+                            data: [9, 8, 9, 6, 8],
+                            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            pointBackgroundColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Holi',
+                            data: [3, 9, 7, 9, 10],
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 2
+                        },
+                         {
+                            label: 'Durga Puja',
+                            data: [9, 9, 8, 10, 8],
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Eid-ul-Fitr',
+                            data: [9, 10, 10, 3, 5],
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(76, 61, 61, 0.2)' },
+                            grid: { color: 'rgba(76, 61, 61, 0.2)' },
+                            pointLabels: { 
+                                font: { size: 14, family: "'Inter', sans-serif" },
+                                color: '#4C3D3D'
+                            },
+                            ticks: {
+                                backdropColor: '#FFF8F0',
+                                color: '#8C3333'
+                            },
+                            min: 0,
+                            max: 10
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: "'Inter', sans-serif"
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            createFestivalCards();
+            displayFestivalDetails('diwali'); 
+        });
+    </script>
+</body>
+</html>

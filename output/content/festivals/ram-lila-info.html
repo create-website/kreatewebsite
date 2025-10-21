@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramlila: The Epic in Performance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- 
+    Application Structure Plan: 
+    The infographic follows a clear narrative path designed for easy scrolling and comprehension.
+    1.  **Hero Section:** A bold title and introduction to grab attention and state the topic.
+    2.  **What is Ramlila?:** A concise definition with a large, standout statistic (UNESCO recognition) to establish significance.
+    3.  **The Core Story:** Introduces the main characters using visually distinct cards, making the narrative's key players easy to identify.
+    4.  **The Art of Performance:** Breaks down the complex elements of the performance (staging, casting, sound) into digestible, icon-driven sections. This simplifies abstract concepts from the report.
+    5.  **Festival Timeline:** A clear, linear flowchart visualizes the progression from Navaratri to the climax on Dussehra, making the temporal connection explicit.
+    6.  **Comparing Traditions:** A comparative bar chart directly visualizes the data from Table 2 of the report, allowing for quick and easy comparison of the different Ramlila styles. This is the core data visualization section.
+    7.  **Global Reach:** A concluding section that summarizes the diaspora's role, ending the narrative on a note of global significance.
+    This top-to-bottom flow tells a complete story, moving from general concepts to specific details and comparisons, making the dense information from the report highly accessible.
+    -->
+    <!-- 
+    Visualization & Content Choices:
+    -   **UNESCO Recognition:** Goal: Inform -> Chosen Visualization: Single Big Number -> Justification: Immediately conveys the global importance and cultural value of the tradition. -> Method: Styled HTML/Tailwind.
+    -   **Key Characters (Table 1):** Goal: Organize -> Chosen Visualization: Icon-based Cards -> Justification: More visually engaging and scannable than a table. Unicode characters are used for iconography, avoiding SVG. -> Method: HTML/Tailwind.
+    -   **Festival Process (Navaratri to Dussehra):** Goal: Change/Organize -> Chosen Visualization: Flow Chart -> Justification: Clearly illustrates the sequence of events and the ritual climax, which is a key concept in the report. -> Method: Structured HTML/CSS with Tailwind (NO SVG/Mermaid).
+    -   **Comparative Traditions (Table 2):** Goal: Compare -> Chosen Visualization: Bar Chart -> Justification: The most effective way to compare the quantitative data (duration in days) across the three distinct traditions mentioned in the report. It makes the vast difference in scale (e.g., Ramnagar vs. others) immediately obvious. -> Library/Method: Chart.js/Canvas (NO SVG).
+    -   **Performance Elements:** Goal: Organize -> Chosen Visualization: Themed Content Blocks with Unicode Icons -> Justification: Breaks down abstract concepts like 'Environmental Theatre' into simple, visually supported points. -> Method: HTML/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F8F9FA; /* Light Gray Background */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 500px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #FF6B6B, #4ECDC4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+             background-color: white;
+             border-radius: 1rem;
+             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+             padding: 2rem;
+             transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-6 py-12">
+
+        <header class="text-center mb-16">
+            <h1 class="text-5xl md:text-7xl font-bold mb-4">
+                <span class="gradient-text">Ramlila: The Epic in Performance</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">A visual journey into "Rama's Play," the vibrant theatrical tradition that brings the ancient Ramayana to life for millions.</p>
+        </header>
+
+        <section class="mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                <div class="md:col-span-2 card">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">What is Ramlila?</h2>
+                    <p class="text-gray-700">Ramlila is a folk re-enactment of the life of Rama, based on the epic poem *Ramayana*. It is a fusion of religious ritual and community theatre, where entire towns become stages and local communities unite to tell the story of good versus evil. The performance unfolds over several nights, culminating in the festival of Dussehra.</p>
+                </div>
+                <div class="card text-center bg-gradient-to-br from-[#FF6B6B] to-[#FFA07A] text-white">
+                    <p class="text-lg font-semibold">Recognized as a</p>
+                    <p class="text-5xl font-bold my-2">Masterpiece of Intangible Cultural Heritage</p>
+                    <p class="text-lg font-semibold">by UNESCO in 2008</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900">The Core Story & Key Characters</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto mt-2">The narrative follows Rama's journey, symbolizing the cosmic struggle between *dharma* (righteousness) and *adharma* (evil).</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                <div class="card text-center border-t-4 border-[#FF6B6B]">
+                    <p class="text-5xl mb-3">👑</p><h3 class="text-xl font-bold">Rama</h3><p class="text-gray-600 mt-1">The hero and embodiment of virtue.</p>
+                </div>
+                <div class="card text-center border-t-4 border-[#FFD166]">
+                    <p class="text-5xl mb-3">💖</p><h3 class="text-xl font-bold">Sita</h3><p class="text-gray-600 mt-1">Rama's wife, representing purity and courage.</p>
+                </div>
+                <div class="card text-center border-t-4 border-[#06D6A0]">
+                    <p class="text-5xl mb-3">🏹</p><h3 class="text-xl font-bold">Lakshmana</h3><p class="text-gray-600 mt-1">Rama's loyal brother, the ideal of duty.</p>
+                </div>
+                <div class="card text-center border-t-4 border-[#118AB2]">
+                    <p class="text-5xl mb-3">🐒</p><h3 class="text-xl font-bold">Hanuman</h3><p class="text-gray-600 mt-1">The devoted monkey god of immense power.</p>
+                </div>
+                <div class="card text-center border-t-4 border-[#455A64]">
+                    <p class="text-5xl mb-3">👹</p><h3 class="text-xl font-bold">Ravana</h3><p class="text-gray-600 mt-1">The ten-headed demon king and antagonist.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900">The Art of Performance</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto mt-2">Ramlila is a unique theatrical form that blends ritual, spectacle, and community participation.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card">
+                    <p class="text-4xl mb-4">🏞️</p>
+                    <h3 class="text-2xl font-bold">Environmental Theatre</h3>
+                    <p class="text-gray-700 mt-2">The entire town becomes the stage. The audience moves with the actors from location to location, turning the performance into a pilgrimage.</p>
+                </div>
+                <div class="card">
+                    <p class="text-4xl mb-4">👦</p>
+                    <h3 class="text-2xl font-bold">The Sacred Actors (*Swaroops*)</h3>
+                    <p class="text-gray-700 mt-2">Young Brahmin boys portray the main deities. They are not seen as actors but as divine vessels, treated with reverence by the community.</p>
+                </div>
+                <div class="card">
+                    <p class="text-4xl mb-4">📜</p>
+                    <h3 class="text-2xl font-bold">The Sacred Word</h3>
+                    <p class="text-gray-700 mt-2">The continuous chanting of the *Ramcharitmanas* epic by a chorus of *Ramayanis* forms the devotional and narrative core of the entire performance.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900">The Festival Timeline</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto mt-2">The play unfolds during the autumn festival of Navaratri, reaching its climax on the tenth day, Dussehra.</p>
+            </div>
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-8">
+                <div class="text-center flex-1">
+                    <div class="p-6 bg-white rounded-xl shadow-md">
+                        <p class="text-2xl font-bold text-[#FF6B6B]">Days 1-9</p>
+                        <h3 class="text-xl font-semibold mt-2">Navaratri Begins</h3>
+                        <p class="text-gray-600 mt-1">The nine-night festival starts. Ramlila performances commence, telling the early parts of Rama's story.</p>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-gray-400 transform rotate-90 md:rotate-0">→</div>
+                <div class="text-center flex-1">
+                    <div class="p-6 bg-white rounded-xl shadow-md">
+                        <p class="text-2xl font-bold text-[#4ECDC4]">Day 10</p>
+                        <h3 class="text-xl font-semibold mt-2">Climax on Dussehra</h3>
+                        <p class="text-gray-600 mt-1">Rama defeats Ravana. The celebration culminates in the burning of giant effigies, symbolizing the destruction of evil.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900">Comparing Traditions</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto mt-2">From grand, traditional pageants in India to adapted forms in the Caribbean, Ramlila shows remarkable variety. This chart compares the duration of three distinct traditions.</p>
+            </div>
+            <div class="card">
+                <div class="chart-container">
+                    <canvas id="ramlilaComparisonChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('ramlilaComparisonChart').getContext('2d');
+            
+            const labels = [
+                'Typical North Indian Ramlila', 
+                'Trinidadian Ramlila',
+                'Ramnagar Ramlila (Varanasi)'
+            ];
+
+            const processedLabels = labels.map(label => {
+                if (label.length > 16) {
+                    const words = label.split(' ');
+                    const lines = [];
+                    let currentLine = '';
+                    words.forEach(word => {
+                        if ((currentLine + word).length > 16) {
+                            lines.push(currentLine.trim());
+                            currentLine = '';
+                        }
+                        currentLine += word + ' ';
+                    });
+                    lines.push(currentLine.trim());
+                    return lines;
+                }
+                return label;
+            });
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: processedLabels,
+                    datasets: [{
+                        label: 'Performance Duration (Days)',
+                        data: [11, 10, 31],
+                        backgroundColor: [
+                            '#FFD166', // Yellow
+                            '#06D6A0', // Green
+                            '#FF6B6B', // Red
+                        ],
+                        borderColor: [
+                            '#EAA800',
+                            '#05A97D',
+                            '#D9534F',
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 5,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Days',
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                             grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#455A64',
+                            titleFont: {
+                                size: 16
+                            },
+                            bodyFont: {
+                                size: 14
+                            },
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    } else {
+                                      return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

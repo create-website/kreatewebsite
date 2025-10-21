@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diwali Rangoli Gallery</title>
+
+  <!-- Lightbox2 CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #fdfcfb;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #444;
+      margin-bottom: 30px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .gallery a {
+      display: block;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .gallery a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .gallery img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <h1>✨ Diwali Rangoli Gallery ✨</h1>
+  <div id="gallery" class="gallery"></div>
+
+  <!-- Lightbox2 JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+
+  <script>
+    // Array of image URLs (replace or extend as needed)
+    const images = [
+      "https://storage.googleapis.com/imagesg/festivals/rangoli/diwali-rangoli-flower-4-1.jpeg",
+      "https://storage.googleapis.com/imagesg/festivals/rangoli/diwali-rangoli-flower-4-2.jpeg",
+      "https://storage.googleapis.com/imagesg/festivals/rangoli/diwali-rangoli-flower-4-3.jpeg",
+      "https://storage.googleapis.com/imagesg/festivals/rangoli/diwali-rangoli-flower-4-4.jpeg",
+      "https://storage.googleapis.com/imagesg/festivals/rangoli/diwali-rangoli-flower-4-5.jpeg"
+    ];
+
+    const gallery = document.getElementById('gallery');
+
+    // Dynamically create the image grid
+    images.forEach((url, index) => {
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('data-lightbox', 'rangoli');
+      link.setAttribute('data-title', `Rangoli ${index + 1}`);
+
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = `Rangoli ${index + 1}`;
+
+      link.appendChild(img);
+      gallery.appendChild(link);
+    });
+  </script>
+</body>
+</html>

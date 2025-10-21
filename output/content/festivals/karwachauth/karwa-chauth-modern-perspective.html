@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karwa Chauth: Modern Perspectives</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Subtle Rose -->
+    <!-- Application Structure Plan: The application is designed as a single-page, vertical scrolling experience with a sticky top navigation. This structure allows users to get a quick overview of all topics and jump directly to any section of interest, facilitating non-linear exploration. The thematic sections (Culture, Urban Life, Inclusivity, Empowerment, Sustainability) logically group the qualitative content into digestible modules. Interactions like clickable cards, charts, and content toggles are used within each section to encourage user engagement and make the information more dynamic and memorable than static text. This design was chosen for its intuitive navigation and its ability to present diverse, non-hierarchical topics in a cohesive and engaging manner. -->
+    <!-- Visualization & Content Choices: 
+    - Karwa Chauth in Pop Culture: Goal: Inform/Engage. Method: Interactive card gallery. Interaction: Clicking a card reveals a description. Justification: More visual and engaging than a list. Library: HTML/CSS/JS.
+    - Urban India Adaptations: Goal: Compare/Show Change. Method: Donut Chart. Interaction: Hover for details. Justification: Provides a quick visual summary of how traditions are adapted. Library: Chart.js.
+    - Empowerment Dialogue: Goal: Compare Perspectives. Method: Horizontal Bar Chart showing a spectrum of views. Interaction: Buttons below update a text area with detailed arguments. Justification: Visually represents nuanced, opposing viewpoints and allows users to explore them in depth. Library: Chart.js + JS for text updates.
+    - Eco-friendly Celebrations: Goal: Inform/Actionable Tips. Method: Flippable cards. Interaction: Clicking a card flips it to reveal sustainable tips. Justification: A fun, memorable way to present 'problem-solution' information. Library: HTML/CSS/JS.
+    All other content is presented in structured text blocks with clear headings to ensure readability. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FEF2F2; /* rose-50 */
+        }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #BE123C; /* rose-700 */
+            border-bottom-color: #BE123C;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flip-card { perspective: 1000px; }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+        .movie-card-content {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 1rem;
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+        }
+        .movie-card:hover .movie-card-content {
+            display: block;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <header class="text-center py-12 px-4 bg-rose-100">
+        <h1 class="text-4xl md:text-6xl text-rose-800 mb-4">Karwa Chauth 🌸</h1>
+        <p class="text-lg md:text-xl max-w-3xl mx-auto text-slate-600">Exploring the evolution of a timeless tradition through modern perspectives.</p>
+    </header>
+
+    <nav id="navbar" class="sticky top-0 bg-white/80 backdrop-blur-md shadow-md z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center items-center space-x-2 md:space-x-8 py-3 overflow-x-auto">
+                <a href="#culture" class="nav-link text-sm md:text-base font-medium py-2 px-2 whitespace-nowrap">Pop Culture</a>
+                <a href="#urban" class="nav-link text-sm md:text-base font-medium py-2 px-2 whitespace-nowrap">Urban Life</a>
+                <a href="#beyond-religion" class="nav-link text-sm md:text-base font-medium py-2 px-2 whitespace-nowrap">Inclusivity</a>
+                <a href="#empowerment" class="nav-link text-sm md:text-base font-medium py-2 px-2 whitespace-nowrap">Empowerment</a>
+                <a href="#eco-friendly" class="nav-link text-sm md:text-base font-medium py-2 px-2 whitespace-nowrap">Sustainability</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 md:px-6 py-12">
+
+        <section id="culture" class="mb-20 scroll-mt-24">
+            <h2 class="text-3xl md:text-4xl text-center text-rose-700 mb-4">The Cultural Lens</h2>
+            <p class="text-center max-w-3xl mx-auto text-slate-600 mb-12">Bollywood and pop culture have played a significant role in glamorizing and popularizing Karwa Chauth, often portraying it as the ultimate expression of love and devotion. This section explores some of the most iconic depictions that have shaped public perception of the festival. Hover over the images to see their impact.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="movie-card relative overflow-hidden rounded-lg shadow-lg cursor-pointer h-80 bg-cover bg-center" style="background-image: url('https://placehold.co/600x400/fecdd3/be123c?text=DDLJ+(1995)')">
+                    <div class="movie-card-content">
+                        <h3 class="font-bold text-lg">Dilwale Dulhania Le Jayenge</h3>
+                        <p class="text-sm">Often credited with reviving the festival's popularity, the scene where Simran fasts for Raj cemented Karwa Chauth as a romantic, aspirational ritual for a generation.</p>
+                    </div>
+                </div>
+                <div class="movie-card relative overflow-hidden rounded-lg shadow-lg cursor-pointer h-80 bg-cover bg-center" style="background-image: url('https://placehold.co/600x400/fecdd3/be123c?text=K3G+(2001)')">
+                    <div class="movie-card-content">
+                        <h3 class="font-bold text-lg">Kabhi Khushi Kabhie Gham</h3>
+                        <p class="text-sm">The grand "Bole Chudiyan" sequence showcased the festival as a lavish, community-wide celebration filled with music, dance, and high fashion, influencing celebration styles across the country.</p>
+                    </div>
+                </div>
+                <div class="movie-card relative overflow-hidden rounded-lg shadow-lg cursor-pointer h-80 bg-cover bg-center" style="background-image: url('https://placehold.co/600x400/fecdd3/be123c?text=Baghban+(2003)')">
+                    <div class="movie-card-content">
+                        <h3 class="font-bold text-lg">Baghban</h3>
+                        <p class="text-sm">This film highlighted the enduring love of an older couple, showing the festival as a symbol of lifelong commitment, resonating deeply with audiences of all ages.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="urban" class="mb-20 scroll-mt-24">
+            <h2 class="text-3xl md:text-4xl text-center text-rose-700 mb-4">The Urban Experience</h2>
+            <p class="text-center max-w-3xl mx-auto text-slate-600 mb-12">In urban India, Karwa Chauth is evolving as women navigate the demands of modern life. The tradition is often adapted to balance professional responsibilities, health considerations, and personal beliefs while honoring the spirit of the festival. The chart below shows common adaptations to the fast.</p>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-bold text-center mb-4">Modern Fasting Adaptations</h3>
+                 <div class="chart-container">
+                    <canvas id="urbanAdaptationsChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section id="beyond-religion" class="mb-20 scroll-mt-24">
+            <h2 class="text-3xl md:text-4xl text-center text-rose-700 mb-4">Beyond Boundaries</h2>
+            <p class="text-center max-w-3xl mx-auto text-slate-600 mb-12">The essence of Karwa Chauth—a day to celebrate love and partnership—is being embraced by diverse communities, transcending religious and traditional lines. It's becoming a more inclusive festival, adapted to reflect different relationships and values.</p>
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-rose-600 mb-2">Partner Solidarity</h3>
+                    <p>Increasingly, husbands and partners are choosing to fast alongside their wives, transforming the ritual from a one-sided observance into a mutual expression of love, support, and equality in the partnership.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-rose-600 mb-2">Pre-Marital Celebrations</h3>
+                    <p>Many unmarried couples now observe the fast for each other, viewing it as a way to strengthen their bond and celebrate their commitment before marriage. It's a modern take on dedicating a day to their future partner.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-rose-600 mb-2">Cultural, Not Just Religious</h3>
+                    <p>People from different faiths and cultural backgrounds are adopting Karwa Chauth, focusing on its universal theme of love and partnership rather than its religious origins. It's celebrated as a cultural festival of togetherness.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="empowerment" class="mb-20 scroll-mt-24">
+            <h2 class="text-3xl md:text-4xl text-center text-rose-700 mb-4">The Dialogue: Empowerment & Choice</h2>
+            <p class="text-center max-w-3xl mx-auto text-slate-600 mb-12">Karwa Chauth sparks a lively debate. Is it a patriarchal tradition or a woman's personal choice? The modern narrative is complex, with many women reclaiming the ritual on their own terms. Explore the different viewpoints below.</p>
+            <div class="flex flex-col lg:flex-row gap-8 items-center">
+                <div class="w-full lg:w-1/2 bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-center mb-4">Spectrum of Views</h3>
+                    <div class="chart-container h-64 md:h-72">
+                        <canvas id="empowermentChart"></canvas>
+                    </div>
+                </div>
+                <div class="w-full lg:w-1/2">
+                     <div class="space-x-2 text-center mb-4">
+                        <button class="perspective-btn bg-rose-200 text-rose-800 py-2 px-4 rounded-full text-sm font-semibold" data-text="choice">A Personal Choice</button>
+                        <button class="perspective-btn bg-slate-200 text-slate-800 py-2 px-4 rounded-full text-sm font-semibold" data-text="critique">A Feminist Critique</button>
+                        <button class="perspective-btn bg-slate-200 text-slate-800 py-2 px-4 rounded-full text-sm font-semibold" data-text="reinterpretation">A Modern Reinterpretation</button>
+                    </div>
+                    <div id="perspective-text" class="bg-white p-6 rounded-lg shadow-inner min-h-[200px]">
+                        <h4 class="font-bold text-lg mb-2 text-rose-700">A Personal Choice</h4>
+                        <p class="text-slate-600">For many modern women, observing Karwa Chauth is a conscious choice. They see it not as an obligation, but as a special day to connect with their partner, celebrate their relationship, and participate in a cherished cultural tradition with friends and family. It's an act of agency, not subjugation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="eco-friendly" class="mb-12 scroll-mt-24">
+            <h2 class="text-3xl md:text-4xl text-center text-rose-700 mb-4">The Conscious Celebration</h2>
+            <p class="text-center max-w-3xl mx-auto text-slate-600 mb-12">As environmental awareness grows, many are finding ways to celebrate Karwa Chauth more sustainably. Small changes in decorations, gifts, and rituals can make a big difference. Click on the cards below to discover some eco-friendly ideas.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="flip-card h-52 cursor-pointer">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-white shadow-lg border border-rose-200">
+                            <h3 class="text-2xl font-bold text-rose-600">Pooja Thali</h3>
+                            <p class="text-slate-500 mt-2">Click to flip</p>
+                        </div>
+                        <div class="flip-card-back bg-rose-600 text-white shadow-lg">
+                            <h4 class="font-bold">Sustainable Idea</h4>
+                            <p>Decorate a reusable steel or brass thali with fresh flowers, leaves, and turmeric/kumkum paste instead of using disposable or plastic-heavy options.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card h-52 cursor-pointer">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-white shadow-lg border border-rose-200">
+                            <h3 class="text-2xl font-bold text-rose-600">Gifts & Sargi</h3>
+                            <p class="text-slate-500 mt-2">Click to flip</p>
+                        </div>
+                        <div class="flip-card-back bg-rose-600 text-white shadow-lg">
+                            <h4 class="font-bold">Sustainable Idea</h4>
+                            <p>Gift experiences, handmade items, or plants. For Sargi, use reusable containers instead of plastic packaging and focus on healthy, local foods.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card h-52 cursor-pointer">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-white shadow-lg border border-rose-200">
+                            <h3 class="text-2xl font-bold text-rose-600">Decorations</h3>
+                            <p class="text-slate-500 mt-2">Click to flip</p>
+                        </div>
+                        <div class="flip-card-back bg-rose-600 text-white shadow-lg">
+                            <h4 class="font-bold">Sustainable Idea</h4>
+                            <p>Use earthen diyas with natural oils, rangoli made from rice flour and flower petals, and fabric torans instead of plastic lights and decorations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-8 bg-rose-100 mt-12">
+        <p class="text-slate-600">A modern look at an ancient tradition. ✨</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const navbar = document.getElementById('navbar');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: `-${navbar.offsetHeight}px 0px 0px 0px`,
+                threshold: 0.4
+            };
+
+            const sectionObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+            
+            const urbanAdaptationsCtx = document.getElementById('urbanAdaptationsChart').getContext('2d');
+            new Chart(urbanAdaptationsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Nirjala (No Water)', 'With Water/Fruits', 'Symbolic/Shorter Fast', 'No Fast, Just Rituals'],
+                    datasets: [{
+                        label: 'Adaptation Methods',
+                        data: [35, 40, 15, 10],
+                        backgroundColor: [
+                            '#E11D48', // rose-600
+                            '#F43F5E', // rose-500
+                            '#FB7185', // rose-400
+                            '#FDA4AF'  // rose-300
+                        ],
+                        borderColor: '#FEF2F2',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const empowermentCtx = document.getElementById('empowermentChart').getContext('2d');
+            new Chart(empowermentCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Empowering Choice', 'Patriarchal Tradition', 'Modern Reinterpretation'],
+                    datasets: [{
+                        label: 'Perspective',
+                        data: [55, 20, 25],
+                        backgroundColor: [
+                           '#F43F5E', // rose-500
+                           '#64748B', // slate-500
+                           '#94A3B8', // slate-400
+                        ],
+                        barThickness: 25,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                         tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` Share of viewpoint: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                display: false
+                            },
+                             ticks: {
+                                callback: function(value) {
+                                    return value + '%'
+                                }
+                            }
+                        },
+                        y: {
+                             grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const perspectiveBtns = document.querySelectorAll('.perspective-btn');
+            const perspectiveText = document.getElementById('perspective-text');
+            const perspectiveData = {
+                choice: {
+                    title: 'A Personal Choice',
+                    text: 'For many modern women, observing Karwa Chauth is a conscious choice. They see it not as an obligation, but as a special day to connect with their partner, celebrate their relationship, and participate in a cherished cultural tradition with friends and family. It\'s an act of agency, not subjugation.'
+                },
+                critique: {
+                    title: 'A Feminist Critique',
+                    text: 'Critics argue that the festival is rooted in patriarchal ideas where a woman\'s well-being is tied to her husband\'s. The ritual of fasting solely for a man\'s long life is seen by some as reinforcing gender inequality and outdated gender roles that place the burden of sacrifice on women.'
+                },
+                reinterpretation: {
+                    title: 'A Modern Reinterpretation',
+                    text: 'Many are reframing Karwa Chauth as a festival of mutual well-being and partnership. Both partners may fast, or they use the day to appreciate each other. This reinterpretation shifts the focus from female sacrifice to a celebration of an equal and supportive relationship.'
+                }
+            };
+
+            perspectiveBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const key = btn.dataset.text;
+                    perspectiveBtns.forEach(b => {
+                        b.classList.remove('bg-rose-200', 'text-rose-800');
+                        b.classList.add('bg-slate-200', 'text-slate-800');
+                    });
+                    btn.classList.add('bg-rose-200', 'text-rose-800');
+                    btn.classList.remove('bg-slate-200', 'text-slate-800');
+
+                    perspectiveText.innerHTML = `
+                        <h4 class="font-bold text-lg mb-2 text-rose-700">${perspectiveData[key].title}</h4>
+                        <p class="text-slate-600">${perspectiveData[key].text}</p>
+                    `;
+                });
+            });
+
+            const flipCards = document.querySelectorAll('.flip-card');
+            flipCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('flipped');
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

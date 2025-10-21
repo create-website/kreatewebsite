@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/B Test Chi-Squared Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Off-white, Dark Neutral, Muted Green/Orange accents) -->
+    <!-- Application Structure Plan: A single-view, task-oriented application. The structure is designed for a linear user flow: data input -> controls -> results. This is the most intuitive approach for a calculator tool. The layout uses a clear top-to-bottom hierarchy with a side-by-side input section for direct comparison. Results are dynamically displayed below, separating them from the input action and preventing clutter. An optional explanation section is included at the bottom for educational value without complicating the primary user task. -->
+    <!-- Visualization & Content Choices: 1. User Inputs (Visitors/Conversions): Goal=Collect Data, Method=HTML number inputs, Interaction=Typing, Justification=Standard and clear. 2. Results (Chi-Squared/P-Value): Goal=Inform, Method=Dynamic HTML text blocks with color-coding, Interaction=Read-only, Justification=Direct and immediate feedback. 3. Conversion Rate Comparison: Goal=Compare, Method=Chart.js Bar Chart on Canvas, Interaction=Hover tooltips, Justification=Provides a quick, intuitive visual representation of the performance difference, which is more impactful than text alone. No SVG or Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #3D405B;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn {
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .result-significant {
+            background-color: #EBF5EE;
+            border-left: 5px solid #84A98C;
+            color: #365D3E;
+        }
+        .result-not-significant {
+            background-color: #FEF6E6;
+            border-left: 5px solid #F2AD43;
+            color: #795521;
+        }
+        .result-error {
+             background-color: #FBECEC;
+            border-left: 5px solid #D9534F;
+            color: #732C29;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-5xl">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800">A/B Test Chi-Squared Calculator</h1>
+            <p class="mt-2 text-lg text-gray-600">Determine the statistical significance of your A/B test results.</p>
+        </header>
+
+        <main>
+            <div class="card mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="p-4 border border-gray-200 rounded-lg">
+                        <h2 class="text-2xl font-semibold mb-4 text-center text-blue-700">Variation A (Control)</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="visitorsA" class="block text-sm font-medium text-gray-700">Visitors</label>
+                                <input type="number" id="visitorsA" placeholder="e.g., 1000" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="conversionsA" class="block text-sm font-medium text-gray-700">Conversions</label>
+                                <input type="number" id="conversionsA" placeholder="e.g., 100" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border border-gray-200 rounded-lg">
+                        <h2 class="text-2xl font-semibold mb-4 text-center text-green-700">Variation B (Treatment)</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="visitorsB" class="block text-sm font-medium text-gray-700">Visitors</label>
+                                <input type="number" id="visitorsB" placeholder="e.g., 1000" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="conversionsB" class="block text-sm font-medium text-gray-700">Conversions</label>
+                                <input type="number" id="conversionsB" placeholder="e.g., 120" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <div class="w-full sm:w-auto">
+                        <label for="significanceLevel" class="block text-sm font-medium text-gray-700 text-center sm:text-left">Significance Level (α)</label>
+                         <select id="significanceLevel" class="mt-1 block w-full sm:w-48 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            <option value="0.1">90% Confidence</option>
+                            <option value="0.05" selected>95% Confidence</option>
+                            <option value="0.01">99% Confidence</option>
+                        </select>
+                    </div>
+                    <button id="calculateBtn" class="w-full sm:w-auto btn bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Calculate Significance
+                    </button>
+                </div>
+            </div>
+
+            <div id="resultsSection" class="card hidden">
+                <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Results</h2>
+                <div id="resultSummary" class="p-4 rounded-lg mb-6 text-center">
+                    <p class="text-xl font-semibold" id="resultText"></p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-4 text-center">Key Metrics</h3>
+                        <dl class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <dt class="text-gray-600">P-value:</dt>
+                                <dd class="font-semibold text-lg" id="pValue"></dd>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <dt class="text-gray-600">Chi-Squared (χ²) Statistic:</dt>
+                                <dd class="font-semibold text-lg" id="chiSquared"></dd>
+                            </div>
+                            <hr class="my-2">
+                             <div class="flex justify-between items-center">
+                                <dt class="text-blue-700">Conversion Rate (A):</dt>
+                                <dd class="font-semibold text-lg text-blue-700" id="conversionRateA"></dd>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <dt class="text-green-700">Conversion Rate (B):</dt>
+                                <dd class="font-semibold text-lg text-green-700" id="conversionRateB"></dd>
+                            </div>
+                        </dl>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4 text-center">Conversion Rate Comparison</h3>
+                         <div class="chart-container relative mx-auto w-full max-w-md h-64 sm:h-72">
+                            <canvas id="resultsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8">
+                 <details class="card bg-white p-4 rounded-lg shadow-sm cursor-pointer">
+                    <summary class="font-semibold text-lg text-gray-700">How to Interpret the Results</summary>
+                    <div class="mt-4 text-gray-600 space-y-3 prose max-w-none">
+                        <p>This calculator performs a Chi-Squared (χ²) test for independence, which is a common way to evaluate A/B test results for categorical data like conversions.</p>
+                        <p><strong>P-value:</strong> This is the probability of observing your results (or more extreme results) if there was actually no difference between the variations (the "null hypothesis").</p>
+                        <ul class="list-disc pl-5">
+                            <li>A <strong>low p-value</strong> (typically ≤ your chosen significance level, e.g., 0.05) suggests that the observed difference is unlikely to be due to random chance. You can reject the null hypothesis and conclude that there is a statistically significant difference between the variations.</li>
+                            <li>A <strong>high p-value</strong> (> your significance level) means you cannot rule out random chance as the cause of the difference. You fail to reject the null hypothesis, and the result is not statistically significant.</li>
+                        </ul>
+                         <p><strong>Statistical Significance</strong> does not mean the change is large or important, only that it's likely real and not due to random fluctuation.</p>
+                    </div>
+                </details>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const visitorsAInput = document.getElementById('visitorsA');
+        const conversionsAInput = document.getElementById('conversionsA');
+        const visitorsBInput = document.getElementById('visitorsB');
+        const conversionsBInput = document.getElementById('conversionsB');
+        const significanceLevelSelect = document.getElementById('significanceLevel');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultsSection = document.getElementById('resultsSection');
+        const resultSummary = document.getElementById('resultSummary');
+        const resultText = document.getElementById('resultText');
+        const pValueEl = document.getElementById('pValue');
+        const chiSquaredEl = document.getElementById('chiSquared');
+        const conversionRateAEl = document.getElementById('conversionRateA');
+        const conversionRateBEl = document.getElementById('conversionRateB');
+        const chartCanvas = document.getElementById('resultsChart');
+        let resultsChart = null;
+
+        function logGamma(x) {
+            let tmp = (x - 0.5) * Math.log(x + 4.5) - (x + 4.5);
+            let ser = 1.0 + 76.18009173 / (x + 0) - 86.50532033 / (x + 1) + 24.01409822 / (x + 2) - 1.231739516 / (x + 3) + 0.00120858003 / (x + 4) - 0.00000536382 / (x + 5);
+            return tmp + Math.log(ser * Math.sqrt(2 * Math.PI));
+        }
+
+        function incompleteGamma(s, x) {
+            if (x < 0 || s <= 0) {
+                return 0;
+            }
+            if (x < s + 1) {
+                let ap = s;
+                let del = sum = 1.0 / s;
+                for (let n = 1; n <= 100; n++) {
+                    ap += 1;
+                    del *= x / ap;
+                    sum += del;
+                    if (Math.abs(del) < Math.abs(sum) * 1e-7) {
+                        break;
+                    }
+                }
+                return sum * Math.exp(-x + s * Math.log(x) - logGamma(s));
+            } else {
+                let an = 1 / x;
+                let c = 1 / x;
+                let d = 1 / (x + 1 / x);
+                let h = d;
+                for (let i = 1; i <= 100; i++) {
+                    let m = i;
+                    let m2 = 2 * m;
+                    an = (m * (s - m) * an) / x;
+                    d = 1.0 / (1.0 + m2 * d);
+                    c = 1.0 + m2 * c;
+                    let den = (m + c) * d;
+                    h *= den;
+                    if (Math.abs(den - 1.0) < 1e-7) {
+                        break;
+                    }
+                }
+                return 1.0 - Math.exp(-x + s * Math.log(x) - logGamma(s)) * h;
+            }
+        }
+
+        function chiSquaredCDF(x, df) {
+            if (x < 0 || df <= 0) {
+                return 0;
+            }
+            return incompleteGamma(df / 2, x / 2);
+        }
+
+        calculateBtn.addEventListener('click', () => {
+            const visitorsA = parseInt(visitorsAInput.value);
+            const conversionsA = parseInt(conversionsAInput.value);
+            const visitorsB = parseInt(visitorsBInput.value);
+            const conversionsB = parseInt(conversionsBInput.value);
+            const alpha = parseFloat(significanceLevelSelect.value);
+
+            if (isNaN(visitorsA) || isNaN(conversionsA) || isNaN(visitorsB) || isNaN(conversionsB) || visitorsA <= 0 || visitorsB <= 0) {
+                displayError("Please enter valid positive numbers for all fields.");
+                return;
+            }
+            if (conversionsA > visitorsA || conversionsB > visitorsB || conversionsA < 0 || conversionsB < 0) {
+                displayError("Conversions cannot be negative or greater than visitors.");
+                return;
+            }
+
+            const nonConversionsA = visitorsA - conversionsA;
+            const nonConversionsB = visitorsB - conversionsB;
+
+            const totalVisitors = visitorsA + visitorsB;
+            const totalConversions = conversionsA + conversionsB;
+            const totalNonConversions = nonConversionsA + nonConversionsB;
+
+            if (totalVisitors === 0) {
+                displayError("Total visitors cannot be zero.");
+                return;
+            }
+
+            const expectedConvA = (visitorsA * totalConversions) / totalVisitors;
+            const expectedNonConvA = (visitorsA * totalNonConversions) / totalVisitors;
+            const expectedConvB = (visitorsB * totalConversions) / totalVisitors;
+            const expectedNonConvB = (visitorsB * totalNonConversions) / totalVisitors;
+
+            if (expectedConvA < 5 || expectedNonConvA < 5 || expectedConvB < 5 || expectedNonConvB < 5) {
+                console.warn("Warning: One or more expected frequencies are less than 5. Chi-Squared test may not be accurate. Consider using Fisher's Exact Test.");
+            }
+            
+            const chiSq = Math.pow(conversionsA - expectedConvA, 2) / expectedConvA +
+                          Math.pow(nonConversionsA - expectedNonConvA, 2) / expectedNonConvA +
+                          Math.pow(conversionsB - expectedConvB, 2) / expectedConvB +
+                          Math.pow(nonConversionsB - expectedNonConvB, 2) / expectedNonConvB;
+            
+            const pValue = 1 - chiSquaredCDF(chiSq, 1);
+            const isSignificant = pValue < alpha;
+
+            displayResults(chiSq, pValue, visitorsA, conversionsA, visitorsB, conversionsB, isSignificant);
+        });
+
+        function displayError(message) {
+            resultsSection.classList.remove('hidden');
+            resultSummary.className = 'p-4 rounded-lg mb-6 text-center result-error';
+            resultText.textContent = message;
+
+            const metricsGrid = resultSummary.nextElementSibling;
+            if (metricsGrid) {
+                metricsGrid.classList.add('hidden');
+            }
+        }
+        
+        function displayResults(chiSq, pVal, vA, cA, vB, cB, isSignificant) {
+            const metricsGrid = resultSummary.nextElementSibling;
+            if (metricsGrid) {
+                metricsGrid.classList.remove('hidden');
+            }
+            resultsSection.classList.remove('hidden');
+
+            resultSummary.className = 'p-4 rounded-lg mb-6 text-center';
+            if (isSignificant) {
+                resultSummary.classList.add('result-significant');
+                resultText.textContent = 'The result is statistically significant!';
+            } else {
+                resultSummary.classList.add('result-not-significant');
+                resultText.textContent = 'The result is not statistically significant.';
+            }
+
+            chiSquaredEl.textContent = chiSq.toFixed(3);
+            pValueEl.textContent = pVal < 0.001 ? '< 0.001' : pVal.toFixed(3);
+            
+            const convRateA = (cA / vA) * 100;
+            const convRateB = (cB / vB) * 100;
+
+            conversionRateAEl.textContent = `${convRateA.toFixed(2)}%`;
+            conversionRateBEl.textContent = `${convRateB.toFixed(2)}%`;
+
+            updateChart(convRateA, convRateB);
+        }
+
+        function updateChart(rateA, rateB) {
+            if (resultsChart) {
+                resultsChart.destroy();
+            }
+            
+            const ctx = chartCanvas.getContext('2d');
+            resultsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Variation A', 'Variation B'],
+                    datasets: [{
+                        label: 'Conversion Rate (%)',
+                        data: [rateA, rateB],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.6)',
+                            'rgba(16, 185, 129, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(16, 185, 129, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                             callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y.toFixed(2) + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

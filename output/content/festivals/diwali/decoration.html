@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Diwali Decoration Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Festive Radiance -->
+    <!-- Application Structure Plan: A thematic, single-page scrolling application designed for inspiration and exploration. The structure starts with a broad overview, allows users to dive into specific 'Core Elements' (like Diyas, Rangoli), then explore curated 'Decoration Styles' (Traditional, Modern). A data visualization section on 'Popularity' adds an analytical touch, and a 'DIY Corner' provides actionable steps. This flow guides the user from general inspiration to specific ideas and practical application, which is more intuitive for a creative topic than a rigid dashboard. Interactions are focused on filtering and revealing content to keep the UI clean and user-driven. -->
+    <!-- Visualization & Content Choices: 
+        - Hero Section: Inform -> Static Text -> None -> Sets a festive tone.
+        - Core Elements: Organize/Inform -> Interactive Cards (HTML/Tailwind) -> On-click, reveals detailed text -> Allows focused exploration of key decoration types without overwhelming the user.
+        - Style Explorer: Compare/Organize -> Filterable Gallery (HTML/Tailwind) -> Buttons filter a grid of ideas -> Caters to user preference and simplifies finding relevant inspiration.
+        - Popularity Chart: Compare -> Horizontal Bar Chart (Chart.js/Canvas) -> Hover for details -> Provides a quick, visual summary of decoration trends, making the guide feel more comprehensive.
+        - DIY Corner: Inform -> Accordion (HTML/JS) -> On-click, expands to show steps -> Delivers practical, step-by-step instructions in a compact format.
+        - All choices use HTML/CSS/JS and Chart.js on Canvas, adhering to the NO SVG/Mermaid constraint. The structure supports a journey of discovery. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8F0; /* Warm Neutral */
+            color: #4A2E1A;
+        }
+        .active-nav {
+            color: #FF7D00;
+            font-weight: 700;
+            border-bottom: 2px solid #FF7D00;
+        }
+        .nav-item {
+            cursor: pointer;
+            padding-bottom: 4px;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .active-filter {
+            background-color: #FF7D00;
+            color: #FFFFFF;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .accordion-button.open + .accordion-content {
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-[#FFF8F0]/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-[#D65F00]">
+                Diwali Decor Ideas
+            </div>
+            <ul class="hidden md:flex items-center space-x-8 text-lg">
+                <li><a class="nav-item active-nav" data-target="elements">Core Elements</a></li>
+                <li><a class="nav-item" data-target="styles">Styles</a></li>
+                <li><a class="nav-item" data-target="trends">Trends</a></li>
+                <li><a class="nav-item" data-target="diy">DIY Corner</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section id="hero" class="text-center mb-20">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 tracking-tight leading-tight" style="color: #D65F00;">Illuminate Your Home</h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">An interactive guide to the most beautiful and inspiring decoration ideas for the Festival of Lights. Explore timeless traditions and modern twists to make your celebration truly shine.</p>
+        </section>
+
+        <section id="elements" class="mb-20 scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center mb-4">Core Decoration Elements</h2>
+            <p class="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">This section introduces the fundamental components of Diwali decorations. Click on any element to learn more about its significance and see creative ways to incorporate it into your festive decor.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div id="element-display" class="md:col-span-2 lg:col-span-1 p-6 bg-white rounded-2xl shadow-lg flex flex-col justify-center items-center text-center transition-all duration-500">
+                    <div class="text-6xl mb-4">🪔</div>
+                    <h3 class="text-2xl font-bold mb-2">Diyas & Candles</h3>
+                    <p class="text-gray-600">Symbolizing the victory of light over darkness, diyas are essential. These small earthen lamps, filled with oil or ghee, create a warm, inviting glow. Arrange them on windowsills, balconies, and entryways to welcome prosperity.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 md:col-span-2">
+                    <div class="element-card card p-6 bg-orange-100 rounded-2xl cursor-pointer text-center" data-title="Diyas & Candles" data-emoji="🪔" data-text="Symbolizing the victory of light over darkness, diyas are essential. These small earthen lamps, filled with oil or ghee, create a warm, inviting glow. Arrange them on windowsills, balconies, and entryways to welcome prosperity.">
+                        <div class="text-5xl mb-3">🪔</div>
+                        <h4 class="text-xl font-semibold">Diyas & Candles</h4>
+                    </div>
+                    <div class="element-card card p-6 bg-pink-100 rounded-2xl cursor-pointer text-center" data-title="Rangoli" data-emoji="🎨" data-text="Vibrant patterns made from colored powders, rice, or flower petals. Created at the entrance of homes, Rangoli is a traditional art form meant to welcome guests and the goddess Lakshmi. Designs range from simple geometric shapes to intricate figures.">
+                        <div class="text-5xl mb-3">🎨</div>
+                        <h4 class="text-xl font-semibold">Rangoli</h4>
+                    </div>
+                    <div class="element-card card p-6 bg-yellow-100 rounded-2xl cursor-pointer text-center" data-title="Lights & Lanterns" data-emoji="💡" data-text="Modern Diwali is incomplete without fairy lights and lanterns (kandils). String lights adorn homes, trees, and streets, creating a magical atmosphere. Paper and fabric lanterns add a touch of elegance and color, especially when hung in clusters.">
+                        <div class="text-5xl mb-3">💡</div>
+                        <h4 class="text-xl font-semibold">Lights & Lanterns</h4>
+                    </div>
+                    <div class="element-card card p-6 bg-green-100 rounded-2xl cursor-pointer text-center" data-title="Flowers & Torans" data-emoji="🌸" data-text="Fresh flowers like marigolds, roses, and jasmine are used for their beauty and fragrance. Torans (door hangings) made of mango leaves and marigolds are tied at the entrance to signify purity and ward off evil spirits.">
+                        <div class="text-5xl mb-3">🌸</div>
+                        <h4 class="text-xl font-semibold">Flowers & Torans</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="styles" class="mb-20 scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center mb-4">Explore Decoration Styles</h2>
+            <p class="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">Every home celebrates differently. This section helps you find a style that resonates with you. Use the filters to browse through various themes, from time-honored traditional looks to contemporary minimalist designs.</p>
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button class="filter-btn active-filter font-semibold py-2 px-6 rounded-full bg-white shadow" data-filter="all">All Styles</button>
+                <button class="filter-btn font-semibold py-2 px-6 rounded-full bg-white shadow" data-filter="traditional">Traditional</button>
+                <button class="filter-btn font-semibold py-2 px-6 rounded-full bg-white shadow" data-filter="modern">Modern & Minimalist</button>
+                <button class="filter-btn font-semibold py-2 px-6 rounded-full bg-white shadow" data-filter="eco">Eco-Friendly</button>
+            </div>
+            <div id="style-gallery" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="style-card card bg-white rounded-2xl shadow-lg overflow-hidden" data-category="traditional">
+                    <img src="https://placehold.co/600x400/FFA500/FFFFFF?text=Marigold+Garlands" alt="Marigold Garlands" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Marigold & Brass</h3>
+                        <p class="text-gray-600">The classic combination of bright orange marigold garlands with polished brass lamps and utensils. Timeless and deeply rooted in tradition.</p>
+                    </div>
+                </div>
+                <div class="style-card card bg-white rounded-2xl shadow-lg overflow-hidden" data-category="modern">
+                    <img src="https://placehold.co/600x400/87CEEB/FFFFFF?text=Fairy+Light+Curtains" alt="Fairy Light Curtains" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Minimalist Glow</h3>
+                        <p class="text-gray-600">Using single-color fairy lights (like warm white or gold) to create curtains of light or wrap around simple decor items. Clean and elegant.</p>
+                    </div>
+                </div>
+                 <div class="style-card card bg-white rounded-2xl shadow-lg overflow-hidden" data-category="eco">
+                    <img src="https://placehold.co/600x400/90EE90/FFFFFF?text=Clay+Diyas" alt="Clay Diyas" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Earthen Charm</h3>
+                        <p class="text-gray-600">Focus on biodegradable materials. Use unpainted clay diyas, fresh flowers, and rangoli made from rice flour and spices.</p>
+                    </div>
+                </div>
+                <div class="style-card card bg-white rounded-2xl shadow-lg overflow-hidden" data-category="traditional">
+                    <img src="https://placehold.co/600x400/DC143C/FFFFFF?text=Elaborate+Rangoli" alt="Elaborate Rangoli" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Intricate Rangoli Art</h3>
+                        <p class="text-gray-600">Large, detailed rangoli patterns featuring peacocks, gods, and floral motifs. A stunning centerpiece for any entrance.</p>
+                    </div>
+                </div>
+                <div class="style-card card bg-white rounded-2xl shadow-lg overflow-hidden" data-category="modern">
+                    <img src="https://placehold.co/600x400/D3D3D3/FFFFFF?text=Floating+Candles" alt="Floating Candles" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Floating Serenity</h3>
+                        <p class="text-gray-600">A large bowl (urli) filled with water, flower petals, and floating candles. Creates a tranquil and sophisticated focal point.</p>
+                    </div>
+                </div>
+                <div class="style-card card bg-white rounded-2xl shadow-lg overflow-hidden" data-category="eco">
+                    <img src="https://placehold.co/600x400/CD853F/FFFFFF?text=Recycled+Paper+Decor" alt="Recycled Paper Decor" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Upcycled Creations</h3>
+                        <p class="text-gray-600">Crafting lanterns from old newspapers, creating torans from fabric scraps, and using painted coconut shells as candle holders.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="trends" class="mb-20 scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center mb-4">Decoration Popularity Trends</h2>
+            <p class="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">Curious about what's popular? This chart visualizes the general popularity of different decoration elements based on recent trends. While diyas remain the heart of Diwali, see how other elements compare in modern celebrations.</p>
+            <div class="bg-white p-6 rounded-2xl shadow-lg">
+                <div class="chart-container">
+                    <canvas id="popularityChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section id="diy" class="scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center mb-4">DIY Corner</h2>
+            <p class="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">Get hands-on with your decorations! This section provides simple, step-by-step instructions for creating beautiful Diwali crafts at home. Click on a project to expand the guide and start creating.</p>
+            <div class="space-y-4 max-w-3xl mx-auto">
+                <div class="bg-white rounded-2xl shadow-lg">
+                    <button class="accordion-button w-full text-left p-6 flex justify-between items-center text-xl font-semibold">
+                        Simple Paper Lantern (Akash Kandil)
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="mb-4 text-gray-600">Create a beautiful paper lantern with just a few materials.</p>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                            <li>Take a rectangular piece of colored chart paper. Fold it in half lengthwise.</li>
+                            <li>Make a series of parallel cuts from the folded edge, stopping about an inch from the opposite edge.</li>
+                            <li>Unfold the paper. Roll it into a cylinder shape and glue the short ends together.</li>
+                            <li>Cut a thin strip of paper and attach it to the top to create a handle. Decorate with glitter or sequins.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg">
+                    <button class="accordion-button w-full text-left p-6 flex justify-between items-center text-xl font-semibold">
+                        Easy Floating Candle Bowl
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="mb-4 text-gray-600">A quick and elegant centerpiece for any table.</p>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                            <li>Choose a wide, shallow bowl (a glass bowl or a traditional brass urli works well).</li>
+                            <li>Fill it with water, leaving about an inch of space at the top.</li>
+                            <li>Gently place fresh flower petals on the water's surface. Marigold and rose petals are great choices.</li>
+                            <li>Carefully place a few small, floating tea-light candles among the petals and light them.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-orange-100 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-700">
+            <p>&copy; 2025 Happy Diwali Guide. Created by KreateWebsites spread the light and joy of the festival.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const elementCards = document.querySelectorAll('.element-card');
+            const elementDisplay = document.getElementById('element-display');
+            const displayEmoji = elementDisplay.querySelector('div');
+            const displayTitle = elementDisplay.querySelector('h3');
+            const displayText = elementDisplay.querySelector('p');
+
+            elementCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    displayTitle.textContent = card.dataset.title;
+                    displayEmoji.textContent = card.dataset.emoji;
+                    displayText.textContent = card.dataset.text;
+                });
+            });
+            
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const styleCards = document.querySelectorAll('.style-card');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active-filter'));
+                    button.classList.add('active-filter');
+                    
+                    const filter = button.dataset.filter;
+
+                    styleCards.forEach(card => {
+                        if (filter === 'all' || card.dataset.category === filter) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            const accordionButtons = document.querySelectorAll('.accordion-button');
+            accordionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const wasOpen = button.classList.contains('open');
+                    
+                    accordionButtons.forEach(btn => {
+                        btn.classList.remove('open');
+                        btn.querySelector('span').style.transform = 'rotate(0deg)';
+                    });
+
+                    if (!wasOpen) {
+                        button.classList.add('open');
+                        button.querySelector('span').style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('data-target');
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+            
+            const sections = document.querySelectorAll('main section');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 150) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active-nav');
+                    if (link.getAttribute('data-target') === current) {
+                        link.classList.add('active-nav');
+                    }
+                });
+            });
+
+            const ctx = document.getElementById('popularityChart').getContext('2d');
+            const popularityChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Diyas & Candles', 'Fairy Lights', 'Rangoli', 'Flowers & Torans', 'Lanterns'],
+                    datasets: [{
+                        label: 'Popularity Score',
+                        data: [95, 85, 78, 70, 60],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(153, 102, 255, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#4A2E1A',
+                            titleFont: { size: 16 },
+                            bodyFont: { size: 14 },
+                            padding: 12,
+                            cornerRadius: 8,
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.2)'
+                            },
+                            ticks: {
+                                color: '#4A2E1A'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#4A2E1A',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

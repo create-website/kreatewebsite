@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guru Nanak Jayanti: Celebrating the First Sikh Guru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Serene & Devotional (Saffron, White, Blue) -->
+    <!-- Application Structure Plan: A narrative infographic that explains Guru Nanak Jayanti, focusing on the life and teachings of the first Sikh Guru. The structure is: 1. Hero section. 2. "What is Guru Nanak Jayanti?". 3. "The Life of Guru Nanak Dev Ji". 4. "The Three Pillars: Core Teachings". 5. "Traditions of Devotion & Service". 6. "A Taste of Langar" chart. This flow guides the user through the foundational principles of Sikhism. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The Three Pillars -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the foundational principles of Sikh ethics. -> Library/Method: HTML/CSS.
+        - Data Point: Key traditions -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clear way to present the devotional and community-focused practices. -> Library/Method: HTML/CSS.
+        - Data Point: Langar components -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display the key elements of the communal meal. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #F0F9FF; /* Very Light Blue */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-blue { color: #0284C7; }
+        .palette-text-saffron { color: #F97316; }
+        .palette-text-gray { color: #4B5563; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #F97316; /* Saffron */
+            border: 3px solid #0284C7; /* Blue */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-blue tracking-wider">Guru Nanak Jayanti</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">Celebrating the Birth of the First Sikh Guru</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Guru Nanak Jayanti?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Guru Nanak Jayanti, also known as Gurpurab, is one of the most sacred festivals in Sikhism, celebrating the birth of the first Sikh Guru, Guru Nanak Dev Ji. He was the founder of the Sikh faith, and his birthday is observed with immense devotion, prayer, and community service across the world.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-blue mb-4">ੴ</div>
+                    <h3 class="text-3xl font-bold text-gray-900">The Founder's Birth</h3>
+                    <p class="mt-2 text-gray-600">The festival commemorates the birth of Guru Nanak, who laid the foundation for Sikhism based on the principle of "Ik Onkar" (One God).</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-gray mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Festival Timing</h3>
+                    <p class="mt-2 text-gray-600">It is celebrated on the full moon day (Purnima) in the Hindu month of Kartik, which typically falls in October or November.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-saffron mb-4">💡</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Message of Equality</h3>
+                    <p class="mt-2 text-gray-600">The celebration emphasizes Guru Nanak's teachings of selfless service, social justice, and the equality of all humankind, regardless of caste, creed, or gender.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Life of Guru Nanak Dev Ji</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Born in 1469 in the village of Rai Bhoi Di Talwandi (now Nankana Sahib, Pakistan), Guru Nanak showed a deep spiritual inclination from a young age. He questioned ritualism and social hierarchies, advocating for a direct, loving relationship with one God.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">🌍</div>
+                        <p class="text-xl font-bold mt-2 palette-text-blue">A Life of Travel and Teaching</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">After a profound spiritual experience, Guru Nanak embarked on four long journeys, known as the *Udasis*, which took him thousands of miles in all directions. He traveled to places like Tibet, Sri Lanka, and Mecca, engaging in dialogue with scholars of different faiths. He did not seek to convert, but to share his message of universal brotherhood, honest living, and meditation on God's name. After his travels, he settled in Kartarpur, where he established the first Sikh community, living as a farmer and a spiritual guide.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="virtues" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Three Pillars: Core Teachings</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Guru Nanak's philosophy is distilled into three fundamental principles that guide the Sikh way of life.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🙏</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Naam Japo</h3>
+                    <p class="mt-2 text-sm text-gray-600">Meditate on God's Name. To remember the divine creator in all actions and thoughts, leading to spiritual awareness.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">💪</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Kirat Karo</h3>
+                    <p class="mt-2 text-sm text-gray-600">Earn an honest living. To work hard and ethically, avoiding exploitation or fraud.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🤝</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Vand Chakko</h3>
+                    <p class="mt-2 text-sm text-gray-600">Share with others. To share one's earnings and resources with the community, especially those in need, practicing selfless service.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Traditions of Devotion & Service</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Gurpurab celebrations are marked by deep reverence and are centered around the Gurdwara (the Sikh place of worship).
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">📖</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Akhand Path</h3>
+                    <p class="mt-2 text-sm text-gray-600">A 48-hour, non-stop reading of the entire Sikh holy book, the Guru Granth Sahib, is performed in the days leading up to the festival.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4"> procession</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Nagar Kirtan</h3>
+                    <p class="mt-2 text-sm text-gray-600">A procession led by five Sikhs (the Panj Pyare) carrying the Sikh flag. The Guru Granth Sahib is carried on a palanquin, and devotees sing hymns.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎶</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Kirtan Darbar</h3>
+                    <p class="mt-2 text-sm text-gray-600">On the day of Gurpurab, hymn-singing sessions (Kirtan) and religious discourses (Katha) are held in Gurdwaras throughout the day and night.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🍲</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Langar</h3>
+                    <p class="mt-2 text-sm text-gray-600">A free community meal is served to everyone, regardless of their background. It is a powerful expression of equality and selfless service.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Langar</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The Langar, or free community kitchen, is a cornerstone of Sikhism. The food is simple, vegetarian, and nutritious, designed to be served to all without distinction.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Key Components of a Langar Meal</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Dal (Lentil Soup)', 
+                'Roti/Chapatti (Flatbread)', 
+                'Sabzi (Vegetable Curry)', 
+                'Kheer (Rice Pudding)'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Centrality to Langar',
+                        data: [100, 100, 95, 85],
+                        backgroundColor: [
+                           '#F59E0B', // Yellow
+                           '#F97316', // Saffron
+                           '#0284C7', // Blue
+                           '#60A5FA'  // Light Blue
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Commonality in Langar',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

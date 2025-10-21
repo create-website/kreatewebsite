@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Financial ML Labeling Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutral Harmony -->
+    <!-- Application Structure Plan: The application is designed as an interactive "lab" with a clear narrative flow: Problem -> Solution -> Advanced Technique -> Validation. It starts by visualizing the core 'Pathologies' of financial data. Then, the 'Labeling Comparator' allows users to interactively apply flawed (FTH) vs. robust (TBM) methods to the same data. Next, the 'Meta-Labeling Engine' explains the concept of decoupling side/size decisions. Finally, the 'Validation Integrity Check' visualizes why standard CV fails and how Purged CV provides a solution. This modular, task-oriented structure was chosen to transform the dense academic report into a guided, hands-on learning experience, making complex concepts intuitive through direct interaction. -->
+    <!-- Visualization & Content Choices: 
+        1. Pathologies: Report Info: Low SNR, Non-IID. -> Goal: Inform. -> Viz/Method: Chart.js Line Chart with annotations. -> Interaction: Static. -> Justification: Visually grounds the user in the core problems that motivate the need for specialized techniques. Library: Chart.js (Canvas).
+        2. Labeling Comparator: Report Info: FTH vs. TBM. -> Goal: Compare/Demonstrate. -> Viz/Method: Interactive Chart.js Line Chart. -> Interaction: Buttons to apply FTH vs. TBM labeling, which dynamically adds annotations (barriers, labels) to the chart. -> Justification: This is the most effective way to illustrate the fundamental difference between a time-based and an event-based approach, which is the core argument of the source material. Library: Chart.js (Canvas).
+        3. Meta-Labeling Engine: Report Info: Decoupling side/size prediction. -> Goal: Organize/Explain. -> Viz/Method: HTML/CSS flowchart. -> Interaction: Hover effects to reveal explanatory tooltips. -> Justification: A flowchart is the clearest, non-SVG method to illustrate a two-stage decision process. Method: HTML/CSS.
+        4. Validation Check: Report Info: Data leakage in standard CV vs. Purged CV. -> Goal: Compare/Explain. -> Viz/Method: Interactive HTML/CSS diagram of data folds. -> Interaction: Buttons toggle between a "Flawed" view showing data leakage and a "Robust" view showing purged samples. -> Justification: An interactive diagram makes the abstract concept of data leakage tangible and easy to grasp. Method: HTML/CSS/JS.
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+            color: #334155;
+        }
+        .section-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            transition: all 0.3s ease-in-out;
+        }
+        .interactive-button {
+            transition: all 0.2s ease-in-out;
+            font-family: 'Roboto Mono', monospace;
+            border: 1px solid #cbd5e1;
+        }
+        .interactive-button.active {
+            background-color: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+            box-shadow: 0 4px 14px 0 rgb(37 99 235 / 25%);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flowchart-node {
+            border: 2px solid #94a3b8;
+            background-color: #f8fafc;
+        }
+        .flowchart-arrow {
+            color: #94a3b8;
+        }
+        .data-fold {
+            border: 1px solid #94a3b8;
+            transition: all 0.4s ease;
+        }
+        .train-fold { background-color: #dbeafe; border-color: #93c5fd; }
+        .test-fold { background-color: #fee2e2; border-color: #fca5a5; }
+        .purged-fold { background-color: #e5e7eb; border-color: #9ca3af; text-decoration: line-through; }
+        .leaking-fold {
+            background-color: #fecaca !important;
+            border-color: #ef4444 !important;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/95 backdrop-blur-sm sticky top-0 z-50 border-b border-slate-200">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-slate-800">📊 The Financial ML Labeling Lab</span>
+                </div>
+                <div class="hidden md:block">
+                    <a href="#pathologies" class="px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-blue-600">Pathologies</a>
+                    <a href="#comparator" class="px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-blue-600">Comparator</a>
+                    <a href="#meta-labeling" class="px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-blue-600">Meta-Labeling</a>
+                    <a href="#validation" class="px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-blue-600">Validation</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        <section id="intro" class="mb-16 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-800 tracking-tight">Labeling for Financial Machine Learning</h1>
+            <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">An interactive guide to the specialized techniques required for building robust ML models in finance. Explore why standard methods fail and discover the modern frameworks that work.</p>
+        </section>
+
+        <section id="pathologies" class="mb-16 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Why Finance is Different: The Data Pathologies</h2>
+                <p class="mt-2 text-lg text-slate-600 max-w-3xl mx-auto">Financial data doesn't behave like data in other fields. Its unique characteristics, like a low signal-to-noise ratio and changing regimes, break standard machine learning assumptions and require specialized solutions.</p>
+            </div>
+            <div class="section-card p-6 md:p-8">
+                <div class="chart-container">
+                    <canvas id="pathologyChart"></canvas>
+                </div>
+                <div class="mt-4 text-sm text-center text-slate-500">
+                    This chart illustrates two key problems: a low **signal-to-noise ratio** (the small, true trend is buried in random noise) and **non-stationarity** (the data's volatility changes unpredictably between different market regimes).
+                </div>
+            </div>
+        </section>
+
+        <section id="comparator" class="mb-16 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">The Interactive Labeling Comparator</h2>
+                <p class="mt-2 text-lg text-slate-600 max-w-3xl mx-auto">The way we define a "win" or a "loss" for the model is critical. Select a method below to see how a flawed vs. a robust labeling approach interprets the exact same price path.</p>
+            </div>
+            <div class="section-card p-6 md:p-8">
+                <div class="chart-container">
+                    <canvas id="labelingChart"></canvas>
+                </div>
+                <div class="mt-6 text-center space-x-2">
+                    <button id="reset-btn" class="interactive-button py-2 px-4 rounded-md text-sm font-medium">Reset</button>
+                    <button id="fth-btn" class="interactive-button py-2 px-4 rounded-md text-sm font-medium">Apply Flawed Method (FTH)</button>
+                    <button id="tbm-btn" class="interactive-button py-2 px-4 rounded-md text-sm font-medium">Apply Robust Method (TBM)</button>
+                </div>
+                <div id="labeling-explanation" class="mt-6 text-sm text-slate-600 bg-slate-50 p-4 rounded-md">
+                    Select a method to begin. The green dotted line represents the entry point for a potential trade.
+                </div>
+            </div>
+        </section>
+        
+        <section id="meta-labeling" class="mb-16 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">The Meta-Labeling Engine: Sizing the Bet</h2>
+                <p class="mt-2 text-lg text-slate-600 max-w-3xl mx-auto">A good system decouples two key questions: "Which direction will the price go?" and "How confident are we in that prediction?" Meta-labeling uses a secondary model to filter signals and determine bet size, enhancing precision and managing risk.</p>
+            </div>
+             <div class="section-card p-6 md:p-8">
+                 <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
+                    <div class="text-center p-4 rounded-lg flowchart-node">
+                        <h3 class="font-bold text-slate-700">1. Primary Model</h3>
+                        <p class="text-sm text-slate-500">Generates many signals (High Recall)</p>
+                        <div class="mt-2 text-xs font-mono">(e.g., Moving Avg Crossover)</div>
+                    </div>
+                    <div class="text-2xl font-bold flowchart-arrow transform md:-rotate-0 rotate-90">→</div>
+                    <div class="text-center p-4 rounded-lg flowchart-node relative group">
+                        <h3 class="font-bold text-slate-700">2. Meta-Model</h3>
+                        <p class="text-sm text-slate-500">Filters signals (High Precision)</p>
+                        <div class="mt-2 text-xs font-mono">(e.g., Random Forest)</div>
+                        <div class="absolute bottom-full mb-2 w-64 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs rounded-lg py-2 px-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            This model predicts the probability that the primary signal will be profitable, informing the final decision on whether to trade and how much to risk.
+                            <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-slate-800"></div>
+                        </div>
+                    </div>
+                     <div class="text-2xl font-bold flowchart-arrow transform md:-rotate-0 rotate-90">→</div>
+                    <div class="text-center p-4 rounded-lg flowchart-node bg-blue-100 border-blue-400">
+                        <h3 class="font-bold text-blue-700">3. Final Decision</h3>
+                        <p class="text-sm text-slate-500">Execute trade with data-driven size</p>
+                        <div class="mt-2 text-xs font-mono">(e.g., Small, Large, or No Bet)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="validation" class="scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">The Validation Integrity Check</h2>
+                <p class="mt-2 text-lg text-slate-600 max-w-3xl mx-auto">Using standard cross-validation on financial data leads to "data leakage," producing wildly optimistic results. A robust process requires purging training data that has "seen" the test set. See the difference below.</p>
+            </div>
+            <div class="section-card p-6 md:p-8">
+                 <div id="cv-diagram" class="flex space-x-1 p-2 bg-slate-100 rounded-md overflow-x-auto">
+                    <!-- Folds will be generated by JS -->
+                 </div>
+                 <div class="mt-6 text-center space-x-2">
+                    <button id="standard-cv-btn" class="interactive-button py-2 px-4 rounded-md text-sm font-medium">Show Flawed CV</button>
+                    <button id="purged-cv-btn" class="interactive-button py-2 px-4 rounded-md text-sm font-medium active">Show Robust (Purged) CV</button>
+                </div>
+                <div id="cv-explanation" class="mt-6 text-sm text-slate-600 bg-slate-50 p-4 rounded-md">
+                    This diagram shows 10 folds of time-series data. The red fold is the current test set. In the **Robust (Purged) CV** view, training samples whose labels would overlap with the test set are "purged" (grayed out) to prevent data leakage.
+                </div>
+            </div>
+        </section>
+        
+    </main>
+<!--
+    <footer class="bg-white mt-16 border-t border-slate-200">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-slate-500">
+            <p class="text-sm">&copy; 2025 Financial ML Labeling Lab. Based on methodologies by Dr. Marcos Lopez de Prado.</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const chartTooltipPlugin = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: (tooltipItems) => `Day ${tooltipItems[0].label}`,
+                        label: (tooltipItem) => `Price: $${tooltipItem.raw.toFixed(2)}`
+                    }
+                }
+            }
+        };
+
+        // --- Pathology Chart ---
+        const pathologyCtx = document.getElementById('pathologyChart').getContext('2d');
+        const pathologyData = [100, 101, 100.5, 102, 101, 103, 102.5, 104, 103, 105, 104, 106, 105.5, 107, 106, 108, 109, 110, 108, 107, 109, 111, 113, 112, 110, 109, 111, 110, 108, 106, 107, 105, 103, 104, 102, 100, 101.5, 103, 101, 99, 100, 102, 104, 103, 105, 106, 104, 102, 103, 101];
+        new Chart(pathologyCtx, {
+            type: 'line',
+            data: {
+                labels: Array.from({ length: pathologyData.length }, (_, i) => i + 1),
+                datasets: [{
+                    label: 'Price',
+                    data: pathologyData,
+                    borderColor: '#64748b',
+                    backgroundColor: 'rgba(100, 116, 139, 0.1)',
+                    fill: true,
+                    tension: 0.1,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { ticks: { callback: (value) => `$${value}` } } },
+                plugins: {
+                    legend: { display: false },
+                    annotation: {
+                        annotations: {
+                            regime1: { type: 'box', xMin: 0, xMax: 27, backgroundColor: 'rgba(56, 189, 248, 0.1)', borderColor: 'rgba(56, 189, 248, 0.3)' },
+                            label1: { type: 'label', xValue: 13.5, yValue: 114, content: 'Low Volatility Regime', font: { size: 12 }, color: '#0284c7'},
+                            regime2: { type: 'box', xMin: 27, xMax: 50, backgroundColor: 'rgba(244, 63, 94, 0.1)', borderColor: 'rgba(244, 63, 94, 0.3)' },
+                            label2: { type: 'label', xValue: 38.5, yValue: 107, content: 'High Volatility Regime', font: { size: 12 }, color: '#e11d48'}
+                        }
+                    },
+                     ...chartTooltipPlugin.plugins
+                }
+            }
+        });
+
+        // --- Labeling Comparator Chart ---
+        const labelingCtx = document.getElementById('labelingChart').getContext('2d');
+        const priceData = [100, 101, 102.5, 101.5, 103, 105, 106, 104.5, 107, 108, 106, 104, 103, 105, 107.5, 109, 108, 110, 112, 111, 113, 115, 114, 112, 110, 108, 109, 111, 109, 107];
+        let labelingChart;
+        const entryIndex = 4;
+        const entryPrice = priceData[entryIndex];
+        const labelingExplanation = document.getElementById('labeling-explanation');
+        
+        const fthBtn = document.getElementById('fth-btn');
+        const tbmBtn = document.getElementById('tbm-btn');
+        const resetBtn = document.getElementById('reset-btn');
+
+        function createLabelingChart(annotations = {}) {
+            if (labelingChart) {
+                labelingChart.destroy();
+            }
+            labelingChart = new Chart(labelingCtx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({ length: priceData.length }, (_, i) => i + 1),
+                    datasets: [{
+                        label: 'Price Path',
+                        data: priceData,
+                        borderColor: '#475569',
+                        tension: 0.1,
+                        pointRadius: 2,
+                        pointBackgroundColor: '#475569'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { ticks: { callback: (value) => `$${value}` } } },
+                    plugins: {
+                        legend: { display: false },
+                        annotation: { annotations },
+                        ...chartTooltipPlugin.plugins
+                    }
+                }
+            });
+        }
+
+        function resetLabeling() {
+            const annotations = {
+                entryPoint: { type: 'point', xValue: entryIndex, yValue: entryPrice, backgroundColor: '#16a34a', radius: 5 },
+                entryLine: { type: 'line', yMin: entryPrice, yMax: entryPrice, borderColor: '#16a34a', borderWidth: 2, borderDash: [6, 6] }
+            };
+            createLabelingChart(annotations);
+            fthBtn.classList.remove('active');
+            tbmBtn.classList.remove('active');
+            labelingExplanation.textContent = 'Select a method to begin. The green dotted line represents the entry point for a potential trade.';
+        }
+
+        fthBtn.addEventListener('click', () => {
+            const timeHorizon = 15;
+            const exitIndex = entryIndex + timeHorizon;
+            const exitPrice = priceData[exitIndex];
+            const returnVal = (exitPrice / entryPrice) - 1;
+            const label = returnVal > 0 ? '+1' : '-1';
+            const color = returnVal > 0 ? 'green' : 'red';
+
+            const annotations = {
+                entryPoint: { type: 'point', xValue: entryIndex, yValue: entryPrice, backgroundColor: '#16a34a', radius: 5 },
+                exitPoint: { type: 'point', xValue: exitIndex, yValue: exitPrice, backgroundColor: color, radius: 5 },
+                timeBox: { type: 'box', xMin: entryIndex, xMax: exitIndex, backgroundColor: 'rgba(100, 116, 139, 0.1)'},
+                label: { type: 'label', xValue: (entryIndex + exitIndex) / 2, yValue: 116, content: `FTH Label: ${label}`, font: { size: 14, weight: 'bold' }, color: color}
+            };
+            createLabelingChart(annotations);
+            fthBtn.classList.add('active');
+            tbmBtn.classList.remove('active');
+            labelingExplanation.innerHTML = `<strong>Fixed-Time Horizon (FTH):</strong> The outcome is based *only* on the price at the end of a fixed period (${timeHorizon} days). It ignores the price path, labeling this a <strong>${label === '+1' ? 'win' : 'loss'}</strong> despite more favorable exit opportunities occurring earlier.`;
+        });
+
+        tbmBtn.addEventListener('click', () => {
+            const volatility = 0.08; // 8%
+            const upperBarrier = entryPrice * (1 + volatility);
+            const lowerBarrier = entryPrice * (1 - volatility);
+            const exitIndex = 15; // index where upper barrier is hit
+            const exitPrice = priceData[exitIndex];
+            
+            const annotations = {
+                entryPoint: { type: 'point', xValue: entryIndex, yValue: entryPrice, backgroundColor: '#16a34a', radius: 5 },
+                exitPoint: { type: 'point', xValue: exitIndex, yValue: exitPrice, backgroundColor: 'green', radius: 7, pointStyle: 'star' },
+                upperBarrier: { type: 'line', yMin: upperBarrier, yMax: upperBarrier, borderColor: '#22c55e', borderWidth: 2, label: { content: 'Profit Take', enabled: true, position: 'start' } },
+                lowerBarrier: { type: 'line', yMin: lowerBarrier, yMax: lowerBarrier, borderColor: '#ef4444', borderWidth: 2, label: { content: 'Stop Loss', enabled: true, position: 'start' } },
+                verticalBarrier: { type: 'line', xMin: entryIndex + 20, xMax: entryIndex + 20, borderColor: '#64748b', borderWidth: 2, borderDash: [6, 6], label: { content: 'Time Limit', enabled: true, position: 'end'} },
+                label: { type: 'label', xValue: (entryIndex + exitIndex) / 2, yValue: 116, content: `TBM Label: +1`, font: { size: 14, weight: 'bold' }, color: 'green'}
+            };
+            createLabelingChart(annotations);
+            tbmBtn.classList.add('active');
+            fthBtn.classList.remove('active');
+            labelingExplanation.innerHTML = `<strong>Triple-Barrier Method (TBM):</strong> The outcome is event-driven. The trade is exited as soon as the price touches the profit-take barrier, locking in a gain. This correctly labels the trajectory as a <strong>win</strong>.`;
+        });
+        
+        resetBtn.addEventListener('click', resetLabeling);
+        resetLabeling();
+        
+        // --- CV Diagram ---
+        const cvDiagram = document.getElementById('cv-diagram');
+        const standardCvBtn = document.getElementById('standard-cv-btn');
+        const purgedCvBtn = document.getElementById('purged-cv-btn');
+        const cvExplanation = document.getElementById('cv-explanation');
+        const numFolds = 10;
+        let testFoldIndex = 5;
+
+        function renderCVDiagram(isPurged) {
+            cvDiagram.innerHTML = '';
+            for (let i = 0; i < numFolds; i++) {
+                const fold = document.createElement('div');
+                fold.className = 'data-fold flex-shrink-0 w-20 h-12 flex items-center justify-center font-mono text-sm';
+                fold.textContent = `Fold ${i + 1}`;
+                
+                if (i === testFoldIndex) {
+                    fold.classList.add('test-fold');
+                } else {
+                    fold.classList.add('train-fold');
+                }
+
+                // Logic for purging/leakage
+                const isLeaking = (i === testFoldIndex - 1 || i === testFoldIndex - 2);
+                if (!isPurged && isLeaking) {
+                     fold.classList.add('leaking-fold');
+                } else if (isPurged && isLeaking) {
+                    fold.classList.add('purged-fold');
+                }
+                cvDiagram.appendChild(fold);
+            }
+        }
+        
+        standardCvBtn.addEventListener('click', () => {
+            renderCVDiagram(false);
+            standardCvBtn.classList.add('active');
+            purgedCvBtn.classList.remove('active');
+            cvExplanation.innerHTML = `In the <strong>Flawed CV</strong> view, the training set includes samples (highlighted in bright red) whose labels are derived from information that overlaps with the test set. This "data leakage" gives the model an unfair advantage, leading to inflated performance metrics.`;
+        });
+        
+        purgedCvBtn.addEventListener('click', () => {
+            renderCVDiagram(true);
+            purgedCvBtn.classList.add('active');
+            standardCvBtn.classList.remove('active');
+             cvExplanation.innerHTML = `In the <strong>Robust (Purged) CV</strong> view, training samples whose labels would overlap with the test set are "purged" (grayed out) to prevent data leakage. This ensures the model is evaluated on truly unseen data.`;
+        });
+        
+        renderCVDiagram(true); // Initial state
+
+    });
+    </script>
+</body>
+</html>

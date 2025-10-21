@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nal and Neel: Architects of Ram Setu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+        }
+        .font-sanskrit {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+        }
+        .tab-active {
+            border-color: #D97706;
+            background-color: #FFFBEB;
+            color: #D97706;
+        }
+        .timeline-item-active {
+            background-color: #D97706;
+            color: #FFFFFF;
+            transform: scale(1.1);
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A single-page, scrolling narrative structure is chosen to guide the user through the story of Nal and Neel in a logical, chronological flow. It starts with an introduction (the problem), introduces the heroes (the architects), details their work (the project), explores its context (science vs. legend), and concludes with its impact (legacy). This storytelling approach is more engaging for a historical/mythological topic than a dashboard. Key interactions include clickable character bios, an interactive 5-day construction timeline, and tabs to compare legend with modern views, making the information digestible and explorable. -->
+    <!-- Visualization & Content Choices: Report Info: Nal & Neel's identity -> Goal: Inform -> Viz/Method: Interactive HTML cards -> Interaction: Click to reveal bio -> Justification: Focuses on the key figures individually. | Report Info: 5-day bridge construction -> Goal: Show Change/Process -> Viz/Method: Interactive HTML/CSS timeline -> Interaction: Click on a day to see progress details -> Justification: Breaks down the monumental task into a manageable, explorable process. | Report Info: Legend of floating stones vs. science -> Goal: Compare/Organize -> Viz/Method: HTML Tabbed content -> Interaction: Click tabs to switch views -> Justification: Presents two perspectives on the same phenomenon clearly and concisely. No complex data charts are needed; the focus is on narrative and process. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-amber-100/30 sticky top-0 z-50 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="font-sanskrit text-2xl font-bold text-amber-800">नल-नील सेतु</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#challenge" class="text-stone-600 hover:text-amber-700 transition">The Challenge</a>
+                    <a href="#architects" class="text-stone-600 hover:text-amber-700 transition">The Architects</a>
+                    <a href="#project" class="text-stone-600 hover:text-amber-700 transition">The Project</a>
+                    <a href="#legacy" class="text-stone-600 hover:text-amber-700 transition">Legacy</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section class="text-center my-12 md:my-20">
+            <h1 class="font-sanskrit text-5xl md:text-7xl font-bold text-amber-900 leading-tight">Nal and Neel</h1>
+            <p class="mt-4 text-xl md:text-2xl text-stone-600">The Divine Architects of the Rama Setu</p>
+            <p class="mt-6 max-w-3xl mx-auto text-stone-500">
+                In the epic Ramayana, when Lord Rama faced the impossible task of crossing the ocean to Lanka, two brilliant engineers from the Vanara army, Nal and Neel, rose to the occasion. They masterminded the construction of a legendary bridge, a feat of devotion, engineering, and divine power that endures in scripture and satellite imagery to this day.
+            </p>
+        </section>
+
+        <section id="challenge" class="my-16 md:my-24 py-12 bg-amber-50/50 rounded-2xl">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-amber-800">The Impossible Crossing</h2>
+                <p class="mt-4 text-lg text-stone-600">
+                    Sita, Lord Rama's wife, had been abducted by the demon king Ravana and was held captive in Lanka. Rama's army of Vanaras stood at the southern shore of the Indian subcontinent, faced with the vast, tumultuous ocean. The challenge was monumental: how to transport an entire army across the sea to wage war and rescue Sita.
+                </p>
+            </div>
+        </section>
+
+        <section id="architects" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">Meet the Master Builders</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">This section introduces the two main architects behind this divine project. Both were sons of Vishwakarma, the celestial architect, inheriting his skills. Click on each profile to learn about their unique abilities and crucial roles in this epic undertaking.</p>
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="architect-card bg-white p-6 rounded-xl shadow-lg border border-stone-200/80 cursor-pointer transition hover:shadow-xl hover:border-amber-400" data-architect="nal">
+                    <h3 class="font-sanskrit text-3xl font-bold text-amber-700">Nal (नल)</h3>
+                    <p class="text-stone-500 mt-2">The Chief Architect with a Divine Boon</p>
+                    <div id="nal-details" class="hidden mt-4 text-stone-600 space-y-2">
+                        <p>Nal was the primary engineer for the project. As the son of Vishwakarma, he possessed innate knowledge of construction and architecture. Crucially, he had received a boon in his childhood: any object he threw into the water would not sink, but float. This divine gift was the key to making the seemingly impossible bridge a reality.</p>
+                    </div>
+                </div>
+                <div class="architect-card bg-white p-6 rounded-xl shadow-lg border border-stone-200/80 cursor-pointer transition hover:shadow-xl hover:border-amber-400" data-architect="neel">
+                    <h3 class="font-sanskrit text-3xl font-bold text-amber-700">Neel (नील)</h3>
+                    <p class="text-stone-500 mt-2">The Commander and Skilled Engineer</p>
+                    <div id="neel-details" class="hidden mt-4 text-stone-600 space-y-2">
+                        <p>Neel, also a son of Vishwakarma, was a commander in Sugriva's army and an exceptionally skilled engineer. While Nal directed the core architecture using his boon, Neel managed the logistics, organized the massive Vanara workforce, and ensured the rapid and efficient supply of materials. His leadership was vital to completing the bridge in record time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="project" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Grand Construction</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">The construction of the Ram Setu was a marvel of project management and divine engineering, completed in just five days. This section breaks down the project's key statistics and provides an interactive timeline of the construction. Explore each day to see how this colossal task was accomplished.</p>
+
+            <div class="grid md:grid-cols-3 gap-6 text-center max-w-4xl mx-auto mb-16">
+                <div class="bg-amber-100/60 p-6 rounded-lg">
+                    <div class="text-4xl font-bold text-amber-800">5 Days</div>
+                    <div class="text-stone-600 mt-1">Total Construction Time</div>
+                </div>
+                <div class="bg-amber-100/60 p-6 rounded-lg">
+                    <div class="text-4xl font-bold text-amber-800">100 Yojanas</div>
+                    <div class="text-stone-600 mt-1">Bridge Length (~800 miles)</div>
+                </div>
+                <div class="bg-amber-100/60 p-6 rounded-lg">
+                    <div class="text-4xl font-bold text-amber-800">10 Yojanas</div>
+                    <div class="text-stone-600 mt-1">Bridge Width (~80 miles)</div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-2xl font-bold text-center text-amber-800 mb-8">Interactive Construction Timeline</h3>
+                <div class="flex justify-center items-center space-x-2 md:space-x-4 mb-6">
+                    <div class="flex-grow h-0.5 bg-stone-300"></div>
+                    <div class="flex space-x-2 md:space-x-4">
+                        <button class="timeline-item timeline-item-active h-12 w-12 md:h-14 md:w-14 flex-shrink-0 rounded-full font-bold transition duration-300" data-day="1">Day 1</button>
+                        <button class="timeline-item h-12 w-12 md:h-14 md:w-14 flex-shrink-0 rounded-full font-bold transition duration-300 bg-white" data-day="2">Day 2</button>
+                        <button class="timeline-item h-12 w-12 md:h-14 md:w-14 flex-shrink-0 rounded-full font-bold transition duration-300 bg-white" data-day="3">Day 3</button>
+                        <button class="timeline-item h-12 w-12 md:h-14 md:w-14 flex-shrink-0 rounded-full font-bold transition duration-300 bg-white" data-day="4">Day 4</button>
+                        <button class="timeline-item h-12 w-12 md:h-14 md:w-14 flex-shrink-0 rounded-full font-bold transition duration-300 bg-white" data-day="5">Day 5</button>
+                    </div>
+                    <div class="flex-grow h-0.5 bg-stone-300"></div>
+                </div>
+
+                <div id="timeline-details" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md min-h-[150px]">
+                    <h4 id="day-title" class="font-bold text-xl text-amber-700 mb-2">Day 1: The Foundation</h4>
+                    <p id="day-description" class="text-stone-600">The Vanara army, under Neel's command, began gathering massive rocks and trees. Led by Nal, the first day saw the construction of 14 yojanas of the bridge as the Vanaras worked tirelessly, inspired by their devotion to Lord Rama.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="legacy" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">Legend & Legacy</h2>
+             <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">The Ram Setu is more than just a bridge; it's a timeless symbol of faith and ingenuity. Its story intertwines divine power with incredible engineering. This section lets you explore two perspectives: the ancient legend of the floating stones and the modern scientific and satellite observations of this structure.</p>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="flex border-b border-stone-300 mb-6">
+                    <button class="tab-button tab-active flex-1 text-center font-semibold p-3 border-b-2 transition" data-tab="legend">The Divine Boon</button>
+                    <button class="tab-button flex-1 text-center font-semibold p-3 border-b-2 border-transparent text-stone-500 transition" data-tab="science">Modern Perspectives</button>
+                </div>
+                <div id="tab-content">
+                    <div id="legend-content" class="tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">The Floating Stones</h3>
+                        <p class="text-stone-600">The core of the legend is Nal's divine boon. It's believed the rocks and mountains, inscribed with Lord Rama's name, would become weightless when placed by Nal in the ocean, allowing them to float and form a stable, strong structure. Even the smallest creatures, like a squirrel, contributed, showing that devotion, not size, was what mattered. This act symbolizes that with faith and dedication, any obstacle can be overcome.</p>
+                    </div>
+                    <div id="science-content" class="hidden tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">Satellite Imagery & Science</h3>
+                        <p class="text-stone-600">Satellite images from agencies like NASA show a chain of limestone shoals between Rameswaram, India, and Mannar Island, Sri Lanka, which corresponds to the location of Ram Setu. Some scientific theories suggest these could be pumice stones, which are volcanic rocks filled with air pockets that can float. Others propose it is a natural formation of shoals. The structure remains a topic of active research and debate, connecting ancient text to modern scientific inquiry.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-stone-100 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-stone-500">
+            <p>An interactive exploration of the epic engineering feat by Nal and Neel.</p>
+            <p class="text-sm mt-2">Crafted with respect for the Ramayana.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const architectCards = document.querySelectorAll('.architect-card');
+            architectCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const architect = card.dataset.architect;
+                    const details = document.getElementById(`${architect}-details`);
+                    details.classList.toggle('hidden');
+                });
+            });
+
+            const timelineData = {
+                1: { title: 'Day 1: The Foundation', description: 'The Vanara army, under Neel\'s command, began gathering massive rocks and trees. Led by Nal, the first day saw the construction of 14 yojanas of the bridge as the Vanaras worked tirelessly, inspired by their devotion to Lord Rama.' },
+                2: { title: 'Day 2: Accelerating Progress', description: 'With the process established, the Vanaras worked with increased efficiency. Another 20 yojanas were completed as larger and stronger Vanaras like Hanuman and Angad brought entire mountains to the shore.' },
+                3: { title: 'Day 3: Reaching the Midpoint', description: 'The construction continued at a remarkable pace. An additional 21 yojanas were added to the bridge, pushing past the halfway mark. The morale of the army was incredibly high.' },
+                4: { title: 'Day 4: Nearing the Goal', description: 'As the coast of Lanka became visible, the efforts intensified. The Vanaras, working day and night, constructed another 22 yojanas of the bridge.' },
+                5: { title: 'Day 5: Completion and Crossing', description: 'On the final day, the remaining 23 yojanas were completed, connecting the shores of India and Lanka. The grand Ram Setu was finished, and Lord Rama\'s army began their victorious march across the ocean.' }
+            };
+
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const dayTitle = document.getElementById('day-title');
+            const dayDescription = document.getElementById('day-description');
+
+            timelineItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    timelineItems.forEach(i => i.classList.remove('timeline-item-active', 'bg-white'));
+                    timelineItems.forEach(i => {
+                        if (i !== item) i.classList.add('bg-white');
+                    });
+                    item.classList.add('timeline-item-active');
+                    item.classList.remove('bg-white');
+
+                    const day = item.dataset.day;
+                    dayTitle.textContent = timelineData[day].title;
+                    dayDescription.textContent = timelineData[day].description;
+                });
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+                    button.classList.add('tab-active');
+
+                    const tab = button.dataset.tab;
+                    tabPanes.forEach(pane => {
+                        if (pane.id === `${tab}-content`) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

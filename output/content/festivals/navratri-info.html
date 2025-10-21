@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navratri: An Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: A top-to-bottom narrative infographic. It starts with a high-level overview (the 4 Navratris), drills down into the core components (myths, the 9 Goddesses), explains the 'how' (rituals), shows the cultural impact (regional celebrations), and concludes with the festival's culmination. This linear storytelling approach is ideal for an infographic, guiding the user through complex information in a logical, digestible sequence. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: The 4 seasonal Navratris. -> Goal: Change. -> Viz: HTML/CSS Timeline. -> Justification: Best for showing events distributed across a year. -> Method: Tailwind CSS. (NO SVG/Mermaid).
+        - Data Point: The 9 forms of Durga. -> Goal: Compare/Organize. -> Viz: Chart.js Bar Chart. -> Justification: Provides a clear visual comparison and a strong anchor for the infographic's central section. -> Library: Chart.js/Canvas. (NO SVG).
+        - Data Point: Core Rituals (Ghatasthapana, Vrat, Kanya Pujan). -> Goal: Organize (Process). -> Viz: HTML/CSS Flow Diagram. -> Justification: Clearly illustrates a step-by-step process. -> Method: Tailwind CSS. (NO SVG/Mermaid).
+        - Data Point: Regional Celebrations. -> Goal: Compare (Composition). -> Viz: Chart.js Donut Chart. -> Justification: Effectively shows the proportional representation of different celebration styles. -> Library: Chart.js/Canvas. (NO SVG).
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flow-arrow::after {
+            content: '▼';
+            font-size: 2rem;
+            color: #118AB2;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center my-12">
+            <h1 class="text-4xl md:text-6xl font-bold text-[#073B4C]">The Nine Nights</h1>
+            <p class="text-xl md:text-2xl mt-4 text-[#118AB2]">A Visual Journey Through Navratri</p>
+        </header>
+
+        <section class="my-16">
+            <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-center text-[#073B4C] mb-8">The Four Cycles of Shakti</h2>
+                <p class="text-center max-w-3xl mx-auto mb-10">Navratri isn't just one festival, but four seasonal observances marking the spiritual junctures of the year. Two are celebrated publicly (*Prakat*), while two are reserved for private, esoteric practices (*Gupt*).</p>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 rounded-full bg-[#FFD166] flex items-center justify-center text-4xl mb-3">☀️</div>
+                        <h3 class="font-bold text-lg text-[#073B4C]">Chaitra Navratri</h3>
+                        <p class="text-sm">(Mar-Apr)</p>
+                        <span class="mt-2 text-xs font-semibold bg-green-200 text-green-800 py-1 px-3 rounded-full">Prakat (Public)</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 rounded-full bg-[#06D6A0] flex items-center justify-center text-4xl mb-3">💧</div>
+                        <h3 class="font-bold text-lg text-[#073B4C]">Ashada Navratri</h3>
+                        <p class="text-sm">(Jun-Jul)</p>
+                        <span class="mt-2 text-xs font-semibold bg-blue-200 text-blue-800 py-1 px-3 rounded-full">Gupt (Private)</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 rounded-full bg-[#FF6B6B] flex items-center justify-center text-4xl mb-3">🍂</div>
+                        <h3 class="font-bold text-lg text-[#073B4C]">Sharad Navratri</h3>
+                        <p class="text-sm">(Sep-Oct)</p>
+                        <span class="mt-2 text-xs font-semibold bg-green-200 text-green-800 py-1 px-3 rounded-full">Prakat (Public)</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 rounded-full bg-[#118AB2] flex items-center justify-center text-4xl mb-3">❄️</div>
+                        <h3 class="font-bold text-lg text-[#073B4C]">Magha Navratri</h3>
+                        <p class="text-sm">(Jan-Feb)</p>
+                        <span class="mt-2 text-xs font-semibold bg-blue-200 text-blue-800 py-1 px-3 rounded-full">Gupt (Private)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16">
+            <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-center text-[#073B4C] mb-8">The Nine Forms of the Goddess</h2>
+                <p class="text-center max-w-3xl mx-auto mb-10">Each night of Navratri is dedicated to one of the Navadurga, representing a distinct phase in the Goddess's life journey. The bar chart below visualizes the progressive narrative arc of her forms, from maidenhood to the ultimate bestower of spiritual powers.</p>
+                <div class="chart-container">
+                    <canvas id="navadurgaChart"></canvas>
+                </div>
+                <p class="text-center text-sm text-gray-500 mt-4">The bar height is symbolic of the Goddess's narrative progression and power.</p>
+            </div>
+        </section>
+
+        <section class="my-16">
+            <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-center text-[#073B4C] mb-8">The Flow of Rituals</h2>
+                <p class="text-center max-w-3xl mx-auto mb-10">Navratri is structured by a series of core rituals that guide devotees through nine days of spiritual discipline, purification, and devotion.</p>
+                <div class="flex flex-col md:flex-row justify-around items-center text-center">
+                    <div class="flex flex-col items-center mb-6 md:mb-0">
+                        <div class="p-6 rounded-lg bg-orange-100 w-64">
+                            <h3 class="font-bold text-xl text-[#FF6B6B]">1. Ghatasthapana</h3>
+                            <p class="mt-2 text-sm">Invoking the divine presence into a sacred pot, symbolizing the universe and fertility.</p>
+                        </div>
+                        <div class="flow-arrow hidden md:block"></div>
+                    </div>
+                    <div class="flow-arrow md:hidden"></div>
+                    <div class="flex flex-col items-center mb-6 md:mb-0">
+                        <div class="p-6 rounded-lg bg-yellow-100 w-64">
+                            <h3 class="font-bold text-xl text-[#FFD166]">2. Vrat (Fasting)</h3>
+                            <p class="mt-2 text-sm">Purifying the body and mind through a disciplined, pure diet to enhance focus on the divine.</p>
+                        </div>
+                        <div class="flow-arrow hidden md:block"></div>
+                    </div>
+                    <div class="flow-arrow md:hidden"></div>
+                    <div class="flex flex-col items-center">
+                        <div class="p-6 rounded-lg bg-green-100 w-64">
+                            <h3 class="font-bold text-xl text-[#06D6A0]">3. Kanya Pujan</h3>
+                            <p class="mt-2 text-sm">Worshipping nine young girls as living embodiments of the Goddess, collapsing the human/divine distinction.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16">
+            <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-center text-[#073B4C] mb-8">A Tapestry of Celebration</h2>
+                <p class="text-center max-w-3xl mx-auto mb-10">Across India, Navratri is expressed through diverse cultural traditions. The chart below shows the primary mode of celebration in four major regions, highlighting the festival's multifaceted nature.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="chart-container">
+                        <canvas id="regionalChart"></canvas>
+                    </div>
+                    <div>
+                        <div class="mb-4">
+                            <h4 class="font-bold text-lg text-[#FF6B6B]">West: The Dance of Devotion</h4>
+                            <p>Gujarat's famous Garba and Dandiya Raas are participatory dances symbolizing the cycle of life and cosmic battles.</p>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-bold text-lg text-[#FFD166]">East: Artistic Grandeur</h4>
+                            <p>West Bengal's Durga Puja is a magnificent fusion of art and community, featuring elaborate idols and themed structures.</p>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-bold text-lg text-[#06D6A0]">North: Epic Theatre</h4>
+                            <p>North India's Ramlila plays enact the story of Rama, culminating in the burning of Ravana's effigy on Dussehra.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg text-[#118AB2]">South: The Cosmic Display</h4>
+                            <p>The Golu doll displays in South India represent the hierarchical structure of the cosmos, from the divine to the mundane.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+<!--
+        <footer class="text-center my-12">
+            <div class="bg-white rounded-lg shadow-md p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#073B4C]">The Tenth Day of Victory</h2>
+                <p class="text-lg mt-4 max-w-3xl mx-auto">The festival culminates in **Vijayadashami**, a day that synthesizes the victories of both Goddess Durga and Lord Rama. It's a powerful reminder of the inevitable triumph of righteousness (*dharma*) over chaos (*adharma*).</p>
+            </div>
+        </footer>
+-->
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const wrapLabel = (label) => {
+                const max_width = 16;
+                if (label.length <= max_width) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > max_width) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                if (currentLine) lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            const navadurgaData = {
+                labels: [
+                    'Day 1: Shailaputri', 'Day 2: Brahmacharini', 'Day 3: Chandraghanta',
+                    'Day 4: Kushmanda', 'Day 5: Skandamata', 'Day 6: Katyayani',
+                    'Day 7: Kalaratri', 'Day 8: Mahagauri', 'Day 9: Siddhidatri'
+                ].map(wrapLabel),
+                datasets: [{
+                    label: 'Narrative Power',
+                    data: [20, 35, 50, 60, 70, 85, 95, 80, 100],
+                    backgroundColor: [
+                        '#FF6B6B', '#FF8A80', '#FFAD73', '#FFD166', '#A0E8AF',
+                        '#74C69D', '#48BFE3', '#5E60CE', '#7400B8'
+                    ],
+                    borderColor: '#073B4C',
+                    borderWidth: 2,
+                    borderRadius: 5
+                }]
+            };
+
+            const navadurgaCtx = document.getElementById('navadurgaChart').getContext('2d');
+            new Chart(navadurgaCtx, {
+                type: 'bar',
+                data: navadurgaData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            display: false,
+                            grid: { display: false }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: {
+                                color: '#073B4C',
+                                font: {
+                                    size: 12,
+                                    weight: '600'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback,
+                                label: function(context) {
+                                    const goddessInfo = [
+                                        'Purity, Daughter of Mountain',
+                                        'Penance, The Ascetic',
+                                        'Courage, Bearer of the Moon',
+                                        'Creator, The Cosmic Egg',
+                                        'Nurturing, Mother of Skanda',
+                                        'Warrior, Destroyer of Evil',
+                                        'Ferocity, The Dark Night',
+                                        'Purity, The Great White One',
+                                        'Accomplishments, Giver of Siddhis'
+                                    ];
+                                    return goddessInfo[context.dataIndex];
+                                }
+                            },
+                            backgroundColor: '#073B4C',
+                            titleFont: { size: 16 },
+                            bodyFont: { size: 14 },
+                            padding: 12,
+                            cornerRadius: 6
+                        }
+                    }
+                }
+            });
+
+            const regionalData = {
+                labels: ['Dance (West)', 'Art (East)', 'Theatre (North)', 'Display (South)'],
+                datasets: [{
+                    data: [25, 25, 25, 25],
+                    backgroundColor: ['#FF6B6B', '#FFD166', '#06D6A0', '#118AB2'],
+                    borderColor: '#f0f4f8',
+                    borderWidth: 5
+                }]
+            };
+
+            const regionalCtx = document.getElementById('regionalChart').getContext('2d');
+            new Chart(regionalCtx, {
+                type: 'doughnut',
+                data: regionalData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#073B4C',
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            },
+                             backgroundColor: '#073B4C',
+                            titleFont: { size: 16 },
+                            bodyFont: { size: 14 },
+                            padding: 12,
+                            cornerRadius: 6
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Quant's Backtesting Workbench</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutral Harmony -->
+    <!-- Application Structure Plan: The application is designed as an interactive "workbench" with four distinct modules: Philosophy, Validation Lab, Bet Sizing Simulator, and Performance Dashboard. This task-oriented structure guides the user from theory (understanding biases) to practice (simulating validation and bet sizing) and finally to evaluation (analyzing performance). This modular flow was chosen to break down the complex, interwoven topics of the source report into a logical, hands-on learning path, making abstract concepts like data leakage and Kelly Criterion volatility tangible and easy to understand. -->
+    <!-- Visualization & Content Choices: 
+        1. "Seven Sins" of Backtesting: Report Info: Core backtesting biases. -> Goal: Inform. -> Viz/Method: Interactive HTML/CSS cards with icons. -> Interaction: Hover effects. -> Justification: Presents critical warnings in a visually engaging, easily digestible format. Method: HTML/CSS.
+        2. Validation Method Comparison: Report Info: Flaws of K-Fold vs. robustness of Walk-Forward Analysis. -> Goal: Compare/Explain. -> Viz/Method: Chart.js Line Chart. -> Interaction: Buttons toggle chart datasets. -> Justification: Visually demonstrates the dangerously optimistic results from flawed validation (K-Fold data leakage) versus a more realistic approach (WFA), which is the most effective way to teach this concept. Library: Chart.js (Canvas).
+        3. Bet Sizing Simulator: Report Info: Fixed-Fractional vs. Kelly Criterion. -> Goal: Compare/Demonstrate. -> Viz/Method: Chart.js Line Chart. -> Interaction: Buttons trigger recalculation of the equity curve based on different sizing formulas. -> Justification: Directly visualizes the critical trade-off between growth maximization and volatility/risk of ruin, making the abstract concept of bet sizing immediately clear. Library: Chart.js (Canvas).
+        4. Performance Metrics Dashboard: Report Info: Sharpe, Sortino, MDD, etc. -> Goal: Inform. -> Viz/Method: Dynamic HTML cards. -> Interaction: Values update based on simulator choices. -> Justification: Provides a holistic, dashboard-style view of performance that reinforces the idea that evaluation requires a suite of metrics, not just total return. Method: HTML/JS.
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .section-card {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        }
+        .interactive-button {
+            transition: all 0.2s ease-in-out;
+            font-family: 'Source Code Pro', monospace;
+        }
+        .interactive-button.active {
+            background-color: #0d6efd;
+            color: #ffffff;
+            box-shadow: 0 4px 14px 0 rgb(13 110 253 / 30%);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .metric-card {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+        }
+        .metric-value {
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/95 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-200">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-gray-800">🔬 The Quant's Backtesting Workbench</span>
+                </div>
+                <div class="hidden md:block">
+                    <a href="#sins" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600">The Sins</a>
+                    <a href="#lab" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600">Validation Lab</a>
+                    <a href="#simulator" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600">Bet Sizing Sim</a>
+                    <a href="#dashboard" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600">Dashboard</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        <section id="intro" class="mb-16 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 tracking-tight">From Theory to Reality</h1>
+            <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">This interactive workbench demonstrates why rigorous backtesting is non-negotiable in quantitative finance. Explore how common pitfalls, validation methods, and risk management choices transform a strategy from a "false discovery" into a potentially robust system.</p>
+        </section>
+
+        <section id="sins" class="mb-16 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">The Seven Deadly Sins of Backtesting</h2>
+                <p class="mt-2 text-lg text-gray-600 max-w-3xl mx-auto">Flawed backtests create the illusion of profitability. Understanding these common biases is the first step toward building a strategy that works in the real world, not just on paper.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="section-card p-6 transform hover:-translate-y-1 transition-transform duration-300">
+                    <div class="text-4xl mb-3">😈</div>
+                    <h3 class="font-bold text-lg text-gray-800">Overfitting</h3>
+                    <p class="text-sm text-gray-600 mt-2">Curve-fitting a model to historical noise instead of finding a true signal. The strategy perfectly memorizes the past but has no predictive power.</p>
+                </div>
+                <div class="section-card p-6 transform hover:-translate-y-1 transition-transform duration-300">
+                    <div class="text-4xl mb-3">🔮</div>
+                    <h3 class="font-bold text-lg text-gray-800">Look-Ahead Bias</h3>
+                    <p class="text-sm text-gray-600 mt-2">Using information in the simulation that would not have been available at the time, like using a day's closing price to trade at that day's open.</p>
+                </div>
+                <div class="section-card p-6 transform hover:-translate-y-1 transition-transform duration-300">
+                    <div class="text-4xl mb-3">👻</div>
+                    <h3 class="font-bold text-lg text-gray-800">Survivorship Bias</h3>
+                    <p class="text-sm text-gray-600 mt-2">Testing only on assets that "survived" to the present, ignoring failed or delisted companies where the strategy would have lost money.</p>
+                </div>
+                <div class="section-card p-6 transform hover:-translate-y-1 transition-transform duration-300">
+                    <div class="text-4xl mb-3">💸</div>
+                    <h3 class="font-bold text-lg text-gray-800">Ignoring Costs</h3>
+                    <p class="text-sm text-gray-600 mt-2">Forgetting to model transaction costs like commissions and slippage, which can turn a profitable strategy into a losing one.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="lab" class="mb-16 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">The Interactive Validation Lab</h2>
+                <p class="mt-2 text-lg text-gray-600 max-w-3xl mx-auto">Financial data is not random. Standard cross-validation causes "data leakage," leading to inflated results. Select a method below to see how respecting the timeline produces a more realistic performance estimate.</p>
+            </div>
+            <div class="section-card p-6 md:p-8">
+                <div class="chart-container">
+                    <canvas id="validationChart"></canvas>
+                </div>
+                <div class="mt-6 text-center space-x-2">
+                    <button id="kfold-btn" class="interactive-button py-2 px-4 rounded-md text-sm font-medium border border-gray-300">Flawed: K-Fold CV</button>
+                    <button id="wfa-btn" class="interactive-button py-2 px-4 rounded-md text-sm font-medium border border-gray-300 active">Robust: Walk-Forward Analysis</button>
+                </div>
+                <div id="validation-explanation" class="mt-6 text-sm text-gray-600 bg-gray-50 p-4 rounded-md">
+                    Walk-Forward Analysis (WFA) is the industry standard. It simulates reality by training the model on a past window of data and testing it on a subsequent, unseen window. This process is rolled forward in time, creating a chain of true out-of-sample results and providing a robust defense against overfitting.
+                </div>
+            </div>
+        </section>
+
+        <section id="simulator" class="mb-16 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">The Bet Sizing Simulator</h2>
+                <p class="mt-2 text-lg text-gray-600 max-w-3xl mx-auto">A good signal is useless without proper risk management. Bet sizing determines how much capital you risk per trade. Select a method to see its profound impact on portfolio growth, volatility, and risk of ruin.</p>
+            </div>
+            <div class="section-card p-6 md:p-8">
+                <div class="chart-container">
+                    <canvas id="betSizingChart"></canvas>
+                </div>
+                <div class="mt-6 text-center space-x-2">
+                    <button id="fixed-btn" class="interactive-button py-2 px-4 rounded-md text-sm font-medium border border-gray-300 active">Conservative: Fixed Fractional (2%)</button>
+                    <button id="half-kelly-btn" class="interactive-button py-2 px-4 rounded-md text-sm font-medium border border-gray-300">Balanced: Half Kelly</button>
+                    <button id="full-kelly-btn" class="interactive-button py-2 px-4 rounded-md text-sm font-medium border border-gray-300">Aggressive: Full Kelly</button>
+                </div>
+                 <div id="sizing-explanation" class="mt-6 text-sm text-gray-600 bg-gray-50 p-4 rounded-md">
+                    Fixed Fractional sizing risks a constant percentage of equity per trade (e.g., 2%). It is excellent for capital preservation and compounding, automatically reducing risk during drawdowns.
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard" class="scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">Performance Dashboard</h2>
+                <p class="mt-2 text-lg text-gray-600 max-w-3xl mx-auto">A holistic view of performance requires a suite of metrics. This dashboard reflects the results of the choices made in the Bet Sizing Simulator, revealing the trade-offs between return, risk, and volatility.</p>
+            </div>
+            <div class="section-card p-6 md:p-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="metric-card">
+                        <p class="text-sm text-gray-500">Sharpe Ratio</p>
+                        <p id="sharpe-metric" class="text-2xl metric-value text-green-600">1.21</p>
+                    </div>
+                    <div class="metric-card">
+                        <p class="text-sm text-gray-500">Max Drawdown</p>
+                        <p id="mdd-metric" class="text-2xl metric-value text-red-600">-18.5%</p>
+                    </div>
+                    <div class="metric-card">
+                        <p class="text-sm text-gray-500">Calmar Ratio</p>
+                        <p id="calmar-metric" class="text-2xl metric-value text-green-600">0.98</p>
+                    </div>
+                     <div class="metric-card">
+                        <p class="text-sm text-gray-500">Profit Factor</p>
+                        <p id="profit-metric" class="text-2xl metric-value text-green-600">1.82</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+<!--
+    <footer class="bg-white mt-16 border-t border-gray-200">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-500">
+            <p>&copy; 2025 The Quant's Backtesting Workbench. For educational purposes only.</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const tooltipPlugin = {
+                tooltip: {
+                    callbacks: {
+                        title: (tooltipItems) => `Trade: ${tooltipItems[0].label}`,
+                        label: (tooltipItem) => `Equity: $${tooltipItem.raw.toFixed(0)}`
+                    }
+                }
+            };
+            
+            // --- Validation Lab ---
+            const validationCtx = document.getElementById('validationChart').getContext('2d');
+            const validationExplanation = document.getElementById('validation-explanation');
+            const kfoldBtn = document.getElementById('kfold-btn');
+            const wfaBtn = document.getElementById('wfa-btn');
+
+            const wfaData = {
+                labels: Array.from({ length: 100 }, (_, i) => i + 1),
+                datasets: [{
+                    label: 'Walk-Forward Analysis Equity',
+                    data: [10000, 10100, 10050, 10200, 10300, 10250, 10400, 10550, 10500, 10600, 10750, 10650, 10800, 10900, 10850, 11000, 11150, 11100, 11250, 11400, 11300, 11500, 11600, 11550, 11700, 11850, 11750, 11900, 12050, 12000, 11900, 12100, 12200, 12150, 12300, 12450, 12350, 12500, 12650, 12600, 12750, 12900, 12800, 13000, 13100, 13050, 13200, 13350, 13250, 13400, 13550, 13500, 13650, 13800, 13700, 13900, 14000, 13950, 14100, 14250, 14150, 14300, 14450, 14400, 14550, 14700, 14600, 14800, 14900, 14850, 15000, 15150, 15050, 15200, 15350, 15300, 15450, 15600, 15500, 15700, 15800, 15750, 15900, 16050, 15950, 16100, 16250, 16200, 16350, 16500, 16400, 16600, 16700, 16650, 16800, 16950, 16850, 17000],
+                    borderColor: '#0d6efd',
+                    backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                    fill: true,
+                    tension: 0.1,
+                }]
+            };
+
+            const kfoldData = {
+                labels: Array.from({ length: 100 }, (_, i) => i + 1),
+                datasets: [{
+                    label: 'K-Fold CV Equity (Flawed)',
+                    data: [10000, 10200, 10400, 10600, 10800, 11000, 11200, 11400, 11600, 11800, 12000, 12200, 12400, 12600, 12800, 13000, 13200, 13400, 13600, 13800, 14000, 14200, 14400, 14600, 14800, 15000, 15200, 15400, 15600, 15800, 16000, 16200, 16400, 16600, 16800, 17000, 17200, 17400, 17600, 17800, 18000, 18200, 18400, 18600, 18800, 19000, 19200, 19400, 19600, 19800, 20000, 20200, 20400, 20600, 20800, 21000, 21200, 21400, 21600, 21800, 22000, 22200, 22400, 22600, 22800, 23000, 23200, 23400, 23600, 23800, 24000, 24200, 24400, 24600, 24800, 25000, 25200, 25400, 25600, 25800, 26000, 26200, 26400, 26600, 26800, 27000, 27200, 27400, 27600, 27800, 28000, 28200, 28400, 28600, 28800, 29000, 29200, 29400, 29600, 29800, 30000],
+                    borderColor: '#dc3545',
+                    backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                    fill: true,
+                    tension: 0.1,
+                }]
+            };
+
+            const validationChart = new Chart(validationCtx, {
+                type: 'line',
+                data: wfaData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { ticks: { callback: (value) => `$${value.toLocaleString()}` } } },
+                    plugins: { legend: { display: false }, ...tooltipPlugin }
+                }
+            });
+
+            wfaBtn.addEventListener('click', () => {
+                validationChart.data = wfaData;
+                validationChart.update();
+                wfaBtn.classList.add('active');
+                kfoldBtn.classList.remove('active');
+                validationExplanation.textContent = "Walk-Forward Analysis (WFA) is the industry standard. It simulates reality by training the model on a past window of data and testing it on a subsequent, unseen window. This process is rolled forward in time, creating a chain of true out-of-sample results and providing a robust defense against overfitting.";
+            });
+
+            kfoldBtn.addEventListener('click', () => {
+                validationChart.data = kfoldData;
+                validationChart.update();
+                kfoldBtn.classList.add('active');
+                wfaBtn.classList.remove('active');
+                validationExplanation.textContent = "Standard K-Fold Cross-Validation is fundamentally flawed for time series. By shuffling data, it allows the model to train on 'future' information and test on the 'past,' causing data leakage. This leads to an unrealistically smooth and optimistic equity curve that is impossible to achieve in live trading.";
+            });
+            
+            // --- Bet Sizing Simulator ---
+            const betSizingCtx = document.getElementById('betSizingChart').getContext('2d');
+            const sizingExplanation = document.getElementById('sizing-explanation');
+            const fixedBtn = document.getElementById('fixed-btn');
+            const halfKellyBtn = document.getElementById('half-kelly-btn');
+            const fullKellyBtn = document.getElementById('full-kelly-btn');
+
+            const tradeReturns = [0.03, -0.02, 0.05, 0.01, -0.015, 0.04, 0.025, -0.03, 0.06, -0.02, 0.035, -0.025, 0.045, 0.015, -0.04, 0.07, -0.05, 0.03, 0.02, -0.01];
+            
+            let betSizingChart;
+
+            function calculateEquityCurve(sizingMethod) {
+                let equity = 10000;
+                const equityCurve = [equity];
+                const W = 0.65; // Win rate
+                const R = 1.8;  // Win/Loss ratio
+
+                tradeReturns.forEach(ret => {
+                    let betSize = 0;
+                    if (sizingMethod === 'fixed') {
+                        betSize = equity * 0.02; 
+                    } else if (sizingMethod === 'kelly') {
+                        const kellyFraction = W - (1 - W) / R;
+                        betSize = equity * kellyFraction;
+                    } else if (sizingMethod === 'half-kelly') {
+                         const kellyFraction = W - (1 - W) / R;
+                        betSize = equity * (kellyFraction / 2);
+                    }
+                    
+                    if(sizingMethod === 'fixed') {
+                         equity *= (1 + ret);
+                    } else {
+                        const effectiveReturn = ret > 0 ? (ret / 0.03) * (0.03 * R) : (ret / -0.02) * -0.02; // Scale returns based on R
+                        const pnl = betSize * effectiveReturn;
+                        equity += pnl;
+                    }
+                    if (equity < 0) equity = 0;
+                    equityCurve.push(equity);
+                });
+                return equityCurve;
+            }
+
+            function updatePerformanceDashboard(equityCurve) {
+                const returns = equityCurve.slice(1).map((v, i) => (v / equityCurve[i]) - 1);
+                const meanReturn = returns.reduce((a, b) => a + b, 0) / returns.length;
+                const stdDev = Math.sqrt(returns.map(x => Math.pow(x - meanReturn, 2)).reduce((a, b) => a + b) / returns.length);
+                const annualizedReturn = Math.pow(equityCurve[equityCurve.length - 1] / equityCurve[0], 252 / returns.length) - 1;
+                const sharpe = (annualizedReturn - 0.02) / (stdDev * Math.sqrt(252));
+
+                let peak = equityCurve[0];
+                let maxDrawdown = 0;
+                equityCurve.forEach(e => {
+                    if (e > peak) peak = e;
+                    const drawdown = (peak - e) / peak;
+                    if (drawdown > maxDrawdown) maxDrawdown = drawdown;
+                });
+                
+                const calmar = maxDrawdown > 0 ? annualizedReturn / maxDrawdown : Infinity;
+
+                const grossProfits = returns.filter(r => r > 0).reduce((a,b) => a+b*10000, 0);
+                const grossLosses = Math.abs(returns.filter(r => r < 0).reduce((a,b) => a+b*10000, 0));
+                const profitFactor = grossLosses > 0 ? grossProfits / grossLosses : Infinity;
+
+                document.getElementById('sharpe-metric').textContent = sharpe.toFixed(2);
+                document.getElementById('mdd-metric').textContent = `-${(maxDrawdown * 100).toFixed(1)}%`;
+                document.getElementById('calmar-metric').textContent = calmar.toFixed(2);
+                document.getElementById('profit-metric').textContent = profitFactor.toFixed(2);
+                
+                [document.getElementById('sharpe-metric'), document.getElementById('calmar-metric'), document.getElementById('profit-metric')].forEach(el => {
+                    const val = parseFloat(el.textContent);
+                    el.classList.remove('text-green-600', 'text-red-600', 'text-gray-600');
+                    if (val > (el.id === 'profit-metric' ? 1.5 : 1.0)) {
+                         el.classList.add('text-green-600');
+                    } else if (val < (el.id === 'profit-metric' ? 1.0 : 0.5)) {
+                        el.classList.add('text-red-600');
+                    } else {
+                        el.classList.add('text-gray-600');
+                    }
+                });
+                document.getElementById('mdd-metric').classList.remove('text-green-600', 'text-red-600');
+                document.getElementById('mdd-metric').classList.add(maxDrawdown > 0.3 ? 'text-red-600' : 'text-green-600');
+
+            }
+
+            function updateBetSizingChart(method) {
+                const equityData = calculateEquityCurve(method);
+                if (betSizingChart) {
+                    betSizingChart.destroy();
+                }
+                betSizingChart = new Chart(betSizingCtx, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({ length: equityData.length }, (_, i) => i),
+                        datasets: [{
+                            label: `Equity Curve (${method})`,
+                            data: equityData,
+                            borderColor: '#0d6efd',
+                            backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                            fill: true,
+                            tension: 0.1,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: { y: { ticks: { callback: (value) => `$${value.toLocaleString()}` } } },
+                        plugins: { legend: { display: false }, ...tooltipPlugin }
+                    }
+                });
+                updatePerformanceDashboard(equityData);
+
+                [fixedBtn, halfKellyBtn, fullKellyBtn].forEach(b => b.classList.remove('active'));
+                let btn, text;
+                if(method === 'fixed') { btn = fixedBtn; text = "Fixed Fractional sizing risks a constant percentage of equity per trade (e.g., 2%). It is excellent for capital preservation and compounding, automatically reducing risk during drawdowns."; }
+                if(method === 'half-kelly') { btn = halfKellyBtn; text = "Fractional Kelly (e.g., half-Kelly) uses a fraction of the mathematically optimal bet size. It captures most of the growth benefits of Kelly with significantly reduced volatility and risk."; }
+                if(method === 'kelly') { btn = fullKellyBtn; text = "Full Kelly sizing aims to maximize long-term growth but is notoriously aggressive. It often leads to extreme volatility and crippling drawdowns that are psychologically impossible to endure."; }
+                btn.classList.add('active');
+                sizingExplanation.textContent = text;
+            }
+
+            fixedBtn.addEventListener('click', () => updateBetSizingChart('fixed'));
+            halfKellyBtn.addEventListener('click', () => updateBetSizingChart('half-kelly'));
+            fullKellyBtn.addEventListener('click', () => updateBetSizingChart('kelly'));
+
+            // Initial chart loads
+            updateBetSizingChart('fixed');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial: Building a Minimal MCP Server in Python</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .code-block {
+            background-color: #1a202c; /* gray-900 */
+            color: #e2e8f0; /* gray-300 */
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            font-family: 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+        .code-block .token.comment { color: #a0aec0; } /* gray-500 */
+        .code-block .token.keyword { color: #f6ad55; } /* orange-400 */
+        .code-block .token.string { color: #68d391; } /* green-400 */
+        .code-block .token.function { color: #63b3ed; } /* blue-400 */
+        .code-block .token.number { color: #f687b3; } /* pink-400 */
+        .code-block .token.punctuation { color: #cbd5e0; } /* gray-400 */
+        .code-block .token.class-name { color: #f6e05e; } /* yellow-400 */
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">Tutorial: Building a Minimal MCP Server</h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">A Step-by-Step Guide Using Python and FastAPI</p>
+        </header>
+
+        <main class="max-w-4xl mx-auto">
+            <!-- Introduction Section -->
+            <section class="mb-12">
+                <p class="text-lg leading-relaxed">
+                    This tutorial will guide you through building a barebones Model Context Protocol (MCP) server from scratch. We'll create a server that exposes a simple "tool" and then build a basic LLM agent client to interact with it. Our demo will be a classic: a weather lookup tool.
+                </p>
+            </section>
+
+            <!-- Prerequisites -->
+            <section class="mb-12 bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Prerequisites</h2>
+                <p>You'll need Python 3.7+ installed. We'll be using the <a href="https://fastapi.tiangolo.com/" class="text-indigo-600 hover:underline">FastAPI</a> framework for our server and `requests` for our client.</p>
+                <div class="code-block mt-4">
+<pre><code><span class="token comment"># Install the necessary libraries</span>
+pip install "fastapi[all]" uvicorn python-multipart requests</code></pre>
+                </div>
+            </section>
+
+            <!-- Step-by-Step Guide -->
+            <section id="step-by-step" class="mb-16">
+                 <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Step-by-Step Guide</h2>
+                
+                <!-- Step 1 -->
+                <div class="mb-10">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3"><span class="text-indigo-600">Step 1:</span> Define the Tool Logic</h3>
+                    <p class="mb-4">First, let's write the actual function our server will expose. It's just a plain Python function. Create a file named `tools.py`.</p>
+                    <div class="code-block">
+<pre><code><span class="token comment"># tools.py</span>
+<span class="token keyword">import</span> random
+
+<span class="token keyword">def</span> <span class="token function">get_weather</span><span class="token punctuation">(</span>location<span class="token punctuation">:</span> <span class="token class-name">str</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment">"""A mock function to get the weather for a given location."""</span>
+    <span class="token keyword">if</span> <span class="token string">"tokyo"</span> <span class="token keyword">in</span> location<span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">"location"</span><span class="token punctuation">:</span> <span class="token string">"Tokyo"</span><span class="token punctuation">,</span> <span class="token string">"temperature"</span><span class="token punctuation">:</span> <span class="token string">"15°C"</span><span class="token punctuation">,</span> <span class="token string">"condition"</span><span class="token punctuation">:</span> <span class="token string">"Cloudy"</span><span class="token punctuation">}</span>
+    
+    temps <span class="token punctuation">=</span> <span class="token punctuation">[</span><span class="token string">"25°C"</span><span class="token punctuation">,</span> <span class="token string">"-5°C"</span><span class="token punctuation">,</span> <span class="token string">"30°C"</span><span class="token punctuation">]</span>
+    conditions <span class="token punctuation">=</span> <span class="token punctuation">[</span><span class="token string">"Sunny"</span><span class="token punctuation">,</span> <span class="token string">"Snowing"</span><span class="token punctuation">,</span> <span class="token string">"Rainy"</span><span class="token punctuation">]</span>
+    
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        <span class="token string">"location"</span><span class="token punctuation">:</span> location<span class="token punctuation">,</span> 
+        <span class="token string">"temperature"</span><span class="token punctuation">:</span> random<span class="token punctuation">.</span>choice<span class="token punctuation">(</span>temps<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token string">"condition"</span><span class="token punctuation">:</span> random<span class="token punctuation">.</span>choice<span class="token punctuation">(</span>conditions<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span></code></pre>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="mb-10">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3"><span class="token keyword text-indigo-600">Step 2:</span> Build the MCP Server</h3>
+                    <p class="mb-4">Now, create the server that exposes this tool via an API endpoint. This is our core MCP logic. Create a file named `server.py`.</p>
+                    <div class="code-block">
+<pre><code><span class="token comment"># server.py</span>
+<span class="token keyword">from</span> fastapi <span class="token keyword">import</span> FastAPI
+<span class="token keyword">from</span> pydantic <span class="token keyword">import</span> BaseModel
+<span class="token keyword">from</span> typing <span class="token keyword">import</span> Dict<span class="token punctuation">,</span> Any
+<span class="token keyword">from</span> tools <span class="token keyword">import</span> get_weather
+
+app <span class="token punctuation">=</span> <span class="token function">FastAPI</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># This defines the expected input for our endpoint</span>
+<span class="token keyword">class</span> <span class="token class-name">ToolCallRequest</span><span class="token punctuation">(</span>BaseModel<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    tool_name<span class="token punctuation">:</span> str
+    parameters<span class="token punctuation">:</span> Dict<span class="token punctuation">[</span>str<span class="token punctuation">,</span> Any<span class="token punctuation">]</span>
+
+<span class="token comment"># Our "tool registry" is just a simple dictionary</span>
+AVAILABLE_TOOLS <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+    <span class="token string">"get_weather"</span><span class="token punctuation">:</span> get_weather
+<span class="token punctuation">}</span>
+
+<span class="token decorator"><span class="token punctuation">@</span>app<span class="token punctuation">.</span>post</span><span class="token punctuation">(</span><span class="token string">"/tools/call"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">call_tool</span><span class="token punctuation">(</span>request<span class="token punctuation">:</span> ToolCallRequest<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    tool_function <span class="token punctuation">=</span> AVAILABLE_TOOLS<span class="token punctuation">.</span>get<span class="token punctuation">(</span>request<span class="token punctuation">.</span>tool_name<span class="token punctuation">)</span>
+    
+    <span class="token keyword">if</span> <span class="token keyword">not</span> tool_function<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">"error"</span><span class="token punctuation">:</span> <span class="token string">"Tool not found"</span><span class="token punctuation">}</span>
+
+    <span class="token comment"># Call the actual tool function with its parameters</span>
+    result <span class="token punctuation">=</span> tool_function<span class="token punctuation">(</span><span class="token operator">**</span>request<span class="token punctuation">.</span>parameters<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span><span class="token punctuation">,</span> <span class="token string">"result"</span><span class="token punctuation">:</span> result<span class="token punctuation">}</span></code></pre>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="mb-10">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3"><span class="token keyword text-indigo-600">Step 3:</span> Create the LLM Agent Client</h3>
+                    <p class="mb-4">This agent will simulate an LLM deciding to use a tool. It takes a user prompt, determines which tool to call, and then makes a request to our MCP server. Create `agent.py`.</p>
+                     <div class="code-block">
+<pre><code><span class="token comment"># agent.py</span>
+<span class="token keyword">import</span> requests
+<span class="token keyword">import</span> json
+
+MCP_SERVER_URL <span class="token punctuation">=</span> <span class="token string">"http://127.0.0.1:8000/tools/call"</span>
+
+<span class="token keyword">def</span> <span class="token function">run_agent</span><span class="token punctuation">(</span>prompt<span class="token punctuation">:</span> <span class="token class-name">str</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    print<span class="token punctuation">(</span><span class="token string">f"Agent received prompt: '{prompt}'"</span><span class="token punctuation">)</span>
+    
+    <span class="token comment"># --- This part simulates the LLM's reasoning ---</span>
+    tool_name <span class="token punctuation">=</span> <span class="token string">"get_weather"</span>
+    parameters <span class="token punctuation">=</span> <span class="token punctuation">{</span><span class="token string">"location"</span><span class="token punctuation">:</span> <span class="token string">"Tokyo"</span><span class="token punctuation">}</span>
+    print<span class="token punctuation">(</span><span class="token string">f"LLM decided to call tool '{tool_name}' with params {parameters}"</span><span class="token punctuation">)</span>
+    <span class="token comment"># --- End of simulation ---</span>
+
+    <span class="token comment"># Construct the request to the MCP server</span>
+    payload <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+        <span class="token string">"tool_name"</span><span class="token punctuation">:</span> tool_name<span class="token punctuation">,</span>
+        <span class="token string">"parameters"</span><span class="token punctuation">:</span> parameters
+    <span class="token punctuation">}</span>
+    
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        response <span class="token punctuation">=</span> requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span>MCP_SERVER_URL<span class="token punctuation">,</span> json<span class="token punctuation">=</span>payload<span class="token punctuation">)</span>
+        response<span class="token punctuation">.</span>raise_for_status<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># Raise an exception for bad status codes</span>
+        
+        result <span class="token punctuation">=</span> response<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        print<span class="token punctuation">(</span><span class="token string">"\n--- Server Response ---"</span><span class="token punctuation">)</span>
+        print<span class="token punctuation">(</span>json<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>result<span class="token punctuation">,</span> indent<span class="token punctuation">=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        
+    <span class="token keyword">except</span> requests<span class="token punctuation">.</span>exceptions<span class="token punctuation">.</span>RequestException <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+        print<span class="token punctuation">(</span><span class="token string">f"\nError calling MCP server: {e}"</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    user_prompt <span class="token punctuation">=</span> <span class="token string">"What's the weather like in Tokyo today?"</span>
+    <span class="token function">run_agent</span><span class="token punctuation">(</span>user_prompt<span class="token punctuation">)</span></code></pre>
+                    </div>
+                </div>
+
+                 <!-- Step 4 -->
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3"><span class="token keyword text-indigo-600">Step 4:</span> Run the Demo</h3>
+                    <p class="mb-4">Open two terminal windows. In the first, start the server.</p>
+                     <div class="code-block">
+<pre><code><span class="token comment"># Terminal 1: Run the server</span>
+uvicorn server:app --reload</code></pre>
+                    </div>
+                    <p class="my-4">In the second terminal, run the agent client.</p>
+                     <div class="code-block">
+<pre><code><span class="token comment"># Terminal 2: Run the agent</span>
+python agent.py</code></pre>
+                    </div>
+                     <p class="my-4">You should see the agent print its decision, and then display the JSON response it gets back from the server!</p>
+                </div>
+            </section>
+
+            <!-- Conclusion -->
+            <section class="text-center mt-16">
+                 <h2 class="text-3xl font-bold text-gray-900 mb-4">You've Built an MCP Server!</h2>
+                 <p class="text-lg leading-relaxed max-w-3xl mx-auto">
+                    Congratulations! You've created the fundamental components of an agentic system. This simple pattern—an API server for tools and a client that calls it—is the core concept behind MCP. From here, you can add more tools, implement resource management, and build more sophisticated agent reasoning.
+                </p>
+            </section>
+        </main>
+
+        <footer class="text-center mt-16 border-t pt-8">
+            <p class="text-gray-500">&copy; 2025 AI Insights. All Rights Reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

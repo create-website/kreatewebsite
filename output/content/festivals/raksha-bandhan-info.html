@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Enduring Thread of Raksha Bandhan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Narrative Structure Plan: The infographic tells a linear story, guiding the user from the festival's core meaning to its diverse expressions. It begins with a high-impact introduction, delves into the foundational myths using a comparative chart, traces its evolution with a historical timeline, deconstructs the central ritual with a process diagram, visualizes its cultural diversity with a donut chart, and concludes by highlighting its modern, global adaptations. This narrative flow makes the report's dense information digestible and engaging. -->
+    <!-- Visualization & Content Choices: 1. Mythological Themes: Goal is to compare qualitative themes. A horizontal bar chart (Chart.js) was chosen to visually quantify and rank the thematic importance (e.g., 'Dharmic Bond', 'Siblinghood') across different legends, making abstract concepts comparable. 2. Historical Evolution: Goal is to show change over time. A structured HTML/CSS timeline was implemented to clearly present key historical events in chronological order, a method superior to a static list for showing progression. 3. Ritual Deconstruction: Goal is to organize a process. A flowchart built with styled HTML divs and borders was used to map the ceremony's steps and components, clarifying the ritual's flow. 4. Regional Diversity: Goal is to show composition. A donut chart (Chart.js) was selected to represent how the single festival is composed of many distinct regional variations, effectively visualizing the concept of 'unity in diversity'. All implementations strictly adhere to the NO SVG/Mermaid constraint. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FEFBF6;
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -11px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background-color: #F4976C;
+            border: 4px solid #FEFBF6;
+        }
+    </style>
+</head>
+<body class="text-[#303C6C]">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <header class="text-center mb-16">
+            <h1 class="text-5xl md:text-6xl font-bold text-[#D95B43]">The Enduring Thread</h1>
+            <p class="mt-4 text-xl text-gray-600 font-serif italic">An Infographic on the Raksha Bandhan Festival</p>
+            <p class="mt-6 max-w-3xl mx-auto text-lg">
+                From an ancient protective amulet to a global symbol of love, Raksha Bandhan is a festival of profound depth. This visual journey explores its mythological roots, historical evolution, and modern significance, deconstructing how a simple thread weaves together families and communities.
+            </p>
+        </header>
+
+        <main class="space-y-20">
+
+            <section id="mythology" class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-4xl font-bold">Foundations in Myth</h2>
+                    <p class="mt-2 max-w-2xl mx-auto text-gray-600">The festival's meaning is shaped by several foundational stories from Hindu texts. This chart compares the core themes present in the most prominent legends, showing how concepts like chosen family, divine purpose, and siblinghood are emphasized differently in each narrative.</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="mythologyChart"></canvas>
+                </div>
+            </section>
+
+            <section id="history">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold">A Thread Through History</h2>
+                    <p class="mt-2 max-w-2xl mx-auto text-gray-600">The Rakhi has evolved from a simple protective amulet to a powerful political symbol. This timeline highlights key moments that have shaped its meaning, from ancient Vedic rituals to modern acts of social unity.</p>
+                </div>
+                <div class="relative max-w-3xl mx-auto border-l-4 border-[#FBE8A6] pl-10">
+                    <div class="space-y-12">
+                        <div class="timeline-item relative bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold text-[#F4976C]">c. 1000 BCE: Ancient Vedic Precedents</h3>
+                            <p class="mt-2 text-gray-600">Vedic texts like the Atharvaveda mention the tying of a *pratisara*, a sacred thread used in rituals as a protective amulet, establishing the ancient origins of the practice.</p>
+                        </div>
+                        <div class="timeline-item relative bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold text-[#F4976C]">16th Century: The Contested Legend</h3>
+                            <p class="mt-2 text-gray-600">The popular but historically unverified story of Rani Karnavati sending a Rakhi to Emperor Humayun for protection emerges, later becoming a powerful symbol of Hindu-Muslim unity in cultural memory.</p>
+                        </div>
+                        <div class="timeline-item relative bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold text-[#F4976C]">1905: A Symbol of Unity</h3>
+                            <p class="mt-2 text-gray-600">In response to the British partition of Bengal, Nobel laureate Rabindranath Tagore uses the festival to unite Hindus and Muslims, transforming the Rakhi into a public symbol of resistance and solidarity.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="ritual" class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-4xl font-bold">Deconstructing the Ceremony</h2>
+                    <p class="mt-2 max-w-2xl mx-auto text-gray-600">The Raksha Bandhan ritual is a sequence of symbolic actions centered around the Puja Thali. Each element plays a crucial role in sanctifying the bond of protection.</p>
+                </div>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 text-center">
+                    <div class="flex flex-col items-center p-4">
+                        <div class="text-5xl mb-2">🔥</div>
+                        <h3 class="font-bold">1. Aarti</h3>
+                        <p class="text-sm text-gray-500 max-w-xs">The sister circles a lit lamp (Diya) to create a protective shield of light around her brother.</p>
+                    </div>
+                    <div class="text-2xl text-[#FBE8A6] font-bold hidden md:block">→</div>
+                    <div class="flex flex-col items-center p-4">
+                        <div class="text-5xl mb-2">🔴</div>
+                        <h3 class="font-bold">2. Tilak</h3>
+                        <p class="text-sm text-gray-500 max-w-xs">An auspicious mark of Roli (red powder) and rice is applied to the brother's forehead for well-being.</p>
+                    </div>
+                    <div class="text-2xl text-[#FBE8A6] font-bold hidden md:block">→</div>
+                    <div class="flex flex-col items-center p-4">
+                        <div class="text-5xl mb-2">🧵</div>
+                        <h3 class="font-bold">3. Rakhi</h3>
+                        <p class="text-sm text-gray-500 max-w-xs">The sacred thread is tied on the brother's wrist, symbolizing the sister's prayers and the brother's vow.</p>
+                    </div>
+                    <div class="text-2xl text-[#FBE8A6] font-bold hidden md:block">→</div>
+                    <div class="flex flex-col items-center p-4">
+                        <div class="text-5xl mb-2">🍬</div>
+                        <h3 class="font-bold">4. Reciprocation</h3>
+                        <p class="text-sm text-gray-500 max-w-xs">Sweets are exchanged, and the brother gives a gift, reaffirming his promise to protect and support his sister.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="diversity">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="text-center md:text-left">
+                        <h2 class="text-4xl font-bold">A Festival of Many Faces</h2>
+                        <p class="mt-4 text-lg text-gray-600">Raksha Bandhan is not a monolithic tradition. Its expression varies dramatically across India, integrating with local customs and festivals. In Maharashtra, it coincides with 'Narali Poornima' (Coconut Full Moon) for fishermen. In Rajasthan, a 'Lumba Rakhi' is tied to a sister-in-law, extending the bond. In West Bengal, it's celebrated as 'Jhulan Purnima,' honoring Radha and Krishna.</p>
+                    </div>
+                    <div class="chart-container h-80 md:h-96">
+                        <canvas id="regionalDiversityChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="modern" class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-4xl font-bold">The Modern Thread</h2>
+                    <p class="mt-2 max-w-2xl mx-auto text-gray-600">In the 21st century, the festival continues to evolve, embracing inclusivity, technology, and sustainability.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
+                    <div>
+                        <div class="text-5xl mb-3">🤝</div>
+                        <h3 class="text-xl font-bold">Inclusive Bonds</h3>
+                        <p class="mt-1 text-gray-600">The tradition now often includes sisters tying Rakhis on each other, friends exchanging them, and celebrating chosen family, shifting the focus to mutual support.</p>
+                    </div>
+                    <div>
+                        <div class="text-5xl mb-3">💻</div>
+                        <h3 class="text-xl font-bold">Digital Celebrations</h3>
+                        <p class="mt-1 text-gray-600">For families separated by distance, video calls, e-commerce for sending Rakhis, and social media have become essential tools for celebrating together.</p>
+                    </div>
+                    <div>
+                        <div class="text-5xl mb-3">🌱</div>
+                        <h3 class="text-xl font-bold">Eco-Consciousness</h3>
+                        <p class="mt-1 text-gray-600">A growing trend, especially among younger generations, is the use of eco-friendly Rakhis made from seeds, jute, and other biodegradable materials.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const wrapLabel = (label) => {
+                if (label.length <= 16) return label;
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > 16) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            const chartColors = {
+                primary: '#F4976C',
+                secondary: '#B4DFE5',
+                tertiary: '#FBE8A6',
+                text: '#303C6C',
+                accent1: '#E57373',
+                accent2: '#81C784'
+            };
+
+            const mythologyCtx = document.getElementById('mythologyChart').getContext('2d');
+            new Chart(mythologyCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Krishna & Draupadi', 'Lakshmi & King Bali', 'Indra & Sachi', 'Yama & Yamuna', 'Birth of Santoshi Maa'].map(wrapLabel),
+                    datasets: [{
+                        label: 'Thematic Importance',
+                        data: [9, 7, 5, 8, 6],
+                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary, chartColors.accent1, chartColors.accent2],
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#eee'
+                            },
+                            ticks: {
+                                color: chartColors.text,
+                                font: {
+                                    family: "'Poppins', sans-serif"
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: chartColors.text,
+                                font: {
+                                    family: "'Poppins', sans-serif",
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            }
+                        }
+                    }
+                }
+            });
+
+            const regionalDiversityCtx = document.getElementById('regionalDiversityChart').getContext('2d');
+            new Chart(regionalDiversityCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Standard Sibling Ritual', 'Integration with Local Festivals', 'Extension to Community', 'Spiritual/Brahminical Focus'].map(wrapLabel),
+                    datasets: [{
+                        data: [45, 30, 15, 10],
+                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary, chartColors.accent1],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: chartColors.text,
+                                font: {
+                                    family: "'Poppins', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

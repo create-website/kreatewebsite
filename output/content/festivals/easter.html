@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easter: The Festival of Resurrection and New Life</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Spring Pastels (Pink, Blue, Green) -->
+    <!-- Application Structure Plan: A narrative infographic that explains the story and traditions of Easter. The structure is: 1. Hero section. 2. "What is Easter?". 3. "The Resurrection Story". 4. "Symbols of New Life". 5. "Traditions of Hope & Renewal". 6. "A Taste of Easter" chart. This flow guides the user from the core Christian belief to the cultural celebrations of the holiday. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The Resurrection Story -> Goal: Inform -> Viz: A two-column layout -> Justification: Clearly presents the foundational story of the festival. -> Library/Method: HTML/CSS.
+        - Data Point: Key symbols -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the main symbols of the holiday. -> Library/Method: HTML/CSS.
+        - Data Point: Key festive foods -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display popular Easter dishes. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #F0F9FF; /* Lightest Blue */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-pink { color: #EC4899; }
+        .palette-text-blue { color: #3B82F6; }
+        .palette-text-green { color: #22C55E; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #EC4899; /* Pink */
+            border: 3px solid #3B82F6; /* Blue */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-pink tracking-wider">Easter</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">A Celebration of Resurrection, Hope, and New Life</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Easter?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Easter is the most important and oldest festival of the Christian Church, celebrating the resurrection of Jesus Christ from the dead. This event is the cornerstone of Christian faith, symbolizing victory over sin and death and the promise of eternal life.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-pink mb-4">✝️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">The Resurrection</h3>
+                    <p class="mt-2 text-gray-600">Easter celebrates the Christian belief that Jesus Christ rose from the dead on the third day after his crucifixion, as described in the New Testament.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-blue mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Festival Timing</h3>
+                    <p class="mt-2 text-gray-600">Easter is a moveable feast, meaning it is not fixed in relation to the civil calendar. It is celebrated on the first Sunday after the full Moon following the spring equinox.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-green mb-4">🌱</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Message of New Life</h3>
+                    <p class="mt-2 text-gray-600">The festival is strongly associated with the arrival of spring, and it carries a universal theme of rebirth, renewal, and hope for the future.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Resurrection Story</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The story of Easter is the climax of the Christian Passion narrative. After Jesus was crucified on Good Friday, his body was laid in a tomb, which was sealed with a large stone.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">🌅</div>
+                        <p class="text-xl font-bold mt-2 palette-text-blue">The Empty Tomb</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">According to the New Testament, on the morning of the third day (Sunday), Mary Magdalene and other women went to the tomb to anoint Jesus' body. They found the stone rolled away and the tomb empty. An angel appeared and announced that Jesus had risen from the dead. Later, Jesus appeared to his disciples, proving his victory over death. This miraculous event is the foundation of Christian hope, signifying that faith in Christ leads to salvation and eternal life.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="symbols" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Symbols of New Life</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Many symbols, both religious and secular, are associated with Easter, representing the core themes of resurrection, purity, and new beginnings.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">✝️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Cross</h3>
+                    <p class="mt-2 text-sm text-gray-600">While it represents the crucifixion, the empty cross on Easter is a powerful symbol of the resurrection and Jesus' victory over death.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🥚</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Easter Eggs</h3>
+                    <p class="mt-2 text-sm text-gray-600">A pre-Christian symbol of fertility and new life. For Christians, the egg represents the sealed tomb from which Christ emerged.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🐑</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Lamb</h3>
+                    <p class="mt-2 text-sm text-gray-600">Represents Jesus as the "Lamb of God," who was sacrificed for the sins of humanity. It is a symbol of purity and innocence.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🌸</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Easter Lilies</h3>
+                    <p class="mt-2 text-sm text-gray-600">These white flowers symbolize purity, virtue, and the hope of new life that comes with the resurrection.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Traditions of Hope & Renewal</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Easter is celebrated with a blend of solemn religious services and joyful family traditions that have evolved over centuries.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">⛪</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Church Services</h3>
+                    <p class="mt-2 text-sm text-gray-600">Attending church services is central to the religious observance of Easter, with special prayers, music, and sermons celebrating the resurrection.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🐰</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Easter Egg Hunts</h3>
+                    <p class="mt-2 text-sm text-gray-600">A popular activity for children, where decorated eggs are hidden for them to find, symbolizing the discovery of the empty tomb.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🍽️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Family Feasts</h3>
+                    <p class="mt-2 text-sm text-gray-600">Families gather for a large celebratory meal on Easter Sunday, often featuring lamb or ham, marking the end of the Lenten fast.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">👒</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Easter Parades</h3>
+                    <p class="mt-2 text-sm text-gray-600">In many cities, festive parades are held where people show off new spring outfits and elaborate bonnets, a tradition symbolizing renewal.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Easter</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The Easter meal is a joyous occasion, featuring special dishes and sweets that vary by culture but are all part of the celebration of new life.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Popular Easter Foods</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Roast Lamb or Ham', 
+                'Hot Cross Buns', 
+                'Chocolate Eggs & Bunnies', 
+                'Deviled Eggs'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity during Easter',
+                        data: [95, 90, 100, 80],
+                        backgroundColor: [
+                           '#DC2626', // Red for Ham
+                           '#F59E0B', // Gold for Buns
+                           '#A3E635', // Green for Chocolate
+                           '#3B82F6'  // Blue for Eggs
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Commonality in Holiday Feasts',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

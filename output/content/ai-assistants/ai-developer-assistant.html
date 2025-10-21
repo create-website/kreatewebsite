@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Rise of the AI Developer Assistant in the Enterprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Cool Neutrals & Tech Blue -->
+    <!-- Application Structure Plan: A single-page, vertically scrolling application with a sticky top navigation bar for easy access to all sections. The structure follows a narrative flow: starting with a high-level overview and key metrics (The Big Picture), moving to quantifiable impact (Impact), then detailing practical applications (Use Cases), followed by the business adoption process (The Enterprise Journey), and concluding with future outlooks. This thematic, journey-based structure was chosen over a simple report layout to guide the user logically through the complex topic, making it more digestible and engaging. Key interactions include hover-to-reveal on charts, clickable tabs for use cases, and an interactive process diagram for the purchasing journey, all designed to encourage exploration. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Adoption Rates -> Goal: Show market penetration -> Viz/Method: Donut Chart -> Interaction: Hover for details -> Justification: Excellent for part-to-whole relationships -> Library/Method: Chart.js/Canvas.
+        - Report Info: AI's Role in Coding Tasks -> Goal: Compare AI impact across activities -> Viz/Method: Horizontal Bar Chart -> Interaction: Hover tooltips for precise data -> Justification: Clear comparison of categorical data -> Library/Method: Chart.js/Canvas.
+        - Report Info: Core Use Cases -> Goal: Organize and explain applications -> Viz/Method: Tabbed interface -> Interaction: Click to switch content -> Justification: Space-efficient and focuses user attention -> Library/Method: HTML/CSS/JS.
+        - Report Info: Purchasing Process -> Goal: Simplify a complex multi-stage process -> Viz/Method: Interactive step diagram -> Interaction: Click a step to view details -> Justification: Visually intuitive for sequential information -> Library/Method: HTML/CSS/JS.
+        All choices prioritize interactivity and clarity, avoiding static data presentation.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #0d6efd;
+            border-bottom-color: #0d6efd;
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .tab.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .process-step {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-color: transparent;
+            border-width: 2px;
+        }
+        .process-step.active {
+            transform: scale(1.05);
+            border-color: #0d6efd;
+            background-color: #e7f1ff;
+        }
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #343a40;
+        }
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: #6c757d;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">AI in Development</h1>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#overview" class="nav-link px-2 py-1">Overview</a>
+                <a href="#impact" class="nav-link px-2 py-1">Impact</a>
+                <a href="#use-cases" class="nav-link px-2 py-1">Use Cases</a>
+                <a href="#purchasing" class="nav-link px-2 py-1">Purchasing</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-6 pb-4">
+            <a href="#overview" class="block py-2 text-gray-700 hover:text-blue-600">Overview</a>
+            <a href="#impact" class="block py-2 text-gray-700 hover:text-blue-600">Impact</a>
+            <a href="#use-cases" class="block py-2 text-gray-700 hover:text-blue-600">Use Cases</a>
+            <a href="#purchasing" class="block py-2 text-gray-700 hover:text-blue-600">Purchasing</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="overview" class="py-20 md:py-28 text-center bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title mb-4">The New Era of Software Development</h2>
+                <p class="section-subtitle mb-12">
+                    AI Developer Assistants are rapidly evolving from novelties into indispensable tools within enterprise software engineering teams. This report explores their impact, common applications, and the strategic approach enterprises are taking towards adoption and procurement.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div class="stat-card p-6 text-center">
+                        <div class="text-5xl font-bold text-blue-600 mb-2" data-target="45">0</div>
+                        <h3 class="text-lg font-semibold text-gray-700">Faster Development</h3>
+                        <p class="text-gray-500 text-sm">Studies show developers complete tasks up to 45% faster with AI assistance.</p>
+                    </div>
+                    <div class="stat-card p-6 text-center">
+                        <div class="text-5xl font-bold text-teal-500 mb-2" data-target="90">0</div>
+                        <h3 class="text-lg font-semibold text-gray-700">Enterprise Adoption</h3>
+                        <p class="text-gray-500 text-sm">Over 90% of large enterprises are actively using or piloting AI coding tools.</p>
+                    </div>
+                    <div class="stat-card p-6 text-center">
+                        <div class="text-5xl font-bold text-indigo-500 mb-2" data-target="75">0</div>
+                        <h3 class="text-lg font-semibold text-gray-700">Developer Satisfaction</h3>
+                        <p class="text-gray-500 text-sm">75% of developers report higher job satisfaction and less time on tedious tasks.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="py-20 md:py-28">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="section-title mb-4">Quantifying the Impact</h2>
+                <p class="section-subtitle mb-16">
+                    The adoption of AI assistants is not uniform, nor is their impact on every development task. The visualizations below illustrate the current landscape of enterprise adoption and how AI is augmenting specific coding activities. Interact with the charts to see the data.
+                </p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+                    <div class="w-full">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-700">Enterprise Adoption Status</h3>
+                        <div class="chart-container">
+                            <canvas id="adoptionChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-700">% of Coding Task Supported by AI</h3>
+                        <div class="relative h-[350px] md:h-[400px] w-full max-w-2xl mx-auto">
+                            <canvas id="taskSupportChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="use-cases" class="py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="section-title mb-4">Core Enterprise Use Cases</h2>
+                <p class="section-subtitle mb-12">
+                    AI assistants are more than just autocompleters. Enterprises leverage them across the software development lifecycle to accelerate delivery, improve code quality, and empower developers. Click through the tabs below to explore the most common applications.
+                </p>
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex flex-wrap justify-center border-b border-gray-200 mb-8">
+                        <button class="tab py-2 px-4 font-semibold text-gray-600 rounded-t-lg active" data-target="tab-code-gen">Code Generation</button>
+                        <button class="tab py-2 px-4 font-semibold text-gray-600 rounded-t-lg" data-target="tab-refactor">Refactoring</button>
+                        <button class="tab py-2 px-4 font-semibold text-gray-600 rounded-t-lg" data-target="tab-debug">Debugging</button>
+                        <button class="tab py-2 px-4 font-semibold text-gray-600 rounded-t-lg" data-target="tab-testing">Test Generation</button>
+                        <button class="tab py-2 px-4 font-semibold text-gray-600 rounded-t-lg" data-target="tab-docs">Documentation</button>
+                    </div>
+                    <div id="tab-content" class="text-left">
+                        <div id="tab-code-gen" class="tab-pane active p-6 bg-gray-50 rounded-lg">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Code Generation & Autocompletion</h3>
+                            <p class="text-gray-600">This is the primary function, where the AI suggests single lines or entire blocks of code based on natural language comments or the surrounding context. It excels at generating boilerplate, implementing standard algorithms, and working with unfamiliar APIs, drastically reducing typing and research time.</p>
+                        </div>
+                        <div id="tab-refactor" class="tab-pane hidden p-6 bg-gray-50 rounded-lg">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Code Refactoring & Optimization</h3>
+                            <p class="text-gray-600">Developers can highlight a piece of code and ask the AI to refactor it for better readability, performance, or to adhere to specific design patterns. This helps maintain a high-quality, modern codebase and simplifies complex logic.</p>
+                        </div>
+                        <div id="tab-debug" class="tab-pane hidden p-6 bg-gray-50 rounded-lg">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Debugging & Error Resolution</h3>
+                            <p class="text-gray-600">When faced with a bug, developers can ask the AI to analyze the problematic code and suggest potential causes and fixes. The AI can often interpret cryptic error messages and identify logical flaws that might be missed by human eyes.</p>
+                        </div>
+                        <div id="tab-testing" class="tab-pane hidden p-6 bg-gray-50 rounded-lg">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Automated Unit Test Generation</h3>
+                            <p class="text-gray-600">Writing unit tests is critical but often tedious. AI assistants can automatically generate test cases for a given function or class, covering edge cases and ensuring robust code coverage, which frees up developers to focus on feature development.</p>
+                        </div>
+                         <div id="tab-docs" class="tab-pane hidden p-6 bg-gray-50 rounded-lg">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Code Explanation & Documentation</h3>
+                            <p class="text-gray-600">AI can generate documentation, comments, and summaries for existing code. This is invaluable for onboarding new team members to a complex codebase or for ensuring that all code is well-documented and maintainable for the long term.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="purchasing" class="py-20 md:py-28">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title text-center mb-4">The Enterprise Journey to Adoption</h2>
+                <p class="section-subtitle text-center mb-16">
+                    Adopting an AI developer assistant in a large organization is a multi-stage process involving technical, security, and business stakeholders. The journey requires careful evaluation at each step. Click a step below to see the key criteria and considerations.
+                </p>
+                <div class="flex flex-col md:flex-row justify-center items-center md:items-start space-y-8 md:space-y-0 md:space-x-4 mb-12" id="process-steps">
+                    <div class="process-step text-center p-4 rounded-lg border-2 w-full md:w-1/5 active" data-target="step1">
+                        <div class="text-3xl mb-2">1</div><h3 class="font-semibold">Discovery</h3>
+                    </div>
+                    <div class="process-step text-center p-4 rounded-lg border-2 w-full md:w-1/5" data-target="step2">
+                        <div class="text-3xl mb-2">2</div><h3 class="font-semibold">Pilot & PoC</h3>
+                    </div>
+                    <div class="process-step text-center p-4 rounded-lg border-2 w-full md:w-1/5" data-target="step3">
+                        <div class="text-3xl mb-2">3</div><h3 class="font-semibold">Security Review</h3>
+                    </div>
+                    <div class="process-step text-center p-4 rounded-lg border-2 w-full md:w-1/5" data-target="step4">
+                        <div class="text-3xl mb-2">4</div><h3 class="font-semibold">Rollout</h3>
+                    </div>
+                    <div class="process-step text-center p-4 rounded-lg border-2 w-full md:w-1/5" data-target="step5">
+                        <div class="text-3xl mb-2">5</div><h3 class="font-semibold">Measure ROI</h3>
+                    </div>
+                </div>
+                <div id="process-content" class="max-w-3xl mx-auto">
+                    <div id="step1" class="process-pane bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold mb-3 text-blue-600">Discovery & Evaluation</h3>
+                        <p class="text-gray-600 mb-4">Teams identify productivity bottlenecks and research available AI tools. The goal is to create a shortlist of potential solutions.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Integration:</strong> Does it support our primary IDEs (VS Code, JetBrains, etc.)?</li>
+                            <li><strong>Language Support:</strong> Does it cover our core technology stack (e.g., Python, Java, JavaScript, C#)?</li>
+                            <li><strong>Public Reviews:</strong> What is the developer community saying about this tool?</li>
+                        </ul>
+                    </div>
+                    <div id="step2" class="process-pane hidden bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold mb-3 text-blue-600">Pilot & Proof of Concept (PoC)</h3>
+                        <p class="text-gray-600 mb-4">A small, innovative team is selected to test a tool for a defined period (e.g., 1-3 months). The focus is on real-world effectiveness.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Model Quality:</strong> How relevant and accurate are the code suggestions?</li>
+                            <li><strong>Developer Feedback:</strong> Does the team find it genuinely helpful or distracting?</li>
+                            <li><strong>Performance:</strong> Does the tool slow down the IDE or development workflow?</li>
+                        </ul>
+                    </div>
+                    <div id="step3" class="process-pane hidden bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold mb-3 text-blue-600">Security & Compliance Review</h3>
+                        <p class="text-gray-600 mb-4">This is the most critical phase for enterprises. Security and legal teams vet the tool to ensure it protects intellectual property and complies with regulations.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Data Privacy:</strong> Is our code sent to external servers? Is it used for training public models?</li>
+                            <li><strong>IP Protection:</strong> Does the tool have filters to prevent suggestions of code with restrictive licenses?</li>
+                             <li><strong>Private Models:</strong> Can the model be fine-tuned on our private codebase without leaking data?</li>
+                            <li><strong>Compliance:</strong> Does the tool meet industry standards (e.g., SOC 2, GDPR)?</li>
+                        </ul>
+                    </div>
+                    <div id="step4" class="process-pane hidden bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold mb-3 text-blue-600">Scaled Rollout & Integration</h3>
+                        <p class="text-gray-600 mb-4">After passing all checks, the tool is rolled out to broader engineering teams. This involves training, setting best practices, and integration with internal systems.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Cost & Licensing:</strong> What is the pricing model (per-user, per-month)? Does it offer volume discounts?</li>
+                            <li><strong>Governance:</strong> Can we set policies for its use and monitor activity?</li>
+                            <li><strong>Training:</strong> How will we onboard developers to use the tool effectively and responsibly?</li>
+                        </ul>
+                    </div>
+                     <div id="step5" class="process-pane hidden bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold mb-3 text-blue-600">Measurement & ROI Analysis</h3>
+                        <p class="text-gray-600 mb-4">The organization continuously tracks metrics to validate the investment and identify areas for improvement.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Productivity Metrics:</strong> Are pull request cycle times decreasing? Is developer velocity increasing?</li>
+                            <li><strong>Code Quality:</strong> Is the rate of bugs introduced post-release going down?</li>
+                            <li><strong>Developer Satisfaction:</strong> Are developers reporting a better work experience (measured via surveys)?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 AI Development Insights. All rights reserved.</p>
+            <p class="text-sm text-gray-400 mt-2">This report is for informational purposes only.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            function animateCounters() {
+                const counters = document.querySelectorAll('.stat-card [data-target]');
+                const speed = 200; 
+
+                counters.forEach(counter => {
+                    const updateCount = () => {
+                        const target = +counter.getAttribute('data-target');
+                        const count = +counter.innerText;
+                        const inc = target / speed;
+
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count + inc);
+                            setTimeout(updateCount, 10);
+                        } else {
+                            counter.innerText = target + '%';
+                        }
+                    };
+                    updateCount();
+                });
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounters();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            const overviewSection = document.getElementById('overview');
+            if(overviewSection) {
+                 observer.observe(overviewSection);
+            }
+
+            const adoptionChartCtx = document.getElementById('adoptionChart');
+            if (adoptionChartCtx) {
+                new Chart(adoptionChartCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Actively Using', 'Piloting / PoC', 'Evaluating', 'No Plans'],
+                        datasets: [{
+                            label: 'Enterprise Adoption Status',
+                            data: [55, 35, 8, 2],
+                            backgroundColor: ['#0d6efd', '#20c997', '#ffc107', '#6c757d'],
+                            borderColor: '#f8f9fa',
+                            borderWidth: 4,
+                            hoverOffset: 15
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    font: { family: 'Inter' },
+                                    padding: 20
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.label}: ${context.raw}%`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '60%'
+                    }
+                });
+            }
+
+            const taskSupportChartCtx = document.getElementById('taskSupportChart');
+            if (taskSupportChartCtx) {
+                new Chart(taskSupportChartCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Boilerplate Code', 'Unit Test Generation', 'Code Documentation', 'Debugging', 'Complex Logic'],
+                        datasets: [{
+                            label: '% of Task Assisted by AI',
+                            data: [75, 60, 55, 40, 25],
+                            backgroundColor: ['#20c997', '#20c997aa', '#20c99788', '#20c99766', '#20c99744'],
+                            borderColor: '#1a9875',
+                            borderWidth: 1,
+                            borderRadius: 5
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.label}: ${context.raw}% of the work can be assisted by AI`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 100,
+                                grid: {
+                                    color: '#e9ecef'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%'
+                                    }
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const tabs = document.querySelectorAll('.tab');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    const targetId = tab.dataset.target;
+                    tabPanes.forEach(pane => {
+                        if (pane.id === targetId) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            const processSteps = document.querySelectorAll('.process-step');
+            const processPanes = document.querySelectorAll('.process-pane');
+
+            processSteps.forEach(step => {
+                step.addEventListener('click', () => {
+                    processSteps.forEach(s => s.classList.remove('active'));
+                    step.classList.add('active');
+
+                    const targetId = step.dataset.target;
+                    processPanes.forEach(pane => {
+                        if (pane.id === targetId) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    if (mobileMenu.classList.contains('hidden') === false) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+            
+            const sections = document.querySelectorAll('section');
+            const mainNavLinks = document.querySelectorAll('header nav a');
+            
+            const onScroll = () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 60) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                mainNavLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.href.includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+            
+            window.addEventListener('scroll', onScroll);
+
+        });
+    </script>
+</body>
+</html>

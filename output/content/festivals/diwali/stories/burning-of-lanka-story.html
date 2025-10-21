@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Burning of Lanka: Hanuman's Fiery Message</title>
+    <meta name="description" content="The epic story of how Hanuman, after meeting Sita, wreaked havoc on Lanka by setting the city ablaze with his burning tail—a powerful act of defiance against Ravana.">
+    <meta name="keywords" content="Hanuman, Burning of Lanka, Lankadahan, Ramayana, Ravana, Indrajit, Sita, Rama, Hindu mythology">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4B5563; 
+        }
+        .font-sanskrit {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+        }
+        .tab-active {
+            border-color: #D97706;
+            background-color: #FFFBEB;
+            color: #D97706;
+        }
+        .step-item-active {
+            background-color: #D97706;
+            color: #FFFFFF;
+            transform: scale(1.1);
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: This page is structured to follow a dramatic escalation of events. 1) A Calculated Rampage sets the stage, explaining Hanuman's strategic decision to provoke the enemy. 2) The Capture details his strategic submission to gain an audience with Ravana. 3) The Court of Ravana presents the direct confrontation and the arrogant punishment. 4) The Great Fire is the core interactive climax, breaking down the burning of Lanka into a step-by-step narrative. 5) The Escape and Return provides the resolution. This structure builds tension, moving from strategic planning to a spectacular and destructive climax, effectively telling the story of Lankadahan. -->
+    <!-- Visualization & Content Choices: Report Info: Hanuman's capture and appearance before Ravana -> Goal: Show Sequence/Confrontation -> Viz/Method: Tabbed content -> Interaction: Tabs for "The Capture" and "The Judgment" -> Justification: This separates the action of his capture from the pivotal dialogue in Ravana's court, allowing the user to focus on each distinct part of the narrative. | Report Info: The act of burning Lanka -> Goal: Show Process/Climax -> Viz/Method: Interactive step-based diagram -> Interaction: Click steps for The Insult, The Flames, The Escape, The Conflagration -> Justification: This breaks down the chaotic and powerful climax into a clear, digestible, and engaging sequence, allowing the user to follow Hanuman's transformation from captive to city-destroyer. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-amber-100/30 sticky top-0 z-50 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="font-sanskrit text-2xl font-bold text-amber-800">लङ्कादहन</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#provocation" class="text-stone-600 hover:text-amber-700 transition">The Provocation</a>
+                    <a href="#capture" class="text-stone-600 hover:text-amber-700 transition">The Capture</a>
+                    <a href="#fire" class="text-stone-600 hover:text-amber-700 transition">The Great Fire</a>
+                    <a href="#escape" class="text-stone-600 hover:text-amber-700 transition">The Escape</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section class="text-center my-12 md:my-20">
+            <h1 class="font-sanskrit text-5xl md:text-7xl font-bold text-amber-900 leading-tight">A Tail of Fire</h1>
+            <p class="mt-4 text-xl md:text-2xl text-stone-600">Hanuman's Message to the Demon King</p>
+            <p class="mt-6 max-w-3xl mx-auto text-stone-500">
+                His primary mission was complete: he had found Sita and delivered Rama's message. But Hanuman, the wise and powerful son of the Wind God, knew that simply leaving would be a missed opportunity. He decided to deliver a second, more forceful message—one that would strike terror into the heart of Ravana and his kingdom.
+            </p>
+        </section>
+
+        <section id="provocation" class="my-16 md:my-24 py-12 bg-amber-50/50 rounded-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">A Calculated Rampage</h2>
+            <p class="text-center text-stone-600 mb-8 max-w-3xl mx-auto">To gauge the enemy's strength and announce his presence, Hanuman began to destroy the beautiful Ashok Vatika, uprooting trees and smashing structures. He spared only the tree under which Sita sat. The act was a deliberate provocation, a challenge to Ravana to send out his best warriors.</p>
+            <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-stone-200/80 text-center">
+                <div class="text-6xl my-4">💥🌳</div>
+                <h3 class="font-sanskrit text-3xl font-bold text-amber-700">योद्धा-आह्वान</h3>
+                <p class="text-stone-500 mt-2">One by one, Ravana's warriors came to capture the "mischievous monkey." One by one, Hanuman defeated them, culminating in the slaying of Ravana's own son, Akshayakumara.</p>
+            </div>
+        </section>
+        
+        <section id="capture" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Court of Ravana</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Finally, Ravana sent his mightiest son, Indrajit. Hanuman allowed himself to be captured, for his true aim was to stand before the Demon King himself.</p>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="flex border-b border-stone-300 mb-6">
+                    <button class="tab-button tab-active flex-1 text-center font-semibold p-3 border-b-2 transition" data-tab="indrajit">Indrajit's Web</button>
+                    <button class="tab-button flex-1 text-center font-semibold p-3 border-b-2 border-transparent text-stone-500 transition" data-tab="judgment">The Arrogant Judgment</button>
+                </div>
+                <div id="tab-content">
+                    <div id="indrajit-content" class="tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">Bound by the Brahmastra</h3>
+                        <p class="text-stone-600">Indrajit, master of celestial weapons, unleashed the Brahmastra. Out of respect for the divine weapon given by Lord Brahma, Hanuman allowed it to bind him. The rakshasas, thinking him subdued, dragged the mighty Vanara to Ravana's court.</p>
+                    </div>
+                    <div id="judgment-content" class="hidden tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">Facing the Demon King</h3>
+                        <p class="text-stone-600">In the court, Hanuman announced himself as a messenger of Rama and demanded Sita's immediate return. Enraged by his audacity, Ravana ignored the counsel of his wise brother Vibhishana, who argued that an envoy cannot be killed. Instead, Ravana decreed a humiliating punishment: "A monkey's pride is in its tail. Set it on fire!"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fire" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Great Fire of Lanka</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Ravana's arrogant decision would become his city's doom. The rakshasas gleefully wrapped Hanuman's tail in oil-soaked cloths, underestimating the divine power they were playing with.</p>
+            
+            <div>
+                <div class="flex flex-col md:flex-row justify-center items-center md:space-x-4 mb-6">
+                    <button class="step-item step-item-active w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 mb-2 md:mb-0" data-step="1">1. The Growing Tail</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white mb-2 md:mb-0" data-step="2">2. The Flames</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white" data-step="3">3. The Escape</button>
+                </div>
+
+                <div id="step-details" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md min-h-[150px]">
+                    <h4 id="step-title" class="font-bold text-xl text-amber-700 mb-2">Step 1: The Growing Tail</h4>
+                    <p id="step-description" class="text-stone-600">As the rakshasas brought cloths, Hanuman magically began to extend his tail. It grew longer and longer, and soon, all the cloth in Lanka was used up, yet his tail was not fully covered. This was the first hint of the divine power they were dealing with.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="escape" class="my-16 md:my-24 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-800">A Fiery Escape and a Final Leap</h2>
+            <p class="mt-4 text-lg max-w-3xl mx-auto text-stone-600">
+                With his work done, Hanuman rushed to the ocean's shore and extinguished the flames on his tail. He took a moment to visit Sita one last time, reassuring her that Rama's army would arrive soon. Then, ascending Mount Arishta, he launched himself back across the ocean, a triumphant hero returning from a mission accomplished beyond all expectations.
+            </p>
+        </section>
+
+
+    </main>
+
+    <footer class="bg-stone-100 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-stone-500">
+            <p>An interactive retelling of Lankadahan, Hanuman's legendary act of defiance.</p>
+            <p class="text-sm mt-2">Inspired by the epic Ramayana.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stepData = {
+                1: { title: 'Step 1: The Growing Tail', description: 'As the rakshasas brought cloths, Hanuman magically began to extend his tail. It grew longer and longer, and soon, all the cloth in Lanka was used up, yet his tail was not fully covered. This was the first hint of the divine power they were dealing with.' },
+                2: { title: 'Step 2: The Flames', description: 'They lit the massive, cloth-wrapped tail. Praying to the Fire God, Agni, Hanuman ensured the flames did not harm him. The rakshasas paraded him through the streets, unknowingly showing their entire city to the great Vanara.' },
+                3: { title: 'Step 3: The Escape & Conflagration', description: 'With a final burst of strength, Hanuman shrank his body to slip from his bonds, then expanded to a monstrous size. With his tail now a gigantic torch, he leaped onto the rooftops of Lanka. He jumped from palace to palace, setting the golden city ablaze in a massive inferno.' }
+            };
+
+            const stepItems = document.querySelectorAll('.step-item');
+            const stepTitle = document.getElementById('step-title');
+            const stepDescription = document.getElementById('step-description');
+
+            stepItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    stepItems.forEach(i => i.classList.remove('step-item-active', 'bg-white'));
+                    stepItems.forEach(i => {
+                        if (i !== item) i.classList.add('bg-white');
+                    });
+                    item.classList.add('step-item-active');
+                    item.classList.remove('bg-white');
+
+                    const step = item.dataset.step;
+                    stepTitle.textContent = stepData[step].title;
+                    stepDescription.textContent = stepData[step].description;
+                });
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+                    button.classList.add('tab-active');
+
+                    const tab = button.dataset.tab;
+                    tabPanes.forEach(pane => {
+                        if (pane.id === `${tab}-content`) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+

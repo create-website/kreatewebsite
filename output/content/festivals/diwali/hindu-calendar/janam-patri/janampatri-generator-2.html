@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Janampatri Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Cosmic Harmony -->
+    <!-- Application Structure Plan: The application is designed as a single-page exploratory journey, moving from foundational knowledge to practical application and historical context. It uses a thematic section-based structure rather than a simple Q&A format. The core of the app is an interactive tabbed interface ('The Cosmic Blueprint') which breaks down the complex components of a Janampatri into digestible, non-linear pieces (What, Building Blocks, Creation, Interpretation). This structure was chosen to empower users to explore at their own pace and focus on areas of interest, which is more effective for learning a complex topic than a linear document. The flow is logical: Welcome -> Core Concepts (interactive tabs) -> Practical Benefits -> Historical Context. This enhances usability by preventing information overload and encouraging engagement. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Core components of a Janampatri (Planets, Houses, Signs). -> Goal: Organize & show relationships. -> Viz Method: Chart.js Polar Area Chart. -> Interaction: Hover to see tooltips with definitions. -> Justification: Visually represents the three pillars of a Janampatri as interconnected and equally important, which is more impactful than a simple list. -> Library: Chart.js.
+        - Report Info: The process of creating a Janampatri. -> Goal: Inform & organize a sequence. -> Presentation Method: A numbered, step-by-step visual flowchart created with HTML/CSS. -> Interaction: Clear visual progression. -> Justification: A flowchart simplifies a multi-step process, making it easy to follow and understand the logical sequence of actions required. It is responsive and more accessible than a static image. -> Method: HTML/Tailwind CSS.
+        - Report Info: Benefits of Janampatri analysis. -> Goal: Inform & highlight key takeaways. -> Presentation Method: A grid of cards with Unicode icons. -> Interaction: Visually scannable. -> Justification: Cards break down information into distinct points, and icons provide quick visual cues, making the benefits easy to absorb at a glance. -> Method: HTML/Tailwind CSS.
+        - Report Info: History and significance. -> Goal: Show change over time. -> Presentation Method: A vertical timeline built with HTML/CSS. -> Interaction: Users scroll through key historical milestones. -> Justification: A timeline is the most intuitive way to present historical information, showing evolution and key events in chronological order. -> Method: HTML/Tailwind CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfaef;
+            color: #4a4a4a;
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #4f46e5;
+            border-bottom-color: #4f46e5;
+        }
+        .tab-button {
+            transition: all 0.3s;
+        }
+        .tab-button.active {
+            background-color: #4f46e5;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .interpret-tab.active {
+            border-color: #4f46e5;
+            background-color: #eef2ff;
+        }
+        .content-area {
+            display: none;
+        }
+        .content-area.active {
+            display: block;
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chart-cell {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #d1d5db;
+            height: 100%;
+            width: 100%;
+        }
+        .planet {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #4f46e5;
+        }
+        .asc-label {
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #be123c;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">Janampatri Generator</h1>
+            <div>
+                <a href="#generator" class="nav-link text-gray-600 font-semibold pb-1">Generator</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="introduction" class="text-center min-h-[60vh] flex flex-col justify-center items-center">
+            <h2 class="text-4xl md:text-6xl font-bold text-gray-800 mb-4">Your Personal <span class="text-[#4f46e5]">Cosmic Blueprint</span></h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-8">
+                Discover the magic of Vedic astrology with our Janampatri Simulator. Enter your birth details to generate a beautiful, personalized birth chart. This educational tool creates a symbolic representation of your cosmic energies, helping you understand the structure and key components of a real Janampatri.
+            </p>
+            <a href="#generator" class="bg-[#f59e0b] text-white font-bold py-3 px-8 rounded-full hover:bg-opacity-90 transition-transform transform hover:scale-105 shadow-lg">
+                Create My Janampatri
+            </a>
+        </section>
+
+        <section id="generator" class="py-20 content-area active">
+            <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Enter Your Birth Details</h2>
+                    <p class="text-gray-600 mt-2">Provide your information to generate a symbolic birth chart.</p>
+                </div>
+                <form id="birth-form" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" id="name" name="name" required value="Alex Doe" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth</label>
+                        <input type="date" id="dob" name="dob" required value="2025-09-29" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="tob" class="block text-sm font-medium text-gray-700">Time of Birth</label>
+                        <input type="time" id="tob" name="tob" required value="20:18" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="pob" class="block text-sm font-medium text-gray-700">Place of Birth (City, Country)</label>
+                        <input type="text" id="pob" name="pob" required value="Union Hill-Novelty Hill, USA" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-lg font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-105">
+                            Generate My Janampatri
+                        </button>
+                    </div>
+                </form>
+                <p id="form-error" class="text-red-500 text-sm mt-4 text-center hidden">Please fill out all fields.</p>
+            </div>
+        </section>
+
+        <section id="results" class="py-20 content-area">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Your Cosmic Blueprint: <span id="result-name" class="text-indigo-600"></span></h2>
+                <p class="text-gray-600 mt-2">Here is your generated symbolic birth chart and its interpretations.</p>
+                 <p class="text-xs text-gray-500 mt-4 max-w-xl mx-auto">*This is a stylized representation for educational and entertainment purposes and is not an astrologically accurate reading.</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-5 gap-8">
+                <div class="lg:col-span-3 bg-white p-4 rounded-2xl shadow-lg border border-gray-100">
+                    <div class="aspect-square w-full max-w-2xl mx-auto relative">
+                        <!-- North Indian Chart Structure -->
+                        <div id="chart-container" class="absolute inset-0 grid grid-cols-3 grid-rows-3 text-sm">
+                           <div class="chart-cell" style="grid-column: 2; grid-row: 1;"><span id="house-2" class="planet"></span></div>
+                           <div class="chart-cell transform -skew-x-[45deg]" style="grid-column: 1; grid-row: 1; border-top: none; border-left: none;"><span id="house-12" class="planet transform skew-x-[45deg]"></span></div>
+                           <div class="chart-cell transform skew-x-[45deg]" style="grid-column: 3; grid-row: 1; border-top: none; border-right: none;"><span id="house-4" class="planet transform -skew-x-[45deg]"></span></div>
+                           
+                           <div class="chart-cell" style="grid-column: 1; grid-row: 2;"><span id="house-11" class="planet"></span></div>
+                           <div class="chart-cell" style="grid-column: 2; grid-row: 2; border-left:none; border-right:none;"><div class="asc-label">As</div><span id="house-1" class="planet"></span></div>
+                           <div class="chart-cell" style="grid-column: 3; grid-row: 2;"><span id="house-5" class="planet"></span></div>
+                           
+                           <div class="chart-cell transform skew-x-[45deg]" style="grid-column: 1; grid-row: 3; border-bottom: none; border-left: none;"><span id="house-10" class="planet transform -skew-x-[45deg]"></span></div>
+                           <div class="chart-cell transform -skew-x-[45deg]" style="grid-column: 3; grid-row: 3; border-bottom: none; border-right: none;"><span id="house-6" class="planet transform skew-x-[45deg]"></span></div>
+
+                           <div class="chart-cell" style="grid-column: 2; grid-row: 3;"><span id="house-8" class="planet"></span></div>
+
+                           <!-- Inner square -->
+                           <div class="chart-cell transform -rotate-45" style="position: absolute; top: 33.33%; left: 33.33%; width: 33.33%; height: 33.33%; border: 1px solid #d1d5db;">
+                            <div style="width: 141.4%; height: 141.4%;" class="grid grid-cols-2 grid-rows-2">
+                                <div class="chart-cell border-0 border-r border-b"><span id="house-3" class="planet transform rotate-45"></span></div>
+                                <div class="chart-cell border-0 border-b"></div>
+                                <div class="chart-cell border-0 border-r"></div>
+                                <div class="chart-cell border-0"><span id="house-9" class="planet transform rotate-45"></span></div>
+                            </div>
+                           </div>
+                           <div class="chart-cell" style="position: absolute; top: 66.66%; left: 33.33%; width: 33.33%; height: 33.33%; border-top: none; border-bottom:none; border-left: none; border-right: none;"><span id="house-7" class="planet"></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                        <h3 class="font-bold text-xl text-gray-800 border-b pb-2 mb-4">Birth Details</h3>
+                        <div class="space-y-2 text-gray-700">
+                            <p><strong>Date:</strong> <span id="result-dob"></span></p>
+                            <p><strong>Time:</strong> <span id="result-tob"></span></p>
+                            <p><strong>Place:</strong> <span id="result-pob"></span></p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                         <div class="flex border-b border-gray-200">
+                            <button class="interpret-tab active font-semibold py-2 px-4 border-b-2 text-gray-600" data-tab="ascendant">Ascendant</button>
+                            <button class="interpret-tab font-semibold py-2 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="planets">Planets</button>
+                            <button class="interpret-tab font-semibold py-2 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="personality">Personality</button>
+                         </div>
+                         <div class="mt-4">
+                            <div id="ascendant" class="interpret-content active fade-in">
+                               <h4 class="font-bold text-lg text-indigo-700 mb-2">Your Ascendant: <span id="ascendant-sign"></span></h4>
+                               <p id="ascendant-desc" class="text-gray-600"></p>
+                            </div>
+                            <div id="planets" class="interpret-content hidden fade-in">
+                                <h4 class="font-bold text-lg text-indigo-700 mb-2">Key Planetary Insights</h4>
+                                <p id="planets-desc" class="text-gray-600"></p>
+                            </div>
+                             <div id="personality" class="interpret-content hidden fade-in">
+                                <h4 class="font-bold text-lg text-indigo-700 mb-2">Core Personality Traits</h4>
+                                <p id="personality-desc" class="text-gray-600"></p>
+                            </div>
+                         </div>
+                    </div>
+                    <button id="start-over" class="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-full shadow-sm text-md font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Start Over
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2025 Janampatri Generator. An interactive guide to Vedic Astrology.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const birthForm = document.getElementById('birth-form');
+            const generatorSection = document.getElementById('generator');
+            const resultsSection = document.getElementById('results');
+            const startOverBtn = document.getElementById('start-over');
+            const formError = document.getElementById('form-error');
+
+            const zodiacSigns = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
+            const planets = {
+                'Su': 'Sun', 'Mo': 'Moon', 'Ma': 'Mars', 'Me': 'Mercury', 'Ju': 'Jupiter', 'Ve': 'Venus', 'Sa': 'Saturn', 'Ra': 'Rahu', 'Ke': 'Ketu'
+            };
+
+            const interpretations = {
+                ascendant: {
+                    Aries: "You are a natural leader, full of energy and courage. Your approach to life is direct and pioneering.",
+                    Taurus: "Grounded and practical, you appreciate the finer things in life and are known for your loyalty and determination.",
+                    Gemini: "You are intellectually curious, adaptable, and a brilliant communicator, with a youthful and playful spirit.",
+                    Cancer: "Nurturing and intuitive, you are deeply connected to your emotions and have a strong sense of home and family.",
+                    Leo: "Charismatic and creative, you possess a warm heart and a desire to shine. You inspire others with your confidence.",
+                    Virgo: "You are detail-oriented, analytical, and dedicated to service. You find joy in order, wellness, and helping others.",
+                    Libra: "Gracious and diplomatic, you seek balance, beauty, and harmony in all things, especially in relationships.",
+                    Scorpio: "You are passionate, perceptive, and powerful. You are drawn to life's mysteries and form deep, transformative bonds.",
+                    Sagittarius: "Optimistic and adventurous, you have a love for freedom, travel, and expanding your philosophical horizons.",
+                    Capricorn: "Ambitious and disciplined, you have a strong sense of responsibility and the ability to build lasting structures.",
+                    Aquarius: "Innovative and humanitarian, you are a forward-thinker who values community, originality, and social progress.",
+                    Pisces: "Compassionate and imaginative, you are deeply empathetic and connected to the spiritual and artistic realms."
+                },
+                planets: [
+                    "The Sun's placement in your chart suggests a strong sense of self and purpose, indicating a path toward leadership and recognition.",
+                    "The Moon's position highlights your emotional depth and intuitive nature, guiding your connections with others.",
+                    "Jupiter's influence brings luck and expansion, suggesting opportunities for growth in knowledge and wisdom.",
+                    "Venus in your chart points to a refined sense of beauty and a talent for creating harmony in your relationships.",
+                    "Saturn's placement gives you discipline and perseverance, enabling you to overcome challenges through steady effort."
+                ],
+                personality: [
+                    "Your chart indicates a unique blend of creativity and practicality. You have the vision to dream big and the grounding to make it happen.",
+                    "You possess a natural gift for communication, combined with a deep empathy that allows you to connect with people on a meaningful level.",
+                    "A strong sense of adventure is balanced by a need for security, making you a dynamic individual who is both a risk-taker and a reliable friend.",
+                    "You are a natural-born leader with a compassionate heart. You inspire others not just with your strength, but with your kindness.",
+                    "Your intellectual curiosity is a driving force, pushing you to constantly learn and evolve. You find joy in understanding the world around you."
+                ]
+            };
+
+            birthForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('name').value;
+                const dob = document.getElementById('dob').value;
+                const tob = document.getElementById('tob').value;
+                const pob = document.getElementById('pob').value;
+
+                if (!name || !dob || !tob || !pob) {
+                    formError.classList.remove('hidden');
+                    return;
+                }
+                formError.classList.add('hidden');
+
+                document.getElementById('result-name').textContent = name;
+                document.getElementById('result-dob').textContent = new Date(dob + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                document.getElementById('result-tob').textContent = tob;
+                document.getElementById('result-pob').textContent = pob;
+                
+                generateChartData();
+
+                generatorSection.classList.remove('active');
+                resultsSection.classList.add('active', 'fade-in');
+                window.scrollTo({ top: resultsSection.offsetTop, behavior: 'smooth' });
+            });
+
+            startOverBtn.addEventListener('click', function() {
+                resultsSection.classList.remove('active');
+                generatorSection.classList.add('active', 'fade-in');
+                birthForm.reset();
+                // Restore default values after reset
+                document.getElementById('name').value = "Alex Doe";
+                document.getElementById('dob').value = "2025-09-29";
+                document.getElementById('tob').value = "20:18";
+                document.getElementById('pob').value = "Union Hill-Novelty Hill, USA";
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            function generateChartData() {
+                // Clear previous chart
+                document.querySelectorAll('.planet').forEach(p => p.textContent = '');
+
+                const randomAscendant = zodiacSigns[Math.floor(Math.random() * zodiacSigns.length)];
+                document.getElementById('ascendant-sign').textContent = randomAscendant;
+                document.getElementById('ascendant-desc').textContent = interpretations.ascendant[randomAscendant];
+
+                document.getElementById('planets-desc').textContent = interpretations.planets[Math.floor(Math.random() * interpretations.planets.length)];
+                document.getElementById('personality-desc').textContent = interpretations.personality[Math.floor(Math.random() * interpretations.personality.length)];
+
+                // Place planets randomly
+                let houseIndices = Array.from({length: 12}, (_, i) => i + 1);
+                const planetKeys = Object.keys(planets);
+
+                planetKeys.forEach(planet => {
+                    if(houseIndices.length > 0) {
+                        const randomHouseIndex = Math.floor(Math.random() * houseIndices.length);
+                        const houseNumber = houseIndices.splice(randomHouseIndex, 1)[0];
+                        const houseElement = document.getElementById(`house-${houseNumber}`);
+                        if(houseElement) {
+                             houseElement.textContent += (houseElement.textContent ? ' ' : '') + planet;
+                        }
+                    }
+                });
+            }
+
+            const interpretTabs = document.querySelectorAll('.interpret-tab');
+            const interpretContents = document.querySelectorAll('.interpret-content');
+
+            interpretTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetId = tab.dataset.tab;
+
+                    interpretTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    interpretContents.forEach(content => {
+                        content.classList.remove('active', 'fade-in');
+                        content.classList.add('hidden');
+                        if (content.id === targetId) {
+                            content.classList.remove('hidden');
+                            content.classList.add('active', 'fade-in');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Agentic AI Paradigm: An Interactive Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Tech -->
+    <!-- Application Structure Plan: The SPA is designed as a top-down narrative journey. It starts with the core thesis (Agent vs. Agentic), then delves into foundational knowledge (Classical Agents), architectural specifics (Agentic Anatomy), market impact (Economic Outlook), and concludes with governance. This structure was chosen to guide the user from a simple, high-level comparison to progressively deeper and more complex topics, which is more intuitive for learning than mirroring the report's formal Part I/II/III structure. A sticky navigation bar facilitates non-linear exploration for users who wish to jump to specific topics of interest. -->
+    <!-- Visualization & Content Choices: 
+        - Core Distinctions (Table 2): Report Info -> 5 key differences between Agent & Agentic. Goal -> Compare. Viz -> Side-by-side styled HTML cards. Interaction -> Subtle hover effects. Justification -> Provides a direct, scannable, and visually balanced comparison. NO SVG.
+        - Classical Agent Types (Table 1): Report Info -> 5 classical agent architectures. Goal -> Organize/Inform. Viz -> Interactive tabbed component. Interaction -> User clicks tabs to switch content. Justification -> More engaging and space-efficient than a static table, encouraging user interaction. NO SVG.
+        - Agentic Architecture (Sec 4): Report Info -> The loop of Orchestrator, Planning, Tools, Memory. Goal -> Show a process. Viz -> HTML/CSS flowchart. Interaction -> None. Justification -> Clearly visualizes the cyclical process and component relationships without using forbidden SVG or Mermaid JS.
+        - Market Growth (Sec 6.3): Report Info -> Market forecast data from 2024 to 2030. Goal -> Show change over time. Viz -> Line Chart (Chart.js/Canvas). Interaction -> Tooltips on hover for specific year values. Justification -> The standard and most effective way to represent time-series data. NO SVG.
+        - Economic Stats (Sec 6.3): Report Info -> Large numerical stats like $15.7T contribution. Goal -> Inform with impact. Viz -> "Big Number" typography cards. Interaction -> None. Justification -> Makes key stats stand out and easily digestible. NO SVG.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 400px; max-height: 50vh; }
+        @media (max-width: 768px) { .chart-container { height: 300px; max-height: 60vh; } }
+        .nav-link { transition: color 0.3s ease, border-bottom-color 0.3s ease; }
+        .nav-link.active { color: #2563eb; border-bottom-color: #2563eb; font-weight: 600; }
+        .tab-button.active { background-color: #2563eb; color: #ffffff; }
+        .flow-node { border: 2px solid #93c5fd; background-color: #eff6ff; }
+        .flow-arrow { position: absolute; background-color: #93c5fd; }
+        .flow-arrow.right::after { content: ''; position: absolute; right: -11px; top: -5px; border-style: solid; border-width: 6px 0 6px 12px; border-color: transparent transparent transparent #93c5fd; }
+        .flow-arrow.down::after { content: ''; position: absolute; bottom: -11px; left: -5px; border-style: solid; border-width: 12px 6px 0 6px; border-color: #93c5fd transparent transparent transparent; }
+    </style>
+</head>
+<body>
+
+    <header class="text-center py-10 px-4 bg-white border-b">
+        <h1 class="text-4xl md:text-5xl font-bold text-slate-900">The Agentic AI Paradigm</h1>
+        <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">An interactive analysis of the shift from task-oriented bots to goal-driven autonomous systems.</p>
+    </header>
+
+    <nav id="navbar" class="sticky top-0 bg-white/80 backdrop-blur-md z-50 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center items-center h-16 space-x-4 md:space-x-8 overflow-x-auto">
+                <a href="#distinction" class="nav-link text-slate-600 border-b-2 border-transparent pb-1 whitespace-nowrap">Core Distinction</a>
+                <a href="#classical" class="nav-link text-slate-600 border-b-2 border-transparent pb-1 whitespace-nowrap">Classical Agents</a>
+                <a href="#anatomy" class="nav-link text-slate-600 border-b-2 border-transparent pb-1 whitespace-nowrap">Agentic Anatomy</a>
+                <a href="#outlook" class="nav-link text-slate-600 border-b-2 border-transparent pb-1 whitespace-nowrap">Economic Outlook</a>
+                <a href="#governance" class="nav-link text-slate-600 border-b-2 border-transparent pb-1 whitespace-nowrap">Governance</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="distinction" class="py-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-slate-900 text-center mb-4">The Core Distinction</h2>
+            <p class="max-w-3xl mx-auto text-slate-600 mb-12 text-center">The fundamental difference isn't just capability, but architectural philosophy. An **AI Agent** is a component that follows a plan. An **Agentic AI** is a system that creates the plan. This section breaks down the five key differences that define this paradigm shift.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-md border">
+                    <h3 class="text-2xl font-bold text-blue-600 mb-4 text-center">AI Agent</h3>
+                    <p class="text-center text-slate-500 mb-6 font-semibold">The Skilled Worker</p>
+                    <ul class="space-y-4 text-slate-700">
+                        <li><strong class="font-semibold text-slate-800">Autonomy:</strong> Operates within predefined rules to optimize a specific task.</li>
+                        <li><strong class="font-semibold text-slate-800">Complexity:</strong> Handles specific, patterned tasks. Learns offline.</li>
+                        <li><strong class="font-semibold text-slate-800">Scope:</strong> Task-oriented and domain-specific.</li>
+                        <li><strong class="font-semibold text-slate-800">Proactiveness:</strong> Primarily reactive to user commands or triggers.</li>
+                        <li><strong class="font-semibold text-slate-800">Planning:</strong> Follows a predefined plan or script.</li>
+                    </ul>
+                </div>
+                <div class="flex items-center justify-center text-4xl font-bold text-slate-400">vs.</div>
+                <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-md border">
+                    <h3 class="text-2xl font-bold text-blue-600 mb-4 text-center">Agentic AI</h3>
+                     <p class="text-center text-slate-500 mb-6 font-semibold">The Autonomous Manager</p>
+                    <ul class="space-y-4 text-slate-700">
+                        <li><strong class="font-semibold text-slate-800">Autonomy:</strong> Proactively sets sub-goals to achieve a high-level objective.</li>
+                        <li><strong class="font-semibold text-slate-800">Complexity:</strong> Manages dynamic workflows. Learns continuously from real-time feedback.</li>
+                        <li><strong class="font-semibold text-slate-800">Scope:</strong> Goal-oriented and cross-domain, orchestrating multiple tools.</li>
+                        <li><strong class="font-semibold text-slate-800">Proactiveness:</strong> Can initiate actions without being explicitly prompted.</li>
+                        <li><strong class="font-semibold text-slate-800">Planning:</strong> Creates and dynamically adjusts the plan to meet the goal.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="classical" class="py-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-slate-900 text-center mb-4">The Evolution of Classical Agents</h2>
+            <p class="max-w-3xl mx-auto text-slate-600 mb-12 text-center">To understand the agentic leap, we must first understand its foundation. Classical AI agents exist on a spectrum of increasing complexity. Click through the tabs below to explore the different agent architectures that paved the way for modern systems.</p>
+            <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md border">
+                <div id="tabs-container" class="flex border-b overflow-x-auto">
+                    <!-- Tabs will be inserted here by JS -->
+                </div>
+                <div id="tab-content" class="p-6 md:p-8">
+                    <!-- Tab content will be inserted here by JS -->
+                </div>
+            </div>
+        </section>
+
+        <section id="anatomy" class="py-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-slate-900 text-center mb-4">Anatomy of an Agentic System</h2>
+            <p class="max-w-3xl mx-auto text-slate-600 mb-12 text-center">Agentic AI is not a single technology but an architecture. It orchestrates several key components in a continuous loop of planning, acting, and reflecting to achieve its goals. The diagram below illustrates this fundamental workflow.</p>
+            <div class="max-w-3xl mx-auto p-4 md:p-8 bg-white rounded-lg shadow-md border relative">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 items-center">
+                    <div class="flow-node p-4 text-center rounded-lg">
+                        <h4 class="font-bold text-blue-700">1. Planning & Reflection</h4>
+                        <p class="text-sm text-slate-600">The LLM-powered reasoning engine creates and adapts a step-by-step plan.</p>
+                    </div>
+                    <div class="flow-node p-4 text-center rounded-lg">
+                        <h4 class="font-bold text-blue-700">2. Tool Integration</h4>
+                        <p class="text-sm text-slate-600">The orchestrator calls external tools (APIs, databases) to gather data or perform actions.</p>
+                    </div>
+                    <div class="flow-node p-4 text-center rounded-lg">
+                        <h4 class="font-bold text-blue-700">4. Memory Integration</h4>
+                        <p class="text-sm text-slate-600">Results are stored and relevant long-term knowledge is retrieved to inform the next cycle.</p>
+                    </div>
+                    <div class="flow-node p-4 text-center rounded-lg">
+                        <h4 class="font-bold text-blue-700">3. Action & Observation</h4>
+                        <p class="text-sm text-slate-600">The action is executed in the environment, and the outcome is observed.</p>
+                    </div>
+                </div>
+                <!-- Arrows for larger screens -->
+                <div class="hidden md:block">
+                    <div class="flow-arrow right" style="height: 2px; width: 16%; top: 25%; left: 42%;"></div>
+                    <div class="flow-arrow down" style="width: 2px; height: 18%; top: 25%; right: 24%;"></div>
+                    <div class="flow-arrow right" style="transform: rotate(180deg); height: 2px; width: 16%; top: 60%; left: 42%;"></div>
+                    <div class="flow-arrow down" style="transform: rotate(180deg); width: 2px; height: 18%; top: 42%; left: 24%;"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="outlook" class="py-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-slate-900 text-center mb-4">Economic Outlook & Market Trajectory</h2>
+            <p class="max-w-3xl mx-auto text-slate-600 mb-12 text-center">The agentic paradigm is set to drive enormous economic value and enterprise adoption. The chart below visualizes the projected exponential growth of the AI Agents market, with key adoption metrics highlighted below.</p>
+            <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md border">
+                <div class="chart-container">
+                    <canvas id="marketGrowthChart"></canvas>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 text-center">
+                <div class="bg-white p-6 rounded-lg shadow-md border">
+                    <p class="text-5xl font-bold text-blue-600">33%</p>
+                    <p class="mt-2 text-lg text-slate-700">of enterprise apps will include agentic AI by 2028.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border">
+                    <p class="text-5xl font-bold text-blue-600">$15.7T</p>
+                    <p class="mt-2 text-lg text-slate-700">potential contribution to the global economy by 2030.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border">
+                    <p class="text-5xl font-bold text-blue-600">80%</p>
+                    <p class="mt-2 text-lg text-slate-700">of common customer issues resolved autonomously by 2029.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="governance" class="py-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-slate-900 text-center mb-4">Governance in the Agentic Era</h2>
+            <p class="max-w-3xl mx-auto text-slate-600 mb-12 text-center">The power of agentic AI necessitates robust governance. As systems become more autonomous, frameworks for managing risk, ensuring fairness, and defining accountability are critical for safe and ethical deployment.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md border">
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Key Risks to Manage</h3>
+                    <ul class="space-y-3 list-disc list-inside text-slate-700">
+                        <li><strong>Bias & Fairness:</strong> Systems can perpetuate and amplify societal biases found in training data, leading to discriminatory outcomes.</li>
+                        <li><strong>Security & Privacy:</strong> Autonomous access to multiple systems creates a vast new attack surface for data leaks and manipulation.</li>
+                        <li><strong>Lack of Transparency:</strong> The "black box" nature of some models makes it difficult to debug errors and assign accountability.</li>
+                        <li><strong>Systemic Risk:</strong> Unforeseen interactions between multiple agents could trigger harmful emergent behavior at scale.</li>
+                    </ul>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-md border">
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Major Regulatory Frameworks</h3>
+                    <ul class="space-y-3 list-disc list-inside text-slate-700">
+                        <li><strong>EU AI Act:</strong> The world's first comprehensive AI law, employing a strict risk-based approach. It bans "unacceptable risk" systems and imposes heavy obligations on "high-risk" applications.</li>
+                        <li><strong>NIST AI RMF:</strong> A voluntary framework from the U.S. providing a practical guide for organizations to govern, map, measure, and manage AI-related risks in a structured way.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+<!--
+
+    <footer class="bg-white mt-16 py-6 text-center border-t">
+        <p class="text-slate-500">Interactive report based on the "Agentic AI vs. AI Agents" technical analysis.</p>
+    </footer>
+
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const chartFontColor = '#334155';
+            const gridColor = '#e2e8f0';
+            const primaryColor = 'rgba(37, 99, 235, 0.7)';
+            const primaryBorderColor = '#2563eb';
+
+            const agentTypesData = [
+                { name: 'Simple Reflex', content: 'Acts only on the current percept using predefined condition-action rules. Has no memory of the past. Best for fully observable, simple environments like a thermostat.' },
+                { name: 'Model-Based', content: 'Maintains an internal state or "model" of the world to track how things evolve. Can handle partially observable environments by inferring unseen aspects.' },
+                { name: 'Goal-Based', content: 'Moves beyond simple reactions to make decisions directed toward achieving a specific goal. Uses search and planning to find a sequence of actions to reach its objective.' },
+                { name: 'Utility-Based', content: 'Acts on a utility function to choose the action that maximizes "happiness" or desirability. Can handle conflicting goals and make trade-offs under uncertainty.' },
+                { name: 'Learning', content: 'Improves its performance over time through experience. Can adapt to unknown or changing environments by learning from its interactions and feedback.' }
+            ];
+
+            const marketData = {
+                labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+                values: [5.3, 10.1, 15.2, 22.8, 31.4, 41.8, 52.5]
+            };
+
+            const setupTabs = () => {
+                const tabsContainer = document.getElementById('tabs-container');
+                const contentContainer = document.getElementById('tab-content');
+                
+                agentTypesData.forEach((tab, index) => {
+                    const button = document.createElement('button');
+                    button.textContent = tab.name;
+                    button.className = 'tab-button flex-1 p-4 font-semibold text-slate-600 transition-colors duration-200';
+                    if (index === 0) button.classList.add('active');
+                    button.addEventListener('click', () => {
+                        tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        contentContainer.innerHTML = `<p>${agentTypesData[index].content}</p>`;
+                    });
+                    tabsContainer.appendChild(button);
+                });
+
+                contentContainer.innerHTML = `<p>${agentTypesData[0].content}</p>`;
+            };
+            
+            const createMarketGrowthChart = () => {
+                const ctx = document.getElementById('marketGrowthChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: marketData.labels,
+                        datasets: [{
+                            label: 'AI Agents Market Size (Billion USD)',
+                            data: marketData.values,
+                            backgroundColor: primaryColor,
+                            borderColor: primaryBorderColor,
+                            tension: 0.4,
+                            fill: true,
+                            pointBackgroundColor: '#ffffff',
+                            pointHoverRadius: 7,
+                            pointRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { color: gridColor },
+                                ticks: { color: chartFontColor, font: { size: 12 } },
+                                title: { display: true, text: 'Market Value (Billion USD)', color: chartFontColor }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: chartFontColor, font: { size: 12 } }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                                titleFont: { size: 14, weight: 'bold' },
+                                bodyFont: { size: 12 },
+                                padding: 10,
+                                cornerRadius: 5,
+                                displayColors: false
+                            }
+                        }
+                    }
+                });
+            };
+
+            const handleScrollspy = () => {
+                const sections = document.querySelectorAll('section');
+                const navLinks = document.querySelectorAll('.nav-link');
+                const navbarHeight = document.getElementById('navbar').offsetHeight;
+
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(link => {
+                                link.classList.remove('active');
+                                if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                    link.classList.add('active');
+                                }
+                            });
+                        }
+                    });
+                }, { rootMargin: `-${navbarHeight}px 0px 0px 0px`, threshold: 0.3 });
+
+                sections.forEach(section => observer.observe(section));
+            };
+
+            setupTabs();
+            createMarketGrowthChart();
+            handleScrollspy();
+        });
+    </script>
+</body>
+</html>

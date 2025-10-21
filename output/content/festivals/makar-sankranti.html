@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sun's Transition: Makar Sankranti Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Earthen Harmony (Warm Beige, Terracotta, Deep Saffron, Charcoal) -->
+    <!-- Application Structure Plan: A thematic, single-page application design was chosen over a linear report structure to enhance user engagement and facilitate non-linear exploration. The core of the app is an interactive map of India, allowing users to discover regional celebrations intuitively. This is supported by thematic sections for Significance, Mythology, and Food, accessible via a fixed top navigation bar. This structure breaks down dense information into digestible, user-driven segments, making the content more accessible and memorable than a text-heavy document. The user flow encourages discovery, starting broad and allowing deep dives into specific areas of interest. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Diverse regional celebrations (Table IV). Goal: Compare & Explore. Viz: Interactive HTML/CSS Map. Interaction: Click on a region to dynamically display detailed information. Justification: Transforms a static table into an engaging, visual exploration tool. Method: Vanilla JS updating a content pane from a data object.
+        - Report Info: Foundational Significance (Section II). Goal: Inform & Organize. Viz: Three-card layout. Interaction: Hover effects to highlight key concepts. Justification: Breaks down the core concepts into clear, parallel pillars for easy comprehension. Method: HTML/Tailwind CSS.
+        - Report Info: Mythological Narratives (Section III). Goal: Inform & Narrate. Viz: Accordion-style collapsible sections. Interaction: Click to expand/collapse stories. Justification: Prevents overwhelming users with long text blocks and allows them to focus on one story at a time. Method: Vanilla JS toggling visibility.
+        - Report Info: Culinary Traditions (Section V). Goal: Inform & Categorize. Viz: Grid-based gallery. Interaction: Content cards for key ingredients and regional dishes. Justification: Visually appealing way to showcase food, separating core ingredients from regional specialties. Method: HTML/Tailwind CSS.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDF8F2; /* Warm Beige */
+            color: #4A4A4A;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #E76F51; /* Terracotta */
+            border-bottom-color: #E76F51;
+        }
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .map-dot {
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .map-dot:hover {
+            transform: scale(1.5);
+        }
+        .map-dot.active {
+            transform: scale(1.6);
+            background-color: #F4A261; /* Deep Saffron */
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl md:text-2xl font-bold text-[#E76F51]">The Sun's Turning</h1>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#significance" class="nav-link text-lg font-semibold pb-1 active">Significance</a>
+                    <a href="#celebrations" class="nav-link text-lg font-semibold pb-1">Celebrations</a>
+                    <a href="#mythology" class="nav-link text-lg font-semibold pb-1">Mythology</a>
+                    <a href="#culinary" class="nav-link text-lg font-semibold pb-1">Cuisine</a>
+                    <a href="#issues" class="nav-link text-lg font-semibold pb-1">Modern Issues</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="#significance" class="block nav-link text-lg font-semibold py-2">Significance</a>
+                <a href="#celebrations" class="block nav-link text-lg font-semibold py-2">Celebrations</a>
+                <a href="#mythology" class="block nav-link text-lg font-semibold py-2">Mythology</a>
+                <a href="#culinary" class="block nav-link text-lg font-semibold py-2">Cuisine</a>
+                <a href="#issues" class="block nav-link text-lg font-semibold py-2">Modern Issues</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8">
+        
+        <section id="significance" class="app-section min-h-screen pt-16">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">The Cosmic & Agrarian Heartbeat</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600">Makar Sankranti is built on three interconnected pillars: a predictable astronomical event, the universal experience of the agricultural cycle, and a profound spiritual metaphor of moving from darkness to light. Explore the core principles that give this festival its enduring power.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <div class="text-4xl mb-4">☀️</div>
+                    <h3 class="text-2xl font-bold text-[#E76F51] mb-2">Astronomical Anchor</h3>
+                    <p class="text-gray-700">The festival marks the Sun's transition (*Sankranti*) into the zodiac sign of Capricorn (*Makara*). This solar-based timing gives it a fixed date around January 14/15, making it unique among Hindu festivals which are typically lunar-based.</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <div class="text-4xl mb-4">🕊️</div>
+                    <h3 class="text-2xl font-bold text-[#F4A261] mb-2">Spiritual Dawn</h3>
+                    <p class="text-gray-700">It heralds the start of *Uttarayana*, the Sun's six-month northward journey. This period is considered highly auspicious, symbolizing a transition from darkness to light, ignorance to knowledge, and is believed to be the "day of the gods."</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <div class="text-4xl mb-4">🌾</div>
+                    <h3 class="text-2xl font-bold text-[#2A9D8F] mb-2">Earthen Bounty</h3>
+                    <p class="text-gray-700">At its heart, this is a pan-Indian harvest festival. It's a time of collective thanksgiving to the sun, earth, and cattle for the bounty of freshly harvested crops like sugarcane, rice, and pulses, celebrating the fruits of farmers' labor.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="celebrations" class="app-section min-h-screen pt-16">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">A Tapestry of Celebration</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600">While united by a shared reverence for the sun and harvest, Makar Sankranti blossoms into a spectacular array of regional traditions. Click on a region on the map to discover its unique name, rituals, and cultural practices.</p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8 items-center">
+                <div class="relative w-full max-w-2xl mx-auto aspect-square bg-gray-100 rounded-lg p-4">
+                    <div id="map-container" class="relative w-full h-full">
+                        <!-- Simplified map of India using divs -->
+                        <div class="map-dot" data-region="punjab" style="top: 20%; left: 30%;"></div>
+                        <div class="map-dot" data-region="gujarat" style="top: 45%; left: 15%;"></div>
+                        <div class="map-dot" data-region="maharashtra" style="top: 60%; left: 28%;"></div>
+                        <div class="map-dot" data-region="karnataka" style="top: 75%; left: 33%;"></div>
+                        <div class="map-dot" data-region="tamilnadu" style="top: 85%; left: 45%;"></div>
+                        <div class="map-dot" data-region="andhra" style="top: 70%; left: 48%;"></div>
+                        <div class="map-dot" data-region="westbengal" style="top: 48%; left: 75%;"></div>
+                        <div class="map-dot" data-region="assam" style="top: 38%; left: 88%;"></div>
+                    </div>
+                </div>
+                <div id="region-info" class="bg-white p-8 rounded-lg shadow-lg border border-gray-200 min-h-[400px]">
+                    <p class="text-center text-gray-500 text-lg h-full flex items-center justify-center">Select a region on the map to learn about its celebrations.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="mythology" class="app-section min-h-screen pt-16">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Echoes of Eternity</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600">The festival's rituals are deeply rooted in a rich tapestry of mythological narratives from the epics and Puranas. These sacred stories provide the "why" behind the celebrations, transforming an astronomical event into a landscape of divine action and moral instruction.</p>
+            </div>
+            <div class="max-w-4xl mx-auto space-y-4">
+                <div class="accordion-item bg-white rounded-lg shadow border border-gray-200">
+                    <button class="accordion-header w-full text-left p-6 flex justify-between items-center">
+                        <h3 class="text-xl font-semibold text-[#E76F51]">The Patriarch's Passage: Legend of Bhishma</h3>
+                        <span class="text-2xl transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="text-gray-700">From the epic Mahabharata, this is the story of Bhishma Pitamaha. Blessed with the ability to choose his moment of death, he lay wounded on a bed of arrows, deliberately waiting for the auspicious start of *Uttarayana*. His passing on this day forever marked it as a sacred time for attaining liberation (*moksha*), powerfully linking the festival to the highest spiritual aspirations.</p>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white rounded-lg shadow border border-gray-200">
+                    <button class="accordion-header w-full text-left p-6 flex justify-between items-center">
+                        <h3 class="text-xl font-semibold text-[#F4A261]">Celestial Reconciliation: Tale of Surya & Shani</h3>
+                        <span class="text-2xl transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="text-gray-700">This myth tells of the Sun God, Surya, visiting his son, Shani (Saturn), on this day to resolve their differences. Shani presides over the house of Capricorn, so the Sun's entry is seen as a father visiting his son. This divine reconciliation provides a precedent for mending relationships, reflected in the Maharashtrian custom of exchanging sweets while saying, "speak sweet words."</p>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white rounded-lg shadow border border-gray-200">
+                    <button class="accordion-header w-full text-left p-6 flex justify-between items-center">
+                        <h3 class="text-xl font-semibold text-[#2A9D8F]">The River's Descent: Legend of Ganga</h3>
+                        <span class="text-2xl transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="text-gray-700">This foundational epic explains the significance of the Ganga Sagar Mela. It recounts how King Bhagiratha's penance brought the celestial river Ganga to earth to purify the ashes of his 60,000 ancestors, who were incinerated by a sage's curse. The holy dip at the confluence of the Ganga and the sea on Makar Sankranti commemorates this grand act of purification and ancestral liberation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="culinary" class="app-section min-h-screen pt-16">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">The Gastronomy of Gratitude</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600">The festival's foods are a central ritual, symbolizing unity, goodwill, and the season's bounty. Specific dishes celebrate the local harvest, binding communities through the shared acts of preparing, offering, and consuming.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="card bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-bold text-[#E76F51] mb-2">Sesame (Til)</h3>
+                    <p class="text-gray-700">A sacred "seed of immortality" in Hindu tradition, sesame symbolizes purity and prosperity. Its warming properties, according to Ayurveda, make it ideal for winter consumption, providing energy and boosting immunity.</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-bold text-[#F4A261] mb-2">Jaggery (Gur)</h3>
+                    <p class="text-gray-700">An unrefined sweetener, jaggery symbolizes sweetness and amity. When combined with sesame, it represents a call to dissolve bitterness and foster harmony. It is also a source of iron and minerals, known to aid digestion.</p>
+                </div>
+            </div>
+             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-4 rounded-lg shadow text-center">
+                    <h4 class="font-bold">Tilgul Ladoo</h4>
+                    <p class="text-sm text-gray-600">Maharashtra</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow text-center">
+                    <h4 class="font-bold">Pongal</h4>
+                    <p class="text-sm text-gray-600">Tamil Nadu</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow text-center">
+                    <h4 class="font-bold">Undhiyu</h4>
+                    <p class="text-sm text-gray-600">Gujarat</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow text-center">
+                    <h4 class="font-bold">Pithe</h4>
+                    <p class="text-sm text-gray-600">West Bengal</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow text-center">
+                    <h4 class="font-bold">Khichdi</h4>
+                    <p class="text-sm text-gray-600">North India</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow text-center">
+                    <h4 class="font-bold">Gajak & Chikki</h4>
+                    <p class="text-sm text-gray-600">North & West India</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow text-center">
+                    <h4 class="font-bold">Sarson da Saag</h4>
+                    <p class="text-sm text-gray-600">Punjab</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow text-center">
+                    <h4 class="font-bold">Ellu Bella</h4>
+                    <p class="text-sm text-gray-600">Karnataka</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="issues" class="app-section min-h-screen pt-16">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Contemporary Crossroads</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600">In the 21st century, ancient traditions intersect with modern realities, creating challenges that test the festival's core ethos of reverence for life, nature, and social harmony.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-red-200">
+                    <h3 class="text-2xl font-bold text-red-600 mb-2">The Manja Menace</h3>
+                    <p class="text-gray-700">The joy of kite flying is marred by modern synthetic kite strings (*manja*), which are sharp, non-biodegradable, and cause fatal injuries to humans and thousands of birds each year, creating a serious public safety and environmental hazard.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-orange-200">
+                    <h3 class="text-2xl font-bold text-orange-600 mb-2">The Jallikattu Debate</h3>
+                    <p class="text-gray-700">The traditional bull-taming sport in Tamil Nadu is at the center of a fierce debate, pitting proponents of cultural heritage against animal rights advocates who condemn it as cruel. The controversy highlights a deep tension between tradition and modern ethics.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-blue-200">
+                    <h3 class="text-2xl font-bold text-blue-600 mb-2">Ecological Footprints</h3>
+                    <p class="text-gray-700">Mass pilgrimages and celebrations lead to significant environmental challenges, including river pollution from ritual bathing and offerings, and massive waste generation at festival fairs (*melas*), threatening the sanctity of the very natural elements the festival honors.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+<!--
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>&copy; 2025 Interactive Cultural Guides. An exploration of Makar Sankranti, a festival of the sun and harvest.</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const regionalData = {
+                punjab: {
+                    name: 'Lohri (Punjab)',
+                    content: `
+                        <h3 class="text-2xl font-bold text-[#E76F51] mb-2">Lohri</h3>
+                        <p class="font-semibold text-gray-600 mb-4">Celebrated on the eve of Sankranti, Lohri marks the end of winter and the harvest of Rabi crops.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Core Ritual:</strong> A large communal bonfire is lit at sunset, into which offerings of sesame, jaggery, and corn are made to Agni, the Fire God.</li>
+                            <li><strong>Signature Foods:</strong> Sarson da Saag, Makki di Roti, Gajak, Pinni.</li>
+                            <li><strong>Unique Practices:</strong> People sing folk songs in praise of the legendary hero Dulla Bhatti and perform energetic Bhangra and Giddha dances around the fire.</li>
+                        </ul>`
+                },
+                gujarat: {
+                    name: 'Uttarayan (Gujarat)',
+                    content: `
+                        <h3 class="text-2xl font-bold text-[#E76F51] mb-2">Uttarayan</h3>
+                        <p class="font-semibold text-gray-600 mb-4">A spectacular two-day festival welcoming the sun's northward journey, famously celebrated by flying kites.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Core Ritual:</strong> The sky is filled with kites from dawn till dusk as people engage in competitive kite battles from their rooftops.</li>
+                            <li><strong>Signature Foods:</strong> Undhiyu (a mixed vegetable casserole), Chikki (brittle candy), Laddoos.</li>
+                            <li><strong>Unique Practices:</strong> The triumphant shout of "Kai Po Che!" echoes when a rival's kite string is cut. Ahmedabad hosts a massive International Kite Festival.</li>
+                        </ul>`
+                },
+                maharashtra: {
+                    name: 'Makar Sankrant (Maharashtra)',
+                    content: `
+                        <h3 class="text-2xl font-bold text-[#E76F51] mb-2">Makar Sankrant</h3>
+                        <p class="font-semibold text-gray-600 mb-4">A festival focused on social goodwill, kite flying, and honoring women.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Core Ritual:</strong> Exchanging sweets made of sesame (til) and jaggery (gul) as a gesture of peace and friendship.</li>
+                            <li><strong>Signature Foods:</strong> Tilgul Ladoo, Puran Poli (sweet flatbread), Halwa.</li>
+                            <li><strong>Unique Practices:</strong> People exchange Tilgul while saying "Til-gul ghyaa, goad-goad bolaa" ("Accept this sesame and jaggery and speak sweet words"). Married women hold Haldi-Kumkum ceremonies.</li>
+                        </ul>`
+                },
+                karnataka: {
+                    name: 'Sankranthi / Suggi Habba (Karnataka)',
+                    content: `
+                        <h3 class="text-2xl font-bold text-[#E76F51] mb-2">Sankranthi / Suggi Habba</h3>
+                        <p class="font-semibold text-gray-600 mb-4">A harvest festival (*Suggi*) that celebrates farmers, their cattle, and the spirit of goodwill.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Core Ritual:</strong> The exchange of a special mixture called *Ellu-Bella* (sesame, jaggery, coconut, groundnuts) with friends and family.</li>
+                            <li><strong>Signature Foods:</strong> Ellu-Bella, Sweet Pongal, Payasa, Lemon Rice.</li>
+                            <li><strong>Unique Practices:</strong> The exchange is accompanied by the phrase "Ellu bella thindu olle maathadi" ("Eat this mixture and speak good words"). Cows and bulls are colorfully decorated.</li>
+                        </ul>`
+                },
+                tamilnadu: {
+                    name: 'Pongal (Tamil Nadu)',
+                    content: `
+                        <h3 class="text-2xl font-bold text-[#E76F51] mb-2">Pongal</h3>
+                        <p class="font-semibold text-gray-600 mb-4">A four-day harvest festival of thanksgiving to the Sun God, nature, and cattle.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Core Ritual:</strong> The ceremonial boiling over of a pot of sweet Pongal rice, symbolizing abundance and prosperity, while shouting "Pongalo Pongal!".</li>
+                            <li><strong>Signature Foods:</strong> Sakkarai Pongal (sweet), Ven Pongal (savory).</li>
+                            <li><strong>Unique Practices:</strong> Celebrated over four distinct days (Bhogi, Surya, Mattu, Kaanum), each with its own significance, including the honoring of cattle on Mattu Pongal.</li>
+                        </ul>`
+                },
+                andhra: {
+                    name: 'Sankranthi / Pedda Panduga (Andhra & Telangana)',
+                    content: `
+                        <h3 class="text-2xl font-bold text-[#E76F51] mb-2">Sankranthi / Pedda Panduga</h3>
+                        <p class="font-semibold text-gray-600 mb-4">Known as the "big festival," it's a major multi-day celebration of renewal, ancestor worship, and harvest thanksgiving.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Core Ritual:</strong> Homes are decorated with intricate *Muggu* (rangoli) centered with *Gobbemma* (cow-dung balls). A bonfire (*Bhogi*) is lit on the first day to discard old items.</li>
+                            <li><strong>Signature Foods:</strong> Poornalu, Appalu, Chakkara Pongal.</li>
+                            <li><strong>Unique Practices:</strong> Cattle are worshipped on the third day (*Kanuma*). Villages are visited by *Haridasus*, singing devotional songs.</li>
+                        </ul>`
+                },
+                westbengal: {
+                    name: 'Poush Sankranti (West Bengal)',
+                    content: `
+                        <h3 class="text-2xl font-bold text-[#E76F51] mb-2">Poush Sankranti</h3>
+                        <p class="font-semibold text-gray-600 mb-4">A celebration marked by culinary artistry, folk fairs, and a massive pilgrimage.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Core Ritual:</strong> Taking a holy dip in the Ganga, especially at the confluence with the Bay of Bengal.</li>
+                            <li><strong>Signature Foods:</strong> A wide variety of sweet crepes and dumplings called *Pithe*, and *Payesh* (rice pudding), both made with date palm jaggery.</li>
+                            <li><strong>Unique Practices:</strong> The state hosts the Ganga Sagar Mela, one of the largest pilgrimages in India, and the Poush Mela at Santiniketan, a fair celebrating rural culture.</li>
+                        </ul>`
+                },
+                assam: {
+                    name: 'Magh Bihu / Bhogali Bihu (Assam)',
+                    content: `
+                        <h3 class="text-2xl font-bold text-[#E76F51] mb-2">Magh Bihu / Bhogali Bihu</h3>
+                        <p class="font-semibold text-gray-600 mb-4">A post-harvest festival of community feasting (*Bhog*) and enjoyment.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Core Ritual:</strong> On the eve (*Uruka*), a grand communal feast is held in a makeshift bamboo hut (*Bhelaghar*). The next morning, a conical structure (*Meji*) is ceremonially burned.</li>
+                            <li><strong>Signature Foods:</strong> Pitha, Laru, Chira with curd, various meat and fish dishes.</li>
+                            <li><strong>Unique Practices:</strong> The bonfire is a sacred offering to Agni. Traditional games like pot-breaking and buffalo fighting are also part of the festivities.</li>
+                        </ul>`
+                }
+            };
+
+            const mapDots = document.querySelectorAll('.map-dot');
+            const regionInfo = document.getElementById('region-info');
+            mapDots.forEach(dot => {
+                dot.style.position = 'absolute';
+                dot.style.width = '20px';
+                dot.style.height = '20px';
+                dot.style.backgroundColor = '#E76F51';
+                dot.style.borderRadius = '50%';
+                dot.style.cursor = 'pointer';
+                dot.style.border = '2px solid white';
+                dot.style.boxShadow = '0 0 10px rgba(0,0,0,0.2)';
+
+                dot.addEventListener('click', () => {
+                    mapDots.forEach(d => d.classList.remove('active'));
+                    dot.classList.add('active');
+                    const region = dot.dataset.region;
+                    const data = regionalData[region];
+                    if (data) {
+                        regionInfo.innerHTML = data.content;
+                        regionInfo.classList.add('fade-in');
+                        regionInfo.addEventListener('animationend', () => {
+                            regionInfo.classList.remove('fade-in');
+                        }, { once: true });
+                    }
+                });
+            });
+
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                const content = item.querySelector('.accordion-content');
+                const icon = header.querySelector('span');
+                header.addEventListener('click', () => {
+                    const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
+                    
+                    accordionItems.forEach(i => {
+                        i.querySelector('.accordion-content').style.maxHeight = '0px';
+                        i.querySelector('.accordion-header span').style.transform = 'rotate(0deg)';
+                    });
+
+                    if (!isExpanded) {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.app-section');
+            
+            const activateLink = (link) => {
+                navLinks.forEach(l => l.classList.remove('active'));
+                if (link) {
+                    link.classList.add('active');
+                    const mobileLink = document.querySelector(`#mobile-menu a[href="${link.getAttribute('href')}"]`);
+                    if(mobileLink) mobileLink.classList.add('active');
+                }
+            };
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    activateLink(e.target);
+                    if (mobileMenu.classList.contains('hidden') === false) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const link = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+                        activateLink(link);
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>

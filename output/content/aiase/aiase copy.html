@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Architect and the Automaton: An Interactive Course</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Paper, Slate, and Terracotta) -->
+    <!-- Application Structure Plan: The SPA is structured as a single-page, scrollable narrative, broken into five logical, thematic sections accessible via a sticky top navigation. This design was chosen over a direct representation of the course's 11 modules to create a more fluid and intuitive user journey. The sections are: 1) Foundations, 2) The SDLC Transformed, 3) The AI Co-Developer, 4) The Agentic Frontier, and 5) Critical Considerations. This non-linear, thematic approach allows users to explore core concepts, see their application across the development lifecycle, compare key tools, and understand future trends and risks in a digestible, interactive format that prioritizes comprehension over rigid structure. -->
+    <!-- Visualization & Content Choices: 
+        - Arc of Abstraction -> Goal: Change -> Viz: Vertical Timeline (HTML/CSS) -> Justification: Clearly illustrates the historical progression of programming abstraction.
+        - AI Tool Comparison -> Goal: Compare -> Viz: Radar Chart (Chart.js) -> Justification: Effectively compares multiple tools (Copilot, CodeWhisperer, Tabnine) across multiple criteria (Privacy, Ecosystem, Personalization).
+        - AI in SDLC -> Goal: Organize/Process Flow -> Viz: Interactive Tabbed Diagram (HTML/CSS/JS) -> Interaction: Clickable tabs for each SDLC phase reveal AI's role. Justification: Condenses a large amount of information into a single, explorable component.
+        - Agent Anatomy -> Goal: Organize -> Viz: Diagram (HTML/CSS) -> Justification: A simple visual diagram to explain the core components (Planning, Memory, Tools) of an AI agent.
+        - Agentic Frameworks -> Goal: Compare -> Viz: Bar Chart (Chart.js) -> Justification: Provides a clear visual comparison of framework strengths.
+        - All choices confirm NO SVG/Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8F5F2; color: #4A4A4A; }
+        h1, h2, h3 { font-family: 'Source Serif 4', serif; }
+        .nav-link { transition: color 0.3s, border-color 0.3s; }
+        .nav-link.active { color: #E07A5F; border-bottom-color: #E07A5F; }
+        .tab.active { background-color: #E07A5F; color: #FFFFFF; }
+        .chart-container { position: relative; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; height: 350px; max-height: 450px; }
+        .bar-chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        .content-section { min-height: 100vh; padding-top: 8rem; padding-bottom: 8rem; }
+    </style>
+</head>
+<body class="bg-[#F8F5F2]">
+
+    <header class="sticky top-0 z-50 bg-[#F8F5F2]/80 backdrop-blur-md border-b border-gray-200">
+        <nav class="container mx-auto px-6 py-4">
+            <div id="nav-menu" class="flex justify-center items-center space-x-6 md:space-x-10 text-sm md:text-base font-medium text-gray-600">
+                <a href="#foundations" class="nav-link border-b-2 border-transparent hover:text-[#E07A5F]">Foundations</a>
+                <a href="#sdlc" class="nav-link border-b-2 border-transparent hover:text-[#E07A5F]">SDLC</a>
+                <a href="#tools" class="nav-link border-b-2 border-transparent hover:text-[#E07A5F]">Tools</a>
+                <a href="#agents" class="nav-link border-b-2 border-transparent hover:text-[#E07A5F]">Agents</a>
+                <a href="#ethics" class="nav-link border-b-2 border-transparent hover:text-[#E07A5F]">Ethics</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6">
+        
+        <section id="hero" class="text-center flex flex-col justify-center items-center min-h-screen">
+            <h1 class="text-5xl md:text-7xl font-bold text-[#3D405B]">The Architect and the Automaton</h1>
+            <p class="mt-6 text-xl text-gray-700 max-w-3xl">An interactive guide to the new era of software engineering, powered by Artificial Intelligence. Explore how AI is transforming every stage of development, from design to deployment.</p>
+        </section>
+
+        <section id="foundations" class="content-section">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-[#3D405B]">Foundations of AISE</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">This section lays the groundwork, exploring the history and core concepts of AI-Assisted Software Engineering (AISE). Understand the key technologies that power modern development tools and the fundamental shift they represent.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-6 text-[#3D405B]">The Arc of Abstraction</h3>
+                    <div class="relative pl-8 border-l-2 border-[#E07A5F]/50">
+                        <div class="mb-8 relative">
+                            <div class="absolute -left-10 top-1 w-4 h-4 bg-[#E07A5F] rounded-full"></div>
+                            <h4 class="font-bold text-lg">Assembly Language</h4>
+                            <p class="text-sm text-gray-600">Programmers write instructions very close to the machine's hardware. Highly tedious and error-prone.</p>
+                        </div>
+                        <div class="mb-8 relative">
+                            <div class="absolute -left-10 top-1 w-4 h-4 bg-[#E07A5F] rounded-full"></div>
+                            <h4 class="font-bold text-lg">High-Level Languages & Compilers</h4>
+                            <p class="text-sm text-gray-600">Languages like FORTRAN abstract machine details. A compiler translates human-readable code to machine code.</p>
+                        </div>
+                        <div class="relative">
+                             <div class="absolute -left-10 top-1 w-4 h-4 bg-[#E07A5F] rounded-full"></div>
+                            <h4 class="font-bold text-lg">AI-Assisted Engineering (AISE)</h4>
+                            <p class="text-sm text-gray-600">The latest leap. Developers state their intent in natural language, and an AI generates the high-level code.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-6 text-[#3D405B]">Core Generative Models</h3>
+                    <p class="text-center text-sm text-gray-600 mb-4">AISE tools are powered by different underlying models. Understanding them is key to knowing their strengths.</p>
+                    <div class="space-y-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold">Transformers</h4>
+                            <p class="text-sm text-gray-600">The foundation of LLMs. Excels at understanding context in sequential data like code and natural language.</p>
+                        </div>
+                         <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold">Diffusion Models</h4>
+                            <p class="text-sm text-gray-600">Creates high-fidelity output (like images or UI mockups) by starting with noise and progressively refining it.</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold">Generative Adversarial Networks (GANs)</h4>
+                            <p class="text-sm text-gray-600">Uses a "Generator" and a "Discriminator" in a competitive game to produce highly realistic, novel outputs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sdlc" class="content-section">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-[#3D405B]">The SDLC, Transformed</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">AI is not just a coding tool; it impacts every phase of the Software Development Lifecycle. Explore how intelligent automation is being woven into the fabric of software creation, from initial requirements to final deployment. Click each stage to learn more.</p>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <div class="flex flex-wrap justify-center gap-2 mb-8">
+                    <button data-target="req" class="sdlc-tab tab py-2 px-4 rounded-full text-sm font-semibold transition-colors duration-300 bg-gray-200 text-gray-700">Requirements</button>
+                    <button data-target="design" class="sdlc-tab tab py-2 px-4 rounded-full text-sm font-semibold transition-colors duration-300 bg-gray-200 text-gray-700">Design</button>
+                    <button data-target="impl" class="sdlc-tab tab py-2 px-4 rounded-full text-sm font-semibold transition-colors duration-300 bg-gray-200 text-gray-700">Implementation</button>
+                    <button data-target="qa" class="sdlc-tab tab py-2 px-4 rounded-full text-sm font-semibold transition-colors duration-300 bg-gray-200 text-gray-700">QA & Debugging</button>
+                    <button data-target="devops" class="sdlc-tab tab py-2 px-4 rounded-full text-sm font-semibold transition-colors duration-300 bg-gray-200 text-gray-700">DevOps & Maintenance</button>
+                </div>
+                <div id="sdlc-content" class="p-6 bg-gray-50 rounded-lg min-h-[200px]">
+                </div>
+            </div>
+        </section>
+        
+        <section id="tools" class="content-section">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-[#3D405B]">The AI Co-Developer</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">A new class of AI coding assistants is reshaping the developer's daily workflow. This section provides a comparative look at the leading tools, helping you understand which is best suited for different needs and environments.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-4 text-[#3D405B]">Tool Comparison</h3>
+                    <div class="chart-container">
+                        <canvas id="toolsChart"></canvas>
+                    </div>
+                     <p class="text-center text-xs mt-4 text-gray-500">A qualitative comparison of leading AI coding assistants across key enterprise features.</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h4 class="text-xl font-bold text-[#3D405B]">GitHub Copilot</h4>
+                        <p class="mt-2 text-gray-600">The market leader, offering excellent general-purpose code completion and a powerful chat interface. Best for individual developers and teams deeply integrated with the GitHub ecosystem.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h4 class="text-xl font-bold text-[#3D405B]">Amazon CodeWhisperer</h4>
+                        <p class="mt-2 text-gray-600">Its superpower is its deep knowledge of AWS. Provides unmatched suggestions for AWS APIs and services, plus built-in security scanning. The clear choice for AWS-heavy development.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h4 class="text-xl font-bold text-[#3D405B]">Tabnine</h4>
+                        <p class="mt-2 text-gray-600">Focuses on personalization and privacy. It can be trained on a team's private codebase to learn specific conventions and can be deployed on-premises, ensuring code never leaves your environment.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="agents" class="content-section">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-[#3D405B]">The Agentic Frontier</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">We are moving beyond simple code generation to autonomous AI agents that can plan, use tools, and solve complex problems. Explore the architecture of these agents and the frameworks used to build them.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                 <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-6 text-[#3D405B]">Anatomy of an AI Agent</h3>
+                    <div class="flex flex-col items-center justify-center space-y-4">
+                        <div class="p-4 bg-[#3D405B] text-white rounded-full font-bold shadow-xl">LLM Brain</div>
+                        <div class="flex space-x-4">
+                            <div class="p-3 bg-[#E07A5F]/20 rounded-lg text-center shadow-sm">
+                                <h4 class="font-semibold">Planning</h4>
+                                <p class="text-xs">Decomposes goals into steps</p>
+                            </div>
+                             <div class="p-3 bg-[#E07A5F]/20 rounded-lg text-center shadow-sm">
+                                <h4 class="font-semibold">Memory</h4>
+                                <p class="text-xs">Retains context and learns</p>
+                            </div>
+                             <div class="p-3 bg-[#E07A5F]/20 rounded-lg text-center shadow-sm">
+                                <h4 class="font-semibold">Tool Use</h4>
+                                <p class="text-xs">Accesses APIs, search, etc.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-center text-sm text-gray-600 mt-6">Modern agents combine a core reasoning engine (LLM) with the ability to plan, remember past interactions, and use external tools to achieve goals autonomously.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                     <h3 class="text-2xl font-bold text-center mb-6 text-[#3D405B]">Agent Frameworks</h3>
+                    <div class="bar-chart-container">
+                        <canvas id="frameworksChart"></canvas>
+                    </div>
+                     <p class="text-center text-xs mt-4 text-gray-500">Different frameworks excel at different tasks. Choosing the right one is a key architectural decision.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ethics" class="content-section">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-[#3D405B]">Critical Considerations</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">With great power comes great responsibility. The adoption of AISE brings significant challenges in security, intellectual property, and ethics that every developer must understand and navigate.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg text-center">
+                    <h3 class="text-2xl font-bold text-[#3D405B]">Security</h3>
+                    <p class="mt-4 text-gray-600">AI models can inadvertently learn and replicate security vulnerabilities from their training data, potentially introducing flaws like SQL injection at scale. This creates a "monoculture of vulnerabilities."</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg text-center">
+                     <h3 class="text-2xl font-bold text-[#3D405B]">Intellectual Property</h3>
+                    <p class="mt-4 text-gray-600">The legality of training models on copyrighted code is an unsettled question. Organizations face risks related to licensing compliance and ownership of AI-generated output.</p>
+                </div>
+                 <div class="bg-white p-8 rounded-xl shadow-lg text-center">
+                     <h3 class="text-2xl font-bold text-[#3D405B]">The Human Role</h3>
+                    <p class="mt-4 text-gray-600">The engineer's role is evolving from a coder to an architect and orchestrator of AI systems. Critical thinking, prompt engineering, and domain expertise are becoming more valuable than pure coding speed.</p>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sections = document.querySelectorAll('.content-section, #hero');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sdlcTabs = document.querySelectorAll('.sdlc-tab');
+            const sdlcContentEl = document.getElementById('sdlc-content');
+
+            const sdlcData = {
+                req: {
+                    title: 'AI in Requirements Gathering',
+                    content: 'AI automates the analysis of unstructured data like emails and meeting notes to extract user needs, identify inconsistencies, and generate structured user stories. This reduces human error and accelerates the creation of a well-defined project backlog.'
+                },
+                design: {
+                    title: 'AI as the Architect\'s Muse',
+                    content: 'In the design phase, AI serves as a collaborative partner. It can brainstorm architectural patterns, generate diagrams from natural language, and even simulate proposed designs to identify potential bottlenecks before any code is written.'
+                },
+                impl: {
+                    title: 'AI in Implementation',
+                    content: 'This is the most mature area of AISE. Tools like GitHub Copilot provide intelligent code completion, generate entire functions from prompts, translate code between languages, and assist in refactoring complex legacy systems.'
+                },
+                qa: {
+                    title: 'AI in Quality Assurance',
+                    content: 'AI is shifting quality control left. It automates the generation of unit tests, enhances static analysis to find subtle bugs, predicts which parts of the codebase are most likely to have defects, and assists in debugging by explaining error messages.'
+                },
+                devops: {
+                    title: 'AI in DevOps & Maintenance',
+                    content: 'AI makes CI/CD pipelines intelligent. It can predict deployment failures, smartly select which tests to run, and optimize cloud resource allocation. In production, it enables self-healing systems through automated anomaly detection and root cause analysis.'
+                }
+            };
+            
+            function updateSdlcContent(target) {
+                const data = sdlcData[target];
+                if (data) {
+                    sdlcContentEl.innerHTML = `
+                        <h4 class="text-xl font-bold text-[#3D405B] mb-2">${data.title}</h4>
+                        <p class="text-gray-700">${data.content}</p>
+                    `;
+                }
+                sdlcTabs.forEach(t => {
+                    t.classList.toggle('active', t.dataset.target === target);
+                });
+            }
+
+            sdlcTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    updateSdlcContent(tab.dataset.target);
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            new Chart(document.getElementById('toolsChart'), {
+                type: 'radar',
+                data: {
+                    labels: ['General Purpose', 'AWS Ecosystem', 'Enterprise Privacy', 'Personalization', 'Security Scanning'],
+                    datasets: [{
+                        label: 'GitHub Copilot',
+                        data: [9, 5, 6, 4, 7],
+                        fill: true,
+                        backgroundColor: 'rgba(224, 122, 95, 0.2)',
+                        borderColor: 'rgb(224, 122, 95)',
+                        pointBackgroundColor: 'rgb(224, 122, 95)',
+                    }, {
+                        label: 'CodeWhisperer',
+                        data: [6, 9, 7, 3, 9],
+                        fill: true,
+                        backgroundColor: 'rgba(61, 64, 91, 0.2)',
+                        borderColor: 'rgb(61, 64, 91)',
+                        pointBackgroundColor: 'rgb(61, 64, 91)',
+                    }, {
+                        label: 'Tabnine',
+                        data: [7, 3, 9, 9, 5],
+                        fill: true,
+                        backgroundColor: 'rgba(132, 169, 140, 0.2)',
+                        borderColor: 'rgb(132, 169, 140)',
+                        pointBackgroundColor: 'rgb(132, 169, 140)',
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: '#e2e8f0' },
+                            grid: { color: '#e2e8f0' },
+                            pointLabels: { font: { size: 12 } },
+                            ticks: { backdropColor: 'rgba(248, 245, 242, 1)' }
+                        }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('frameworksChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Versatility', 'RAG Focus', 'Multi-Agent Focus'],
+                    datasets: [
+                        { label: 'LangChain', data: [9, 7, 6], backgroundColor: '#E07A5F' },
+                        { label: 'LlamaIndex', data: [6, 9, 5], backgroundColor: '#3D405B' },
+                        { label: 'AutoGen', data: [5, 4, 9], backgroundColor: '#84A98C' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } },
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            updateSdlcContent('req');
+
+        });
+    </script>
+</body>
+</html>

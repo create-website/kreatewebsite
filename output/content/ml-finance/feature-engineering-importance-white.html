@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Quant's Playbook for Feature Engineering</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues (Light Theme) -->
+    <!-- Application Structure Plan: The infographic follows a linear narrative designed to educate the user on the complexities of financial ML. The flow is: 1. Hook: Introduce the core problem of low signal-to-noise ratio. 2. The Data Universe: Use a donut chart to categorize the types of data available. 3. The Engineering Craft: Visualize the concept of fractional differentiation with a line chart comparison. 4. The Importance Gauntlet: Use a bar chart to rank feature importance methods by robustness. 5. Advanced Frameworks: Employ HTML/CSS flowcharts to explain the Triple-Barrier Method and Meta-Labeling. 6. Conclusion: End with a powerful takeaway about improving strategy performance. This structure transforms a dense report into a digestible visual story. -->
+    <!-- Visualization & Content Choices:
+        - Feature Universe -> Compare -> Donut Chart -> Provides a quick, high-level overview of data source composition (Chart.js).
+        - Stationarity -> Change -> Line Chart Comparison -> Visually demonstrates the 'before and after' effect of fractional differentiation, a key report concept (Chart.js).
+        - Importance Methods -> Compare/Rank -> Bar Chart -> Ranks methods by 'Robustness,' a critical qualitative aspect from the report, making it visually quantitative (Chart.js).
+        - Triple-Barrier Method -> Organize/Process -> HTML/CSS Flowchart -> Clearly illustrates the decision-based labeling process, which is hard to grasp from text alone (No SVG/Mermaid).
+        - Meta-Labeling -> Organize/Process -> HTML/CSS Flowchart -> Visually separates the primary and secondary models in this advanced framework (No SVG/Mermaid).
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #FFFFFF;
+            color: #0B132B;
+            font-family: 'Roboto', sans-serif;
+        }
+        .title-font {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #DEE2E6;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .stat-number {
+            font-family: 'Teko', sans-serif;
+            font-weight: 700;
+            font-size: 5rem;
+            line-height: 1;
+            color: #5BC0BE;
+        }
+        .flowchart-box {
+            background-color: #F8F9FA;
+            border: 2px solid #5BC0BE;
+            color: #0B132B;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        .flowchart-arrow {
+            font-size: 2.5rem;
+            color: #5BC0BE;
+            line-height: 1;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8 space-y-16">
+
+        <header class="text-center py-8">
+            <h1 class="title-font text-5xl md:text-7xl text-gray-900">The Quant's Playbook</h1>
+            <h2 class="title-font text-3xl md:text-4xl text-[#5BC0BE]">Engineering Alpha from Financial Data</h2>
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">In financial markets, true predictive signals are rare and buried in noise. Success depends not on complex algorithms, but on the craft of engineering informative features.</p>
+        </header>
+
+        <section id="data-universe" class="card p-6 md:p-8 rounded-2xl">
+            <h3 class="title-font text-3xl text-center text-[#5BC0BE]">The Feature Universe</h3>
+            <p class="mt-2 text-center text-gray-600 max-w-xl mx-auto">A quantitative strategy is built upon a diverse foundation of data. Each category provides a unique perspective on market dynamics.</p>
+            <div class="mt-8 chart-container">
+                <canvas id="featureUniverseChart"></canvas>
+            </div>
+            <p class="mt-4 text-center text-xs text-gray-500">This chart shows a conceptual breakdown of data types used in modern quantitative finance, from ubiquitous market data to specialized alternative sources.</p>
+        </section>
+
+        <section id="stationarity" class="card p-6 md:p-8 rounded-2xl">
+            <h3 class="title-font text-3xl text-center text-[#5BC0BE]">The Stationarity Imperative</h3>
+            <p class="mt-2 text-center text-gray-600 max-w-xl mx-auto">Raw price series are non-stationary, which violates the assumptions of many ML models. The goal is to make the data stationary while preserving its predictive 'memory'.</p>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="chart-container h-64 md:h-auto">
+                    <canvas id="stationarityChart"></canvas>
+                </div>
+                <div>
+                    <h4 class="title-font text-2xl text-center">Fractional Differentiation</h4>
+                    <p class="text-center text-gray-600">This technique finds the minimum differencing needed, balancing stationarity with memory preservation.</p>
+                    <div class="text-center mt-4">
+                        <div class="stat-number">95%</div>
+                        <p class="title-font text-xl text-gray-700">Confidence in stationarity while maximizing correlation with the original series.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="importance" class="card p-6 md:p-8 rounded-2xl">
+            <h3 class="title-font text-3xl text-center text-[#5BC0BE]">The Importance Gauntlet</h3>
+            <p class="mt-2 text-center text-gray-600 max-w-xl mx-auto">Not all features are created equal. Determining which are truly predictive is critical to avoid overfitting. This requires robust, out-of-sample evaluation methods.</p>
+            <div class="mt-8 chart-container">
+                <canvas id="importanceChart"></canvas>
+            </div>
+            <p class="mt-4 text-center text-xs text-gray-500">Comparison based on robustness against overfitting and reliability with correlated features. Higher scores indicate greater reliability for live trading.</p>
+        </section>
+        
+        <section id="frameworks" class="space-y-16">
+            <h3 class="title-font text-4xl text-center text-gray-900">State-of-the-Art Frameworks</h3>
+            <div class="card p-6 md:p-8 rounded-2xl">
+                <h4 class="title-font text-3xl text-center text-[#5BC0BE]">The Triple-Barrier Method</h4>
+                <p class="mt-2 text-center text-gray-600 max-w-xl mx-auto">This labeling technique aligns the ML problem with the reality of trading by using dynamic, volatility-adjusted profit-take and stop-loss levels.</p>
+                <div class="mt-8 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-2">
+                    <div class="flowchart-box w-full md:w-1/4">Trade Entry</div>
+                    <div class="flowchart-arrow transform md:-rotate-90">&darr;</div>
+                    <div class="flowchart-box w-full md:w-2/4">Which barrier is hit first?</div>
+                    <div class="flowchart-arrow transform md:-rotate-90">&darr;</div>
+                    <div class="flex flex-col md:flex-row gap-4 w-full">
+                        <div class="flowchart-box flex-1 border-[#6FFFE9]"><span class="font-bold">Label: 1</span><br>Profit-Take</div>
+                        <div class="flowchart-box flex-1 border-red-500"><span class="font-bold">Label: -1</span><br>Stop-Loss</div>
+                        <div class="flowchart-box flex-1 border-gray-400"><span class="font-bold">Label: 0</span><br>Time Limit</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-6 md:p-8 rounded-2xl">
+                <h4 class="title-font text-3xl text-center text-[#5BC0BE]">Meta-Labeling</h4>
+                <p class="mt-2 text-center text-gray-600 max-w-xl mx-auto">A two-stage model that separates signal generation from bet sizing. An ML model learns to predict which signals from a simple primary model will be profitable.</p>
+                <div class="mt-8 flex flex-col md:flex-row items-center justify-around gap-4">
+                    <div class="flex-1 text-center">
+                        <div class="flowchart-box">Primary Model</div>
+                        <p class="text-xs text-gray-500 mt-1">(High Recall / Many Signals)</p>
+                    </div>
+                    <div class="flowchart-arrow">&rarr;</div>
+                    <div class="flex-1 text-center">
+                        <div class="flowchart-box border-[#6FFFE9]">ML Meta-Model</div>
+                        <p class="text-xs text-gray-500 mt-1">(High Precision / Filters Signals)</p>
+                    </div>
+                    <div class="flowchart-arrow">&rarr;</div>
+                    <div class="flex-1 text-center">
+                        <div class="flowchart-box">Final Decision</div>
+                        <p class="text-xs text-gray-500 mt-1">(Trade Sizing & Execution)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center py-8 bg-gray-50 rounded-2xl">
+             <p class="title-font text-2xl text-gray-600">The Ultimate Goal:</p>
+             <div class="stat-number text-7xl md:text-8xl mt-2">+25%</div>
+             <p class="title-font text-2xl md:text-3xl text-[#5BC0BE]">Potential Improvement in Strategy Sharpe Ratio</p>
+             <p class="mt-2 text-sm text-gray-500">By applying robust feature engineering and frameworks like meta-labeling.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const chartColors = {
+                primary: '#6FFFE9',
+                secondary: '#5BC0BE',
+                tertiary: '#3A506B',
+                accent: '#0B132B',
+                background: '#FFFFFF'
+            };
+            
+            const defaultChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: chartColors.accent,
+                            font: { size: 14, family: 'Roboto' }
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        titleFont: { size: 16, family: 'Teko' },
+                        bodyFont: { size: 12, family: 'Roboto' },
+                        padding: 10,
+                        cornerRadius: 4,
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: chartColors.accent, font: { family: 'Roboto' } },
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                    },
+                    y: {
+                        ticks: { color: chartColors.accent, font: { family: 'Roboto' } },
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                    }
+                }
+            };
+            
+            const wrapLabel = (label) => {
+                const words = label.split(' ');
+                if (words.length <= 2) return label;
+                const mid = Math.ceil(words.length / 2);
+                return [words.slice(0, mid).join(' '), words.slice(mid).join(' ')];
+            };
+
+            new Chart(document.getElementById('featureUniverseChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Market Data', 'Alternative Data', 'Fundamental Data', 'Macro Data'],
+                    datasets: [{
+                        label: 'Feature Universe',
+                        data: [45, 25, 20, 10],
+                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary, '#E9ECEF'],
+                        borderColor: chartColors.background,
+                        borderWidth: 5,
+                        hoverOffset: 10
+                    }]
+                },
+                options: { ...defaultChartOptions, cutout: '50%' }
+            });
+
+            new Chart(document.getElementById('stationarityChart'), {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 20}, (_, i) => i + 1),
+                    datasets: [{
+                        label: 'Raw Price Series (Non-Stationary)',
+                        data: [50, 52, 53, 55, 54, 56, 58, 60, 61, 59, 62, 64, 65, 67, 68, 70, 71, 73, 72, 74],
+                        borderColor: chartColors.tertiary,
+                        borderWidth: 3,
+                        tension: 0.4,
+                        pointRadius: 0
+                    }, {
+                        label: 'Fractionally Differentiated (Stationary)',
+                        data: [2, 1, 2, -1, 2, 2, 2, 1, -2, 3, 2, 1, 2, 1, 2, 1, 2, -1, 2, 1].map(x => 55 + x),
+                        borderColor: chartColors.secondary,
+                        borderWidth: 3,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        borderDash: [5, 5]
+                    }]
+                },
+                options: defaultChartOptions
+            });
+
+            new Chart(document.getElementById('importanceChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['MDI (In-Sample)', 'MDA (Permutation)', 'SFI (Single Feature)', 'SHAP (Game Theory)'].map(wrapLabel),
+                    datasets: [{
+                        label: 'Robustness Score',
+                        data: [20, 65, 50, 90],
+                        backgroundColor: [chartColors.tertiary, chartColors.secondary, chartColors.secondary, chartColors.primary],
+                        borderColor: chartColors.background,
+                        borderWidth: 2,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    ...defaultChartOptions,
+                    indexAxis: 'y',
+                    scales: {
+                        x: { ...defaultChartOptions.scales.x, max: 100 },
+                        y: { ...defaultChartOptions.scales.y }
+                    },
+                    plugins: {
+                        ...defaultChartOptions.plugins,
+                        legend: { display: false }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

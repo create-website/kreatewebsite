@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>दिव्य Illumination: दिवाली लक्ष्मी पूजा इन्फोग्राफिक</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Tiro+Devanagari+Hindi:wght@400&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Narrative & Structure Plan: The infographic tells a linear story of the Diwali Puja, starting from cosmic timing (Muhurat), moving to physical preparations, understanding the core philosophy (Ganesh-Lakshmi), detailing the main ritual (16-step Puja), and finally exploring its cultural spread (Regional Variations). This structure logically guides the user from the 'why' to the 'how' and 'where', making the dense information from the report digestible in a single, scrollable narrative. -->
+    <!-- Visualization & Content Choices: Muhurat Table -> Goal: Organize, Chosen Viz: 4 Quadrant Diagram, Justification: More dynamic than a table, Method: HTML/Tailwind. Puja Items Table -> Goal: Compare, Chosen Viz: Donut Chart, Justification: Shows key components of the puja visually, Library: Chart.js/Canvas (NO SVG). 16 Puja Steps List -> Goal: Organize Process, Chosen Viz: Numbered Flowchart, Justification: Transforms a long list into an engaging visual journey, Method: HTML/Tailwind (NO SVG, NO MERMAID JS). Regional Variations List -> Goal: Compare, Chosen Viz: Bar Chart, Justification: Quantifies and compares the qualitative focus of worship across regions, Library: Chart.js/Canvas (NO SVG). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', 'Tiro Devanagari Hindi', sans-serif;
+            background-color: #073B4C; /* Midnight Green/Dark Blue */
+            color: #FFFFFF;
+        }
+        .hindi-title {
+            font-family: 'Tiro Devanagari Hindi', serif;
+        }
+        .card {
+            background-color: #118AB2; /* Blue NCS */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .highlight-text {
+            color: #FFD166; /* Sunglow Yellow */
+        }
+        .accent-bg {
+            background-color: #06D6A0; /* Caribbean Green */
+        }
+        .accent-text {
+            color: #06D6A0;
+        }
+        .danger-text {
+            color: #FF6B6B; /* Coral */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flowchart-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .flowchart-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 1.5rem;
+            top: 3rem;
+            bottom: -1rem;
+            width: 2px;
+            background-color: #118AB2;
+            transform: translateX(-50%);
+        }
+        .flowchart-number {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+            color: #073B4C;
+            background-color: #FFD166;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+        .flowchart-content {
+            margin-left: 1.5rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="hindi-title text-4xl md:text-6xl font-bold highlight-text">दिव्य Illumination</h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-300">दिवाली लक्ष्मी पूजा के मुहूर्त, परंपराओं और विधि का एक विज़ुअल विस्तार</p>
+        </header>
+
+        <section class="mb-12 md:mb-20">
+            <h2 class="hindi-title text-3xl md:text-4xl font-bold text-center mb-8">दिव्य आदेश: <span class="highlight-text">शुभ मुहूर्त</span> को समझना</h2>
+            <p class="max-w-3xl mx-auto text-center text-gray-300 mb-10">लक्ष्मी पूजा की प्रभावशीलता सही समय पर निर्भर करती है। वैदिक ज्योतिष कुछ विशेष अवधियों को ब्रह्मांडीय ऊर्जा से भरपूर मानता है, जो अनुष्ठानों के लिए आदर्श होती हैं।</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                <div class="card">
+                    <div class="text-4xl mb-3">🌑</div>
+                    <h3 class="font-bold text-xl highlight-text">अमावस्या तिथि</h3>
+                    <p class="mt-2 text-gray-200">कार्तिक मास की सबसे अंधेरी रात, जब देवी लक्ष्मी पृथ्वी पर विचरण करती हैं।</p>
+                </div>
+                <div class="card">
+                    <div class="text-4xl mb-3">🌇</div>
+                    <h3 class="font-bold text-xl highlight-text">प्रदोष काल</h3>
+                    <p class="mt-2 text-gray-200">सूर्यास्त के ठीक बाद का समय, जब दिव्य ऊर्जाएं सबसे शक्तिशाली और सुलभ होती हैं।</p>
+                </div>
+                <div class="card">
+                    <div class="text-4xl mb-3">🌃</div>
+                    <h3 class="font-bold text-xl highlight-text">निशिता काल</h3>
+                    <p class="mt-2 text-gray-200">मध्यरात्रि का समय, जो गहन आध्यात्मिक और तांत्रिक साधना के लिए विशेष रूप से शक्तिशाली है।</p>
+                </div>
+                <div class="card">
+                    <div class="text-4xl mb-3">🐂</div>
+                    <h3 class="font-bold text-xl highlight-text">स्थिर लग्न</h3>
+                    <p class="mt-2 text-gray-200">स्थिर राशियों का उदय, यह सुनिश्चित करने के लिए कि लक्ष्मी का आशीर्वाद घर में 'स्थिर' रहे।</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 md:mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h2 class="hindi-title text-3xl md:text-4xl font-bold mb-6">बुद्धि से पहले धन नहीं: <br><span class="highlight-text">गणेश और लक्ष्मी</span></h2>
+                    <p class="text-lg text-gray-300 mb-4">लक्ष्मी पूजा में गणेश जी की पूजा पहले की जाती है। यह एक गहरा दार्शनिक सिद्धांत स्थापित करता है: धन (लक्ष्मी) को अर्जित करने और प्रबंधित करने के लिए पहले बुद्धि (गणेश) आवश्यक है।</p>
+                    <p class="text-lg text-gray-300">ज्ञान के बिना, धन अहंकार और विनाश का कारण बन सकता है। यह संयुक्त पूजा <span class="font-bold accent-text">'शुभ' (शुभता)</span> और <span class="font-bold danger-text">'लाभ' (लाभ)</span> दोनों के लिए प्रार्थना है।</p>
+                </div>
+                <div class="flex justify-center items-center space-x-4">
+                    <div class="text-center p-4">
+                        <div class="text-8xl">🐘</div>
+                        <p class="mt-2 text-2xl font-bold highlight-text">बुद्धि</p>
+                    </div>
+                    <div class="text-5xl font-thin text-gray-400">+</div>
+                    <div class="text-center p-4">
+                        <div class="text-8xl">💰</div>
+                        <p class="mt-2 text-2xl font-bold highlight-text">समृद्धि</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 md:mb-20">
+            <h2 class="hindi-title text-3xl md:text-4xl font-bold text-center mb-8">षोडशोपचार: <span class="highlight-text">भक्ति के 16 चरण</span></h2>
+            <p class="max-w-3xl mx-auto text-center text-gray-300 mb-10">यह पूजा का सबसे विस्तृत हिस्सा है, जिसमें देवी का एक सम्मानित अतिथि के रूप में स्वागत और सम्मान करने के लिए 16 चरण शामिल हैं।</p>
+            <div class="card max-w-4xl mx-auto">
+                <div class="md:columns-2">
+                    <div class="flowchart-step"><div class="flowchart-number">1</div><div class="flowchart-content"><h4 class="font-bold">ध्यानम्</h4><p class="text-sm text-gray-200">देवी का ध्यान</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">2</div><div class="flowchart-content"><h4 class="font-bold">आवाहनम्</h4><p class="text-sm text-gray-200">देवी का आह्वान</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">3</div><div class="flowchart-content"><h4 class="font-bold">आसनम्</h4><p class="text-sm text-gray-200">आसन अर्पित करना</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">4</div><div class="flowchart-content"><h4 class="font-bold">पाद्यम्</h4><p class="text-sm text-gray-200">पैर धोने हेतु जल</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">5</div><div class="flowchart-content"><h4 class="font-bold">अर्घ्यम्</h4><p class="text-sm text-gray-200">हाथ धोने हेतु जल</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">6</div><div class="flowchart-content"><h4 class="font-bold">आचमनीयम्</h4><p class="text-sm text-gray-200">पीने हेतु जल</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">7</div><div class="flowchart-content"><h4 class="font-bold">स्नानम्</h4><p class="text-sm text-gray-200">पंचामृत स्नान</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">8</div><div class="flowchart-content"><h4 class="font-bold">वस्त्रम्</h4><p class="text-sm text-gray-200">वस्त्र अर्पित करना</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">9</div><div class="flowchart-content"><h4 class="font-bold">आभूषणम्</h4><p class="text-sm text-gray-200">आभूषण अर्पित करना</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">10</div><div class="flowchart-content"><h4 class="font-bold">गंधम्</h4><p class="text-sm text-gray-200">सुगंध (चंदन, कुमकुम)</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">11</div><div class="flowchart-content"><h4 class="font-bold">अक्षतम्</h4><p class="text-sm text-gray-200">अटूट चावल</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">12</div><div class="flowchart-content"><h4 class="font-bold">पुष्पम्</h4><p class="text-sm text-gray-200">फूल अर्पित करना</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">13</div><div class="flowchart-content"><h4 class="font-bold">धूपम्</h4><p class="text-sm text-gray-200">अगरबत्ती जलाना</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">14</div><div class="flowchart-content"><h4 class="font-bold">दीपम्</h4><p class="text-sm text-gray-200">दीपक दिखाना</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">15</div><div class="flowchart-content"><h4 class="font-bold">नैवेद्यम्</h4><p class="text-sm text-gray-200">भोजन (खील-बताशे)</p></div></div>
+                    <div class="flowchart-step"><div class="flowchart-number">16</div><div class="flowchart-content"><h4 class="font-bold">प्रदक्षिणा</h4><p class="text-sm text-gray-200">परिक्रमा और प्रणाम</p></div></div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-12 md:mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div class="card">
+                    <h2 class="hindi-title text-3xl md:text-4xl font-bold mb-4">पवित्र <span class="highlight-text">संयोजन</span></h2>
+                    <p class="text-gray-200 mb-6">पूजा में उपयोग की जाने वाली प्रत्येक वस्तु का गहरा प्रतीकात्मक महत्व है, जो प्रकृति, भक्ति और ब्रह्मांड के विभिन्न पहलुओं का प्रतिनिधित्व करती है।</p>
+                    <div class="chart-container">
+                        <canvas id="itemsChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                     <h2 class="hindi-title text-3xl md:text-4xl font-bold mb-4">भूमि भर में <span class="highlight-text">गूंज</span></h2>
+                    <p class="text-gray-200 mb-6">दिवाली पूरे भारत में मनाई जाती है, लेकिन हर क्षेत्र की अपनी अनूठी परंपराएं हैं, जो त्योहार की सांस्कृतिक विविधता को दर्शाती हैं। नीचे दिया गया चार्ट विभिन्न क्षेत्रों में पूजा के मुख्य फोकस को दर्शाता है।</p>
+                    <div class="chart-container">
+                        <canvas id="regionalChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+<!--
+        <footer class="text-center mt-12 md:mt-16 border-t border-gray-700 pt-8">
+            <p class="text-gray-400">यह इन्फोग्राफिक प्रकाश, ज्ञान और धार्मिकता की शाश्वत विजय का उत्सव है।</p>
+        </footer>
+-->
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const wrapLabel = (label) => {
+                if (label.length > 16) {
+                    const words = label.split(' ');
+                    const lines = [];
+                    let currentLine = '';
+                    for (const word of words) {
+                        if ((currentLine + word).length > 16) {
+                            lines.push(currentLine.trim());
+                            currentLine = '';
+                        }
+                        currentLine += word + ' ';
+                    }
+                    lines.push(currentLine.trim());
+                    return lines;
+                }
+                return label;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            const commonChartOptions = {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#FFFFFF',
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            };
+
+            const itemsCtx = document.getElementById('itemsChart').getContext('2d');
+            new Chart(itemsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        wrapLabel('नारियल (अहंकार समर्पण)'),
+                        wrapLabel('कलश (ब्रह्मांड)'),
+                        wrapLabel('पान (सम्मान)'),
+                        wrapLabel('कमल (पवित्रता)'),
+                        wrapLabel('अक्षत (पूर्णता)')
+                    ],
+                    datasets: [{
+                        label: 'पूजा सामग्री',
+                        data: [1, 1, 1, 1, 1],
+                        backgroundColor: [
+                            '#FF6B6B',
+                            '#FFD166',
+                            '#06D6A0',
+                            '#118AB2',
+                            '#F8F9FA'
+                        ],
+                        borderColor: '#073B4C',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    ...commonChartOptions,
+                    plugins: {
+                        ...commonChartOptions.plugins,
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#FFFFFF',
+                                font: { size: 12 }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const regionalCtx = document.getElementById('regionalChart').getContext('2d');
+            new Chart(regionalCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['पूर्वी भारत', 'उत्तर भारत', 'पश्चिमी भारत', 'दक्षिण भारत', 'महाराष्ट्र'],
+                    datasets: [{
+                        label: 'पूजा का मुख्य फोकस',
+                        data: [3, 4, 4, 2, 4], // 1: Ancestors, 2: Krishna/Narakasura, 3: Kali, 4: Lakshmi/Ganesh
+                        backgroundColor: [
+                            '#FF6B6B', // East (Kali)
+                            '#FFD166', // North (Lakshmi)
+                            '#06D6A0', // West (Lakshmi/Chopda)
+                            '#118AB2', // South (Krishna)
+                            '#F8F9FA'  // Maharashtra (Lakshmi/Cows)
+                        ],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    ...commonChartOptions,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#FFFFFF',
+                                callback: function(value, index, values) {
+                                    const labels = ['', 'पूर्वज', 'कृष्ण', 'काली', 'लक्ष्मी'];
+                                    return labels[value] || '';
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#FFFFFF'
+                            },
+                             grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        ...commonChartOptions.plugins,
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

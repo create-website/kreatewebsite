@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluating Agentic AI in Finance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: A single-page, vertical-scrolling dashboard with a sticky navigation header for direct access to key sections: Core Metrics, Evaluation Lifecycle, and Evaluation Methods. This structure guides the user from the 'what' (metrics) to the 'how' (lifecycle and methods) in a logical flow. The dashboard uses interactive cards and charts to make complex information digestible, moving beyond a static report to an exploratory tool. This is chosen for usability because it allows both a linear, guided experience and random access for users seeking specific information. -->
+    <!-- Visualization & Content Choices: 
+        1. Core Metrics: Report Info -> Four categories of metrics. Goal -> Compare & Inform. Viz -> Interactive cards revealing a dynamic Radar Chart (Chart.js). Interaction -> User selects a metric category to see details and an AI Agent Profile from a dropdown, which updates the radar chart. Justification -> A radar chart provides a powerful multi-axial view of an agent's performance profile, which is superior to a simple list for comparative analysis.
+        2. Evaluation Lifecycle: Report Info -> The stages of AI evaluation. Goal -> Organize & Inform. Viz -> A responsive, interactive flowchart built with HTML/CSS. Interaction -> Clicking a stage highlights it and displays detailed explanatory text. Justification -> A visual process flow is far more intuitive for understanding a sequence than dense paragraphs. The click-to-reveal interaction prevents overwhelming the user.
+        3. Evaluation Methods: Report Info -> Different ways to test AI agents. Goal -> Compare. Viz -> An interactive Bar Chart (Chart.js). Interaction -> User selects a comparison criterion (e.g., Cost, Fidelity) via buttons, and the bar chart updates to show how each method scores. Justification -> Dynamically updating the chart based on user selection makes the comparison more personal and easier to digest than a static, multi-column table.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #2c3e50;
+        }
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+            background-color: rgba(248, 247, 244, 0.8);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 96;
+            max-height: 400px;
+        }
+        .lifecycle-step {
+            transition: all 0.3s ease;
+            border-left-width: 4px;
+        }
+        .lifecycle-step.active {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: #3498db;
+        }
+        .lifecycle-connector {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            background-color: #bdc3c7;
+            height: 2rem;
+        }
+        .metric-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .metric-card.active-metric {
+            border-color: #3498db;
+            box-shadow: 0 4px 6px -1px rgba(52, 152, 219, 0.2), 0 2px 4px -1px rgba(52, 152, 219, 0.12);
+        }
+        .tab-button.active {
+            border-bottom-color: #3498db;
+            color: #3498db;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="app" class="container mx-auto px-4 md:px-8">
+
+        <header class="text-center py-12 md:py-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800">Evaluating Agentic AI in Finance</h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">An interactive guide to the metrics, lifecycle, and methods for assessing autonomous financial workflows.</p>
+        </header>
+
+        <nav class="sticky-nav border-b border-gray-200 mb-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-center h-16">
+                    <div class="flex space-x-8">
+                        <a href="#metrics" class="nav-link text-gray-500 hover:text-gray-800 inline-flex items-center px-1 pt-1 text-sm font-medium">Core Metrics</a>
+                        <a href="#lifecycle" class="nav-link text-gray-500 hover:text-gray-800 inline-flex items-center px-1 pt-1 text-sm font-medium">Evaluation Lifecycle</a>
+                        <a href="#methods" class="nav-link text-gray-500 hover:text-gray-800 inline-flex items-center px-1 pt-1 text-sm font-medium">Evaluation Methods</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <section id="metrics" class="mb-20 scroll-mt-24">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800">Core Metrics Dashboard</h2>
+                    <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Agentic AI requires a multi-faceted evaluation approach. Select a metric category to explore its components and see how different AI agent profiles compare.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div id="metric-card-success" class="metric-card bg-white p-6 rounded-lg border-2 border-transparent hover:border-blue-300 active-metric">
+                        <h3 class="font-semibold text-lg">📈 Task Success</h3>
+                        <p class="text-sm text-gray-500 mt-1">Did the agent achieve its defined goal?</p>
+                    </div>
+                    <div id="metric-card-economic" class="metric-card bg-white p-6 rounded-lg border-2 border-transparent hover:border-blue-300">
+                        <h3 class="font-semibold text-lg">💰 Economic Impact</h3>
+                        <p class="text-sm text-gray-500 mt-1">What is the financial outcome of the agent's actions?</p>
+                    </div>
+                    <div id="metric-card-operational" class="metric-card bg-white p-6 rounded-lg border-2 border-transparent hover:border-blue-300">
+                        <h3 class="font-semibold text-lg">⚙️ Operational Efficiency</h3>
+                        <p class="text-sm text-gray-500 mt-1">How efficiently did the agent perform its task?</p>
+                    </div>
+                    <div id="metric-card-safety" class="metric-card bg-white p-6 rounded-lg border-2 border-transparent hover:border-blue-300">
+                        <h3 class="font-semibold text-lg">🛡️ Safety & Compliance</h3>
+                        <p class="text-sm text-gray-500 mt-1">Did the agent operate within its guardrails?</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="md:flex md:justify-between md:items-start">
+                         <div class="md:w-1/3 mb-6 md:mb-0">
+                             <h3 id="metric-title" class="text-2xl font-bold mb-2">Task Success Metrics</h3>
+                             <p id="metric-description" class="text-gray-600 mb-4">These metrics measure the agent's ability to complete its assigned objectives, evaluating the quality and correctness of its final output.</p>
+                             <ul id="metric-list" class="space-y-2 text-gray-700">
+                                <li><strong>Goal Completion Rate:</strong> % of tasks successfully completed.</li>
+                                <li><strong>Accuracy/Precision:</strong> Closeness of the output to the correct value.</li>
+                                <li><strong>Task-specific Quality Score:</strong> Custom score based on desired outcomes.</li>
+                             </ul>
+                         </div>
+                         <div class="md:w-2/3 md:pl-8">
+                            <div class="flex justify-end items-center mb-4">
+                                <label for="agent-selector" class="text-sm font-medium text-gray-700 mr-2">Select Agent Profile:</label>
+                                <select id="agent-selector" class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                    <option value="trader">High-Frequency Trading Agent</option>
+                                    <option value="advisor">Robo-Advisor for Retirement</option>
+                                    <option value="fraud">Fraud Detection Agent</option>
+                                </select>
+                            </div>
+                            <div class="chart-container mx-auto h-[350px] max-h-[400px]">
+                                <canvas id="metricsRadarChart"></canvas>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="lifecycle" class="mb-20 scroll-mt-24">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800">The Agent Evaluation Lifecycle</h2>
+                    <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Evaluating an agentic system is not a one-time task, but a continuous lifecycle. Click on each stage to understand its purpose and key activities.</p>
+                </div>
+
+                <div class="lg:flex lg:space-x-8">
+                    <div class="lg:w-1/3 flex flex-col space-y-4">
+                        <div id="step-1" class="lifecycle-step active bg-white p-4 rounded-lg shadow-sm cursor-pointer border-l-4 border-blue-500">
+                            <h4 class="font-bold text-lg">1. Define Goals & Metrics</h4>
+                            <p class="text-sm text-gray-500">Establish clear business objectives and corresponding success metrics.</p>
+                        </div>
+                        <div id="step-2" class="lifecycle-step bg-white p-4 rounded-lg shadow-sm cursor-pointer border-l-4 border-gray-300">
+                            <h4 class="font-bold text-lg">2. Offline Evaluation</h4>
+                            <p class="text-sm text-gray-500">Test on historical data and simulated environments.</p>
+                        </div>
+                        <div id="step-3" class="lifecycle-step bg-white p-4 rounded-lg shadow-sm cursor-pointer border-l-4 border-gray-300">
+                            <h4 class="font-bold text-lg">3. Human-in-the-Loop</h4>
+                            <p class="text-sm text-gray-500">Review agent decisions with human experts before execution.</p>
+                        </div>
+                        <div id="step-4" class="lifecycle-step bg-white p-4 rounded-lg shadow-sm cursor-pointer border-l-4 border-gray-300">
+                            <h4 class="font-bold text-lg">4. Staged Deployment</h4>
+                            <p class="text-sm text-gray-500">Gradually roll out the agent, starting with shadow mode or A/B testing.</p>
+                        </div>
+                        <div id="step-5" class="lifecycle-step bg-white p-4 rounded-lg shadow-sm cursor-pointer border-l-4 border-gray-300">
+                            <h4 class="font-bold text-lg">5. Continuous Monitoring</h4>
+                            <p class="text-sm text-gray-500">Actively monitor performance, safety, and model drift in production.</p>
+                        </div>
+                    </div>
+                    <div class="lg:w-2/3 mt-8 lg:mt-0 bg-white p-8 rounded-lg shadow-sm">
+                        <h3 id="lifecycle-title" class="text-2xl font-bold mb-4">1. Define Goals & Metrics</h3>
+                        <p id="lifecycle-description" class="text-gray-700 leading-relaxed">Before any development or evaluation begins, it's critical to define what success looks like. This stage involves deep collaboration between business stakeholders and technical teams to translate high-level business goals (e.g., "increase portfolio alpha") into specific, measurable, achievable, relevant, and time-bound (SMART) metrics for the AI agent. This ensures that the evaluation framework is perfectly aligned with business value and that everyone agrees on the criteria for success.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="methods" class="mb-20 scroll-mt-24">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800">Evaluation Methods Compared</h2>
+                    <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Different evaluation methods offer trade-offs. Select a criterion below to compare the most common approaches for testing financial AI agents.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex justify-center flex-wrap gap-2 mb-6">
+                        <button class="method-btn bg-blue-500 text-white py-2 px-4 rounded-full text-sm" data-criterion="cost">Cost</button>
+                        <button class="method-btn bg-gray-200 text-gray-700 py-2 px-4 rounded-full text-sm" data-criterion="fidelity">Fidelity (Realism)</button>
+                        <button class="method-btn bg-gray-200 text-gray-700 py-2 px-4 rounded-full text-sm" data-criterion="safety">Safety Assessment</button>
+                        <button class="method-btn bg-gray-200 text-gray-700 py-2 px-4 rounded-full text-sm" data-criterion="scalability">Scalability</button>
+                    </div>
+                    <div class="chart-container mx-auto h-[400px] max-h-[450px]">
+                        <canvas id="methodsBarChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center py-8 border-t border-gray-200">
+            <p class="text-sm text-gray-500">Interactive report generated for understanding Agentic AI Evaluation Frameworks.</p>
+        </footer>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const smoothScroll = (targetId) => {
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        };
+
+        document.querySelectorAll('.nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                smoothScroll(this.getAttribute('href'));
+            });
+        });
+
+        const metricData = {
+            success: {
+                title: 'Task Success Metrics',
+                description: "These metrics measure the agent's ability to complete its assigned objectives, evaluating the quality and correctness of its final output.",
+                metrics: [
+                    '<strong>Goal Completion Rate:</strong> % of tasks successfully completed.',
+                    '<strong>Accuracy/Precision:</strong> Closeness of the output to the correct value.',
+                    '<strong>Task-specific Quality Score:</strong> Custom score based on desired outcomes.'
+                ]
+            },
+            economic: {
+                title: 'Economic Impact Metrics',
+                description: 'These metrics quantify the financial results of the agent\'s actions, directly linking its performance to business value.',
+                metrics: [
+                    '<strong>Profit and Loss (PnL):</strong> Net financial gain or loss.',
+                    '<strong>Return on Investment (ROI):</strong> Efficiency of the investment in the agent.',
+                    '<strong>Cost Savings:</strong> Reduction in operational costs due to automation.'
+                ]
+            },
+            operational: {
+                title: 'Operational Efficiency Metrics',
+                description: 'These metrics evaluate the resource consumption and performance characteristics of the agent during its operation.',
+                metrics: [
+                    '<strong>Latency:</strong> Time taken from input to output.',
+                    '<strong>Computational Cost:</strong> CPU/GPU resources consumed.',
+                    '<strong>Tool Use Efficiency:</strong> Number of tool calls or steps to completion.'
+                ]
+            },
+            safety: {
+                title: 'Safety & Compliance Metrics',
+                description: 'These metrics ensure the agent operates within legal, ethical, and predefined safety boundaries to mitigate risk.',
+                metrics: [
+                    '<strong>Compliance Adherence:</strong> % of actions compliant with regulations.',
+                    '<strong>Hallucination Rate:</strong> Frequency of generating factually incorrect information.',
+                    '<strong>Error Rate:</strong> Frequency of unrecoverable errors during execution.'
+                ]
+            }
+        };
+
+        const agentProfiles = {
+            trader: {
+                label: 'High-Frequency Trading Agent',
+                data: [8, 9, 9, 7]
+            },
+            advisor: {
+                label: 'Robo-Advisor for Retirement',
+                data: [7, 8, 6, 9]
+            },
+            fraud: {
+                label: 'Fraud Detection Agent',
+                data: [9, 7, 8, 9]
+            }
+        };
+
+        const metricCards = document.querySelectorAll('.metric-card');
+        const metricTitle = document.getElementById('metric-title');
+        const metricDescription = document.getElementById('metric-description');
+        const metricList = document.getElementById('metric-list');
+
+        let radarChart;
+        const setupRadarChart = () => {
+            const ctx = document.getElementById('metricsRadarChart').getContext('2d');
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Task Success', 'Economic Impact', 'Operational Efficiency', 'Safety & Compliance'],
+                    datasets: [{
+                        label: agentProfiles.trader.label,
+                        data: agentProfiles.trader.data,
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderColor: 'rgba(52, 152, 219, 1)',
+                        pointBackgroundColor: 'rgba(52, 152, 219, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(52, 152, 219, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: '#e0e0e0'
+                            },
+                            grid: {
+                                color: '#e0e0e0'
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 13
+                                },
+                                color: '#333'
+                            },
+                            ticks: {
+                                beginAtZero: true,
+                                max: 10,
+                                stepSize: 2,
+                                backdropColor: 'rgba(248, 247, 244, 0.7)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.formattedValue;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        const updateRadarChart = (agentKey) => {
+            const profile = agentProfiles[agentKey];
+            radarChart.data.datasets[0].label = profile.label;
+            radarChart.data.datasets[0].data = profile.data;
+            radarChart.update();
+        };
+
+        metricCards.forEach(card => {
+            card.addEventListener('click', () => {
+                metricCards.forEach(c => c.classList.remove('active-metric'));
+                card.classList.add('active-metric');
+
+                const metricKey = card.id.split('-')[2];
+                const data = metricData[metricKey];
+
+                metricTitle.textContent = data.title;
+                metricDescription.textContent = data.description;
+                metricList.innerHTML = data.metrics.map(m => `<li>${m}</li>`).join('');
+            });
+        });
+
+        document.getElementById('agent-selector').addEventListener('change', (e) => {
+            updateRadarChart(e.target.value);
+        });
+
+        setupRadarChart();
+
+        const lifecycleData = {
+            'step-1': {
+                title: '1. Define Goals & Metrics',
+                description: 'Before any development or evaluation begins, it\'s critical to define what success looks like. This stage involves deep collaboration between business stakeholders and technical teams to translate high-level business goals (e.g., "increase portfolio alpha") into specific, measurable, achievable, relevant, and time-bound (SMART) metrics for the AI agent. This ensures that the evaluation framework is perfectly aligned with business value.'
+            },
+            'step-2': {
+                title: '2. Offline Evaluation',
+                description: 'This is the sandbox phase. The agent is tested rigorously on historical data (backtesting) and in sophisticated simulated environments that mimic real market conditions. The goal is to assess performance and identify potential failure modes in a safe, controlled setting without exposing capital to risk. This stage heavily relies on data quality and simulation fidelity.'
+            },
+            'step-3': {
+                title: '3. Human-in-the-Loop',
+                description: 'In this stage, the agent proposes actions, but a human expert reviews and approves them before execution. This is a critical safety and quality assurance step, particularly for high-stakes decisions. It allows for capturing expert feedback, refining the agent\'s logic, and building trust in the system before granting it full autonomy.'
+            },
+            'step-4': {
+                title: '4. Staged Deployment',
+                description: 'Instead of a full launch, the agent is rolled out gradually. This can involve "shadow mode," where the agent runs in parallel with existing systems without executing trades, or A/B testing, where a small fraction of capital or workflow is allocated to the agent. This approach minimizes risk and allows for performance comparison against a baseline in a live environment.'
+            },
+            'step-5': {
+                title: '5. Continuous Monitoring',
+                description: 'Once deployed, the agent requires constant observation. This involves real-time monitoring of its performance metrics, operational health, and compliance with guardrails. Automated alerts are set up to flag anomalies, model drift (degradation in performance over time), or unexpected market conditions, ensuring that the system remains reliable and effective.'
+            }
+        };
+
+        const lifecycleSteps = document.querySelectorAll('.lifecycle-step');
+        const lifecycleTitle = document.getElementById('lifecycle-title');
+        const lifecycleDescription = document.getElementById('lifecycle-description');
+
+        lifecycleSteps.forEach(step => {
+            step.addEventListener('click', () => {
+                lifecycleSteps.forEach(s => s.classList.remove('active'));
+                step.classList.add('active');
+
+                const data = lifecycleData[step.id];
+                lifecycleTitle.textContent = data.title;
+                lifecycleDescription.textContent = data.description;
+            });
+        });
+
+        const methodsData = {
+            labels: ['Backtesting', 'Simulation', 'Human-in-the-Loop', 'A/B Testing'],
+            datasets: {
+                cost: {
+                    label: 'Cost (Lower is better)',
+                    data: [2, 4, 8, 7],
+                    backgroundColor: '#3498db'
+                },
+                fidelity: {
+                    label: 'Fidelity/Realism (Higher is better)',
+                    data: [5, 7, 9, 9],
+                    backgroundColor: '#2ecc71'
+                },
+                safety: {
+                    label: 'Safety Assessment (Higher is better)',
+                    data: [3, 6, 9, 8],
+                    backgroundColor: '#e74c3c'
+                },
+                scalability: {
+                    label: 'Scalability (Higher is better)',
+                    data: [9, 8, 3, 6],
+                    backgroundColor: '#f1c40f'
+                }
+            }
+        };
+
+        let barChart;
+        const setupBarChart = () => {
+            const ctx = document.getElementById('methodsBarChart').getContext('2d');
+            barChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: methodsData.labels,
+                    datasets: [methodsData.datasets.cost]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            title: {
+                                display: true,
+                                text: 'Relative Score'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    }
+                }
+            });
+        };
+
+        const updateBarChart = (criterion) => {
+            barChart.data.datasets[0] = methodsData.datasets[criterion];
+            barChart.update();
+        };
+        
+        const methodButtons = document.querySelectorAll('.method-btn');
+        methodButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                methodButtons.forEach(btn => {
+                    btn.classList.remove('bg-blue-500', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                button.classList.add('bg-blue-500', 'text-white');
+                button.classList.remove('bg-gray-200', 'text-gray-700');
+                updateBarChart(button.dataset.criterion);
+            });
+        });
+
+        setupBarChart();
+
+    });
+    </script>
+</body>
+</html>

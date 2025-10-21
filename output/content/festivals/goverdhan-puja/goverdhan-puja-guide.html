@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Govardhan Puja: An Interactive Guide to Devotion and Nature</title>
+    
+    <!-- Meta Description and Keywords for SEO -->
+    <meta name="description" content="Explore the history, significance, and rituals of Govardhan Puja, the Hindu festival where devotees worship Lord Krishna and the sacred Govardhan Hill.">
+    <meta name="keywords" content="Govardhan Puja, Annakut, Lord Krishna, Govardhan Hill, Hindu festival, nature worship, rituals, legends">
+
+    <!-- Open Graph (OG) / Social Media Tags -->
+    <meta property="og:title" content="Govardhan Puja: An Interactive Guide to Devotion and Nature">
+    <meta property="og:description" content="Learn about the Govardhan Puja, the festival celebrating Lord Krishna's protection of the villagers of Vrindavan and the worship of Govardhan Hill.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.happydiwali.org/govardhan-puja-guide">
+    <meta property="og:image" content="https://placehold.co/1200x630/8BC34A/388E3C?text=Govardhan+Puja+Guide">
+    <meta property="og:site_name" content="Cultural Festival Explorer">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Govardhan Puja: An Interactive Guide to Devotion and Nature",
+      "description": "A guide to the Govardhan Puja festival, which includes the worship of Govardhan Hill and the preparation of Annakut.",
+      "image": "https://placehold.co/1200x630/8BC34A/388E3C?text=Govardhan+Puja+Guide",
+      "author": {
+        "@type": "Organization",
+        "name": "Cultural Festival Explorer"
+      },
+      "datePublished": "2025-10-21",
+      "mainEntityOfPage": "https://example.com/govardhan-puja-guide"
+    }
+    </script>
+    
+    <!-- Chosen Palette: Earthy Green & Deep Blue (Nature/Krishna Theme) -->
+    <!-- Application Structure Plan: A thematic, single-page application with a sticky top navigation for easy access. The structure focuses on the core elements: 'Significance' (with the nature-based visual focus), the central 'Legend' of Lord Krishna, the 'Rituals' (focused on the Annakut and mound creation), the 'Annakut Distribution' chart visualizing the Annakut elements, and finally, a list of 'Wishes/Quotes'. This thematic flow supports a user journey from history to practice and shareable content. -->
+    <!-- Visualization & Content Choices: 
+        - Significance: Inform -> Text block & Two Image Cards (Placeholders) -> Static -> Justification: Provides contextual history alongside visual representation of key elements (Govardhan Hill, Annakut). Method: HTML/Tailwind.
+        - Legend: Inform -> Detailed Story Block -> Static -> Justification: The core narrative is presented clearly as the central focus of the app. Method: HTML/Tailwind.
+        - Rituals: Organize/Inform -> Step-by-step card flow -> Scroll/Click -> Justification: Breaks down the mound creation and Annakut preparation into digestible, interactive steps. Method: HTML/Tailwind.
+        - Annakut Distribution: Inform/Compare -> Pie Chart -> Interactive Tooltips -> Justification: Visually represents the conceptual breakdown of the Annakut offering (Grains, Sweets, Vegetables). Library: Chart.js/Canvas.
+        - Wishes/Quotes: Inform -> Grid of Text Cards -> Static -> Justification: Provides ready-to-use emotional content as a concluding, shareable resource. Method: HTML/Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FDF5; 
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active {
+            color: #4CAF50; 
+            border-bottom-color: #4CAF50;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-2xl font-bold text-green-700">Govardhan Puja</h1>
+                <div class="hidden sm:flex sm:space-x-8" id="nav-links">
+                    <a href="#significance" class="nav-link text-gray-600 hover:text-green-600 border-b-2 border-transparent pb-1">Significance</a>
+                    <a href="#legend" class="nav-link text-gray-600 hover:text-green-600 border-b-2 border-transparent pb-1">Legend</a>
+                    <a href="#rituals" class="nav-link text-gray-600 hover:text-green-600 border-b-2 border-transparent pb-1">The Rituals</a>
+                    <a href="#annakut" class="nav-link text-gray-600 hover:text-green-600 border-b-2 border-transparent pb-1">Annakut Offerings</a>
+                    <a href="#quotes" class="nav-link text-gray-600 hover:text-green-600 border-b-2 border-transparent pb-1">Wishes & Quotes</a>
+                </div>
+                <div class="sm:hidden">
+                    <select id="mobile-nav" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                        <option value="#significance">Significance</option>
+                        <option value="#legend">Legend</option>
+                        <option value="#rituals">The Rituals</option>
+                        <option value="#annakut">Annakut Offerings</option>
+                        <option value="#quotes">Wishes & Quotes</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+
+        <section id="hero" class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-green-800 tracking-tight">Govardhan Puja: The Triumph of Devotion</h1>
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-stone-600">An interactive guide to the sacred Hindu festival celebrating Lord Krishna, nature, and the mountain of nourishment.</p>
+        </section>
+
+        <section id="significance" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-green-800">The Meaning of the Mountain</h2>
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                <!-- Text Content -->
+                <div class="md:col-span-2 bg-white p-8 rounded-xl shadow-lg border border-green-100">
+                    <h3 class="text-2xl font-semibold text-green-700 mb-4">Worshiping the Protector</h3>
+                    <p class="text-lg text-stone-700 leading-relaxed">
+                        **Govardhan Puja**, also known as **Annakut** (meaning "a mountain of food"), is celebrated on the first lunar day of the bright fortnight of the Kartika month, immediately following Diwali. It commemorates the day **Lord Krishna** defeated the ego of the Vedic deity Indra by successfully lifting the **Govardhan Hill** on his little finger for seven days to protect the cowherders and villagers of Vrindavan from torrential rains. The festival is a reminder of the importance of devotion over ritualism and the vital connection between humanity and nature, which Govardhan Hill represents as a source of sustenance.
+                    </p>
+                </div>
+                <!-- Image Cards (Placeholders) -->
+                <div class="md:col-span-1 space-y-4">
+                    <div class="rounded-xl overflow-hidden shadow-xl border border-green-300 bg-green-50">
+                        <img src="https://placehold.co/400x250/9CCC65/33691E?text=Govardhan+Hill+Worship" alt="Placeholder image of Govardhan Hill worship." class="w-full h-auto object-cover">
+                        <p class="p-3 text-sm text-center font-medium text-green-800">The Sacred Govardhan Hill</p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-xl border border-green-300 bg-green-50">
+                        <img src="https://placehold.co/400x250/FFA000/FFEB3B?text=Annakut+Offering" alt="Placeholder image of Annakut offering." class="w-full h-auto object-cover">
+                         <p class="p-3 text-sm text-center font-medium text-green-800">The Annakut - Mountain of Food</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="legend" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-green-800">The Legend of Lord Krishna and Indra</h2>
+            <div class="bg-white p-8 rounded-xl shadow-2xl max-w-4xl mx-auto border-t-4 border-blue-500">
+                <h3 class="text-2xl font-bold text-blue-700 mb-4">Krishna Lifts the Mountain</h3>
+                <p class="text-stone-700 leading-relaxed">
+                    Centuries ago, the villagers of Vrindavan prepared an elaborate offering to Lord Indra, the deity of rain. Lord Krishna, still a young boy, convinced them to worship the **Govardhan Hill** instead, arguing that the hill and the cows were their true source of life and sustenance. Enraged by this slight, Indra unleashed a massive storm, flooding Vrindavan. To save the people, Krishna miraculously lifted the entire Govardhan Hill on his left pinky finger and held it up for seven days, sheltering all the inhabitants and animals beneath it. Realizing his arrogance, Indra apologized, establishing **Govardhan Puja** as a tribute to Krishna's compassion and the sanctity of the natural world.
+                </p>
+            </div>
+        </section>
+
+        <section id="rituals" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-green-800">The Steps of Govardhan Worship</h2>
+             <p class="text-center max-w-3xl mx-auto mb-10 text-stone-600">
+                The rituals revolve around creating a symbolic Govardhan Hill and offering the Annakut feast. Follow these steps to understand how devotees celebrate this day.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-green-100 transition-transform transform hover:scale-105 border-b-4 border-green-500">
+                    <h3 class="text-xl font-semibold text-green-700 mb-3"><span class="font-mono text-3xl text-green-400 mr-2">1.</span> Hill Creation</h3>
+                    <p class="text-stone-600">A symbolic Govardhan Hill is crafted, usually using **cow dung (Gobar)**, symbolizing the connection to nature and rural life.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-green-100 transition-transform transform hover:scale-105 border-b-4 border-green-500">
+                    <h3 class="text-xl font-semibold text-green-700 mb-3"><span class="font-mono text-3xl text-green-400 mr-2">2.</span> Decorative Elements</h3>
+                    <p class="text-stone-600">The mound is decorated with flowers, grass, and clay figures of cows, Lord Krishna, and the villagers to recreate the scene of protection.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-green-100 transition-transform transform hover:scale-105 border-b-4 border-green-500">
+                    <h3 class="text-xl font-semibold text-green-700 mb-3"><span class="font-mono text-3xl text-green-400 mr-2">3.</span> Annakut Preparation</h3>
+                    <p class="text-stone-600">Devotees prepare a **mountain of vegetarian food (Annakut)**, often consisting of 56 or 108 different dishes (Chhappan Bhog) as an offering.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-green-100 transition-transform transform hover:scale-105 border-b-4 border-green-500">
+                    <h3 class="text-xl font-semibold text-green-700 mb-3"><span class="font-mono text-3xl text-green-400 mr-2">4.</span> Circumambulation (Parikrama)</h3>
+                    <p class="text-stone-600">Ritual worship (Puja) is performed, and devotees walk around the symbolic hill, praying for Krishna's blessings and protection.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="annakut" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-green-800">The Composition of Annakut Offerings</h2>
+            <p class="text-center max-w-3xl mx-auto mb-10 text-stone-600">
+                The Annakut is a diverse and elaborate feast. This chart conceptually breaks down the typical categories of food items included in the mountain of offerings, symbolizing the abundance of nature's bounty.
+            </p>
+            <div class="bg-white p-4 sm:p-8 rounded-xl shadow-lg">
+                <div class="chart-container">
+                    <canvas id="annakutChart"></canvas>
+                </div>
+                <div class="text-center mt-4 text-sm text-stone-500">Hover over the segments to see details about the types of food included.</div>
+            </div>
+        </section>
+        
+        <section id="quotes" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-green-800">20 Govardhan Puja Wishes & Quotes</h2>
+            <p class="text-center max-w-3xl mx-auto mb-10 text-stone-600">
+                Share the spirit of devotion and faith with these heartfelt messages and quotes inspired by Lord Krishna and Govardhan Hill.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">May Lord Krishna bless you with love, success, and prosperity this Govardhan Puja.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">Wishing you a blessed Govardhan Puja. May your devotion bring you peace.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">Happy Annakut! May the mountain of food bring you a year of fulfillment.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">Celebrate the power of nature and the triumph of pure devotion.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">Let the miracle of Govardhan Hill inspire you to conquer life’s challenges.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">On this day, let’s remember Krishna’s lesson: simple devotion is superior to grand rituals.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">May Krishna’s little finger always protect you and your family.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">May you be showered with Annakut’s bounty. Happy Govardhan Puja!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">"Set your heart upon your work but never its reward." - Bhagavad Gita</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">Happy Govardhan Puja! Time to renew our bond with nature and devotion.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">Wishing you prosperity and joy equal to the size of the Annakut mountain.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">May the Govardhan Hill shield you from all sorrows. Jai Shri Krishna!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">May the grace of Lord Krishna elevate your spirits this festival season.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">The mountain of food is a blessing of abundance. Enjoy the feast!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">"The cowherds are my people; Govardhan is their home." - Lord Krishna</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">Happy Govardhan Puja! Let your devotion shine brighter than the Diwali lights.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">Wishing you a joyous day filled with faith, food, and family.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">May your life be as sweet as the kheer offered in the Annakut.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">Let the spirit of Govardhan inspire humility and strength in all your endeavors.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-green-500 text-stone-700">May Lord Krishna's divine presence fill your home this Govardhan Puja.</div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-stone-100 mt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-stone-500">
+            <p>&copy; 2025 Govardhan Puja Interactive Guide. Dedicated to Lord Krishna.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            const activateNav = (id) => {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                });
+                if (mobileNav.value !== `#${id}`) {
+                    mobileNav.value = `#${id}`;
+                }
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        activateNav(entry.target.id);
+                    }
+                });
+            }, { rootMargin: '-30% 0px -70% 0px' });
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            mobileNav.addEventListener('change', (e) => {
+                window.location.href = e.target.value;
+            });
+            
+            const ctx = document.getElementById('annakutChart').getContext('2d');
+            const annakutChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Grains & Cereals', 'Sweets & Desserts', 'Vegetable Preparations', 'Dairy Items'],
+                    datasets: [{
+                        label: 'Annakut Composition',
+                        data: [35, 30, 25, 10],
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.9)', 
+                            'rgba(255, 193, 7, 0.9)', 
+                            'rgba(139, 195, 74, 0.9)', 
+                            'rgba(63, 81, 181, 0.9)' 
+                        ],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: "'Inter', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    let text = '';
+                                    if (label === 'Grains & Cereals') text = 'Includes rice, rotis, and varied cooked pulses (dal).';
+                                    else if (label === 'Sweets & Desserts') text = 'Diverse array of mithai, kheer, and halwas, symbolizing sweetness.';
+                                    else if (label === 'Vegetable Preparations') text = 'A wide variety of curries and fried vegetables (sabzis).';
+                                    else if (label === 'Dairy Items') text = 'Items like milk, curd, butter (makhan), and ghee, significant in Krishna\'s life.';
+                                    return `${label}: ${text}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+
+</body>
+</html>

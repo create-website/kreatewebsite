@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navratri: The Nine Nights of Divine Feminine Power</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Divine Feminine Hues (Pinks, Oranges, Reds, Golds) -->
+    <!-- Application Structure Plan: A narrative infographic that explains Navratri from its core meaning to its daily rituals. The structure is: 1. Hero section. 2. "What is Navratri?". 3. "The Legend of Durga and Mahishasura". 4. "The Nine Nights of Navadurga" timeline. 5. "Traditions of Joy & Devotion". 6. "A Taste of Fasting" chart. This flow is designed to guide the user through the spiritual journey of the nine nights. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The nine nights/forms of Durga -> Goal: Show Process -> Viz: Vertical timeline -> Justification: The most effective way to illustrate the sequence of worship over the nine days. -> Library/Method: HTML/CSS.
+        - Data Point: Key traditions -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the main activities. -> Library/Method: HTML/CSS.
+        - Data Point: Key fasting foods -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display popular festive dishes. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #FFF5F5; /* Lightest Pink */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-pink { color: #DB2777; }
+        .palette-text-orange { color: #F97316; }
+        .palette-text-red { color: #DC2626; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #DB2777; /* Pink */
+            border: 3px solid #F97316; /* Orange */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-pink tracking-wider">Navratri</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">The Nine Nights of the Divine Feminine</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Navratri?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Navratri, meaning "nine nights," is a major Hindu festival dedicated to the worship of the Goddess Durga and her nine divine forms, known as the Navadurga. It is a period of fasting, prayer, dance, and feasting that celebrates the power of Shakti (divine feminine energy).
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-pink mb-4">9️⃣</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Nine Nights of Worship</h3>
+                    <p class="mt-2 text-gray-600">Each of the nine nights is dedicated to a specific incarnation of Goddess Durga, celebrating her different virtues and powers.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-orange mb-4">💃</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Celebration of Culture</h3>
+                    <p class="mt-2 text-gray-600">The festival is famous for its vibrant folk dances like Garba and Dandiya Raas, bringing communities together in joyful celebration.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-red mb-4">⚔️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Good Over Evil</h3>
+                    <p class="mt-2 text-gray-600">The festival commemorates the victory of Goddess Durga over the demon Mahishasura, symbolizing the triumph of righteousness over wickedness.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Legend of Durga and Mahishasura</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The story behind Navratri is a powerful tale of cosmic balance being restored. It begins with the buffalo demon Mahishasura, who had gained a boon of invincibility from any man or god. Believing himself immortal, he waged war on the heavens.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">🔱</div>
+                        <p class="text-xl font-bold mt-2 palette-text-red">The Emergence of Shakti</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">Powerless against him, the gods combined their divine energies, creating a dazzling light from which the Goddess Durga was born. She was the ultimate embodiment of Shakti, armed with the weapons of all the gods. The battle between Durga and Mahishasura raged for nine days and nine nights. On the tenth day, she finally defeated and slayed the demon. These nine nights of battle are what we celebrate as Navratri, honoring the divine feminine power that protects the universe.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Nine Nights of Navadurga</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Each night of Navratri is dedicated to one of the nine forms of Goddess Durga. Devotees often wear a specific color associated with that day's goddess.
+                </p>
+            </div>
+            <div class="mt-12 max-w-3xl mx-auto">
+                <div class="relative pl-8 border-l-4 border-orange-200">
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-orange">Day 1: Shailaputri</h3>
+                        <p class="text-gray-600">The "Daughter of the Mountains," she represents nature and purity. Worshipped for strength and determination.</p>
+                    </div>
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-orange">Day 2: Brahmacharini</h3>
+                        <p class="text-gray-600">The ascetic form, she represents devotion and penance. Worshipped for spiritual knowledge and self-control.</p>
+                    </div>
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-orange">Day 3: Chandraghanta</h3>
+                        <p class="text-gray-600">The fierce form with a crescent moon on her forehead, she destroys evil and instills courage.</p>
+                    </div>
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-orange">Day 4: Kushmanda</h3>
+                        <p class="text-gray-600">Believed to be the creator of the universe, she represents cosmic energy and is worshipped for health and wealth.</p>
+                    </div>
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-orange">Day 5: Skandamata</h3>
+                        <p class="text-gray-600">The mother of Lord Kartikeya (Skanda), she represents the pure love and compassion of a mother.</p>
+                    </div>
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-orange">Day 6: Katyayani</h3>
+                        <p class="text-gray-600">A warrior goddess born to the sage Katyayana, she is worshipped for her power to destroy negativity and for granting wishes.</p>
+                    </div>
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-orange">Day 7: Kalaratri</h3>
+                        <p class="text-gray-600">The most ferocious form of Durga, she destroys ignorance and darkness, offering protection to her devotees.</p>
+                    </div>
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-orange">Day 8: Mahagauri</h3>
+                        <p class="text-gray-600">Symbolizing peace and purity, she is believed to absolve all sins. This day often includes Kumari Puja.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="text-2xl font-bold palette-text-red">Day 9: Siddhidatri</h3>
+                        <p class="text-gray-600">The granter of all supernatural powers (*siddhis*). She represents perfection and the culmination of the spiritual journey.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="celebrations" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Traditions of Joy & Devotion</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Navratri is celebrated with a beautiful blend of solemn religious observance and exuberant cultural festivities.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">💃</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Garba & Dandiya</h3>
+                    <p class="mt-2 text-sm text-gray-600">In states like Gujarat, communities gather for energetic folk dances. Garba is danced in circles around a lamp, while Dandiya involves striking sticks.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4"> fasting</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Fasting (Vrat)</h3>
+                    <p class="mt-2 text-sm text-gray-600">Many devotees observe a fast for nine days, consuming only specific foods like fruits, nuts, and special flours to purify the body and mind.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">👧</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Kanya Pujan</h3>
+                    <p class="mt-2 text-sm text-gray-600">On the eighth or ninth day, young girls (pre-pubescent) are worshipped as manifestations of the Goddess, and are offered food and gifts.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🏛️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Pandal Hopping</h3>
+                    <p class="mt-2 text-sm text-gray-600">Similar to Durga Puja, communities erect decorative pandals with idols of the Goddess, which people visit to offer prayers and enjoy the festive atmosphere.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Fasting</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The food eaten during Navratri fasting is light, sattvic, and avoids grains, onions, and garlic. These dishes are both delicious and designed to support a period of spiritual cleansing.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Popular Navratri Fasting (Vrat) Foods</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Sabudana Khichdi (Tapioca)', 
+                'Kuttu Ki Puri (Buckwheat Bread)', 
+                'Makhana Kheer (Fox Nut Pudding)', 
+                'Singhare Atte ka Halwa'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity during Navratri',
+                        data: [100, 90, 85, 80],
+                        backgroundColor: [
+                           '#DB2777', // Pink
+                           '#F97316', // Orange
+                           '#DC2626', // Red
+                           '#F59E0B'  // Yellow
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Popularity & Importance',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

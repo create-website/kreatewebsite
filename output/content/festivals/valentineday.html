@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day: A Celebration of Love</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Romantic Reds & Pinks -->
+    <!-- Application Structure Plan: A narrative infographic that explains the history and modern celebration of Valentine's Day. The structure is: 1. Hero section. 2. "What is Valentine's Day?". 3. "The Legend of St. Valentine". 4. "Symbols of Love". 5. "Ways to Celebrate Romance". 6. "Top Valentine's Gifts" chart. This flow guides the user from the holiday's origins to its contemporary traditions. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The Legend of St. Valentine -> Goal: Inform -> Viz: A two-column layout -> Justification: Clearly presents the historical folklore behind the holiday. -> Library/Method: HTML/CSS.
+        - Data Point: Key symbols -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the main icons of love. -> Library/Method: HTML/CSS.
+        - Data Point: Popular gifts -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display popular romantic gifts. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #FFF1F2; /* Lightest Pink */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-red { color: #E11D48; }
+        .palette-text-pink { color: #DB2777; }
+        .palette-text-darkred { color: #9F1239; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #E11D48; /* Red */
+            border: 3px solid #FBCFE8; /* Light Pink */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-red tracking-wider">Valentine's Day</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">A Celebration of Love and Affection</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Valentine's Day?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Valentine's Day, also called Saint Valentine's Day, is an annual festival to celebrate romantic love, friendship, and admiration. Every year on February 14th, people celebrate this day by sending messages of love and affection to partners, family, and friends.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-red mb-4">❤️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Day for Romance</h3>
+                    <p class="mt-2 text-gray-600">It is most commonly associated with romantic love, with couples exchanging gifts and spending time together to honor their relationship.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-pink mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">February 14th</h3>
+                    <p class="mt-2 text-gray-600">The date is fixed on February 14th each year and is celebrated in numerous countries around the globe, though it is not a public holiday in most.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-darkred mb-4">💌</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Expressions of Affection</h3>
+                    <p class="mt-2 text-gray-600">The day is a time to express feelings, whether through handwritten cards, thoughtful gifts, or simple acts of kindness.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Legend of St. Valentine</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The history of Valentine's Day is shrouded in mystery, but its roots are often traced back to a Christian priest named Valentine who lived during the 3rd century in Rome.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">📜</div>
+                        <p class="text-xl font-bold mt-2 palette-text-red">A Story of Defiance and Love</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">According to one popular legend, Emperor Claudius II outlawed marriage for young men, believing that single men made better soldiers. Valentine, realizing the injustice of the decree, defied Claudius and continued to perform marriages for young lovers in secret. When Valentine's actions were discovered, Claudius ordered that he be put to death. Before his execution, he is said to have sent the first "valentine" greeting himself after he fell in love with the jailer's daughter. He allegedly signed the letter "From your Valentine," an expression that is still in use today.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="symbols" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Symbols of Love</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Over time, several powerful symbols have come to represent the love and romance associated with Valentine's Day.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">❤️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Hearts</h3>
+                    <p class="mt-2 text-sm text-gray-600">The heart is the ultimate symbol of love, representing the core of emotion and affection.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">💘</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Cupid</h3>
+                    <p class="mt-2 text-sm text-gray-600">The Roman god of love, often depicted as a winged infant with a bow and arrow, whose arrows strike the hearts of people to make them fall in love.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🌹</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Red Roses</h3>
+                    <p class="mt-2 text-sm text-gray-600">The red rose was the favorite flower of Venus, the Roman goddess of love. It symbolizes deep love, passion, and beauty.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🕊️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Doves & Lovebirds</h3>
+                    <p class="mt-2 text-sm text-gray-600">These birds, which often mate for life, are seen as symbols of loyalty, fidelity, and enduring love.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Ways to Celebrate Romance</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Modern Valentine's Day is celebrated with a variety of traditions, all aimed at expressing love and making partners feel special.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">💌</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Exchanging Cards</h3>
+                    <p class="mt-2 text-sm text-gray-600">Giving Valentine's cards is one of the most popular traditions, allowing people to express their feelings in writing.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">💐</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Giving Flowers</h3>
+                    <p class="mt-2 text-sm text-gray-600">A bouquet of flowers, especially red roses, is a classic and timeless gesture of romantic love.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🍽️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Romantic Dinner</h3>
+                    <p class="mt-2 text-sm text-gray-600">Many couples celebrate with a special dinner, either at a favorite restaurant or a candlelit meal at home.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">💍</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Proposals</h3>
+                    <p class="mt-2 text-sm text-gray-600">The romantic atmosphere of Valentine's Day makes it a very popular day for marriage proposals.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Top Valentine's Day Gifts</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    While gestures of love are most important, certain gifts have become staples of the Valentine's Day celebration.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Popular Gift Categories</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Chocolates & Candy', 
+                'Flowers (especially Roses)', 
+                'Greeting Cards', 
+                'Jewelry'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity as Gifts',
+                        data: [100, 98, 95, 85],
+                        backgroundColor: [
+                           '#9F1239', // Dark Red for Chocolate
+                           '#E11D48', // Red for Flowers
+                           '#F472B6', // Pink for Cards
+                           '#FBCFE8'  // Light Pink for Jewelry
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Popularity & Commonality',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayodhya Ram Mandir: An Interactive Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Saffron & Stone -->
+    <!-- Application Structure Plan: A thematic, single-page application designed for narrative exploration. The structure progresses from a high-level overview to specific details, encouraging a natural discovery process.
+    1.  Hero Section: Captures immediate attention.
+    2.  Key Facts Dashboard: Presents core data for quick understanding.
+    3.  Interactive Timeline: Allows users to actively explore the long and complex history, making it more digestible than a static text block. Chosen because the story is chronological.
+    4.  Architectural Deep-Dive: Uses a grid and diagrams to break down the temple's complex design into understandable components. A visual approach is best for architecture.
+    5.  Deity Section: A focused section on the central idol, giving it due importance.
+    6.  Significance Tabs: Organizes the temple's multi-faceted importance (Religious, Cultural, National) into clean, user-selectable content blocks. This prevents overwhelming the user with text.
+    7.  Data Insights: A chart-based section to visualize quantitative aspects like visitor numbers, making the scale and impact tangible.
+    This user flow is designed to be intuitive for both linear scrolling and direct navigation via the sticky header, catering to different user exploration styles. -->
+    <!-- Visualization & Content Choices:
+    -   Key Stats (Area, Cost, Height): Report Info -> Goal: Inform -> Viz/Presentation: Icon-driven cards -> Interaction: Hover effects -> Justification: Quick, scannable, and visually appealing presentation of core numbers. -> Library/Method: HTML/Tailwind.
+    -   Historical Events: Report Info -> Goal: Show Change over Time -> Viz/Presentation: Horizontal clickable timeline -> Interaction: Click events to update a central details pane -> Justification: Transforms a dense history into an engaging, interactive narrative. -> Library/Method: HTML/JS/Tailwind.
+    -   Architectural Material Mix: Report Info -> Goal: Compare Proportions -> Viz/Presentation: Doughnut Chart -> Interaction: Hover tooltips for details -> Justification: Provides an immediate, clear visual breakdown of the primary construction materials. -> Library/Method: Chart.js.
+    -   Visitor Footfall Data: Report Info -> Goal: Show Scale & Trend -> Viz/Presentation: Bar Chart -> Interaction: Hover tooltips -> Justification: Effectively visualizes the immense public response and daily visitor traffic in a comparative format. -> Library/Method: Chart.js.
+    -   Temple Layout Diagram: Report Info -> Goal: Organize Spatially -> Viz/Presentation: Simplified block diagram -> Interaction: Clickable zones highlighting descriptions -> Justification: A simple, non-graphical way to convey spatial relationships within the complex. -> Library/Method: HTML/JS/Tailwind.
+    -   Significance Themes: Report Info -> Goal: Organize Thematically -> Viz/Presentation: Tabbed content -> Interaction: Click to switch visible text block -> Justification: Neatly segments complex qualitative information, allowing user-led discovery without clutter. -> Library/Method: HTML/JS/Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FEFBF6;
+            color: #4A4A4A;
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .saffron-text { color: #FF9933; }
+        .saffron-bg { background-color: #FF9933; }
+        .saffron-border { border-color: #FF9933; }
+        .stone-bg { background-color: #F5F5F5; }
+        .maroon-text { color: #800000; }
+        .nav-link.active {
+            color: #FF9933;
+            font-weight: 600;
+        }
+        .timeline-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .timeline-item.active .timeline-dot {
+            background-color: #FF9933;
+            transform: scale(1.5);
+        }
+        .timeline-item.active .timeline-year {
+            color: #FF9933;
+            font-weight: 700;
+        }
+        .tab-button.active {
+            background-color: #FF9933;
+            color: white;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-orange-50/50">
+
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm transition-all duration-300">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold maroon-text">Ram Mandir</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:saffron-text">Home</a>
+                        <a href="#timeline" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:saffron-text">Timeline</a>
+                        <a href="#architecture" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:saffron-text">Architecture</a>
+                        <a href="#deity" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:saffron-text">The Deity</a>
+                        <a href="#significance" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:saffron-text">Significance</a>
+                        <a href="#insights" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:saffron-text">Insights</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="relative pt-16 pb-24 text-center bg-white">
+             <div class="absolute inset-0 bg-orange-50/50" style="background-image: radial-gradient(#FF993322 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <h1 class="text-4xl md:text-6xl font-extrabold maroon-text tracking-tight">Shri Ram Janmabhoomi Mandir</h1>
+                <p class="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-gray-600">An interactive exploration of a centuries-old dream realized.</p>
+            </div>
+        </section>
+
+        <section id="key-facts" class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight maroon-text sm:text-4xl">The Mandir at a Glance</h2>
+                    <p class="mt-3 max-w-2xl mx-auto text-lg text-gray-600">This section provides a snapshot of the temple's monumental scale. These key figures represent the immense effort, resources, and devotion invested in its construction. Hover over each card to see the core statistics that define this architectural marvel.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-orange-50 rounded-xl p-6 text-center shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="text-4xl saffron-text mb-2">🏞️</div>
+                        <h3 class="text-xl font-semibold maroon-text">Total Area</h3>
+                        <p class="text-3xl font-bold text-gray-800 mt-2">70 Acres</p>
+                        <p class="text-gray-500">Entire Temple Complex</p>
+                    </div>
+                    <div class="bg-orange-50 rounded-xl p-6 text-center shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="text-4xl saffron-text mb-2">🏗️</div>
+                        <h3 class="text-xl font-semibold maroon-text">Dimensions</h3>
+                        <p class="text-3xl font-bold text-gray-800 mt-2">161 ft</p>
+                        <p class="text-gray-500">Height of the Mandir</p>
+                    </div>
+                    <div class="bg-orange-50 rounded-xl p-6 text-center shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="text-4xl saffron-text mb-2">🏛️</div>
+                        <h3 class="text-xl font-semibold maroon-text">Structural Pillars</h3>
+                        <p class="text-3xl font-bold text-gray-800 mt-2">392</p>
+                        <p class="text-gray-500">Intricately Carved</p>
+                    </div>
+                    <div class="bg-orange-50 rounded-xl p-6 text-center shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="text-4xl saffron-text mb-2">💰</div>
+                        <h3 class="text-xl font-semibold maroon-text">Estimated Cost</h3>
+                        <p class="text-3xl font-bold text-gray-800 mt-2">₹1,800 Cr</p>
+                        <p class="text-gray-500">(Approx. $217 Million)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="timeline" class="py-20 stone-bg">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight maroon-text sm:text-4xl">A Journey Through Time</h2>
+                    <p class="mt-3 max-w-3xl mx-auto text-lg text-gray-600">The story of the Ram Mandir is a long and profound one, spanning nearly five centuries. This interactive timeline highlights the pivotal moments that have shaped its path. Click on any year to learn more about the significant events that occurred, from historical disputes to the final consecration.</p>
+                </div>
+
+                <div class="relative">
+                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-300 -translate-y-1/2"></div>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-8 md:space-y-0">
+                    </div>
+                </div>
+
+                <div class="mt-12 bg-white p-8 rounded-2xl shadow-lg min-h-[200px] transition-all duration-500 ease-in-out">
+                    <h3 id="timeline-title" class="text-2xl font-bold saffron-text mb-2">1528: The Beginning</h3>
+                    <p id="timeline-description" class="text-gray-700">The Babri Masjid is constructed by Mir Baqi, a commander of the Mughal emperor Babur, at a site Hindus claim as the birthplace of Lord Ram.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight maroon-text sm:text-4xl">An Architectural Marvel</h2>
+                    <p class="mt-3 max-w-3xl mx-auto text-lg text-gray-600">The Ram Mandir is a masterpiece of traditional Indian temple architecture, built to last for over a thousand years. This section explores the key design elements, materials, and structural details. Explore the charts and diagrams to understand the Nagara style and the thoughtful engineering behind this grand structure.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-2xl font-semibold maroon-text mb-4">Core Principles & Materials</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <span class="text-2xl saffron-text mr-4">✨</span>
+                                <div>
+                                    <h4 class="font-bold text-lg text-gray-800">Nagara Style Architecture</h4>
+                                    <p class="text-gray-600">Characterized by its towering spires (shikharas) and ornate carvings, this ancient North Indian style is used for the temple's design.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-2xl saffron-text mr-4">🧱</span>
+                                <div>
+                                    <h4 class="font-bold text-lg text-gray-800">No Iron or Steel</h4>
+                                    <p class="text-gray-600">The entire structure is built using traditional materials like stone and copper plates, ensuring longevity and adherence to ancient construction practices.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-2xl saffron-text mr-4">🌍</span>
+                                <div>
+                                    <h4 class="font-bold text-lg text-gray-800">Pink Sandstone & Marble</h4>
+                                    <p class="text-gray-600">Bansi Paharpur pink sandstone forms the main structure, while high-quality Makrana marble is used for the sanctum sanctorum and carvings.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="materialsChart"></canvas>
+                        <p class="text-center text-sm text-gray-500 mt-2">Primary Material Composition</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="deity" class="py-20 stone-bg">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight maroon-text sm:text-4xl">The Divine Presence: Ram Lalla</h2>
+                     <p class="mt-3 max-w-3xl mx-auto text-lg text-gray-600">At the heart of the temple resides the sacred idol of Ram Lalla. This section is dedicated to the deity, providing details about its creation, form, and the profound symbolism it holds for millions of devotees.</p>
+                </div>
+                <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
+                    <div class="text-center md:text-left">
+                        <p class="text-sm font-semibold uppercase tracking-wider saffron-text">The Idol</p>
+                        <h3 class="text-3xl font-bold maroon-text mt-1">Balak Ram</h3>
+                        <p class="mt-4 text-gray-600 leading-relaxed">The main idol, consecrated on January 22, 2024, depicts Lord Ram as a five-year-old child (Balak Roop). This form symbolizes innocence, divinity, and the beginning of a new era.</p>
+                        <div class="mt-6 grid grid-cols-2 gap-4 text-left">
+                           <div>
+                                <p class="font-semibold text-gray-800">Sculptor</p>
+                                <p class="text-gray-600">Arun Yogiraj</p>
+                           </div>
+                           <div>
+                                <p class="font-semibold text-gray-800">Height</p>
+                                <p class="text-gray-600">51 inches</p>
+                           </div>
+                           <div>
+                                <p class="font-semibold text-gray-800">Material</p>
+                                <p class="text-gray-600">Krishna Shila (Black Schist)</p>
+                           </div>
+                           <div>
+                               <p class="font-semibold text-gray-800">Weight</p>
+                               <p class="text-gray-600">~200 kg</p>
+                           </div>
+                        </div>
+                    </div>
+                    <div class="text-7xl md:text-9xl saffron-text flex-shrink-0">
+                        🕉️
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="significance" class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight maroon-text sm:text-4xl">A Symbol of Faith & Culture</h2>
+                    <p class="mt-3 max-w-3xl mx-auto text-lg text-gray-600">The Ram Mandir is more than just a temple; it's a powerful symbol with deep religious, cultural, and national importance. Use the tabs below to explore these different facets and understand its profound impact on India and the world.</p>
+                </div>
+                <div class="max-w-3xl mx-auto">
+                    <div class="flex justify-center border-b border-gray-200 mb-6">
+                        <button data-tab="religious" class="tab-button px-4 py-2 font-semibold text-gray-600 rounded-t-lg transition-colors duration-300">Religious</button>
+                        <button data-tab="cultural" class="tab-button px-4 py-2 font-semibold text-gray-600 rounded-t-lg transition-colors duration-300">Cultural</button>
+                        <button data-tab="national" class="tab-button px-4 py-2 font-semibold text-gray-600 rounded-t-lg transition-colors duration-300">National</button>
+                    </div>
+                    <div id="tab-content" class="text-gray-700 leading-relaxed">
+                        <div id="content-religious" class="tab-pane">
+                            <p>For millions of Hindus worldwide, the temple marks the reclamation of one of their most sacred sites, the birthplace of Lord Ram. It is a center for pilgrimage (Tirtha), worship, and spiritual discourse. The consecration of the idol is seen as a divine event, re-establishing Ram Rajya—an era of peace, justice, and prosperity.</p>
+                        </div>
+                        <div id="content-cultural" class="tab-pane hidden">
+                             <p>The temple stands as a testament to India's rich heritage of art, architecture, and craftsmanship. It serves as a living museum, showcasing ancient building techniques and intricate stone carvings that narrate stories from Hindu scriptures. It is expected to revive traditional arts and foster a deeper appreciation for India's cultural and spiritual legacy among new generations.</p>
+                        </div>
+                        <div id="content-national" class="tab-pane hidden">
+                            <p>The construction of the temple represents a moment of civilizational pride and unity for many Indians. It symbolizes the culmination of a long-standing movement and is viewed as an assertion of national identity rooted in its ancient heritage. The temple is also a major driver of economic activity in Ayodhya, boosting tourism and infrastructure development.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="insights" class="py-20 stone-bg">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight maroon-text sm:text-4xl">The Mandir by the Numbers</h2>
+                    <p class="mt-3 max-w-3xl mx-auto text-lg text-gray-600">Since its inauguration, the Ram Mandir has attracted an unprecedented number of devotees. This section visualizes the scale of this pilgrimage. The chart below illustrates the estimated daily visitor footfall, offering a glimpse into the temple's immense drawing power and its place as a leading spiritual destination.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-xl">
+                    <div class="chart-container">
+                        <canvas id="visitorsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 Interactive Mandir Explorer. All data is for illustrative purposes.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const timelineData = [
+                { year: '1528', title: 'The Beginning', description: 'The Babri Masjid is constructed by Mir Baqi, a commander of the Mughal emperor Babur, at a site Hindus claim as the birthplace of Lord Ram.' },
+                { year: '1885', title: 'First Legal Petition', description: 'Mahant Raghubir Das files a plea in the Faizabad district court seeking permission to build a canopy on the Ramchabutra (a raised platform) outside the disputed structure. The plea is rejected.' },
+                { year: '1949', title: 'Appearance of Idols', description: 'Idols of Ram Lalla mysteriously appear inside the mosque. The government declares the premises a disputed area and locks the gates.' },
+                { year: '1992', title: 'Structure Demolition', description: 'The Babri Masjid is demolished by Karsevaks, leading to widespread communal riots across the country.' },
+                { year: '2019', title: 'Supreme Court Verdict', description: 'In a landmark unanimous verdict, the Supreme Court of India grants the entire disputed land to a trust to be formed by the government for the construction of a Ram temple.' },
+                { year: '2020', title: 'Bhoomi Pujan', description: 'Prime Minister Narendra Modi lays the foundation stone for the Ram Mandir in a grand Bhoomi Pujan ceremony.' },
+                { year: '2024', title: 'Pran Pratishtha', description: 'The Pran Pratishtha (consecration ceremony) of the Ram Lalla idol is held, and the temple is opened to the public.' }
+            ];
+
+            const timelineContainer = document.querySelector('#timeline .justify-between');
+            const timelineTitle = document.getElementById('timeline-title');
+            const timelineDescription = document.getElementById('timeline-description');
+            
+            timelineData.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'timeline-item flex-1 text-center relative';
+                div.dataset.index = index;
+                div.innerHTML = `
+                    <div class="timeline-dot w-4 h-4 rounded-full bg-gray-300 mx-auto transition-all duration-300"></div>
+                    <p class="timeline-year mt-2 text-sm font-semibold text-gray-600 transition-colors duration-300">${item.year}</p>
+                `;
+                timelineContainer.appendChild(div);
+            });
+            
+            const timelineItems = document.querySelectorAll('.timeline-item');
+
+            function updateTimelineContent(index) {
+                timelineItems.forEach(i => i.classList.remove('active'));
+                timelineItems[index].classList.add('active');
+                
+                const data = timelineData[index];
+                timelineTitle.textContent = `${data.year}: ${data.title}`;
+                timelineDescription.textContent = data.description;
+            }
+
+            timelineItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    updateTimelineContent(item.dataset.index);
+                });
+            });
+
+            updateTimelineContent(0);
+
+            const materialsCtx = document.getElementById('materialsChart').getContext('2d');
+            new Chart(materialsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pink Sandstone', 'Makrana Marble', 'Granite', 'Copper & Other'],
+                    datasets: [{
+                        label: 'Material Composition',
+                        data: [70, 15, 10, 5],
+                        backgroundColor: ['#FFDAB9', '#E0E0E0', '#A9A9A9', '#DAA520'],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: { callbacks: { label: function(context) { return `${context.label}: ${context.raw}%`; } } }
+                    }
+                }
+            });
+
+            const visitorsCtx = document.getElementById('visitorsChart').getContext('2d');
+            new Chart(visitorsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                    datasets: [{
+                        label: 'Estimated Daily Visitors (in Lakhs)',
+                        data: [1.5, 2.0, 1.2, 1.4, 2.5, 4.0, 5.0],
+                        backgroundColor: 'rgba(255, 153, 51, 0.6)',
+                        borderColor: 'rgba(255, 153, 51, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, title: { display: true, text: 'Visitors (in Lakhs)' } } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    const tab = button.dataset.tab;
+                    tabPanes.forEach(pane => {
+                        if (pane.id === `content-${tab}`) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            document.querySelector('.tab-button[data-tab="religious"]').classList.add('active');
+
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const header = document.getElementById('header');
+            let lastScrollTop = 0;
+
+            window.addEventListener('scroll', () => {
+                let fromTop = window.scrollY + header.offsetHeight;
+                let currentSection = sections[0];
+
+                sections.forEach(section => {
+                    if (section.offsetTop <= fromTop && section.offsetTop + section.offsetHeight > fromTop) {
+                        currentSection = section;
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSection.id}`) {
+                        link.classList.add('active');
+                    }
+                });
+                
+                let st = window.pageYOffset || document.documentElement.scrollTop;
+                if (st > lastScrollTop && st > header.offsetHeight){
+                    header.style.top = `-${header.offsetHeight}px`;
+                } else {
+                    header.style.top = "0";
+                }
+                lastScrollTop = st <= 0 ? 0 : st;
+
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Story of Ganesh Chaturthi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lora:wght@600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic is structured as a top-to-bottom narrative scroll, telling the story of Ganesh Chaturthi in a logical sequence. It begins with the 'who' (mythology), moves to the 'how' (history and rituals), then the 'where' (global reach), and concludes with the 'now' (environmental impact). This linear flow is ideal for an infographic, guiding the user through complex information in digestible, themed sections. Each section uses a card-based layout within a responsive grid to present data and text together, ensuring a clear and engaging user experience. -->
+    <!-- Visualization & Content Choices: 
+        1.  Ganesha's Symbolism: Data -> Iconography details. Goal -> Organize. Viz -> Styled HTML/CSS diagram. Justification -> Visually breaks down the deity's form into meaningful parts without needing complex charts, making it easy to digest. Method -> HTML/CSS with Unicode. CONFIRM: NO SVG.
+        2.  Historical Evolution: Data -> Key historical dates/events. Goal -> Change. Viz -> Vertical Timeline. Justification -> Effectively shows the progression and transformation of the festival over time. Method -> HTML/CSS. CONFIRM: NO SVG.
+        3.  Ritual Process: Data -> Steps from Sthapana to Visarjan. Goal -> Organize. Viz -> Horizontal Flow Chart. Justification -> Clearly illustrates the sequence of the 10-day festival rituals. Method -> HTML/CSS. CONFIRM: NO SVG/Mermaid.
+        4.  Celebration Comparison: Data -> Domestic vs. Public table. Goal -> Compare. Viz -> Grouped Bar Chart. Justification -> Provides a direct quantitative and qualitative comparison of the two celebration styles across key aspects like scale and duration. Library -> Chart.js. CONFIRM: NO SVG.
+        5.  Environmental Impact: Data -> Pollution causes table. Goal -> Compare/Inform. Viz -> Donut Chart for pollution sources & Bar Chart for idol impact. Justification -> The donut chart effectively shows the composition of pollution, while the bar chart starkly contrasts the impact of different idol types. Library -> Chart.js. CONFIRM: NO SVG.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; }
+        h1, h2, h3 { font-family: 'Lora', serif; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-bold text-[#900C3F]">Ganesh Chaturthi</h1>
+            <p class="text-xl mt-2 text-gray-600">A Visual Journey Through Mythology, Tradition, and Modern Celebration</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <section class="md:col-span-2 lg:col-span-3 bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-bold text-[#C70039] mb-4 text-center">Who is Lord Ganesha?</h2>
+                <p class="text-center max-w-3xl mx-auto mb-6">Lord Ganesha, the elephant-headed deity, is revered as the Remover of Obstacles and the god of new beginnings. His unique form is a rich tapestry of symbolism, with each feature representing a profound spiritual truth. This diagram decodes the key elements of his iconography.</p>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
+                    <div class="p-4 rounded-lg bg-red-50">
+                        <div class="text-4xl">🐘</div><h3 class="font-bold mt-2">Elephant Head</h3><p class="text-sm">Wisdom & Foresight</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-red-50">
+                        <div class="text-4xl">🐘</div><h3 class="font-bold mt-2">Single Tusk</h3><p class="text-sm">Overcoming Duality</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-red-50">
+                        <div class="text-4xl">💪</div><h3 class="font-bold mt-2">Four Arms</h3><p class="text-sm">Tools for Life</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-red-50">
+                        <div class="text-4xl">😋</div><h3 class="font-bold mt-2">Potbelly</h3><p class="text-sm">Digesting Life's Lessons</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-red-50 col-span-2 md:col-span-1">
+                        <div class="text-4xl">🐁</div><h3 class="font-bold mt-2">Mouse Vehicle</h3><p class="text-sm">Mastery Over Desire</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="lg:col-span-1 bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-bold text-[#C70039] mb-4">A Festival's Journey</h2>
+                <p class="mb-6">From a private ritual to a symbol of national pride, the festival's history reflects India's own socio-political evolution.</p>
+                <div class="relative border-l-4 border-[#FFC300] ml-4 pl-8 space-y-10">
+                    <div class="absolute w-6 h-6 bg-[#900C3F] rounded-full -left-3.5 border-4 border-white"></div>
+                    <div><h3 class="font-bold">17th Century</h3><p class="text-sm">Promoted by Shivaji to foster Maratha cultural identity.</p></div>
+                    <div class="absolute w-6 h-6 bg-[#900C3F] rounded-full -left-3.5 border-4 border-white"></div>
+                    <div><h3 class="font-bold">18th Century</h3><p class="text-sm">Elevated to a grand public event by the Peshwas in Pune.</p></div>
+                    <div class="absolute w-6 h-6 bg-[#900C3F] rounded-full -left-3.5 border-4 border-white"></div>
+                    <div><h3 class="font-bold">1893</h3><p class="text-sm">Reimagined by Lokmanya Tilak as a tool for nationalist mobilization against British rule.</p></div>
+                    <div class="absolute w-6 h-6 bg-[#900C3F] rounded-full -left-3.5 border-4 border-white"></div>
+                    <div><h3 class="font-bold">Today</h3><p class="text-sm">A global festival celebrating Hindu identity and community worldwide.</p></div>
+                </div>
+            </section>
+
+            <section class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-bold text-[#C70039] mb-4">The 10 Days of Devotion</h2>
+                <p class="mb-6">The festival follows a structured series of rituals, treating the deity as an honored guest whose visit follows a sacred cycle from invocation to farewell.</p>
+                <div class="flex flex-col md:flex-row justify-between items-center text-center space-y-4 md:space-y-0 md:space-x-2">
+                    <div class="flex-1 p-3 bg-green-50 rounded-lg"><h3 class="font-bold">Day 1: Sthapana</h3><p class="text-sm">Idol installation & infusing life force (Prana Pratishtha).</p></div>
+                    <div class="text-2xl text-[#FF5733]">→</div>
+                    <div class="flex-1 p-3 bg-green-50 rounded-lg"><h3 class="font-bold">Days 1-10: Puja</h3><p class="text-sm">Daily worship with 16 offerings, prayers, and Modak.</p></div>
+                    <div class="text-2xl text-[#FF5733]">→</div>
+                    <div class="flex-1 p-3 bg-green-50 rounded-lg"><h3 class="font-bold">Day 11: Visarjan</h3><p class="text-sm">Immersion, symbolizing the deity's return to the cosmos.</p></div>
+                </div>
+            </section>
+            
+            <section class="md:col-span-2 lg:col-span-3 bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-bold text-[#C70039] mb-4 text-center">Two Ways to Celebrate</h2>
+                <p class="text-center max-w-3xl mx-auto mb-6">Ganesh Chaturthi is unique in its dual expression: the intimate, spiritual worship at home versus the grand, festive spectacle in public. This chart compares key aspects of these two distinct celebration styles, showing how scale, duration, and focus differ dramatically.</p>
+                <div class="chart-container">
+                    <canvas id="celebrationComparisonChart"></canvas>
+                </div>
+            </section>
+
+            <section class="md:col-span-2 lg:col-span-3 bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-bold text-[#C70039] mb-4 text-center">The Green Ganesha: A Modern Challenge</h2>
+                <p class="text-center max-w-3xl mx-auto mb-6">The festival's modern scale has created significant environmental challenges. The widespread use of Plaster of Paris (PoP) idols and toxic paints pollutes water bodies, harming ecosystems. This has sparked a powerful movement towards eco-friendly celebrations.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-xl font-bold text-center mb-2">Primary Pollutants from Idol Immersion</h3>
+                        <div class="chart-container h-64 sm:h-80 max-h-80">
+                            <canvas id="pollutionSourceChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-center mb-2">Ecological Impact: PoP vs. Clay Idols</h3>
+                         <div class="chart-container h-64 sm:h-80 max-h-80">
+                            <canvas id="idolImpactChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                 <div class="mt-8 text-center bg-yellow-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-lg">Eco-Friendly Solutions</h3>
+                    <p class="text-sm">Embrace idols made from natural clay (Shadu Mati), use natural dyes, and practice symbolic immersion at home to protect our environment.</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const wrapLabel = (label) => {
+                if (label.length <= 16) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + word).length > 16) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                return Array.isArray(label) ? label.join(' ') : label;
+            };
+            
+            const defaultChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            };
+            
+            const celebrationLabels = ['Scale', 'Idol Size', 'Duration (Days)', 'Community Focus'];
+            new Chart(document.getElementById('celebrationComparisonChart'), {
+                type: 'bar',
+                data: {
+                    labels: celebrationLabels.map(wrapLabel),
+                    datasets: [
+                        {
+                            label: 'Domestic Celebration',
+                            data: [2, 1, 5, 3], 
+                            backgroundColor: '#FFC300',
+                            borderColor: '#FFC300',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Public Celebration',
+                            data: [9, 10, 10, 9],
+                            backgroundColor: '#FF5733',
+                            borderColor: '#FF5733',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: { ...defaultChartOptions,
+                    scales: { y: { beginAtZero: true, max: 10, ticks: { stepSize: 1 }, title: { display: true, text: 'Relative Score (1-10)' } } }
+                }
+            });
+
+            new Chart(document.getElementById('pollutionSourceChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Plaster of Paris', 'Toxic Paints', 'Solid Waste'],
+                    datasets: [{
+                        data: [50, 35, 15],
+                        backgroundColor: ['#FF5733', '#C70039', '#900C3F'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: { ...defaultChartOptions }
+            });
+
+            const idolImpactLabels = ['Water Pollution', ['Chemical', 'Contamination'], 'Harm to Aquatic Life'];
+            new Chart(document.getElementById('idolImpactChart'), {
+                type: 'bar',
+                data: {
+                    labels: idolImpactLabels.map(l => Array.isArray(l) ? l : wrapLabel(l)),
+                    datasets: [
+                        {
+                            label: 'Plaster of Paris (PoP)',
+                            data: [9, 8, 9.5],
+                            backgroundColor: '#C70039',
+                        },
+                        {
+                            label: 'Natural Clay',
+                            data: [1, 0.5, 0.5],
+                            backgroundColor: '#DAF7A6',
+                        }
+                    ]
+                },
+                options: { ...defaultChartOptions,
+                    scales: { y: { beginAtZero: true, max: 10, title: { display: true, text: 'Relative Impact (1-10)' } } }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

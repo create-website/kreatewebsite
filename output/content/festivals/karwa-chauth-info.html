@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Story of Karwa Chauth: An Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Narrative & Structure Plan: The infographic follows a logical narrative flow, starting with a high-level introduction ('What is Karwa Chauth?'), moving into the practical execution ('The Day's Rituals'), delving into the cultural backbone ('Legends & Roots'), and culminating in its modern-day impact ('The 21st Century Festival'). This structure tells a coherent story, making complex information from the report accessible and engaging for a general audience. -->
+    <!-- Visualization & Content Choices: 
+        - Economic Growth: Data Point -> ₹15k Cr vs ₹22k Cr. Goal -> Compare/Change. Chosen Visualization -> Bar Chart. Justification -> Best for direct comparison of two values over time. Library -> Chart.js.
+        - Day's Rituals: Data Point -> Sargi, Fast, Puja, Moonrise. Goal -> Organize a process. Chosen Visualization -> Flow Chart. Justification -> Clearly shows a linear sequence of events. Method -> HTML/CSS with Tailwind.
+        - Socio-Historical Roots: Data Point -> Three origin theories. Goal -> Organize/Inform. Chosen Visualization -> Icon-driven cards. Justification -> Visually separates distinct concepts for clarity. Method -> HTML/CSS with Unicode characters.
+        - Central Vow: Data Point -> Nirjala Vrat. Goal -> Inform. Chosen Visualization -> Single Big Number/Icon. Justification -> Emphasizes the core concept of the fast. Method -> HTML/CSS with Unicode characters.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F0F4F8; 
+        }
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center my-12">
+            <h1 class="text-5xl md:text-7xl font-black text-rose-500">KARWA CHAUTH</h1>
+            <p class="text-xl md:text-2xl mt-4 text-gray-600 font-light">An Enduring Tradition of Devotion, Love, and Modern Evolution</p>
+        </header>
+
+        <section id="what-is" class="my-16">
+             <div class="bg-white rounded-2xl shadow-lg p-8">
+                <h2 class="text-3xl md:text-4xl text-center text-cyan-500 mb-8">What is Karwa Chauth?</h2>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <p class="text-8xl">💧</p>
+                        <h3 class="text-2xl font-bold mt-2 text-cyan-600">The Central Vow</h3>
+                        <p class="mt-2 text-gray-600">At its heart is the <span class="font-semibold">nirjala vrat</span>, a strict fast from sunrise to moonrise without food or water, undertaken by married women for their husband's longevity and well-being.</p>
+                    </div>
+                    <div>
+                        <div class="flex items-start mb-4">
+                            <span class="text-4xl font-bold text-rose-400 mr-4">Karwa</span>
+                            <p class="text-gray-600"><span class="font-semibold">(करवा)</span> — A spherical earthen pot with a spout, symbolizing life and prosperity. It's central to the evening rituals, used for offering water to the moon.</p>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-4xl font-bold text-rose-400 mr-4">Chauth</span>
+                             <p class="text-gray-600"><span class="font-semibold">(चौथ)</span> — Meaning "fourth," as the festival falls on the fourth day of the waning moon in the Hindu month of Kartik.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rituals" class="my-16">
+            <h2 class="text-3xl md:text-4xl text-center text-amber-500 mb-8">The Day's Rituals: A Step-by-Step Flow</h2>
+            <div class="relative flex flex-col md:flex-row justify-between items-center w-full space-y-8 md:space-y-0 md:space-x-4">
+                <div class="absolute top-0 left-1/2 w-0.5 h-full bg-amber-300 md:w-full md:h-0.5 md:top-1/2 md:left-0"></div>
+                <div class="z-10 flex flex-col items-center text-center w-full md:w-1/4">
+                    <div class="bg-amber-500 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold shadow-md">1</div>
+                    <div class="bg-white rounded-lg p-4 mt-4 shadow-md w-full">
+                        <h3 class="font-bold text-amber-600">Sargi</h3>
+                        <p class="text-sm text-gray-600">A pre-dawn meal from the mother-in-law to provide energy for the day's fast.</p>
+                    </div>
+                </div>
+                <div class="z-10 flex flex-col items-center text-center w-full md:w-1/4">
+                    <div class="bg-amber-500 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold shadow-md">2</div>
+                    <div class="bg-white rounded-lg p-4 mt-4 shadow-md w-full">
+                        <h3 class="font-bold text-amber-600">The Fast Begins</h3>
+                        <p class="text-sm text-gray-600">From sunrise, a strict fast without food or water is observed throughout the day.</p>
+                    </div>
+                </div>
+                <div class="z-10 flex flex-col items-center text-center w-full md:w-1/4">
+                    <div class="bg-amber-500 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold shadow-md">3</div>
+                    <div class="bg-white rounded-lg p-4 mt-4 shadow-md w-full">
+                        <h3 class="font-bold text-amber-600">Evening Puja</h3>
+                        <p class="text-sm text-gray-600">Women gather in festive attire to worship, narrate legends, and sing traditional songs.</p>
+                    </div>
+                </div>
+                <div class="z-10 flex flex-col items-center text-center w-full md:w-1/4">
+                    <div class="bg-amber-500 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold shadow-md">4</div>
+                    <div class="bg-white rounded-lg p-4 mt-4 shadow-md w-full">
+                        <h3 class="font-bold text-amber-600">Moonrise</h3>
+                        <p class="text-sm text-gray-600">The fast is broken after sighting the moon through a sieve, followed by a glimpse of the husband.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="legends-roots" class="my-16">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h2 class="text-3xl text-center text-pink-500 mb-6">Legends Behind the Fast</h2>
+                    <ul class="space-y-4">
+                        <li><strong class="text-pink-600">Queen Veeravati:</strong> The most famous tale of a queen tricked into breaking her fast early, who revived her husband through true devotion the following year.</li>
+                        <li><strong class="text-pink-600">The Courage of Karwa:</strong> A woman named Karwa who saved her husband from a crocodile by confronting Yama, the god of death.</li>
+                        <li><strong class="text-pink-600">The Mahabharata Link:</strong> Draupadi observed the fast on Lord Krishna's advice to help the Pandavas overcome their troubles.</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h2 class="text-3xl text-center text-teal-500 mb-6">Socio-Historical Roots</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <span class="text-4xl mr-4">🛡️</span>
+                            <div>
+                                <h3 class="font-bold text-teal-600">Military Campaigns</h3>
+                                <p class="text-sm text-gray-600">Women prayed for the safe return of their soldier husbands from long wars.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-4xl mr-4">🌾</span>
+                            <div>
+                                <h3 class="font-bold text-teal-600">Agricultural Cycle</h3>
+                                <p class="text-sm text-gray-600">The fast coincided with the wheat-sowing season, a prayer for a bountiful harvest.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-4xl mr-4">🤝</span>
+                            <div>
+                                <h3 class="font-bold text-teal-600">Female Friendship</h3>
+                                <p class="text-sm text-gray-600">A way for new brides to form "god-sister" bonds and create social support networks.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="modern-festival" class="my-16">
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <h2 class="text-3xl md:text-4xl text-center text-rose-500 mb-8">The 21st Century Festival</h2>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-rose-600 text-center mb-4">A Major Economic Engine</h3>
+                        <p class="text-center text-gray-600 mb-4">From a solemn ritual, Karwa Chauth has transformed into a major commercial event, with spending on fashion, beauty, and gifts skyrocketing.</p>
+                        <div class="chart-container">
+                            <canvas id="economicImpactChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="font-bold text-lg text-rose-600">The Bollywood Influence</h3>
+                            <p class="text-gray-600">Films like <span class="font-semibold">DDLJ</span> and <span class="font-semibold">Kabhi Khushi Kabhie Gham</span> have romanticized the festival, turning it into a glamorous, pan-Indian celebration of love.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-rose-600">Shifting Gender Roles</h3>
+                            <p class="text-gray-600">The festival is evolving. It's now common for unmarried couples to participate, and a growing number of men fast alongside their wives as a gesture of equality and shared partnership.</p>
+                        </div>
+                         <div>
+                            <h3 class="font-bold text-lg text-rose-600">The Global Vrat</h3>
+                            <p class="text-gray-600">The Indian diaspora celebrates worldwide, using technology like video calls to perform rituals and connect with family, keeping the tradition alive across continents.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const ctx = document.getElementById('economicImpactChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Previous Year', '2024 Estimate'],
+            datasets: [{
+                label: 'Business Generated (in ₹ Crore)',
+                data: [15000, 22000],
+                backgroundColor: [
+                    'rgba(255, 107, 107, 0.7)',
+                    'rgba(241, 91, 181, 0.7)'
+                ],
+                borderColor: [
+                    '#FF6B6B',
+                    '#F15BB5'
+                ],
+                borderWidth: 2,
+                borderRadius: 8,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return '₹' + (value / 1000) + 'k Cr';
+                        },
+                        font: {
+                            weight: '600'
+                        }
+                    }
+                },
+                x: {
+                   grid: {
+                        display: false
+                    },
+                    ticks: {
+                         font: {
+                            weight: '600',
+                            size: 14
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: '#1E293B',
+                    titleFont: {
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        weight: '600'
+                    },
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            } else {
+                              return label;
+                            }
+                        },
+                        label: function(context) {
+                            return `₹${context.raw.toLocaleString('en-IN')} Crore`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

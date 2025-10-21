@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ravana's Boons: The Rise of an Arrogant King</title>
+    <meta name="description" content="Explore the origin story of Ravana from the Ramayana. Learn about his intense penances to Brahma and Shiva, the powerful boons he received, and how they fueled his world-conquering arrogance.">
+    <meta name="keywords" content="Ravana, Brahma, Shiva, boon, penance, Ramayana, arrogance, Kailash, Tandava Stotram, Chandrahas, Hindu mythology">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4B5563; 
+        }
+        .font-sanskrit {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+        }
+        .tab-active {
+            border-color: #D97706;
+            background-color: #FFFBEB;
+            color: #D97706;
+        }
+        .step-item-active {
+            background-color: #D97706;
+            color: #FFFFFF;
+            transform: scale(1.1);
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: This page explores Ravana's origin and is structured to show his progression from a determined ascetic to an arrogant tyrant. 1) A Scholar's Ambition introduces his noble lineage and his burning desire for power. 2) The Great Penance is an interactive section detailing his incredible austerities for Brahma, building a sense of awe at his determination. 3) The Fatal Boon explains the specific boon he received and the crucial, arrogant omission. 4) Devotion to Shiva uses tabs to show the duality of his relationship with another god—one of both arrogance (lifting Kailash) and profound devotion (Tandava Stotram). 5) The Age of Arrogance concludes by showing how these boons directly led to his reign of terror, thus setting the stage for the entire Ramayana. -->
+    <!-- Visualization & Content Choices: Report Info: The stages of Ravana's penance -> Goal: Show escalating determination -> Viz/Method: Interactive step-based diagram -> Interaction: Click steps for The Austerities, The Sacrifice, and The Reward -> Justification: This breaks down a multi-millennia penance into a digestible, impressive sequence for the user. | Report Info: Ravana's complex relationship with Shiva -> Goal: Show character complexity -> Viz/Method: Tabbed content -> Interaction: Tabs for "An Act of Hubris" and "A Hymn of Devotion" -> Justification: This effectively contrasts his arrogance with his capacity for genuine devotion, making him a more nuanced and compelling character than a simple villain. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-amber-100/30 sticky top-0 z-50 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="font-sanskrit text-2xl font-bold text-amber-800">रावण-वरदान</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#origin" class="text-stone-600 hover:text-amber-700 transition">The Origin</a>
+                    <a href="#penance" class="text-stone-600 hover:text-amber-700 transition">The Penance</a>
+                    <a href="#shiva" class="text-stone-600 hover:text-amber-700 transition">Devotion to Shiva</a>
+                    <a href="#arrogance" class="text-stone-600 hover:text-amber-700 transition">The Arrogance</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="origin" class="text-center my-12 md:my-20">
+            <h1 class="font-sanskrit text-5xl md:text-7xl font-bold text-amber-900 leading-tight">The Ten-Headed Scholar</h1>
+            <p class="mt-4 text-xl md:text-2xl text-stone-600">The Birth of Arrogance</p>
+            <p class="mt-6 max-w-3xl mx-auto text-stone-500">
+                Before he was the feared demon king, Ravana was Dashanana, a brilliant scholar and the grandson of the great sage Pulastya. Seeing the power and prosperity of his half-brother Kubera, the god of wealth, a burning ambition was kindled within him. He resolved to perform the most intense penances to gain ultimate power and surpass all beings.
+            </p>
+        </section>
+
+        <section id="penance" class="my-16 md:my-24 py-12 bg-amber-50/50 rounded-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Great Penance to Brahma</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Along with his brothers Kumbhakarna and Vibhishana, Ravana embarked on a penance of unimaginable severity, lasting for thousands of years, to attract the attention of the Creator God, Lord Brahma.</p>
+            
+            <div>
+                <div class="flex flex-col md:flex-row justify-center items-center md:space-x-4 mb-6">
+                    <button class="step-item step-item-active w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 mb-2 md:mb-0" data-step="1">1. The Austerities</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white mb-2 md:mb-0" data-step="2">2. The Ultimate Sacrifice</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white" data-step="3">3. The Fatal Boon</button>
+                </div>
+
+                <div id="step-details" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md min-h-[150px]">
+                    <h4 id="step-title" class="font-bold text-xl text-amber-700 mb-2">Step 1: The Austerities</h4>
+                    <p id="step-description" class="text-stone-600">For millennia, Ravana stood amidst five fires in the summer, in ice-cold water in the winter, and on one leg for a thousand years, fasting and chanting Brahma's name. His willpower was absolute, his focus unwavering.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="shiva" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">Devotion to Shiva</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Beyond his quest for power, Ravana was also one of the greatest devotees of Lord Shiva. His relationship with the Destroyer God was a complex one, marked by moments of both supreme arrogance and profound devotion.</p>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="flex border-b border-stone-300 mb-6">
+                    <button class="tab-button tab-active flex-1 text-center font-semibold p-3 border-b-2 transition" data-tab="hubris">An Act of Hubris</button>
+                    <button class="tab-button flex-1 text-center font-semibold p-3 border-b-2 border-transparent text-stone-500 transition" data-tab="devotion">A Hymn of Devotion</button>
+                </div>
+                <div id="tab-content">
+                    <div id="hubris-content" class="tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">Lifting Mount Kailash</h3>
+                        <p class="text-stone-600">Once, while flying in his Pushpaka Vimana, Ravana's path was blocked by Mount Kailash, the abode of Shiva. Angered, the arrogant king decided to uproot and move the entire mountain. As he lifted it, Shiva simply pressed down with his toe, trapping Ravana's arms underneath. Crushed and humbled, Ravana was trapped for a thousand years.</p>
+                    </div>
+                    <div id="devotion-content" class="hidden tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">The Shiva Tandava Stotram</h3>
+                        <p class="text-stone-600">To appease the enraged Shiva, Ravana composed and sang a powerful hymn of praise, the Shiva Tandava Stotram. So beautiful and heartfelt was this hymn that Shiva, pleased with his devotion, not only released him but also gifted him the divine, indestructible sword, Chandrahas. It was this act of devotion that earned him the name 'Ravana'—He Who Roared.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="arrogance" class="my-16 md:my-24 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-800">The Age of Arrogance</h2>
+            <p class="mt-4 text-lg max-w-3xl mx-auto text-stone-600">
+                Armed with near-invincibility and divine weapons, Ravana's ambition turned into tyranny. He conquered the three worlds—heaven, earth, and the netherworlds. He defeated the gods, subjugated kings, and stole Kubera's golden city of Lanka and his flying chariot. His ten heads came to represent not just his immense knowledge, but his insatiable ego and lust for power.
+            </p>
+             <div class="text-6xl my-4">👑</div>
+             <p class="text-stone-500 max-w-2xl mx-auto">His reign became a dark age for the universe. The very boons that were a reward for his devotion became the instruments of his adharma (unrighteousness), as he believed no power could ever challenge him.</p>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-100 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-stone-500">
+            <p>An interactive retelling of Ravana's quest for power and the boons that sealed his fate.</p>
+            <p class="text-sm mt-2">Inspired by the epic Ramayana.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stepData = {
+                1: { title: 'Step 1: The Austerities', description: 'For millennia, Ravana stood amidst five fires in the summer, in ice-cold water in the winter, and on one leg for a thousand years, fasting and chanting Brahma\'s name. His willpower was absolute, his focus unwavering.' },
+                2: { title: 'Step 2: The Ultimate Sacrifice', description: 'When Brahma still did not appear, Ravana began an extreme act of self-sacrifice. One by one, he severed his ten heads and offered them into the sacrificial fire. As he was about to cut off his final head, Lord Brahma, moved by his incredible determination, finally appeared before him.' },
+                3: { title: 'Step 3: The Fatal Boon', description: 'Brahma restored his heads and offered him a boon. Ravana asked for immortality, which Brahma refused. Instead, Ravana asked for invulnerability from all divine and powerful beings: gods, demons, celestial spirits, serpents, and beasts. In his supreme arrogance, he considered humans and monkeys too insignificant to mention—a fatal oversight.' }
+            };
+
+            const stepItems = document.querySelectorAll('.step-item');
+            const stepTitle = document.getElementById('step-title');
+            const stepDescription = document.getElementById('step-description');
+
+            stepItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    stepItems.forEach(i => i.classList.remove('step-item-active', 'bg-white'));
+                    stepItems.forEach(i => {
+                        if (i !== item) i.classList.add('bg-white');
+                    });
+                    item.classList.add('step-item-active');
+                    item.classList.remove('bg-white');
+
+                    const step = item.dataset.step;
+                    stepTitle.textContent = stepData[step].title;
+                    stepDescription.textContent = stepData[step].description;
+                });
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+                    button.classList.add('tab-active');
+
+                    const tab = button.dataset.tab;
+                    tabPanes.forEach(pane => {
+                        if (pane.id === `${tab}-content`) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+

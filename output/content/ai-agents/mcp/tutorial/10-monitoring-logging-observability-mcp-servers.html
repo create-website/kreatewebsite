@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring, Logging & Observability in MCP Servers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">Monitoring, Logging & Observability</h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Ensuring Reliability and Trust in Production MCP Servers</p>
+        </header>
+
+        <main class="max-w-4xl mx-auto">
+            <!-- Introduction Section -->
+            <section class="mb-12">
+                <p class="text-lg leading-relaxed">
+                    As agentic systems become more complex and mission-critical, simply deploying an MCP server is not enough. To operate these systems reliably, you need deep visibility into their behavior. Observability—the ability to understand the internal state of your system from its external outputs—is crucial. This guide covers the key strategies for monitoring, logging, and tracing within an MCP-based architecture to ensure performance, security, and reliability.
+                </p>
+            </section>
+
+            <!-- Core Pillars of Observability -->
+            <section id="observability-pillars" class="mb-16">
+                 <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Core Pillars of MCP Observability</h2>
+                <div class="space-y-8">
+                    <!-- Distributed Tracing -->
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-3">Trace Request Flows End-to-End</h3>
+                        <p class="text-lg leading-relaxed mb-4">When an agent makes a request, it can trigger a cascade of events. Distributed tracing allows you to follow a single request's journey—from the agent's initial prompt, through the MCP server's tool selection, to the call to a downstream API or database, and back. Each step is a "span" in a larger "trace," making it easy to pinpoint bottlenecks and errors.</p>
+                        
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-lg text-gray-700">
+                            <li><strong>Key Benefit:</strong> Instantly identify which part of the agent-tool-resource chain is causing latency or failures.</li>
+                            <li><strong>Tools:</strong> OpenTelemetry, Jaeger, Datadog, Honeycomb.</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Metrics -->
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-3">Monitor Key Performance Metrics</h3>
+                        <p class="text-lg leading-relaxed mb-4">Metrics provide a high-level, aggregate view of your system's health. By tracking key indicators, you can understand performance trends, resource utilization, and overall stability.</p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-lg text-gray-700">
+                             <li><strong>Latency:</strong> Track the time it takes to process tool calls (p50, p90, p99).</li>
+                             <li><strong>Error Rates:</strong> Monitor the percentage of failed tool invocations or resource fetches (e.g., HTTP 5xx errors).</li>
+                             <li><strong>Tool Invocation Patterns:</strong> Count which tools are being used most frequently to understand agent behavior and identify popular capabilities.</li>
+                             <li><strong>Resource Usage:</strong> Monitor CPU, memory, and network I/O of your MCP server instances.</li>
+                        </ul>
+                    </div>
+
+                     <!-- Auditing and Provenance -->
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-3">Auditing & Provenance of Context</h3>
+                        <p class="text-lg leading-relaxed mb-4">In many applications, especially regulated ones, you need to know not just what happened, but who did it and with what information. Structured logging is essential for creating an immutable audit trail.</p>
+                         <ul class="list-disc list-inside mt-4 space-y-2 text-lg text-gray-700">
+                            <li><strong>Log every tool call:</strong> Record the agent ID, the tool name, the parameters used, and the result.</li>
+                            <li><strong>Track context provenance:</strong> When an agent fetches a resource, log the version of the resource and the agent that requested it. This is vital for debugging and understanding why an agent made a particular decision.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Dashboarding and Alerting -->
+            <section id="dashboarding" class="mb-16">
+                 <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Dashboarding & Alerting Strategies</h2>
+                 <div class="bg-indigo-50 border-l-4 border-indigo-500 p-8 rounded-2xl text-indigo-900">
+                    <p class="text-lg leading-relaxed">All the data you collect is useless without a way to visualize and act on it. Create dashboards that provide at-a-glance views of your key metrics. Set up automated alerts to notify your team when these metrics cross critical thresholds (e.g., "error rate exceeds 5%" or "p99 latency is over 2 seconds"). This shifts you from a reactive to a proactive operational stance.</p>
+                    
+                </div>
+            </section>
+
+            <!-- Conclusion -->
+            <section class="text-center mt-16">
+                 <h2 class="text-3xl font-bold text-gray-900 mb-4">From Black Box to Glass Box</h2>
+                 <p class="text-lg leading-relaxed max-w-3xl mx-auto">
+                    Effective observability transforms your agentic system from an unpredictable "black box" into a transparent "glass box." By implementing robust tracing, monitoring, and logging, you build the trust and confidence required to deploy AI agents in real-world, high-stakes environments.
+                </p>
+            </section>
+        </main>
+
+        <footer class="text-center mt-16 border-t pt-8">
+            <p class="text-gray-500">&copy; 2025 AI Insights. All Rights Reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lohri: A Festival of Fire and Harvest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Bonfire Warmth (Orange, Gold, Brown) -->
+    <!-- Application Structure Plan: A narrative infographic that explains Lohri's cultural significance. The structure is: 1. Hero section. 2. "What is Lohri?". 3. "The Legend of Dulla Bhatti". 4. "Traditions of the Bonfire". 5. "A Taste of Lohri" chart. This flow is designed to capture the essence of the harvest festival and its community spirit. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The Legend of Dulla Bhatti -> Goal: Inform -> Viz: Two-column layout -> Justification: Clearly presents the folklore central to the festival. -> Library/Method: HTML/CSS.
+        - Data Point: Key traditions -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the main activities around the bonfire. -> Library/Method: HTML/CSS.
+        - Data Point: Key festive foods -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display popular harvest treats. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #FFF7ED; /* Very Light Orange */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-orange { color: #F97316; }
+        .palette-text-amber { color: #F59E0B; }
+        .palette-text-brown { color: #78350F; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #F97316; /* Orange */
+            border: 3px solid #F59E0B; /* Amber */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-orange tracking-wider">Lohri</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">A Festival of Winter Harvest and Community Warmth</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Lohri?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Lohri is a popular winter folk festival celebrated primarily in the Punjab region of the Indian subcontinent. It marks the end of the winter solstice and the passing of the coldest days, welcoming the return of longer, warmer days. It is a festival of joy, community, and gratitude for the winter crops.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-amber mb-4">🌾</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Winter Harvest</h3>
+                    <p class="mt-2 text-gray-600">Lohri is traditionally linked to the harvest of the rabi crops, especially sugarcane. It's a time for farmers to celebrate and give thanks for their produce.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-orange mb-4">☀️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Welcoming the Sun</h3>
+                    <p class="mt-2 text-gray-600">The festival celebrates the end of peak winter and looks forward to the sun's journey northward (*Uttarayan*), bringing warmth and new life.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-brown mb-4">🔥</div>
+                    <h3 class="text-3xl font-bold text-gray-900">The Sacred Bonfire</h3>
+                    <p class="mt-2 text-gray-600">The bonfire is the central element of Lohri, around which the entire community gathers to sing, dance, and offer prayers.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Legend of Dulla Bhatti</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    No Lohri celebration is complete without songs honoring Dulla Bhatti, a legendary Punjabi hero who lived during the reign of the Mughal Emperor Akbar. He is remembered as a local 'Robin Hood' figure.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">❤️</div>
+                        <p class="text-xl font-bold mt-2 palette-text-orange">A Savior of the People</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">Dulla Bhatti was known for robbing the rich to help the poor. Most famously, he rescued Hindu girls who were being forcibly taken to be sold in the slave markets. He would then arrange their marriages to village boys and provide them with a dowry. The popular Lohri song, "Sunder Mundriye," recounts the tale of two such girls, Sundri and Mundri, whom he saved and married off as their guardian. Singing his praise is a way of honoring his legacy of courage and social justice.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Traditions of the Bonfire</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Lohri celebrations are vibrant and community-oriented, with most activities centered around the warmth and glow of the sacred bonfire.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🔥</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Lighting the Bonfire</h3>
+                    <p class="mt-2 text-sm text-gray-600">As the sun sets, large bonfires are lit in open spaces. People gather around, offering prayers to Agni, the fire god, for blessings and prosperity.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎶</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Singing & Dancing</h3>
+                    <p class="mt-2 text-sm text-gray-600">People circle the bonfire, singing traditional Lohri songs like "Sunder Mundriye" and breaking into energetic Bhangra and Gidda dances.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🥜</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Offerings to Fire</h3>
+                    <p class="mt-2 text-sm text-gray-600">Harvest foods like sesame seeds (til), jaggery (gur), popcorn, and peanuts are tossed into the fire as offerings, symbolizing the burning of negativity.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎁</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Collecting Lohri</h3>
+                    <p class="mt-2 text-sm text-gray-600">Children go from door to door, singing folk songs and collecting treats and money, which is also known as collecting Lohri.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Lohri</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The food of Lohri is centered around the winter harvest. The snacks are warming and energy-giving, perfect for a cold winter's night, while the main feast is a hearty Punjabi affair.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Popular Lohri Foods</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Sarson ka Saag & Makki di Roti', 
+                'Til (Sesame) & Gur (Jaggery)', 
+                'Popcorn, Peanuts, Rewari', 
+                'Gajak (Sesame Brittle)'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity during Lohri',
+                        data: [95, 100, 100, 85],
+                        backgroundColor: [
+                           '#16A34A', // Green
+                           '#78350F', // Brown
+                           '#F59E0B', // Yellow
+                           '#F97316'  // Orange
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Popularity & Importance',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

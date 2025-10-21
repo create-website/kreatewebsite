@@ -1,0 +1,10 @@
+Just extend the JS array:
+{
+  url: "https://storage.googleapis.com/imagesg/festivals/newfestival/img1.jpeg",
+  category: "newfestival"
+}
+…and add a new button:
+
+html
+Copy code
+<button onclick="filterImages('newfestival')">New Festival</button>

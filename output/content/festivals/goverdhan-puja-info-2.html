@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Govardhan Puja Info</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a linear narrative structure to guide the user through the story of Govardhan Puja. It begins with a hook defining the festival, then visually retells the core myth (The Divine Lila) using a timeline. It then focuses on the central ritual of the Annakut offering with a data visualization. Following this, it breaks down the key rituals and their meanings, and concludes by highlighting the festival's three main pillars of significance. This top-down, narrative approach was chosen to make a complex theological and cultural topic easily digestible for a general audience in a single, scrolling experience. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: The mythological progression of Krishna's lila. Goal: Organize. Chosen Visualization: A vertical timeline created with structured HTML/CSS. Justification: A timeline is the most intuitive way to present a chronological story, guiding the user step-by-step through the divine drama. Method: HTML/CSS with Tailwind. NO SVG/Mermaid.
+        - Data Point: The composition of the Chappan Bhog (56 offerings). Goal: Compare/Inform. Chosen Visualization: Donut Chart. Justification: A donut chart visually represents the "mountain of food" concept and effectively shows the proportion of different food categories in the grand offering, making the abstract idea of "56 dishes" tangible. Library: Chart.js/Canvas. NO SVG.
+        - Data Point: The core rituals (Hillock, Go Puja, Parikrama). Goal: Organize. Chosen Visualization: Icon-driven card layout. Justification: Using distinct cards with Unicode icons for each ritual breaks down complex practices into clear, memorable segments, enhancing readability and information retention. Method: HTML/CSS with Tailwind. NO SVG.
+        - Data Point: The festival's multifaceted significance. Goal: Inform. Chosen Visualization: Three-column layout with large Unicode icons. Justification: This approach isolates and emphasizes the three core takeaways (spiritual, ecological, social), functioning like "big number" callouts for conceptual data. Method: HTML/CSS with Tailwind. NO SVG.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8F0;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#D9534F] mb-2">Giridhari's Grace</h1>
+            <p class="text-lg md:text-xl text-[#5A5A5A]">The Story of Govardhan Puja</p>
+            <p class="max-w-2xl mx-auto mt-4 text-gray-600">
+                A vibrant Hindu festival celebrating Lord Krishna's divine protection, the sanctity of nature, and the power of faith. It commemorates the day Krishna lifted Govardhan Hill to shelter his devotees.
+            </p>
+        </header>
+
+        <main>
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#F0AD4E]">The Divine Lila: A Story in Four Acts</h2>
+                <div class="relative pl-8 border-l-4 border-[#F0AD4E]">
+                    <div class="mb-10">
+                        <div class="absolute w-8 h-8 bg-[#D9534F] rounded-full -left-4 border-4 border-white flex items-center justify-center text-white font-bold">1</div>
+                        <h3 class="text-xl font-semibold text-[#D9534F] mb-1">A Divine Inquiry</h3>
+                        <p class="text-gray-700">Child Krishna questions the tradition of worshipping the celestial god Indra, urging the villagers to instead honor Govardhan Hill, the direct source of their sustenance—providing fertile soil, fresh water, and grass for their sacred cows.</p>
+                    </div>
+                    <div class="mb-10">
+                        <div class="absolute w-8 h-8 bg-[#D9534F] rounded-full -left-4 border-4 border-white flex items-center justify-center text-white font-bold">2</div>
+                        <h3 class="text-xl font-semibold text-[#D9534F] mb-1">Indra's Wrath</h3>
+                        <p class="text-gray-700">Feeling slighted by the villagers' new focus of worship, an enraged Indra unleashes apocalyptic clouds, commanding them to flood Vrindavan with torrential rains as punishment.</p>
+                    </div>
+                    <div class="mb-10">
+                        <div class="absolute w-8 h-8 bg-[#D9534F] rounded-full -left-4 border-4 border-white flex items-center justify-center text-white font-bold">3</div>
+                        <h3 class="text-xl font-semibold text-[#D9534F] mb-1">The Miracle of Giridhari</h3>
+                        <p class="text-gray-700">To protect the terrified villagers and their animals, Krishna effortlessly lifts the entire Govardhan Hill on his little finger, holding it aloft like a giant umbrella for seven days and nights, providing perfect shelter.</p>
+                    </div>
+                    <div>
+                        <div class="absolute w-8 h-8 bg-[#D9534F] rounded-full -left-4 border-4 border-white flex items-center justify-center text-white font-bold">4</div>
+                        <h3 class="text-xl font-semibold text-[#D9534F] mb-1">The Humbling of Pride</h3>
+                        <p class="text-gray-700">His power rendered useless, Indra's pride is shattered. He descends to beg forgiveness, acknowledging Krishna's supreme divinity and the triumph of pure devotion over ego.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-16 bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-center mb-2 text-[#5CB85C]">Annakut: The Mountain of Food</h2>
+                <p class="text-center text-gray-600 mb-6 max-w-xl mx-auto">The festival's centerpiece is the Annakut, a "mountain of food" offered in gratitude. It traditionally consists of 56 dishes (*Chappan Bhog*), representing the full spectrum of nature's bounty.</p>
+                <div class="chart-container">
+                    <canvas id="annakutChart"></canvas>
+                </div>
+                <p class="text-center text-xs text-gray-500 mt-4">Composition of a typical *Chappan Bhog* offering.</p>
+            </section>
+
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#428BCA]">Core Rituals & Their Meaning</h2>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <p class="text-5xl mb-4">⛰️</p>
+                        <h3 class="text-xl font-semibold mb-2 text-[#428BCA]">Govardhan Hillock</h3>
+                        <p class="text-gray-600 text-sm">A replica of the hill is made from sacred cow dung or clay, bringing the divine landscape into the home and transforming a humble material into a sacred icon.</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <p class="text-5xl mb-4">🐄</p>
+                        <h3 class="text-xl font-semibold mb-2 text-[#428BCA]">Go Puja (Cow Worship)</h3>
+                        <p class="text-gray-600 text-sm">Cows are bathed, adorned, and fed special food, expressing reverence for all life and gratitude for their role in sustenance as beings beloved by Krishna.</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <p class="text-5xl mb-4">🔄</p>
+                        <h3 class="text-xl font-semibold mb-2 text-[#428BCA]">Parikrama</h3>
+                        <p class="text-gray-600 text-sm">Devotees walk clockwise around the symbolic hillock (or the actual hill in Braj) in a physical act of surrender, placing the divine at the center of their lives.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#D9534F]">Enduring Significance</h2>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div>
+                        <p class="text-5xl mb-4">❤️</p>
+                        <h3 class="text-xl font-semibold mb-2 text-[#D9534F]">Triumph of Devotion</h3>
+                        <p class="text-gray-600 text-sm">Teaches that sincere, loving faith (*bhakti*) is more powerful than transactional ritual, and that divine protection is granted to those who take refuge in God with humility.</p>
+                    </div>
+                    <div>
+                        <p class="text-5xl mb-4">🌿</p>
+                        <h3 class="text-xl font-semibold mb-2 text-[#D9534F]">Ecological Harmony</h3>
+                        <p class="text-gray-600 text-sm">Promotes reverence for nature by worshipping the life-sustaining mountain, establishing an ancient paradigm for environmental stewardship and gratitude for the Earth's gifts.</p>
+                    </div>
+                    <div>
+                        <p class="text-5xl mb-4">🤝</p>
+                        <h3 class="text-xl font-semibold mb-2 text-[#D9534F]">Community Solidarity</h3>
+                        <p class="text-gray-600 text-sm">Reinforces social bonds through the collective acts of worship and, most importantly, the sharing of sanctified food (*prasad*), which dissolves barriers and fosters unity.</p>
+                    </div>
+                </div>
+            </section>
+<!--           
+            <footer class="text-center mt-12 pt-8 border-t border-gray-200">
+                <p class="text-lg font-semibold text-gray-700">Festival Date for 2025</p>
+                <p class="text-2xl font-bold text-[#5CB85C]">October 22, 2025</p>
+            </footer>
+-->
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('annakutChart').getContext('2d');
+        const annakutChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Sweets (Mithai)', 'Savories & Snacks', 'Cereals & Breads', ['Vegetable', 'Preparations'], 'Dairy & Drinks', ['Fruits &', 'Accompaniments']],
+                datasets: [{
+                    label: 'Annakut Composition',
+                    data: [25, 20, 20, 15, 10, 10],
+                    backgroundColor: [
+                        '#D9534F',
+                        '#F0AD4E',
+                        '#5CB85C',
+                        '#428BCA',
+                        '#5A5A5A',
+                        '#F7E1A6'
+                    ],
+                    borderColor: '#ffffff',
+                    borderWidth: 4,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            boxWidth: 12,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            },
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                cutout: '65%'
+            }
+        });
+    </script>
+</body>
+</html>

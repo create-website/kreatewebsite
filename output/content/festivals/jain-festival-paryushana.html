@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paryushana: The Festival of Forgiveness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Serene & Introspective (White, Gray, Green) -->
+    <!-- Application Structure Plan: A narrative infographic that explains Paryushana, focusing on its deep spiritual significance. The structure is: 1. Hero section. 2. "What is Paryushana?". 3. "The Eight Days of Spiritual Discipline". 4. "Core Practices of Paryushana". 5. "The Essence of Forgiveness: Kshamavani". 6. "A Taste of Austerity" chart. This flow guides the user through the introspective journey of the festival. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary of the festival's purpose. -> Library/Method: HTML/CSS.
+        - Data Point: The Eight Days -> Goal: Show Process -> Viz: Vertical timeline -> Justification: Effectively illustrates the progression of spiritual focus. -> Library/Method: HTML/CSS.
+        - Data Point: Core practices -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the main observances. -> Library/Method: HTML/CSS.
+        - Data Point: Types of fasting -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display the different levels of austerity practiced. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #FFFFFF; 
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #F9FAFB; /* Very Light Gray */
+        }
+        .palette-text-green { color: #16A34A; }
+        .palette-text-gray { color: #4B5563; }
+        .palette-text-saffron { color: #FDBA74; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #16A34A; /* Green */
+            border: 3px solid #D1D5DB; /* Gray */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-green tracking-wider">Paryushana</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">The Jain Festival of Forgiveness and Self-Purification</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Paryushana?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Paryushana Parva is the most important annual festival for Jains, a time for self-analysis, introspection, and purification of the soul. Lasting for eight or ten days, it is a period dedicated to detaching from worldly affairs and focusing on spiritual upliftment through fasting, meditation, and seeking forgiveness.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-green mb-4">🧘</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Abiding in the Self</h3>
+                    <p class="mt-2 text-gray-600">The word "Paryushana" means "to abide" or "come together." It signifies a time to live close to one's own soul and reflect on the eternal truths.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-gray mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Festival Timing</h3>
+                    <p class="mt-2 text-gray-600">It is observed annually during the monsoon season, typically in the Hindu month of Bhadrapada (August or September).</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-saffron mb-4">❤️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">The Goal: Purification</h3>
+                    <p class="mt-2 text-gray-600">The ultimate purpose is to shed accumulated karmas by practicing austerity, studying scriptures, and cultivating a state of forgiveness.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="timeline" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Eight Days of Spiritual Discipline</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Paryushana is an eight-day observance (for Svetambara Jains; ten for Digambara Jains) focused on deepening one's understanding and practice of the core Jain principles.
+                </p>
+            </div>
+            <div class="mt-12 max-w-3xl mx-auto">
+                <div class="relative pl-8 border-l-4 border-gray-200">
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-green">Days 1-3: Early Days of Austerity</h3>
+                        <p class="text-gray-600">The initial days are focused on settling the mind and beginning various forms of fasting. Devotees increase their time spent in prayer and meditation, detaching from routine life.</p>
+                    </div>
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-green">Days 4-7: Listening to the Kalpa Sutra</h3>
+                        <p class="text-gray-600">A significant part of the festival involves listening to discourses on the Kalpa Sutra, a scripture that recounts the life of Lord Mahavir, particularly the story of his birth, which is read on the fifth day.</p>
+                    </div>
+                     <div class="timeline-item">
+                        <h3 class="text-2xl font-bold palette-text-gray">Day 8: Samvatsari - The Culmination</h3>
+                        <p class="text-gray-600">The final and most important day of Paryushana. Many Jains observe a complete fast. The day is spent in prayer and performing the essential rite of Pratikraman to repent for the year's sins.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="practices" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Core Practices of Paryushana</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   The festival is defined by several key practices that help individuals purify their consciousness and strengthen their spiritual resolve.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4"> fasting</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Fasting (Upvas)</h3>
+                    <p class="mt-2 text-sm text-gray-600">Fasting is a central practice, ranging from eating only once a day to complete fasting without food or water for one or more days.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🧘‍♂️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Pratikraman</h3>
+                    <p class="mt-2 text-sm text-gray-600">A ritual of repentance where devotees reflect on their non-virtuous activities, express remorse, and resolve not to repeat them.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">📖</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Swadhyaya</h3>
+                    <p class="mt-2 text-sm text-gray-600">The study of scriptures and listening to sermons from monks and nuns to gain deeper insight into the Jain philosophy.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">❤️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Kshamavani</h3>
+                    <p class="mt-2 text-sm text-gray-600">The day after Samvatsari is Forgiveness Day, where Jains seek forgiveness from all living beings for any harm caused, knowingly or unknowingly.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="forgiveness" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Essence of Forgiveness: Kshamavani</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The most profound aspect of Paryushana is the practice of universal forgiveness. It is the cornerstone of the festival's conclusion, embodying the principle of Ahimsa in its highest form.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12 text-center">
+                <h3 class="text-4xl font-bold palette-text-green">Micchami Dukkadam</h3>
+                <p class="mt-4 text-xl text-gray-700 leading-relaxed">On Kshamavani, Jains greet each other with this ancient Prakrit phrase. It translates to: <br><br> <span class="font-semibold">"If I have caused you offence in any way, knowingly or unknowingly, in thought, word or deed, then I seek your forgiveness."</span> <br><br>This is not just a formality; it is a heartfelt request to cleanse the soul of all anger, pride, and resentment, fostering a state of universal love and compassion.</p>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Austerity</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    During Paryushana, food is consumed with mindfulness and restraint. Many Jains practice various forms of fasting to exercise self-control and purify the body. The chart below shows different levels of fasting commonly observed.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Common Types of Fasting during Paryushana</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Complete Fast (Upvas)', 
+                'Partial Fast (Ekashana - one meal)', 
+                'Boiled Water Only', 
+                'No Green Vegetables'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Level of Austerity',
+                        data: [100, 85, 95, 70],
+                        backgroundColor: [
+                           '#4B5563', // Gray
+                           '#16A34A', // Green
+                           '#D1D5DB', // Light Gray
+                           '#65A30D'  // Lime Green
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Level of Austerity & Commonality',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

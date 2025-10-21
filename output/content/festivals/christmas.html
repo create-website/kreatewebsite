@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas: The Festival of Joy and Goodwill</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Festive Cheer (Red, Green, Gold) -->
+    <!-- Application Structure Plan: A narrative infographic that explains the story and traditions of Christmas. The structure is: 1. Hero section. 2. "What is Christmas?". 3. "The Nativity Story". 4. "Symbols of Christmas". 5. "Traditions of Joy & Giving". 6. "A Taste of Christmas" chart. This flow guides the user from the religious origins to the cultural celebrations of the holiday. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The Nativity Story -> Goal: Inform -> Viz: A two-column layout -> Justification: Clearly presents the foundational story of the festival. -> Library/Method: HTML/CSS.
+        - Data Point: Key symbols -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the main symbols of the holiday. -> Library/Method: HTML/CSS.
+        - Data Point: Key festive foods -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display popular Christmas dishes. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #F8FBF8; /* Very Light Green/Off-white */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-red { color: #DC2626; }
+        .palette-text-green { color: #16A34A; }
+        .palette-text-gold { color: #D97706; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #DC2626; /* Red */
+            border: 3px solid #16A34A; /* Green */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-red tracking-wider">Christmas</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">A Celebration of Peace, Joy, and Goodwill</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Christmas?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Christmas is an annual festival commemorating the birth of Jesus Christ, observed primarily on December 25th as a religious and cultural celebration among billions of people around the world. It is a time of joy, giving, and gathering with family and friends.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-red mb-4">✝️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">The Birth of Jesus</h3>
+                    <p class="mt-2 text-gray-600">At its heart, Christmas is a Christian holiday celebrating the birth of Jesus of Nazareth, whom Christians believe is the Son of God.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-gold mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Festival Timing</h3>
+                    <p class="mt-2 text-gray-600">Celebrated on December 25th by Western Christian Churches. The festive season, known as Christmastide, can begin as early as Advent in late November.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-green mb-4">❤️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Message of Hope</h3>
+                    <p class="mt-2 text-gray-600">The festival carries a universal message of peace, love, and goodwill to all people, which is celebrated by Christians and non-Christians alike.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Nativity Story</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The story of Christmas is found in the biblical gospels of Matthew and Luke. It tells of the humble birth of Jesus in Bethlehem, an event that Christians believe fulfilled ancient prophecies and brought a savior into the world.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">⭐</div>
+                        <p class="text-xl font-bold mt-2 palette-text-gold">A Birth in a Manger</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">According to the narrative, Mary and Joseph traveled from Nazareth to Bethlehem to register for a census. Finding no room at the inn, they took shelter in a stable, where Jesus was born and laid in a manger. Angels announced his birth to shepherds in the fields, who came to worship him. Later, three wise men (Magi) from the East, guided by a star, arrived to honor the newborn king with gifts of gold, frankincense, and myrrh. This simple, humble birth is seen as a profound message of God's love for humanity.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="symbols" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Symbols of Christmas</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Over the centuries, many symbols have become associated with Christmas, each carrying its own special meaning and history.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎄</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Christmas Tree</h3>
+                    <p class="mt-2 text-sm text-gray-600">An evergreen tree, often a fir or pine, is decorated with lights and ornaments. It symbolizes everlasting life and light in the midst of winter darkness.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🌟</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Star</h3>
+                    <p class="mt-2 text-sm text-gray-600">Represents the Star of Bethlehem that guided the wise men to the baby Jesus. It is often placed at the top of the Christmas tree.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎅</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Santa Claus</h3>
+                    <p class="mt-2 text-sm text-gray-600">Based on the historical figure of Saint Nicholas, he is a legendary figure who brings gifts to well-behaved children on Christmas Eve.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🕯️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Candles & Lights</h3>
+                    <p class="mt-2 text-sm text-gray-600">Symbolize Jesus as the "Light of the World," bringing hope and dispelling darkness and despair.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Traditions of Joy & Giving</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Christmas is celebrated with a host of beloved traditions that emphasize family, community, and the spirit of generosity.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎶</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Carol Singing</h3>
+                    <p class="mt-2 text-sm text-gray-600">Groups of people go from house to house or perform in public, singing traditional Christmas carols that tell the story of the Nativity.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎁</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Exchanging Gifts</h3>
+                    <p class="mt-2 text-sm text-gray-600">Inspired by the gifts of the wise men, people exchange presents with family and friends as a gesture of love and appreciation.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🏠</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Decorating Homes</h3>
+                    <p class="mt-2 text-sm text-gray-600">Homes are decorated with lights, wreaths, and nativity scenes, creating a festive atmosphere for the holiday season.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">⛪</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Attending Church</h3>
+                    <p class="mt-2 text-sm text-gray-600">For many Christians, attending a special church service on Christmas Eve (Midnight Mass) or Christmas Day is a central part of the celebration.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Christmas</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The Christmas feast is a highlight of the holiday, a time for families to gather and share a special meal. The dishes vary by culture, but often include rich, hearty fare.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Popular Christmas Foods & Drinks</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Roast Turkey or Ham', 
+                'Christmas Pudding / Fruitcake', 
+                'Gingerbread Cookies', 
+                'Eggnog'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity during Christmas',
+                        data: [100, 90, 95, 80],
+                        backgroundColor: [
+                           '#DC2626', // Red
+                           '#78350F', // Brown (for pudding)
+                           '#D97706', // Gold/Orange
+                           '#FDE047'  // Yellow (for eggnog)
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Commonality in Holiday Feasts',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

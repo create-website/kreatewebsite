@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global FinTech Compliance Navigator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Neutral Earth -->
+    <!-- Application Structure Plan: The application is designed as an interactive dashboard, diverging from the linear structure of the source report. This choice was made to facilitate user-driven exploration and comparison, which is more effective for understanding complex, multi-jurisdictional data. The core structure consists of a main navigation sidebar for thematic exploration (e.g., 'Core Principles', 'Operational Framework') and a central content area. The primary interaction mechanism is a clickable world map that acts as a global filter, allowing users to dynamically view region-specific regulations (USA, EU, Asia). This task-oriented design—letting a user ask "What are the consent rules in the EU?"—is more intuitive than navigating a document by chapters. The user flow encourages comparison and synthesis by presenting data in parallel formats (charts, tables, diagrams) that update based on user selections. -->
+    <!-- Visualization & Content Choices: To translate the dense report into a digestible format, specific visualization and presentation methods were chosen. Report Info: Regional Laws (GDPR, CCPA, PIPL) -> Goal: Compare -> Viz/Method: Interactive HTML/CSS Map for filtering, Tabbed content panes for deep dives. Interaction: Click map to filter all content. Justification: Provides immediate, high-level context. Report Info: Max Penalties, Breach Timelines -> Goal: Compare quantitative data -> Viz/Method: Bar Charts (Chart.js/Canvas). Interaction: Charts dynamically update based on region selection. Justification: Bar charts excel at comparing discrete values across categories. Report Info: Processes (PbD, Checklist Management) -> Goal: Organize & Explain -> Viz/Method: HTML/CSS Flowchart diagrams. Interaction: Static but visually sequenced. Justification: Simplifies complex workflows into easy-to-follow steps. Report Info: Comparative Legal Analysis Tables -> Goal: Detailed Comparison -> Viz/Method: Interactive HTML Tables. Interaction: Hover effects for readability. Justification: Maintains data density while improving scannability. All choices adhere to the NO SVG/Mermaid constraint. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4; /* Light Cream */
+            color: #3C3C3C;
+        }
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 3px solid transparent;
+        }
+        .nav-link.active {
+            background-color: #EAE8E1;
+            color: #2D5BA3; /* Accent Blue */
+            border-left-color: #2D5BA3;
+        }
+        .nav-link:hover {
+            background-color: #EAE8E1;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .map-region {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .map-region:hover {
+            transform: translateY(-5px);
+            filter: brightness(1.1);
+        }
+        .map-region.active {
+            stroke: #2D5BA3;
+            stroke-width: 4px;
+            transform: translateY(-5px);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .tab-button.active {
+            border-bottom-color: #2D5BA3;
+            color: #2D5BA3;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+    <aside class="w-64 bg-[#EAE8E1] flex-shrink-0 p-4 space-y-4 overflow-y-auto hidden md:block">
+        <h1 class="text-xl font-bold text-[#2D5BA3]">Compliance Navigator</h1>
+        <nav class="flex flex-col space-y-2">
+            <a href="#overview" class="nav-link active p-2 rounded-r-lg">
+                <span class="mr-2">🌍</span> Global Overview
+            </a>
+            <a href="#core-principles" class="nav-link p-2 rounded-r-lg">
+                <span class="mr-2">⚖️</span> Core Principles
+            </a>
+            <a href="#operational-framework" class="nav-link p-2 rounded-r-lg">
+                <span class="mr-2">⚙️</span> Operational Framework
+            </a>
+            <a href="#law-to-code" class="nav-link p-2 rounded-r-lg">
+                 <span class="mr-2">💻</span> Law to Code
+            </a>
+        </nav>
+    </aside>
+
+    <button id="menu-button" class="md:hidden fixed top-4 left-4 z-20 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+    </button>
+    
+    <div id="mobile-menu" class="md:hidden fixed inset-0 bg-black bg-opacity-50 z-30 hidden">
+        <div class="w-64 bg-[#EAE8E1] h-full p-4 space-y-4">
+            <h1 class="text-xl font-bold text-[#2D5BA3]">Compliance Navigator</h1>
+            <nav class="flex flex-col space-y-2">
+                 <a href="#overview" class="nav-link active p-2 rounded-r-lg"><span class="mr-2">🌍</span> Global Overview</a>
+                 <a href="#core-principles" class="nav-link p-2 rounded-r-lg"><span class="mr-2">⚖️</span> Core Principles</a>
+                 <a href="#operational-framework" class="nav-link p-2 rounded-r-lg"><span class="mr-2">⚙️</span> Operational Framework</a>
+                 <a href="#law-to-code" class="nav-link p-2 rounded-r-lg"><span class="mr-2">💻</span> Law to Code</a>
+            </nav>
+        </div>
+    </div>
+
+
+    <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+        <section id="overview" class="content-section active">
+            <h2 class="text-3xl font-bold mb-2">Global FinTech Compliance Landscape</h2>
+            <p class="mb-6 text-lg text-gray-600">An interactive guide to navigating the complex web of privacy and security regulations for a global financial technology company. Select a region on the map to filter the data across all sections of this dashboard.</p>
+            
+            <div class="bg-white p-6 rounded-xl shadow-sm mb-8">
+                <h3 class="text-xl font-semibold mb-4 text-center">Interactive Regional Filter</h3>
+                <div id="map-container" class="w-full max-w-4xl mx-auto">
+                     <svg viewBox="0 0 1000 500" class="w-full h-auto">
+                        <defs><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="3"/><feOffset dx="2" dy="2" result="offsetblur"/><feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></defs>
+                        <path class="map-region fill-[#D1D5DB]" data-region="Global" d="M492,10L492,10C225.2,10,10,235.2,10,502s215.2,492,482,492s482-215.2,482-482l0,0C974,235.2,758.8,10,492,10z" style="display:none;"/>
+                        <path class="map-region fill-[#60A5FA]" data-region="USA" filter="url(#shadow)" d="M100 150 l200 0 l-20 80 l-160 0 z M150 230 l 100 0 l-10 50 l -80 0 z "/>
+                        <text x="175" y="200" font-size="24" fill="white" font-weight="bold" class="pointer-events-none">USA</text>
+
+                        <path class="map-region fill-[#818CF8]" data-region="EU" filter="url(#shadow)" d="M400 100 l150 0 l20 150 l-190 0 z"/>
+                        <text x="455" y="185" font-size="24" fill="white" font-weight="bold" class="pointer-events-none">EU</text>
+
+                        <path class="map-region fill-[#A78BFA]" data-region="Asia" filter="url(#shadow)" d="M650 150 l250 20 l20 150 l-250 -20 z"/>
+                        <text x="750" y="235" font-size="24" fill="white" font-weight="bold" class="pointer-events-none">Asia</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-xl font-semibold mb-4">Maximum Fines Comparison</h3>
+                    <p class="text-gray-500 text-sm mb-4">This chart compares the maximum potential financial penalties under major global regulations. Penalties are often calculated as a percentage of global annual turnover, making them a significant business risk.</p>
+                    <div class="chart-container">
+                        <canvas id="finesChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-xl font-semibold mb-4">Breach Notification Timelines</h3>
+                    <p class="text-gray-500 text-sm mb-4">Regulations mandate strict timelines for reporting data breaches to authorities. This comparison highlights the urgency required for a global incident response plan.</p>
+                    <div class="chart-container">
+                        <canvas id="breachChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="core-principles" class="content-section">
+            <h2 class="text-3xl font-bold mb-2">Core Compliance Principles</h2>
+            <p class="mb-6 text-lg text-gray-600">This section explores the fundamental principles that underpin global data protection laws, including consent, user rights, and data transfer rules. Use the map on the Overview page to filter these principles by region.</p>
+            
+            <div id="principles-content" class="space-y-8"></div>
+        </section>
+
+        <section id="operational-framework" class="content-section">
+            <h2 class="text-3xl font-bold mb-2">Operational Compliance Framework</h2>
+            <p class="mb-6 text-lg text-gray-600">Effective compliance goes beyond policy; it requires a robust operational framework. This section outlines the key processes for building a dynamic compliance program, from creating a master checklist to continuous monitoring and vendor management.</p>
+            <div id="framework-content" class="space-y-8"></div>
+        </section>
+        
+        <section id="law-to-code" class="content-section">
+             <h2 class="text-3xl font-bold mb-2">From Law to Code: Engineering Compliance</h2>
+            <p class="mb-6 text-lg text-gray-600">This section demonstrates how abstract legal requirements are translated into concrete, testable software features. This "Privacy by Design" approach embeds compliance directly into the product development lifecycle.</p>
+            <div class="bg-white p-6 rounded-xl shadow-sm overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-50 border-b-2 border-gray-200">
+                        <tr>
+                            <th class="p-3 text-sm font-semibold tracking-wide">Legal Requirement</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide">Corresponding Feature</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide">Example Test Case</th>
+                        </tr>
+                    </thead>
+                    <tbody id="law-to-code-table" class="divide-y divide-gray-100"></tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const data = {
+                USA: {
+                    name: "United States",
+                    principles: {
+                        consent: {
+                            title: "Consent: The 'Opt-Out' Model",
+                            description: "The U.S. traditionally follows an 'opt-out' model, primarily under the GLBA for financial data. Users have the right to prevent their information from being shared with non-affiliated third parties. The CCPA/CPRA introduces more granular rights, including the right to opt-out of the 'sale' or 'sharing' of personal information for advertising.",
+                            points: [
+                                "GLBA: Opt-out of sharing Non-public Personal Information (NPI).",
+                                "CCPA/CPRA: Right to 'Do Not Sell or Share My Personal Information'.",
+                                "CCPA/CPRA: Right to 'Limit the Use of My Sensitive Personal Information'."
+                            ]
+                        },
+                        rights: {
+                            title: "Key Data Subject Rights (CCPA/CPRA)",
+                            description: "The CCPA, expanded by the CPRA, grants California consumers a suite of rights that have become a benchmark in the U.S. These rights require businesses to be transparent and provide mechanisms for users to control their data.",
+                            points: [
+                                "Right to Know/Access: What data is collected and why.",
+                                "Right to Delete: Request deletion of personal information.",
+                                "Right to Correct: Fix inaccurate personal information.",
+                                "Private Right of Action: Allows consumer lawsuits for data breaches."
+                            ]
+                        },
+                        transfer: {
+                            title: "Data Security and Transfers (GLBA)",
+                            description: "The GLBA's Safeguards Rule mandates a comprehensive, written information security program. While not as prescriptive about cross-border transfers as GDPR, it requires robust vendor management to protect data wherever it goes.",
+                            points: [
+                                "Requirement for a 'Qualified Individual' to lead the security program.",
+                                "Mandatory risk assessments, technical safeguards (encryption, MFA), and physical safeguards.",
+                                "Strong due diligence and contractual obligations for all third-party vendors."
+                            ]
+                        }
+                    },
+                    fines: { label: "CCPA/CPRA", value: 7500, unit: "per violation" },
+                    breach: { label: "SEC (Materiality)", value: 96, unit: "Hours (4 business days)"}
+                },
+                EU: {
+                    name: "European Union",
+                    principles: {
+                        consent: {
+                            title: "Consent: The 'Opt-In' Gold Standard (GDPR)",
+                            description: "GDPR mandates a high standard for consent. It must be 'freely given, specific, informed, and unambiguous,' requiring a clear affirmative action from the user. Silence or pre-ticked boxes are not valid consent. This is an 'opt-in' model.",
+                            points: [
+                                "Consent is one of six lawful bases for processing.",
+                                "Withdrawing consent must be as easy as giving it.",
+                                "The ePrivacy Directive requires prior consent for non-essential cookies."
+                            ]
+                        },
+                        rights: {
+                            title: "Expansive Data Subject Rights (GDPR)",
+                            description: "GDPR provides a comprehensive set of rights to individuals, giving them significant control over their personal data. Organizations must have processes to fulfill these rights within strict timeframes.",
+                            points: [
+                                "Right to Erasure ('to be forgotten'): A powerful deletion right.",
+                                "Right to Data Portability: Receive data in a machine-readable format.",
+                                "Right to Object: To processing for marketing or on grounds of legitimate interest."
+                            ]
+                        },
+                        transfer: {
+                            title: "Strict Cross-Border Data Transfers",
+                            description: "GDPR strictly regulates transferring data outside the EEA. Transfers are only permitted if the destination country is deemed 'adequate' by the EU Commission or if 'appropriate safeguards' are in place.",
+                            points: [
+                                "Primary safeguard mechanism: Standard Contractual Clauses (SCCs).",
+                                "SCCs require a Transfer Impact Assessment (TIA) to assess recipient country laws.",
+                                "Data controllers remain accountable for data transferred abroad."
+                            ]
+                        }
+                    },
+                    fines: { label: "GDPR", value: 20000000, unit: "or 4% global turnover" },
+                    breach: { label: "GDPR", value: 72, unit: "Hours" }
+                },
+                Asia: {
+                    name: "Asia (P.R. China Focus)",
+                    principles: {
+                        consent: {
+                            title: "Consent: 'Separate Consent' in China (PIPL)",
+                            description: "China's PIPL establishes one of the strictest consent models globally. It requires 'separate consent' for high-risk activities, meaning a general, bundled consent is insufficient. Each high-risk action requires a distinct user opt-in.",
+                            points: [
+                                "Separate consent required for processing sensitive data.",
+                                "Separate consent required for sharing data with third parties.",
+                                "Separate consent required for ALL cross-border data transfers."
+                            ]
+                        },
+                        rights: {
+                            title: "Comprehensive Rights with Chinese Characteristics",
+                            description: "PIPL grants individuals rights similar to GDPR, including access, correction, and deletion. However, these rights operate within a legal framework that prioritizes state oversight and data sovereignty.",
+                            points: [
+                                "Includes rights to know, access, correct, delete, and data portability.",
+                                "Enforcement is carried out by the Cyberspace Administration of China (CAC).",
+                                "The emphasis on state control influences how these rights are practically applied."
+                            ]
+                        },
+                        transfer: {
+                            title: "Data Localization & State-Gated Transfers (PIPL)",
+                            description: "PIPL's cross-border transfer rules are its most challenging feature. The default is data localization (storing Chinese resident data within China). Transfers require navigating a complex, state-controlled approval process.",
+                            points: [
+                                "Mandatory government security assessment for large-scale transfers.",
+                                "Option to use a government-formulated Standard Contract for smaller transfers.",
+                                "This regime makes a unified global data architecture extremely difficult."
+                            ]
+                        }
+                    },
+                    fines: { label: "PIPL (China)", value: 7000000, unit: "or 5% global turnover (approx)" },
+                    breach: { label: "PIPL (China)", value: 0, unit: "Immediately" }
+                },
+                framework: {
+                    checklist: {
+                        title: "The Master Compliance Checklist",
+                        intro: "The core of an effective compliance program is a dynamic, centralized checklist. This isn't a static document but a living system (like a GRC platform) that maps every legal requirement to an internal control.",
+                        steps: [
+                            { name: "Deconstruct Laws", desc: "Break down each regulation (e.g., GDPR Art. 32) into granular, actionable control statements." },
+                            { name: "Tag Controls", desc: "Assign attributes to each control: Regulation, Jurisdiction, Owner, Process, and Type." },
+                            { name: "Define Evidence", desc: "For each control, specify what evidence proves it's working (e.g., audit logs, policy docs)." },
+                            { name: "Manage Vendors", desc: "Extend the checklist to third parties, covering due diligence, contracts, and ongoing monitoring." }
+                        ]
+                    },
+                    updates: {
+                        title: "The Living Checklist: Continuous Updates",
+                        intro: "Regulations are constantly changing. A static program is a failed program. The framework must include a formal process for ingesting regulatory intelligence and continuously updating controls.",
+                        steps: [
+                            { name: "Intelligence Pipeline", desc: "Proactively monitor for changes using legal partners, subscription services, and industry groups (ISACs)." },
+                            { name: "Review Cadence", desc: "Conduct formal, periodic reviews of the entire control framework (e.g., quarterly for high-risk areas)." },
+                            { name: "Update Process", desc: "Integrate new controls, document all changes, and get formal management approval." },
+                            { name: "Governance", desc: "Establish clear ownership (e.g., CCO/DPO) and provide regular reports to the Board of Directors." }
+                        ]
+                    }
+                },
+                lawToCode: [
+                    { req: 'GDPR Art. 7: Conditions for consent', feature: 'Consent Management Dashboard', test: "Verify a new user is created with all non-essential consent toggles set to 'off'. Verify changing a toggle creates a timestamped consent log." },
+                    { req: 'GDPR Art. 15 / CCPA Right to Know', feature: 'DSAR Access Request Feature', test: "Initiate an access request. Verify a machine-readable file (JSON) containing all user PI is delivered within the regulatory timeframe." },
+                    { req: 'GDPR Art.17 / CCPA Right to Delete', feature: '"Delete My Account" Function', test: "Trigger account deletion. Verify the user record is purged from the main database and deletion requests are sent to downstream systems."},
+                    { req: 'CCPA Right to Opt-Out', feature: '"Do Not Sell or Share" Link', test: "Click the link. Verify no third-party ad cookies are dropped and the user is added to a data-sharing suppression list." },
+                    { req: 'PSD2 Art. 97: Strong Customer Authentication', feature: 'Jurisdiction-Aware SCA Module', test: "Log in from an EU IP. Verify the system requires both a password (knowledge) and an SMS code (possession) before granting access." },
+                    { req: 'GLBA Safeguards Rule', feature: 'Role-Based Access Control (RBAC)', test: "Log in as a junior service agent. Verify the user can view basic profile info but is blocked from accessing full financial account numbers." }
+                ]
+            };
+            
+            let finesChart, breachChart;
+            const appState = {
+                activeNav: 'overview',
+                activeRegion: 'Global'
+            };
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const mapRegions = document.querySelectorAll('.map-region');
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            function init() {
+                updateCharts('Global');
+                updateContent();
+                setupEventListeners();
+            }
+            
+            function setupEventListeners() {
+                navLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        appState.activeNav = link.getAttribute('href').substring(1);
+                        updateContent();
+                        if (mobileMenu.classList.contains('md:hidden') && !mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                        }
+                    });
+                });
+
+                mapRegions.forEach(region => {
+                    region.addEventListener('click', () => {
+                        appState.activeRegion = region.dataset.region;
+                        mapRegions.forEach(r => r.classList.remove('active'));
+                        region.classList.add('active');
+                        updateCharts(appState.activeRegion);
+                        if (appState.activeNav === 'core-principles') {
+                            renderPrinciples();
+                        }
+                    });
+                });
+
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+                mobileMenu.addEventListener('click', (e) => {
+                    if (e.target === mobileMenu) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            }
+
+            function updateContent() {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${appState.activeNav}`);
+                });
+
+                contentSections.forEach(section => {
+                    section.classList.toggle('active', section.id === appState.activeNav);
+                });
+
+                if (appState.activeNav === 'core-principles') {
+                    renderPrinciples();
+                } else if (appState.activeNav === 'operational-framework') {
+                    renderFramework();
+                } else if (appState.activeNav === 'law-to-code') {
+                    renderLawToCodeTable();
+                }
+            }
+            
+            function createCard(title, description, points) {
+                 return `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <h4 class="text-xl font-semibold text-[#2D5BA3] mb-3">${title}</h4>
+                        <p class="text-gray-600 mb-4">${description}</p>
+                        <ul class="space-y-2">
+                            ${points.map(point => `<li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✓</span><span>${point}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            function renderPrinciples() {
+                const container = document.getElementById('principles-content');
+                let html = '';
+                
+                const regionsToRender = appState.activeRegion === 'Global' 
+                    ? ['USA', 'EU', 'Asia']
+                    : [appState.activeRegion];
+
+                regionsToRender.forEach(regionKey => {
+                    const regionData = data[regionKey];
+                    html += `
+                        <div class="mb-8 p-4 border-l-4 border-gray-200">
+                            <h3 class="text-2xl font-bold mb-4">${regionData.name}</h3>
+                            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                ${createCard(regionData.principles.consent.title, regionData.principles.consent.description, regionData.principles.consent.points)}
+                                ${createCard(regionData.principles.rights.title, regionData.principles.rights.description, regionData.principles.rights.points)}
+                                ${createCard(regionData.principles.transfer.title, regionData.principles.transfer.description, regionData.principles.transfer.points)}
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+
+            function renderFramework() {
+                const container = document.getElementById('framework-content');
+                const checklist = data.framework.checklist;
+                const updates = data.framework.updates;
+
+                const createProcessDiagram = (process) => `
+                     <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <h3 class="text-xl font-semibold text-[#2D5BA3] mb-2">${process.title}</h3>
+                        <p class="text-gray-600 mb-6">${process.intro}</p>
+                        <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4">
+                            ${process.steps.map((step, index) => `
+                                <div class="flex-1 text-center">
+                                    <div class="bg-blue-100 text-blue-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-2 font-bold text-xl">${index + 1}</div>
+                                    <h4 class="font-semibold">${step.name}</h4>
+                                    <p class="text-sm text-gray-500">${step.desc}</p>
+                                </div>
+                                ${index < process.steps.length - 1 ? `<div class="w-full h-1 md:w-16 md:h-1 bg-gray-300 rounded-full"></div>` : ''}
+                            `).join('')}
+                        </div>
+                    </div>`;
+
+                container.innerHTML = `
+                    ${createProcessDiagram(checklist)}
+                    ${createProcessDiagram(updates)}
+                `;
+            }
+
+            function renderLawToCodeTable() {
+                const tbody = document.getElementById('law-to-code-table');
+                let html = '';
+                data.lawToCode.forEach(item => {
+                    html += `
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 text-sm text-gray-700 font-medium">${item.req}</td>
+                            <td class="p-3 text-sm text-gray-700">${item.feature}</td>
+                            <td class="p-3 text-sm text-gray-600">${item.test}</td>
+                        </tr>
+                    `;
+                });
+                tbody.innerHTML = html;
+            }
+            
+            function updateCharts(region) {
+                const chartData = {
+                    fines: {
+                        labels: [],
+                        values: [],
+                        units: []
+                    },
+                    breach: {
+                        labels: [],
+                        values: [],
+                        units: []
+                    }
+                };
+
+                const regionsToDisplay = region === 'Global' ? ['USA', 'EU', 'Asia'] : [region];
+                
+                regionsToDisplay.forEach(r => {
+                    chartData.fines.labels.push(data[r].fines.label);
+                    chartData.fines.values.push(data[r].fines.value > 100000 ? data[r].fines.value / 1000000 : data[r].fines.value / 1000);
+                    chartData.fines.units.push(data[r].fines.value > 100000 ? 'M' : 'K');
+                    
+                    chartData.breach.labels.push(data[r].breach.label);
+                    chartData.breach.values.push(data[r].breach.value);
+                    chartData.breach.units.push(data[r].breach.unit);
+                });
+
+
+                if (finesChart) finesChart.destroy();
+                finesChart = new Chart(document.getElementById('finesChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: chartData.fines.labels,
+                        datasets: [{
+                            label: 'Max Fine',
+                            data: chartData.fines.values,
+                            backgroundColor: ['#60A5FA', '#818CF8', '#A78BFA'],
+                            borderColor: ['#3B82F6', '#6366F1', '#8B5CF6'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        const value = context.parsed.y;
+                                        const unit = chartData.fines.units[context.dataIndex];
+                                        const originalUnit = data[regionsToDisplay[context.dataIndex]].fines.unit;
+
+                                        if (unit === 'M') {
+                                           label += `€${value.toFixed(1)} Million`;
+                                        } else if (unit === 'K') {
+                                           label += `$${value.toFixed(1)} Thousand`;
+                                        }
+
+                                        if(originalUnit.includes("global turnover")) {
+                                            label += ` or ${originalUnit.split('or ')[1]}`;
+                                        }
+                                        
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Fine Amount (Logarithmic Scale)' },
+                                type: 'logarithmic',
+                                ticks: {
+                                     callback: function (value, index, values) {
+                                        if (value === 10000000 || value === 1000000 || value === 100000 || value === 10000 || value === 1000)
+                                        return "€" + value/1000000 + "M"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                if (breachChart) breachChart.destroy();
+                breachChart = new Chart(document.getElementById('breachChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: chartData.breach.labels,
+                        datasets: [{
+                            label: 'Timeline',
+                            data: chartData.breach.values,
+                            backgroundColor: ['#60A5FA', '#818CF8', '#A78BFA'],
+                            borderColor: ['#3B82F6', '#6366F1', '#8B5CF6'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                             tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) { label += ': '; }
+                                        if (context.parsed.y !== null) {
+                                            const unit = chartData.breach.units[context.dataIndex];
+                                            label += context.parsed.y === 0 ? unit : `${context.parsed.y} ${unit}`;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Time in Hours' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            init();
+        });
+    </script>
+</body>
+</html>

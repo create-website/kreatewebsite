@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Living Epic of Ramlila</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A thematic, single-page application with a sticky navigation bar for easy exploration. The structure is designed to guide the user through the core concepts of Ramlila in a non-linear way, starting with the foundational story and characters, moving to the art of the performance, its festive context, and finally its global variations. This thematic approach, rather than mirroring the report's academic structure, is more intuitive for a general audience, allowing them to dive into topics of interest. Key interactions include a clickable character gallery and a dynamic chart to compare regional traditions, transforming static tables into engaging, exploratory tools. -->
+    <!-- Visualization & Content Choices: 
+        - Report Table 1 (Characters) -> Goal: Inform/Organize -> Method: Interactive Card Grid -> Interaction: Visual grouping of key figures with their roles. -> Justification: More engaging and scannable than a dense table. -> Method: HTML/Tailwind.
+        - Report Table 2 (Comparative Traditions) -> Goal: Compare -> Method: Dynamic Bar Chart & Text -> Interaction: User clicks buttons to select a tradition (Ramnagar, North India, Trinidad), which updates the chart and descriptive text via JavaScript. -> Justification: Transforms static data into an interactive comparison tool, making differences in duration and style immediately apparent. -> Library: Chart.js, Vanilla JS.
+        - Report Concepts (Staging, Casting) -> Goal: Inform -> Method: Icon-based feature grid -> Interaction: None, purely for visual organization. -> Justification: Breaks down complex performance aspects into easily digestible, themed blocks. -> Method: HTML/Tailwind.
+        - Festival Timeline -> Goal: Show Process -> Method: Horizontal Timeline Diagram -> Interaction: Visual flow. -> Justification: Clarifies the connection between Navaratri and the Dussehra climax more effectively than text alone. -> Method: HTML/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfcfb;
+            color: #44403c;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #d97706;
+        }
+        .active-nav {
+            color: #d97706;
+            border-bottom-color: #d97706;
+        }
+        .btn-tradition.active {
+            background-color: #d97706;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <header class="sticky top-0 bg-stone-50/80 backdrop-blur-lg z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl md:text-2xl font-bold text-amber-700">Ramlila</h1>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#story" class="nav-link text-stone-600 font-semibold border-b-2 border-transparent pb-1">The Story</a>
+                    <a href="#performance" class="nav-link text-stone-600 font-semibold border-b-2 border-transparent pb-1">The Performance</a>
+                    <a href="#festival" class="nav-link text-stone-600 font-semibold border-b-2 border-transparent pb-1">The Festival</a>
+                    <a href="#global" class="nav-link text-stone-600 font-semibold border-b-2 border-transparent pb-1">Global Journey</a>
+                </div>
+                <div class="md:hidden">
+                    <select id="mobile-nav" class="bg-white border border-stone-300 rounded-md py-2 px-3 text-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        <option value="#hero">Home</option>
+                        <option value="#story">The Story</option>
+                        <option value="#performance">The Performance</option>
+                        <option value="#festival">The Festival</option>
+                        <option value="#global">Global Journey</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="relative text-center py-20 md:py-32 bg-amber-600/10">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-6xl font-extrabold text-amber-800 leading-tight">The Living Epic of Ramlila</h2>
+                <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-stone-700">Explore "Rama's Play," a vibrant tradition of folk theatre that brings the ancient Ramayana to life. Discover how this UNESCO-recognized cultural heritage serves as a sacred ritual, a community spectacle, and a moral compass for millions around the world.</p>
+            </div>
+        </section>
+
+        <section id="story" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h3 class="text-3xl md:text-4xl font-bold text-amber-700">The Narrative Unveiled</h3>
+                    <p class="mt-4 text-stone-600">The story of Ramlila is the story of Rama, an incarnation of the god Vishnu, whose life is a testament to *dharma*, or righteous duty. The epic follows his journey from a prince in Ayodhya through exile, the abduction of his wife Sita by the demon king Ravana, and the climactic battle to rescue her. This section introduces you to the central figures whose actions define this timeless tale of good versus evil.</p>
+                </div>
+
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-500">
+                        <h4 class="text-xl font-bold text-stone-800">Rama</h4>
+                        <p class="mt-2 text-sm text-stone-600">The protagonist and embodiment of *dharma*. His journey as a son, husband, and king serves as a model for ideal conduct, and his victory over Ravana symbolizes the triumph of good.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-500">
+                        <h4 class="text-xl font-bold text-stone-800">Sita</h4>
+                        <p class="mt-2 text-sm text-stone-600">Rama's devoted wife, embodying purity, courage, and self-sacrifice. Her abduction by Ravana is the central conflict of the epic.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-500">
+                        <h4 class="text-xl font-bold text-stone-800">Lakshmana</h4>
+                        <p class="mt-2 text-sm text-stone-600">Rama's fiercely loyal younger brother. He accompanies Rama into exile, representing the ideal of fraternal love and unwavering duty.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-500">
+                        <h4 class="text-xl font-bold text-stone-800">Hanuman</h4>
+                        <p class="mt-2 text-sm text-stone-600">A powerful monkey deity and Rama's greatest devotee. His strength, devotion, and selfless service are pivotal in rescuing Sita.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-500">
+                        <h4 class="text-xl font-bold text-stone-800">Ravana</h4>
+                        <p class="mt-2 text-sm text-stone-600">The ten-headed demon king of Lanka and the primary antagonist. His arrogance and unrighteous actions lead to his ultimate downfall.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="performance" class="py-16 md:py-24 bg-stone-100">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h3 class="text-3xl md:text-4xl font-bold text-amber-700">The Art of Performance</h3>
+                    <p class="mt-4 text-stone-600">Ramlila is more than just a play; it's an immersive experience that transforms entire towns into stages and communities into producers. The performance blends ritual, music, and visual spectacle to create a deeply spiritual and festive atmosphere. Explore the key elements that make the art of Ramlila so unique and captivating.</p>
+                </div>
+
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white p-6 rounded-lg text-center shadow-sm">
+                        <div class="text-4xl text-amber-600 mb-4">🎭</div>
+                        <h4 class="text-lg font-semibold">Environmental Theatre</h4>
+                        <p class="mt-2 text-sm text-stone-600">The entire town becomes the stage. The audience moves with the actors from location to location, turning spectatorship into a form of pilgrimage.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg text-center shadow-sm">
+                        <div class="text-4xl text-amber-600 mb-4">👥</div>
+                        <h4 class="text-lg font-semibold">Community Production</h4>
+                        <p class="mt-2 text-sm text-stone-600">Funded by donations and built by volunteers, Ramlila is a collective effort that unites the community in a shared cultural and spiritual purpose.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg text-center shadow-sm">
+                        <div class="text-4xl text-amber-600 mb-4">👦</div>
+                        <h4 class="text-lg font-semibold">The Swaroops</h4>
+                        <p class="mt-2 text-sm text-stone-600">Young Brahmin boys portray the main deities. They are not seen as actors but as temporary divine vessels, treated with reverence by the community.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg text-center shadow-sm">
+                        <div class="text-4xl text-amber-600 mb-4">📜</div>
+                        <h4 class="text-lg font-semibold">The Sacred Word</h4>
+                        <p class="mt-2 text-sm text-stone-600">The continuous recitation of the *Ramcharitmanas* by a chorus of *Ramayanis* forms the narrative and devotional core of the entire performance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="festival" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h3 class="text-3xl md:text-4xl font-bold text-amber-700">The Festive Calendar</h3>
+                    <p class="mt-4 text-stone-600">Ramlila is intrinsically linked to the autumn festival of Navaratri, a nine-night celebration of divine victory. The performance unfolds over this period, creating a powerful resonance with the festival's themes and culminating in a spectacular climax on the tenth day, Dussehra. This timeline illustrates the journey from worship to the ultimate triumph of good.</p>
+                </div>
+
+                <div class="mt-12 w-full max-w-4xl mx-auto">
+                    <div class="relative">
+                        <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-stone-300 -translate-y-1/2"></div>
+                        <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
+                            <div class="text-center w-full md:w-1/3">
+                                <div class="relative flex flex-col items-center">
+                                    <div class="w-8 h-8 bg-amber-500 rounded-full z-10 flex items-center justify-center text-white font-bold">1</div>
+                                    <h4 class="mt-4 font-semibold">Navaratri Begins</h4>
+                                    <p class="text-sm text-stone-600">The nine-night festival starts, dedicated to the goddess Durga. Ramlila performances commence, telling the early parts of Rama's story.</p>
+                                </div>
+                            </div>
+                            <div class="text-center w-full md:w-1/3">
+                                <div class="relative flex flex-col items-center">
+                                    <div class="w-8 h-8 bg-amber-600 rounded-full z-10 flex items-center justify-center text-white font-bold">...</div>
+                                    <h4 class="mt-4 font-semibold">The Story Unfolds</h4>
+                                    <p class="text-sm text-stone-600">Over several nights, the narrative progresses through Rama's exile, Sita's abduction, and the alliance with Hanuman's army.</p>
+                                </div>
+                            </div>
+                            <div class="text-center w-full md:w-1/3">
+                                <div class="relative flex flex-col items-center">
+                                    <div class="w-8 h-8 bg-amber-800 rounded-full z-10 flex items-center justify-center text-white font-bold">10</div>
+                                    <h4 class="mt-4 font-semibold">Climax on Dussehra</h4>
+                                    <p class="text-sm text-stone-600">On the "Tenth Day of Victory," Rama defeats Ravana. The celebration culminates in the burning of giant effigies, symbolizing the destruction of evil.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="global" class="py-16 md:py-24 bg-stone-100">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h3 class="text-3xl md:text-4xl font-bold text-amber-700">A Global Journey</h3>
+                    <p class="mt-4 text-stone-600">Ramlila has traveled far beyond India, carried by the diaspora to become a vital expression of cultural identity across the globe. From the grand, traditional pageants of India to adapted forms in the Caribbean and beyond, the tradition shows remarkable resilience and variety. Use the buttons below to compare the key features of different Ramlila traditions.</p>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <div id="tradition-selector" class="flex flex-wrap justify-center gap-4">
+                        <button class="btn-tradition active px-6 py-2 bg-white border border-stone-300 rounded-full font-semibold text-stone-700 transition-all duration-300" data-tradition="ramnagar">Ramnagar</button>
+                        <button class="btn-tradition px-6 py-2 bg-white border border-stone-300 rounded-full font-semibold text-stone-700 transition-all duration-300" data-tradition="northIndia">North India (Typical)</button>
+                        <button class="btn-tradition px-6 py-2 bg-white border border-stone-300 rounded-full font-semibold text-stone-700 transition-all duration-300" data-tradition="trinidad">Trinidad</button>
+                    </div>
+                </div>
+
+                <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="chart-container">
+                        <canvas id="ramlilaChart"></canvas>
+                    </div>
+                    <div id="tradition-details" class="bg-white p-8 rounded-lg shadow-sm">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-stone-800 text-stone-300 py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h4 class="text-2xl font-bold text-amber-500">The Enduring Power of "Rama's Play"</h4>
+            <p class="mt-4 max-w-3xl mx-auto text-stone-400">From ancient oral traditions to its global dissemination, Ramlila remains a powerful cultural force. Its resilience lies in its ability to adapt while preserving its core message: a collective celebration of community, morality, and the ultimate triumph of good over evil.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const traditionData = {
+                ramnagar: {
+                    label: 'Ramnagar',
+                    duration: 31,
+                    text: `
+                        <h4 class="text-2xl font-bold text-stone-800 mb-4">Ramnagar Ramlila (Varanasi)</h4>
+                        <p class="text-stone-600">Considered the most authentic and spectacular, this 31-day performance is under the patronage of the Maharaja of Benares. It unfolds across the entire town in a "promenade" style, famously rejecting modern technology like microphones or electric lights to preserve a 19th-century atmosphere. Its primary significance is the preservation of ritual performance, making it a living pilgrimage site.</p>
+                    `,
+                    color: 'rgba(217, 119, 6, 0.7)'
+                },
+                northIndia: {
+                    label: 'Typical North Indian',
+                    duration: 11,
+                    text: `
+                        <h4 class="text-2xl font-bold text-stone-800 mb-4">Typical North Indian Ramlila</h4>
+                        <p class="text-stone-600">Typically lasting 10-12 days, these performances are organized by local community committees (*Samitis*). They are staged in open-air settings, often using modern technology like microphones, lighting, and special effects. The focus is on community-building, religious education, and festive celebration, making it a central social event of the year.</p>
+                    `,
+                    color: 'rgba(234, 179, 8, 0.7)'
+                },
+                trinidad: {
+                    label: 'Trinidadian Ramlila',
+                    duration: 10,
+                    text: `
+                        <h4 class="text-2xl font-bold text-stone-800 mb-4">Trinidadian Ramlila</h4>
+                        <p class="text-stone-600">Lasting 10 days, this tradition was brought by Indian indentured laborers in the 19th century. Based on the *Ramcharitmanas*, it often incorporates English and simplified dialogue. Supported by a National Council, it is a powerful marker of Indo-Caribbean identity and a means of preserving ancestral heritage, blending traditional and modern elements on community grounds.</p>
+                    `,
+                    color: 'rgba(202, 138, 4, 0.7)'
+                }
+            };
+
+            const ctx = document.getElementById('ramlilaChart').getContext('2d');
+            const ramlilaChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Performance Duration (Days)'],
+                    datasets: []
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Days'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw} days`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const traditionDetails = document.getElementById('tradition-details');
+            const selectorButtons = document.querySelectorAll('.btn-tradition');
+
+            function updateView(traditionKey) {
+                const data = traditionData[traditionKey];
+
+                ramlilaChart.data.datasets = [{
+                    label: data.label,
+                    data: [data.duration],
+                    backgroundColor: [data.color],
+                    borderColor: [data.color.replace('0.7', '1')],
+                    borderWidth: 1
+                }];
+                ramlilaChart.update();
+
+                traditionDetails.innerHTML = data.text;
+                
+                selectorButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    if(btn.dataset.tradition === traditionKey) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+
+            selectorButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    updateView(button.dataset.tradition);
+                });
+            });
+
+            updateView('ramnagar');
+
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.4
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active-nav', link.getAttribute('href') === `#${id}`);
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            mobileNav.addEventListener('change', (e) => {
+                const targetId = e.target.value;
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

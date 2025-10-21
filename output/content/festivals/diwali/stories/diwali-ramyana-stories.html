@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ramayana Saga: An Interactive Journey</title>
+    <meta name="description" content="An interactive collection of stories from the epic Ramayana, detailing the journey of Rama, Sita, and Hanuman, and culminating in the celebration of Diwali.">
+    <meta name="keywords" content="Ramayana, Diwali, Rama, Sita, Hanuman, Lakshmana, Ravana, Hindu epic, stories, collection">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4B5563; 
+        }
+        .font-sanskrit {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: This page is designed as a central navigation hub or "table of contents" for the entire Ramayana series. Its structure is a clean, chronological, and visually appealing grid of story cards. The user journey is simple: 1) Arrive and read the introduction to understand the scope of the collection. 2) Browse the stories, which are grouped into logical, chronological sections (e.g., "The Seeds of Conflict," "The War for Lanka"). 3) Click on any story card to be taken to its dedicated page. This hub-and-spoke model is the most user-friendly structure for a collection of interconnected narratives. -->
+    <!-- Visualization & Content Choices: Report Info: A collection of stories -> Goal: Organize/Navigate -> Viz/Method: Interactive Card Grid -> Interaction: Each card is a clickable link to a story page, with a hover effect for visual feedback -> Justification: A card grid is visually superior to a simple list. It allows for a title, a short summary, and a visual icon for each story, making the content easy to scan and enticing for the user. The chronological grouping adds a narrative structure to the navigation itself. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-amber-100/30 sticky top-0 z-50 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-center">
+                <div class="font-sanskrit text-2xl md:text-3xl font-bold text-amber-800">रामायण-कथावली</div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section class="text-center my-12 md:my-20">
+            <h1 class="font-sanskrit text-5xl md:text-7xl font-bold text-amber-900 leading-tight">The Epic of Diwali</h1>
+            <p class="mt-4 text-xl md:text-2xl text-stone-600">A Collection of Ramayana Tales</p>
+            <p class="mt-6 max-w-3xl mx-auto text-stone-500">
+                Welcome to our interactive journey through the Ramayana. Each story below is a chapter in the grand epic of righteousness, devotion, and the ultimate victory of light over darkness. Explore the tales that lead to Lord Rama's triumphant return to Ayodhya—the celebration we now know as Diwali.
+            </p>
+        </section>
+
+        <!-- Story Grid -->
+        <div class="space-y-16">
+
+            <!-- Section 1: The Seeds of Conflict -->
+            <section>
+                <h2 class="text-3xl font-bold text-center text-amber-800 mb-10">I. The Seeds of Conflict & Divine Origins</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Ravana's Boons -->
+                    <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">👑</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Ravana's Boons & Arrogance</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">Discover how the ten-headed king acquired his immense power through penance and how it led to his fatal pride.</p>
+                        <a href="./Ravana’s Boons and Arrogance – His penances to Shiva and Brahma..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                    <!-- Hanuman and the Sun -->
+                    <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">🌞</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Hanuman and the Sun</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">A charming tale from Hanuman's childhood, where the divine child mistakes the sun for a ripe fruit.</p>
+                        <a href="./Hanuman and the Sun – As a child, Hanuman mistakes the sun for a fruit..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                    <!-- Rama Frees Ahalya -->
+                    <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">🪨</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Rama Sets Free Ahalya</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">A touch from the young Rama redeems the sage Gautama’s wife from a curse that turned her to stone.</p>
+                        <a href="./Rama Sets Free Ahalya – Touch of Rama redeems sage Gautama’s wife turned into stone..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 2: The Path of Exile -->
+            <section>
+                <h2 class="text-3xl font-bold text-center text-amber-800 mb-10">II. The Path of Exile & The Great Search</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Golden Deer -->
+                    <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+						
+                        <div class="text-5xl mb-4">🦌</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">The Golden Deer</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">The tragic tale of Maricha's deception, which lures Rama away and leads to Sita’s abduction by Ravana.</p>
+                        <a href="./Golden Deer Story – Maricha lures Rama away, leading to Sita’s abduction..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                     <!-- Hanuman Meets Rama -->
+                    <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">🤝</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Hanuman Meets Rama</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">The pivotal first meeting in Kishkindha that forges the divine alliance between the greatest of heroes.</p>
+                        <a href="./Hanuman Meets Rama – Hanuman first meets Rama in Kishkindha.. Also add meta-description,meta-keywords in page.html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                    <!-- Hanuman's Leap -->
+                    <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">🌊</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Hanuman’s Leap to Lanka</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">Awakening his forgotten powers, Hanuman makes the monumental leap across the ocean to find Sita.</p>
+                        <a href="./Hanuman’s Leap to Lanka – Crossing the ocean to find Sita..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                </div>
+            </section>
+
+             <!-- Section 3: The War for Lanka -->
+            <section>
+                <h2 class="text-3xl font-bold text-center text-amber-800 mb-10">III. The War for Lanka</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Hanuman and Lankini -->
+                     <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">👹</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Hanuman and Lankini</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">The first victory in the enemy stronghold, as Hanuman defeats the powerful guardian of Lanka's gates.</p>
+                        <a href="./Hanuman and Lankini – Guardian of Lanka defeated by Hanuman..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                     <!-- Sita in Ashok Vatika -->
+                     <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">💍</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Sita in Ashok Vatika</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">Hanuman finds the captive Sita and delivers Rama’s ring, a profound message of hope and imminent rescue.</p>
+                        <a href="./Sita and Ashok Vatika – Hanuman gives Rama’s ring to Sita..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                     <!-- Burning of Lanka -->
+                    <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">🔥</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Burning of Lanka</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">A fiery message of defiance, as Hanuman allows himself to be captured only to set the golden city ablaze.</p>
+                        <a href="./Burning of Lanka – Hanuman sets Lanka ablaze with his burning tail..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                    <!-- Vibheeshana’s Counsel -->
+                    <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">🕊️</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Vibheeshana’s Counsel</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">A story of moral conviction, as Ravana’s righteous brother abandons evil to join Rama’s side.</p>
+                        <a href="./Vibheeshana’s Counsel – Ravana’s brother joins Rama’s side..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                    <!-- Nal and Neel -->
+                    <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">🌉</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Nal and Neel</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">The story of the divine architects who built the floating stone bridge, Ram Setu, to Lanka.</p>
+                        <a href="./Nal and Neel - architect of Lord Rama Bridge.html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                    <!-- Kumbhakarna’s Battle -->
+                    <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">😴</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Kumbhakarna’s Battle</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">The sleeping giant of Lanka is awakened, a force of nature who fights for his brother despite knowing he is wrong.</p>
+                        <a href="./Kumbhakarna’s Battle – Ravana’s giant brother fights Rama and Lakshmana..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                    <!-- Hanuman Brings Sanjeevani -->
+                     <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">🏔️</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Hanuman Brings Sanjeevani</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">An ultimate act of devotion, as Hanuman lifts an entire mountain to bring a life-saving herb for Lakshmana.</p>
+                        <a href="./Hanuman Brings Sanjeevani – Lifts an entire mountain to save Lakshmana..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                    <!-- Meghnad Defeated -->
+                    <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">💨</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Meghnad (Indrajit) Defeated</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">The epic duel where Lakshmana defeats Ravana’s invincible son, the conqueror of the heavens.</p>
+                        <a href="./Meghnad (Indrajit) Defeated – Ravana’s son defeated by Lakshmana..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                     <!-- Ravana's Final Battle -->
+                    <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">🏹</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Ravana’s Final Battle</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">The climactic battle where Rama finally kills the ten-headed demon king with the divine Brahmastra.</p>
+                        <a href="./Ravana’s Final Battle – Rama kills Ravana with the Brahmastra..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 4: Triumph & Legacy -->
+            <section>
+                <h2 class="text-3xl font-bold text-center text-amber-800 mb-10">IV. Triumph & Legacy</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                     <!-- Return to Ayodhya -->
+                     <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">🪔</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Return to Ayodhya</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">The joyous homecoming after 14 years, as the people of Ayodhya light lamps, the basis of Diwali.</p>
+                        <a href="./Return to Ayodhya – Rama, Sita, and Lakshmana return after 14 years; people light lamps (basis of Diwali)..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                    <!-- Hanuman's Devotion -->
+                    <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">❤️</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Hanuman’s Test of Devotion</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">The ultimate proof of love, as Hanuman tears open his chest to show Rama and Sita residing in his heart.</p>
+                        <a href="./Hanuman’s Test of Devotion – Tears his chest to show Rama and Sita in his heart..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                    <!-- Shatrughna & Lava-Kusha -->
+                    <div class="bg-white rounded-xl shadow-lg border border-stone-200/80 p-6 flex flex-col transition hover:shadow-xl hover:-translate-y-1">
+                        <div class="text-5xl mb-4">👦🏻👦🏻</div>
+                        <h3 class="font-bold text-xl text-amber-800 mb-2">Shatrughna & Lava-Kusha</h3>
+                        <p class="text-stone-600 text-sm mb-4 flex-grow">Years later, Rama's own unrecognized sons capture his sacrificial horse, leading to a fateful encounter.</p>
+                        <a href="./Shatrughna & Lava-Kusha Encounter – The twins capture Rama’s horse during Ashwamedha Yajna..html" class="mt-auto block text-center bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Read Story</a>
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+
+    </main>
+
+    <footer class="bg-stone-100 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-stone-500">
+            <p>An interactive collection of stories from the epic Ramayana.</p>
+            <p class="text-sm mt-2">Inspired by Valmiki's Ramayana.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
+

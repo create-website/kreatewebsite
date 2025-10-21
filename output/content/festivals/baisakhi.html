@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baisakhi: A Festival of Harvest and Heritage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Harvest Gold & Saffron -->
+    <!-- Application Structure Plan: A narrative infographic that explains Baisakhi's dual significance. The structure is: 1. Hero section. 2. "What is Baisakhi?". 3. "The Two Pillars of Baisakhi" (Harvest & Khalsa). 4. "The Birth of the Khalsa: 1699". 5. "Traditions of Celebration". 6. "A Taste of Baisakhi" chart. This flow is designed to clearly separate and explain the two main aspects of the festival. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The two main aspects -> Goal: Organize/Inform -> Viz: Two-column layout -> Justification: Clearly separates and explains the agricultural and historical significance. -> Library/Method: HTML/CSS.
+        - Data Point: Key traditions -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the main activities. -> Library/Method: HTML/CSS.
+        - Data Point: Key festive foods -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display popular festive dishes. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #FEFCE8; /* Light Yellow */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-yellow { color: #F59E0B; }
+        .palette-text-orange { color: #F97316; }
+        .palette-text-green { color: #16A34A; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #F97316; /* Orange */
+            border: 3px solid #F59E0B; /* Yellow */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-orange tracking-wider">Baisakhi</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">A Festival of Harvest, Heritage, and New Beginnings</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Baisakhi?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Baisakhi, also known as Vaisakhi, is a vibrant and historically significant festival celebrated in the Punjab region and by Sikhs worldwide. It holds a dual importance: it is a spring harvest festival for farmers and one of the most important days in the Sikh calendar, marking the Sikh New Year and the birth of the Khalsa.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-yellow mb-4">🌾</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Harvest Festival</h3>
+                    <p class="mt-2 text-gray-600">For farmers in Punjab, Baisakhi marks the time to harvest the rabi (winter) crops. It is a day of thanksgiving for a bountiful harvest and praying for future prosperity.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-orange mb-4">⚔️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Birth of the Khalsa</h3>
+                    <p class="mt-2 text-gray-600">For Sikhs, Baisakhi commemorates the day in 1699 when the tenth Guru, Guru Gobind Singh, established the Khalsa Panth, the community of initiated Sikhs.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-green mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">New Year's Day</h3>
+                    <p class="mt-2 text-gray-600">The festival marks the solar new year for Sikhs and many other communities in the Indian subcontinent, celebrated on April 13th or 14th each year.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="significance" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Two Pillars of Baisakhi</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Baisakhi's unique identity comes from the powerful confluence of its agricultural and historical roots. It is a celebration of both the fruits of the earth and the spirit of a people.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                 <div class="card rounded-lg shadow-lg p-8 h-full">
+                    <h3 class="text-3xl font-bold palette-text-yellow mb-4 text-center">The Joy of the Harvest</h3>
+                    <p class="text-gray-700">As a harvest festival, Baisakhi is a time of immense joy and relief for the farming community. After months of hard work, the fields are golden with ripe wheat, and the harvest promises prosperity. Farmers express their gratitude to God and nature. The day is filled with vibrant folk music and energetic dances like Bhangra and Gidda, which mimic farming actions and express pure, unadulterated happiness.</p>
+                    <div class="text-center mt-6">
+                        <div class="text-8xl">🚜</div>
+                        <p class="font-bold text-gray-700">A celebration of hard work and nature's bounty.</p>
+                    </div>
+                </div>
+                 <div class="card rounded-lg shadow-lg p-8 h-full">
+                    <h3 class="text-3xl font-bold palette-text-orange mb-4 text-center">The Foundation of the Khalsa</h3>
+                    <p class="text-gray-700">The historical significance for Sikhs is profound. On Baisakhi day in 1699, at Anandpur Sahib, Guru Gobind Singh called upon his followers to stand up against tyranny and oppression. He initiated the *Panj Pyare* (the five beloved ones) and established the Khalsa—a collective body of committed Sikhs dedicated to serving humanity and defending justice. This event gave Sikhs a distinct identity, marked by the five articles of faith (the 5 Ks), and transformed them into a community of saint-soldiers.</p>
+                     <div class="text-center mt-6">
+                        <div class="text-8xl"> Khanda</div>
+                        <p class="font-bold text-gray-700">A turning point in Sikh history.</p>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Traditions of Celebration</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Baisakhi is celebrated with great enthusiasm through a variety of community-focused traditions that blend devotion, service, and cultural expression.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🏛️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Visiting the Gurdwara</h3>
+                    <p class="mt-2 text-sm text-gray-600">Devotees throng to Gurdwaras, which are specially decorated for the occasion, to offer prayers and listen to kirtan (hymns).</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4"> procession</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Nagar Kirtan</h3>
+                    <p class="mt-2 text-sm text-gray-600">Colorful processions move through the streets, with devotees singing hymns and the Guru Granth Sahib carried on a palanquin.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">💃</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Bhangra & Gidda</h3>
+                    <p class="mt-2 text-sm text-gray-600">The harvest joy is expressed through energetic folk dances—Bhangra for men and Gidda for women.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎪</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Fairs (Melas)</h3>
+                    <p class="mt-2 text-sm text-gray-600">Baisakhi fairs are held in many parts of Punjab, featuring food stalls, rides, and cultural performances.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Baisakhi</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The food of Baisakhi is rich and hearty, reflecting the joy of a bountiful harvest. Traditional Punjabi dishes are prepared and shared with family and friends.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Popular Baisakhi Dishes</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Meethe Chawal (Sweet Rice)', 
+                'Sarson ka Saag & Makki di Roti', 
+                'Pindi Chole', 
+                'Kada Prasad'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity during Baisakhi',
+                        data: [90, 100, 85, 95],
+                        backgroundColor: [
+                           '#F59E0B', // Yellow
+                           '#16A34A', // Green
+                           '#F97316', // Orange
+                           '#FB923C'  // Light Orange
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Popularity & Importance',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

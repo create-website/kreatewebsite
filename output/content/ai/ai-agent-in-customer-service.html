@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF--8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The AI Revolution in Customer Service & Order Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Infographic Narrative Plan: The infographic follows a progressive narrative structure, starting with a high-level introduction and then delving into each AI type in order of increasing complexity and capability. The flow is: 1) Hero section to set the stage. 2) Foundational AI/ML for prediction, establishing the baseline. 3) Generative AI for communication, showing the next step in interaction. 4) Agentic AI for autonomous action, showcasing the peak of current capability. 5) A final radar chart provides a holistic, comparative summary. This structure guides the user from the "what" to the "how" and finally to the "which is best for what," making a complex topic digestible. -->
+    <!-- Visualization Choices: 
+        - Data Point: Proactive issue identification rate. -> Goal: Inform. -> Chosen Visualization: Donut Chart. -> Justification: A donut chart is a visually engaging and easily understood way to present a single, powerful percentage, immediately conveying the impact of predictive AI. -> Library/Method: Chart.js (Canvas). CONFIRMED NO SVG.
+        - Data Point: Quality of customer communication. -> Goal: Compare. -> Chosen Visualization: Styled HTML cards for a "Before/After" text comparison. -> Justification: To demonstrate the impact of Generative AI on text, showing the actual text output is far more effective than an abstract chart. -> Library/Method: HTML/CSS with Tailwind. CONFIRMED NO SVG.
+        - Data Point: Autonomous order exception handling process. -> Goal: Organize. -> Chosen Visualization: Flowchart Diagram. -> Justification: A process with distinct steps is best represented by a flowchart. This visualizes the sequence and logic of Agentic AI's actions clearly. -> Library/Method: Structured HTML/CSS with Tailwind (using flexbox and borders). CONFIRMED NO SVG/Mermaid JS.
+        - Data Point: Comparing AI types across multiple capabilities. -> Goal: Compare. -> Chosen Visualization: Radar Chart. -> Justification: A radar chart is the ideal tool for comparing multiple subjects (3 AI types) across multiple quantitative axes (5 capabilities), providing a quick, holistic visual summary of their relative strengths. -> Library/Method: Chart.js (Canvas). CONFIRMED NO SVG.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+            color: #073B4C;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 40vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flowchart-node {
+            background-color: white;
+            border: 2px solid #118AB2;
+            color: #073B4C;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 1;
+        }
+        .flowchart-arrow {
+            flex-grow: 1;
+            height: 2px;
+            background-color: #118AB2;
+            position: relative;
+        }
+        .flowchart-arrow::after {
+            content: '';
+            position: absolute;
+            right: -1px;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 8px solid #118AB2;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center my-8 md:my-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-[#073B4C] leading-tight">The AI Revolution</h1>
+            <p class="mt-4 text-lg md:text-xl font-medium text-[#118AB2]">in Customer Service & Order Management</p>
+        </header>
+
+        <main class="space-y-12 md:space-y-16">
+            
+            <section class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h2 class="text-3xl font-bold text-[#118AB2] mb-4">1. The Foundation: AI/ML</h2>
+                        <p class="text-base text-gray-700 leading-relaxed">
+                            The first wave of AI focuses on prediction. By analyzing vast amounts of historical data, Machine Learning (ML) models can forecast future events with remarkable accuracy. This allows businesses to move from a reactive to a proactive stance, anticipating issues like shipping delays or customer churn before they even happen.
+                        </p>
+                        <p class="mt-4 font-semibold text-gray-800">
+                            Its primary function is to analyze and predict, providing critical insights that require human action.
+                        </p>
+                    </div>
+                    <div class="text-center">
+                        <div class="chart-container">
+                            <canvas id="predictionChart"></canvas>
+                        </div>
+                        <p class="mt-4 text-center font-semibold text-gray-700">Can proactively identify potential order delays.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                 <h2 class="text-3xl font-bold text-center text-[#118AB2] mb-6">2. The Voice: Generative AI</h2>
+                 <p class="max-w-3xl mx-auto text-center text-base text-gray-700 leading-relaxed mb-8">
+                    Generative AI builds upon predictive insights by handling communication. It crafts human-like, personalized messages at scale, turning sterile notifications into empathetic customer interactions. This enhances the customer experience, builds trust, and frees up human agents to handle more complex issues.
+                 </p>
+                 <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-red-50 border-2 border-dashed border-[#FF6B6B] rounded-lg p-4">
+                        <h3 class="font-bold text-lg text-red-800 mb-2">Before GenAI (Template)</h3>
+                        <p class="text-gray-600 font-mono text-sm">ALERT: Order [_order_id_] is experiencing a [type] delay. Estimated delay: [hours]. See status page for info.</p>
+                    </div>
+                    <div class="bg-green-50 border-2 border-solid border-[#06D6A0] rounded-lg p-4">
+                        <h3 class="font-bold text-lg text-green-800 mb-2">After GenAI (Generated)</h3>
+                        <p class="text-gray-800 text-sm">Hi Alex, a quick update on your order #845B2. We're seeing a potential 48-hour shipping delay due to weather on the route. We're already exploring faster options and will let you know the moment we have a solution. We appreciate your patience!</p>
+                    </div>
+                 </div>
+            </section>
+
+            <section class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                 <h2 class="text-3xl font-bold text-center text-[#118AB2] mb-2">3. The Actor: Agentic AI</h2>
+                 <p class="max-w-3xl mx-auto text-center text-base text-gray-700 leading-relaxed mb-10">
+                    Agentic AI represents the leap from insight and communication to autonomous action. It not only predicts an issue and drafts a message, but it also formulates a plan and executes the solution independently. It's a self-contained problem-solver for operational exceptions.
+                 </p>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="flowchart-node">Detect Delay</div>
+                    <div class="w-2 md:w-auto h-8 md:h-auto flex md:flex-col items-center justify-center">
+                         <div class="flowchart-arrow w-px h-full md:w-full md:h-px"></div>
+                    </div>
+                    <div class="flowchart-node bg-[#FFD166] border-[#FFD166]">Analyze Options</div>
+                    <div class="w-2 md:w-auto h-8 md:h-auto flex md:flex-col items-center justify-center">
+                         <div class="flowchart-arrow w-px h-full md:w-full md:h-px"></div>
+                    </div>
+                    <div class="flowchart-node bg-[#06D6A0] border-[#06D6A0]">Execute Solution</div>
+                     <div class="w-2 md:w-auto h-8 md:h-auto flex md:flex-col items-center justify-center">
+                         <div class="flowchart-arrow w-px h-full md:w-full md:h-px"></div>
+                    </div>
+                    <div class="flowchart-node">Notify Customer</div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-center text-[#118AB2] mb-2">Comparative Overview</h2>
+                <p class="max-w-3xl mx-auto text-center text-base text-gray-700 leading-relaxed mb-8">
+                    Each type of AI offers unique strengths. While AI/ML provides the foundational insights, Agentic AI delivers the highest degree of autonomy and problem-solving capability, fundamentally changing the level of human intervention required.
+                </p>
+                <div class="chart-container max-w-lg">
+                    <canvas id="comparisonRadarChart"></canvas>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script>
+        const wrapLabel = (label) => {
+            const maxLength = 16;
+            if (label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        };
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const defaultTooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback,
+                    }
+                }
+            }
+        };
+
+        const predictionChartCtx = document.getElementById('predictionChart').getContext('2d');
+        new Chart(predictionChartCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Delays Predicted', 'Delays Missed'],
+                datasets: [{
+                    label: 'Order Delay Prediction',
+                    data: [85, 15],
+                    backgroundColor: [
+                        '#118AB2', 
+                        '#FF6B6B'
+                    ],
+                    borderColor: '#ffffff',
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    },
+                     title: {
+                        display: true,
+                        text: 'AI/ML Prediction Accuracy',
+                        font: { size: 16, weight: 'bold' },
+                        color: '#073B4C',
+                        padding: { bottom: 10 }
+                    }
+                }
+            }
+        });
+
+        const radarChartCtx = document.getElementById('comparisonRadarChart').getContext('2d');
+        new Chart(radarChartCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Autonomy', 'Task Complexity', 'Speed', 'Personalization', 'Human Intervention'],
+                datasets: [
+                    {
+                        label: 'AI/ML',
+                        data: [2, 3, 7, 2, 9],
+                        backgroundColor: 'rgba(255, 107, 107, 0.2)',
+                        borderColor: '#FF6B6B',
+                        pointBackgroundColor: '#FF6B6B',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#FF6B6B'
+                    },
+                    {
+                        label: 'Generative AI',
+                        data: [4, 6, 8, 8, 6],
+                        backgroundColor: 'rgba(255, 209, 102, 0.2)',
+                        borderColor: '#FFD166',
+                        pointBackgroundColor: '#FFD166',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#FFD166'
+                    },
+                    {
+                        label: 'Agentic AI',
+                        data: [9, 8, 6, 7, 2],
+                        backgroundColor: 'rgba(6, 214, 160, 0.2)',
+                        borderColor: '#06D6A0',
+                        pointBackgroundColor: '#06D6A0',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#06D6A0'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                     tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    r: {
+                        angleLines: { color: '#E5E7EB' },
+                        grid: { color: '#E5E7EB' },
+                        pointLabels: { font: { size: 13, weight: '500' }, color: '#073B4C' },
+                        ticks: {
+                            backdropColor: 'rgba(255, 255, 255, 0.75)',
+                            stepSize: 2,
+                            color: '#118AB2'
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 10
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

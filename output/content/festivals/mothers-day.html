@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mother's Day: A Celebration of Moms</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Loving Pastels (Pink, Purple, Green) -->
+    <!-- Application Structure Plan: A narrative infographic that explains the history and modern celebration of Mother's Day. The structure is: 1. Hero section. 2. "What is Mother's Day?". 3. "The Origins of Mother's Day". 4. "Symbols of Motherhood". 5. "Ways to Celebrate Mom". 6. "Top Mother's Day Gifts" chart. This flow guides the user through the appreciation of motherhood. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The Origins -> Goal: Inform -> Viz: A two-column layout -> Justification: Clearly presents the historical background. -> Library/Method: HTML/CSS.
+        - Data Point: Key symbols/roles -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the different facets of motherhood. -> Library/Method: HTML/CSS.
+        - Data Point: Popular gifts -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display popular gift ideas. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #FDF2F8; /* Lightest Pink */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-pink { color: #EC4899; }
+        .palette-text-purple { color: #A855F7; }
+        .palette-text-green { color: #22C55E; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #EC4899; /* Pink */
+            border: 3px solid #A855F7; /* Purple */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-pink tracking-wider">Mother's Day</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">A Day to Honor and Celebrate Moms</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Mother's Day?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Mother's Day is a celebration honoring the mother of the family or individual, as well as motherhood, maternal bonds, and the influence of mothers in society. It is a day to express love, respect, and gratitude for their tireless contributions.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-pink mb-4">👩‍👧‍👦</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Celebrating Motherhood</h3>
+                    <p class="mt-2 text-gray-600">The day celebrates not only mothers but also grandmothers, aunts, sisters, and other women who have played a nurturing role in our lives.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-purple mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Festival Timing</h3>
+                    <p class="mt-2 text-gray-600">In many countries, including the United States, it is celebrated on the second Sunday in May. Dates vary in other parts of the world.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-green mb-4">❤️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Day of Appreciation</h3>
+                    <p class="mt-2 text-gray-600">It's a time for families to show their love and thank the mothers in their lives with gestures both big and small.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Origins of Mother's Day</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The modern American version of Mother's Day was created by Anna Jarvis in 1908. It became an official U.S. holiday in 1914, but its roots lie in her mother's own activism and community work.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">💡</div>
+                        <p class="text-xl font-bold mt-2 palette-text-pink">A Daughter's Promise</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">Anna Jarvis's mother, Ann Reeves Jarvis, was a peace activist who cared for wounded soldiers and created "Mothers' Day Work Clubs" to address public health issues. After her mother's death in 1905, Anna conceived of Mother's Day as a way of honoring the sacrifices mothers made for their children. She campaigned tirelessly, and in 1914, President Woodrow Wilson signed a measure officially establishing the second Sunday in May as Mother's Day. Ironically, Anna Jarvis later became a major opponent of the holiday's commercialization, arguing it should be a day of personal sentiment, not profit.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="symbols" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Symbols of Motherhood</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Motherhood is a role of immense love, strength, and wisdom. Various symbols and roles are celebrated on this day.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">❤️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Nurturer</h3>
+                    <p class="mt-2 text-sm text-gray-600">Mothers are the first nurturers, providing care, comfort, and unconditional love from the very beginning.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">📖</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Teacher</h3>
+                    <p class="mt-2 text-sm text-gray-600">Mothers are our first teachers, guiding us through life's lessons with patience and wisdom.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🛡️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Protector</h3>
+                    <p class="mt-2 text-sm text-gray-600">A mother's instinct to protect her children is a powerful force, offering a shield against life's challenges.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🤝</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Friend</h3>
+                    <p class="mt-2 text-sm text-gray-600">As we grow, our mothers often become our closest friends, offering a listening ear and unwavering support.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Ways to Celebrate Mom</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Celebrations for Mother's Day are all about making mothers feel loved, cherished, and pampered for a day.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">💐</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Flowers & Cards</h3>
+                    <p class="mt-2 text-sm text-gray-600">Giving flowers, especially carnations (the official flower), and heartfelt cards are classic traditions.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🥞</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Breakfast in Bed</h3>
+                    <p class="mt-2 text-sm text-gray-600">A popular way to start the day, giving mom a relaxing morning and a break from her usual routine.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🍽️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Family Brunch or Dinner</h3>
+                    <p class="mt-2 text-sm text-gray-600">Taking mom out for a special meal or cooking her favorite dishes at home is a cherished tradition.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎁</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Thoughtful Gifts</h3>
+                    <p class="mt-2 text-sm text-gray-600">Giving personalized or thoughtful gifts that reflect her interests and show how much she is known and loved.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Top Mother's Day Gifts</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    While every family is different, some gift categories are perennial favorites for celebrating mothers everywhere.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Popular Gift Categories</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Flowers', 
+                'Greeting Cards', 
+                'Special Outing (e.g., Brunch)', 
+                'Jewelry'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity as Gifts',
+                        data: [100, 98, 90, 85],
+                        backgroundColor: [
+                           '#EC4899', // Pink
+                           '#A855F7', // Purple
+                           '#22C55E', // Green
+                           '#FBCFE8'  // Light Pink
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Popularity & Commonality',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0,0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

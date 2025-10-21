@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI: Interactive Readiness Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutrals -->
+    <!-- Application Structure Plan: The SPA is designed as a narrative journey for enterprise leaders. It starts with high-level definitions (What is Agentic AI?), moves to conceptual understanding (The Spectrum of Autonomy), delves into technicals (Architectural Blueprint), and culminates in a practical, personalized tool (The Interactive Readiness Assessment). This structure transforms a dense report into a guided experience, moving from theory to actionable self-assessment, which is more engaging and useful for the target audience than a linear document. -->
+    <!-- Visualization & Content Choices: The core of the application is the interactive readiness checklist (Table 4 from the report). Goal: Allow users to self-assess their organization's maturity. Method: A multi-step form that feeds into a Chart.js radar chart. Justification: A radar chart is the ideal visualization for showing a multi-dimensional score, providing an instant "readiness fingerprint" across the four pillars. Other complex data, like the Autonomy Spectrum (Table 2) and Architecture (Table 3), are presented as interactive HTML/CSS diagrams and timelines, which are more digestible and engaging than static tables, while strictly avoiding SVG/Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #1e293b; /* slate-800 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active {
+            color: #4f46e5; /* indigo-600 */
+            border-bottom-color: #4f46e5;
+        }
+        .accordion-button span {
+            transition: transform 0.3s ease;
+        }
+        .accordion-button[aria-expanded="true"] span {
+            transform: rotate(45deg);
+        }
+        .step {
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+        .step.active {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+            color: white;
+        }
+        .step.completed {
+            background-color: #16a34a; /* green-600 */
+            border-color: #16a34a;
+            color: white;
+        }
+        .progress-bar-fill {
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-slate-800">Agentic Readiness</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#intro" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-slate-900 border-b-2 border-transparent">Introduction</a>
+                        <a href="#spectrum" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-slate-900 border-b-2 border-transparent">Spectrum</a>
+                        <a href="#architecture" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-slate-900 border-b-2 border-transparent">Architecture</a>
+                        <a href="#assessment" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-slate-900 border-b-2 border-transparent">Assessment</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="intro" class="py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900">Is Your Ecosystem Ready for Agentic AI?</h2>
+                <p class="mt-6 max-w-3xl mx-auto text-lg text-slate-600">The shift to Agentic AI represents a new frontier in automation and strategy. Success hinges not on the AI alone, but on the maturity of your enterprise ecosystem. This guide helps you understand the foundational components and assess your organization's readiness for this transformation.</p>
+                <a href="#assessment" class="mt-8 inline-block bg-indigo-600 text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-indigo-700 transition-colors">Start Your Readiness Assessment</a>
+            </div>
+        </section>
+
+        <section id="spectrum" class="py-20 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-900">The Spectrum of Autonomy</h3>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">Agency is not a binary state. It exists on a continuum from simple assistance to full autonomy. Understanding these levels is key to strategic planning and risk management. Click each level to learn more.</p>
+                </div>
+                <div id="spectrum-container" class="relative max-w-2xl mx-auto">
+                    <div class="absolute left-1/2 -translate-x-1/2 top-0 h-full w-1 bg-slate-200 rounded-full"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="py-20 md:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-900">Blueprint for an Agentic System</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">An agentic system is a composite of interconnected components working in a continuous loop. This architecture is the engine that powers autonomous action. Hover over each component to understand its role.</p>
+                </div>
+                <div id="architecture-diagram" class="max-w-4xl mx-auto p-8 bg-slate-50 rounded-2xl border border-slate-200">
+                </div>
+            </div>
+        </section>
+
+        <section id="assessment" class="py-20 md:py-28">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-900">Interactive Readiness Assessment</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">Answer the following questions to generate your organization's Agentic Readiness Profile. This assessment covers the four critical pillars and will provide a visual "fingerprint" of your ecosystem's maturity.</p>
+                </div>
+                
+                <div class="max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="flex items-center justify-center space-x-4 md:space-x-8 mb-8" id="step-indicators">
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-2.5 mb-8">
+                        <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full progress-bar-fill" style="width: 0%"></div>
+                    </div>
+                    
+                    <div id="assessment-form-container">
+                    </div>
+
+                    <div id="results-container" class="hidden text-center">
+                        <h4 class="text-2xl font-bold text-slate-800 mb-4">Your Agentic Readiness Profile</h4>
+                        <p class="text-slate-600 mb-8 max-w-2xl mx-auto">This profile visualizes your organization's readiness across the four essential pillars. Use this to identify strengths and pinpoint areas for strategic investment on your journey to agentic maturity.</p>
+                        <div class="chart-container">
+                            <canvas id="readinessChart"></canvas>
+                        </div>
+                        <div id="results-summary" class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 text-left"></div>
+                        <button id="restart-assessment" class="mt-12 bg-indigo-600 text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-indigo-700 transition-colors">Restart Assessment</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+<!--
+
+    <footer class="bg-slate-800 text-white mt-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+            <p class="text-slate-400">An interactive tool based on "The Agentic Enterprise: A Framework for Ecosystem Readiness and Foundational Architecture."</p>
+        </div>
+    </footer>
+
+-->
+
+    <script>
+        const appData = {
+            spectrum: [
+                { level: 'L1', name: 'Assisted Intelligence (Copilot)', description: 'System provides on-demand support for single-step tasks. The human remains in full control.', examples: 'Code completion, email drafting.' },
+                { level: 'L2', name: 'Partial Automation (Workflow)', description: 'Executes predefined, multi-step workflows but requires human approval at key checkpoints.', examples: 'Automated invoice processing with human sign-off.' },
+                { level: 'L3', name: 'Conditional Autonomy (Actor)', description: 'Independently plans and executes tasks within a defined domain, escalating to a human for edge cases.', examples: 'Automated IT incident triage.' },
+                { level: 'L4', name: 'High Autonomy (Specialist Agent)', description: 'Operates fully autonomously within its domain, handling failures without human intervention.', examples: 'Dynamic inventory management, autonomous fraud resolution.' },
+                { level: 'L5', name: 'Full Autonomy (Collaborative System)', description: 'Operates without domain limitations, learning and adapting at a level equivalent to a human expert.', examples: 'Self-managing supply chains, autonomous R&D.' }
+            ],
+            architecture: {
+                reasoning: { title: 'Reasoning Engine (LLM)', description: 'The "brain" of the agent. A Large Language Model (e.g., GPT-4, Llama 3) that understands goals, formulates plans, and makes decisions.' },
+                orchestration: { title: 'Orchestration Layer', description: 'Manages the workflow, sequences tasks, and handles feedback loops using frameworks like LangChain or LangGraph.' },
+                perception: { title: 'Perception Module', description: 'The "senses" of the agent, gathering data from APIs, documents, and databases to understand the environment.' },
+                action: { title: 'Action Module', description: 'The "hands" of the agent, executing tasks by calling tools such as internal APIs, code interpreters, or external services.' },
+                memory: { title: 'Memory Layer', description: 'Provides context and learning. Short-term memory for current tasks, long-term memory (Vector DBs, Knowledge Graphs) for persistent knowledge.' },
+                tools: { title: 'Tooling & Integration Layer', description: 'A library of functions and resources the agent can invoke, from enterprise systems (Salesforce, SAP) to Human-in-the-Loop approval workflows.' }
+            },
+            assessment: {
+                pillars: [
+                    { id: 'data', name: 'Data & Infrastructure', icon: '💾' },
+                    { id: 'api', name: 'API & Integration', icon: '🔌' },
+                    { id: 'security', name: 'Security & Governance', icon: '🛡️' },
+                    { id: 'human', name: 'Human-System Interaction', icon: '🤝' }
+                ],
+                questions: [
+                    { pillar: 'data', text: 'Do you have a centralized, enforced data governance policy for AI/ML models?' },
+                    { pillar: 'data', text: 'Are critical data sources available via low-latency pipelines for real-time decisions?' },
+                    { pillar: 'data', text: 'Does your data architecture support ingestion and indexing of unstructured data (docs, emails)?' },
+                    { pillar: 'data', text: 'Do your MLOps processes support continuous monitoring for model drift and automated retraining?' },
+                    { pillar: 'api', text: 'Is your internal API landscape well-documented in a machine-readable format (e.g., OpenAPI)?' },
+                    { pillar: 'api', text: 'Do your APIs consistently use modern, token-based authentication (e.g., OAuth 2.0)?' },
+                    { pillar: 'api', text: 'Are your key APIs designed with RESTful principles, making them easily navigable by agents?' },
+                    { pillar: 'security', text: 'Do you have a formal process for managing and auditing non-human (agent/service) identities?' },
+                    { pillar: 'security', text: 'Is there a cross-functional AI ethics/safety committee with executive sponsorship?' },
+                    { pillar: 'security', text: 'Do you have a formal process for assessing the risks of new high-autonomy AI use cases?' },
+                    { pillar: 'security', text: 'Have you defined and documented who is accountable for the outcomes of your AI systems?' },
+                    { pillar: 'human', text: 'Have you identified high-risk workflows where blocking human-in-the-loop approval is mandatory?' },
+                    { pillar: 'human', text: 'Are there clearly defined and tested escalation paths for when an agent requires human judgment?' },
+                    { pillar: 'human', text: 'Do you have training programs to teach employees how to collaborate with and oversee AI agents?' }
+                ]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const spectrumContainer = document.getElementById('spectrum-container');
+            appData.spectrum.forEach((item, index) => {
+                const side = index % 2 === 0 ? 'left' : 'right';
+                const itemEl = document.createElement('div');
+                itemEl.className = `mb-8 flex justify-between items-center w-full ${side === 'right' ? 'flex-row-reverse' : ''}`;
+                itemEl.innerHTML = `
+                    <div class="order-1 w-5/12"></div>
+                    <div class="z-20 flex items-center order-1 bg-indigo-600 shadow-xl w-12 h-12 rounded-full">
+                        <h1 class="mx-auto font-bold text-lg text-white">${item.level}</h1>
+                    </div>
+                    <div class="order-1 bg-white rounded-lg shadow-xl w-5/12 px-6 py-4 accordion-item">
+                        <button class="accordion-button w-full text-left flex justify-between items-center" aria-expanded="false">
+                            <h3 class="font-bold text-slate-800 text-lg">${item.name}</h3>
+                            <span class="text-indigo-500 text-2xl font-light">+</span>
+                        </button>
+                        <div class="accordion-content overflow-hidden max-h-0 transition-all duration-500 ease-in-out">
+                            <p class="text-slate-600 pt-2">${item.description}</p>
+                            <p class="text-slate-500 text-sm mt-2"><strong>Examples:</strong> ${item.examples}</p>
+                        </div>
+                    </div>
+                `;
+                spectrumContainer.appendChild(itemEl);
+            });
+
+            spectrumContainer.addEventListener('click', e => {
+                const button = e.target.closest('.accordion-button');
+                if (button) {
+                    const content = button.nextElementSibling;
+                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                    button.setAttribute('aria-expanded', !isExpanded);
+                    content.style.maxHeight = isExpanded ? '0px' : content.scrollHeight + 'px';
+                }
+            });
+            
+            const archDiagram = document.getElementById('architecture-diagram');
+            const arch = appData.architecture;
+            archDiagram.innerHTML = `
+                <div class="relative p-4 border-4 border-indigo-500 rounded-2xl text-center font-bold text-white bg-indigo-600 tooltip-container">
+                    ${arch.reasoning.title}
+                    <div class="tooltip-content">${arch.reasoning.description}</div>
+                </div>
+                <div class="text-5xl text-center text-indigo-400 font-thin my-2">&darr;</div>
+                <div class="relative p-4 border-2 border-dashed border-indigo-400 rounded-2xl text-center font-semibold text-indigo-800 bg-indigo-100 tooltip-container">
+                    ${arch.orchestration.title}
+                    <div class="tooltip-content">${arch.orchestration.description}</div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6 text-center">
+                    <div class="relative p-4 border border-slate-300 rounded-xl bg-white tooltip-container">
+                        <h4 class="font-semibold text-slate-700">${arch.perception.title}</h4>
+                        <div class="tooltip-content">${arch.perception.description}</div>
+                    </div>
+                    <div class="relative p-4 border border-slate-300 rounded-xl bg-white tooltip-container">
+                        <h4 class="font-semibold text-slate-700">${arch.action.title}</h4>
+                        <div class="tooltip-content">${arch.action.description}</div>
+                    </div>
+                    <div class="relative p-4 border border-slate-300 rounded-xl bg-white tooltip-container">
+                        <h4 class="font-semibold text-slate-700">${arch.memory.title}</h4>
+                        <div class="tooltip-content">${arch.memory.description}</div>
+                    </div>
+                </div>
+                <div class="text-5xl text-center text-indigo-400 font-thin my-2">&uarr;</div>
+                <div class="relative p-4 border-2 border-dashed border-indigo-400 rounded-2xl text-center font-semibold text-indigo-800 bg-indigo-100 tooltip-container">
+                    ${arch.tools.title}
+                    <div class="tooltip-content">${arch.tools.description}</div>
+                </div>
+            `;
+            
+            archDiagram.querySelectorAll('.tooltip-container').forEach(container => {
+                const content = container.querySelector('.tooltip-content').textContent;
+                const tooltipEl = document.createElement('div');
+                tooltipEl.className = 'absolute bottom-full mb-2 w-64 bg-slate-800 text-white text-sm rounded-lg p-3 shadow-lg opacity-0 invisible transition-opacity duration-300 z-10 text-left font-normal';
+                tooltipEl.textContent = content;
+                container.appendChild(tooltipEl);
+
+                container.addEventListener('mouseenter', () => {
+                    tooltipEl.style.left = '50%';
+                    tooltipEl.style.transform = 'translateX(-50%)';
+                    tooltipEl.classList.remove('invisible');
+                    tooltipEl.classList.add('opacity-100');
+                });
+                container.addEventListener('mouseleave', () => {
+                    tooltipEl.classList.remove('opacity-100');
+                    tooltipEl.classList.add('invisible');
+                });
+            });
+
+
+            const stepIndicatorsContainer = document.getElementById('step-indicators');
+            const formContainer = document.getElementById('assessment-form-container');
+            const resultsContainer = document.getElementById('results-container');
+            const progressBar = document.getElementById('progress-bar');
+            let currentStep = 0;
+            let userAnswers = {};
+
+            function initializeAssessment() {
+                currentStep = 0;
+                userAnswers = {};
+                appData.assessment.pillars.forEach(p => userAnswers[p.id] = 0);
+                
+                stepIndicatorsContainer.innerHTML = '';
+                appData.assessment.pillars.forEach((pillar, index) => {
+                    const stepEl = document.createElement('div');
+                    stepEl.id = `step-${index}`;
+                    stepEl.className = 'step flex items-center justify-center w-12 h-12 rounded-full border-2 border-slate-300 bg-white';
+                    stepEl.innerHTML = `<span class="text-2xl">${pillar.icon}</span>`;
+                    stepIndicatorsContainer.appendChild(stepEl);
+                });
+                
+                formContainer.style.display = 'block';
+                resultsContainer.style.display = 'none';
+
+                renderStep(currentStep);
+            }
+
+            function renderStep(stepIndex) {
+                const pillar = appData.assessment.pillars[stepIndex];
+                const questionsForPillar = appData.assessment.questions.filter(q => q.pillar === pillar.id);
+                
+                let formHTML = `<div id="form-step-${stepIndex}">
+                    <h4 class="text-2xl font-bold text-center mb-6">${pillar.name}</h4>`;
+                
+                questionsForPillar.forEach((q, qIndex) => {
+                    const questionId = `q-${stepIndex}-${qIndex}`;
+                    formHTML += `
+                        <div class="mb-6">
+                            <p class="font-medium text-slate-700 mb-2">${q.text}</p>
+                            <div class="flex justify-around items-center">
+                                <span class="text-sm text-slate-500">Not Ready</span>
+                                <div class="flex space-x-2">
+                                    ${[1,2,3,4,5].map(val => `
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="${questionId}" value="${val}" class="sr-only peer">
+                                        <div class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-200 peer-checked:bg-indigo-600 peer-checked:text-white">${val}</div>
+                                    </label>
+                                    `).join('')}
+                                </div>
+                                <span class="text-sm text-slate-500">Fully Ready</span>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                formHTML += `<div class="flex justify-between mt-8">`;
+                if (stepIndex > 0) {
+                    formHTML += `<button type="button" class="prev-btn bg-slate-200 text-slate-800 font-semibold px-6 py-2 rounded-lg hover:bg-slate-300">Previous</button>`;
+                } else {
+                    formHTML += `<div></div>`;
+                }
+                formHTML += `<button type="button" class="next-btn bg-indigo-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-indigo-700">Next</button>
+                    </div></div>`;
+
+                formContainer.innerHTML = formHTML;
+                updateProgress();
+            }
+
+            function updateProgress() {
+                const totalSteps = appData.assessment.pillars.length;
+                const progress = ((currentStep + 1) / totalSteps) * 100;
+                progressBar.style.width = `${progress}%`;
+
+                document.querySelectorAll('.step').forEach((stepEl, index) => {
+                    stepEl.classList.remove('active', 'completed');
+                    if (index < currentStep) {
+                        stepEl.classList.add('completed');
+                    } else if (index === currentStep) {
+                        stepEl.classList.add('active');
+                    }
+                });
+            }
+            
+            formContainer.addEventListener('click', e => {
+                if (e.target.classList.contains('next-btn')) {
+                    const questionsInStep = document.querySelectorAll(`#form-step-${currentStep} input[type="radio"]`);
+                    let allAnswered = true;
+                    let uniqueQuestions = new Set();
+                    questionsInStep.forEach(q => uniqueQuestions.add(q.name));
+                    
+                    uniqueQuestions.forEach(name => {
+                        if (!document.querySelector(`input[name="${name}"]:checked`)) {
+                            allAnswered = false;
+                        }
+                    });
+
+                    if (!allAnswered) {
+                        alert('Please answer all questions before proceeding.');
+                        return;
+                    }
+
+                    if (currentStep < appData.assessment.pillars.length - 1) {
+                        currentStep++;
+                        renderStep(currentStep);
+                    } else {
+                        showResults();
+                    }
+                } else if (e.target.classList.contains('prev-btn')) {
+                    if (currentStep > 0) {
+                        currentStep--;
+                        renderStep(currentStep);
+                    }
+                }
+            });
+            
+            formContainer.addEventListener('change', e => {
+                if (e.target.type === 'radio') {
+                    const questionId = e.target.name;
+                    const value = parseInt(e.target.value);
+                    const [_, stepIndex, qIndex] = questionId.split('-');
+                    const pillarId = appData.assessment.pillars[stepIndex].id;
+                    
+                    const pillarQuestions = appData.assessment.questions.filter(q => q.pillar === pillarId);
+                    userAnswers[pillarId] = 0;
+                    
+                    pillarQuestions.forEach((q, i) => {
+                        const radioName = `q-${stepIndex}-${i}`;
+                        const checkedRadio = document.querySelector(`input[name="${radioName}"]:checked`);
+                        if (checkedRadio) {
+                            userAnswers[pillarId] += parseInt(checkedRadio.value);
+                        }
+                    });
+                }
+            });
+
+            function showResults() {
+                formContainer.style.display = 'none';
+                resultsContainer.style.display = 'block';
+
+                const scores = appData.assessment.pillars.map(p => {
+                    const numQuestions = appData.assessment.questions.filter(q => q.pillar === p.id).length;
+                    return (userAnswers[p.id] / (numQuestions * 5)) * 100;
+                });
+
+                const readinessChartCtx = document.getElementById('readinessChart').getContext('2d');
+                new Chart(readinessChartCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: appData.assessment.pillars.map(p => p.name),
+                        datasets: [{
+                            label: 'Readiness Score',
+                            data: scores,
+                            backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                            borderColor: 'rgba(79, 70, 229, 1)',
+                            pointBackgroundColor: 'rgba(79, 70, 229, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(79, 70, 229, 1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                                grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                                pointLabels: { font: { size: 14, weight: '500' }, color: '#374151' },
+                                ticks: {
+                                    backdropColor: 'rgba(255, 255, 255, 0.75)',
+                                    stepSize: 25,
+                                    callback: value => value + '%'
+                                },
+                                min: 0,
+                                max: 100
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+                
+                const resultsSummary = document.getElementById('results-summary');
+                resultsSummary.innerHTML = '';
+                appData.assessment.pillars.forEach((pillar, index) => {
+                    const score = scores[index];
+                    let summaryText = '';
+                    if (score < 40) summaryText = 'Foundational gaps identified. This area requires significant strategic focus and investment before deploying high-autonomy agents.';
+                    else if (score < 75) summaryText = 'Good progress, but key areas need maturing. Focus on improving documentation, security protocols, and integration patterns.';
+                    else summaryText = 'Strong foundation in place. Your ecosystem is well-prepared to support and scale agentic workflows safely and effectively.';
+                    
+                    resultsSummary.innerHTML += `
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h5 class="font-bold text-lg text-slate-800">${pillar.name} - ${Math.round(score)}%</h5>
+                            <p class="text-slate-600 mt-1">${summaryText}</p>
+                        </div>
+                    `;
+                });
+            }
+            
+            document.getElementById('restart-assessment').addEventListener('click', initializeAssessment);
+
+            initializeAssessment();
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

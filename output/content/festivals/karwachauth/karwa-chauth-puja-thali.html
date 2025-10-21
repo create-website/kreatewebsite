@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karwa Chauth Puja Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Festival Glow -->
+    <!-- Application Structure Plan: The application is designed as a thematic, top-down guide to the Karwa Chauth festival. It starts with a broad introduction, then focuses on the central element (the interactive Puja Thali), details the sequence of rituals (Puja Vidhi), provides cultural context with the story (Vrat Katha), and concludes with a look at regional variations. This structure was chosen because it mirrors a user's natural journey of discovery—from "what is it?" to "what do I need?" to "what do I do?" to "what is the story behind it?". The interactive Thali is the centerpiece, designed to be an engaging and educational tool that makes learning about the ritual items hands-on and memorable. The vertical timeline for the Puja Vidhi provides a clear, chronological flow of the day's events. This task-oriented and thematic approach is more intuitive for a cultural guide than a data-heavy dashboard. -->
+    <!-- Visualization & Content Choices: 
+        1. Puja Thali Items -> Goal: Organize & Inform -> Viz/Presentation: Interactive HTML/CSS diagram of a Thali with clickable hotspots. -> Interaction: On click, a side panel updates with details about the selected item's significance. -> Justification: Far more engaging and visual than a simple list. Creates a focal point for the user. -> Method: Vanilla JS DOM manipulation.
+        2. Puja Vidhi (Ritual) -> Goal: Show Change/Process -> Viz/Presentation: Vertical timeline built with styled HTML/CSS divs. -> Interaction: Clicking a step on the timeline highlights it and shows descriptive text. -> Justification: A timeline is the most logical way to represent a sequence of events throughout a day. It's clean and easy to follow. -> Method: HTML/CSS with JS for interactivity.
+        3. Regional Celebration Focus -> Goal: Compare -> Viz/Presentation: A horizontal bar chart showing conceptual focus areas of celebrations in different regions. -> Interaction: Tooltips on hover provide specific details for each region. -> Justification: A bar chart offers a quick visual summary of cultural nuances, making comparisons easy. -> Library: Chart.js (Canvas).
+        4. Vrat Katha (The Story) -> Goal: Inform -> Viz/Presentation: A clean, readable text block. -> Interaction: None, focused on readability. -> Justification: The story is a core part of the tradition and is best presented in a simple, respectful format for reading. -> Method: Styled HTML.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FEFBF6;
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .thali-plate {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 4px solid #D4AF37;
+            background: linear-gradient(145deg, #fceabb, #f8b500);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1), inset 0 0 15px rgba(255,255,255,0.5);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        @media (min-width: 768px) {
+            .thali-plate {
+                width: 400px;
+                height: 400px;
+            }
+        }
+        .thali-item {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .thali-item:hover {
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        .thali-item.active {
+            border-color: #C13515;
+            box-shadow: 0 0 15px #C13515;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+            padding-left: 2.5rem;
+            border-left: 2px solid #E5D9B6;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -11px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #A4907C;
+            border: 3px solid #FEFBF6;
+            transition: all 0.3s ease;
+        }
+        .timeline-item.active .timeline-dot {
+            background-color: #C13515;
+            transform: scale(1.2);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-rose-100/50 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-red-900">Karwa Chauth</h1>
+            <div class="hidden md:flex space-x-6">
+                <a href="#introduction" class="text-stone-700 hover:text-red-800 transition">Introduction</a>
+                <a href="#thali" class="text-stone-700 hover:text-red-800 transition">Puja Thali</a>
+                <a href="#vidhi" class="text-stone-700 hover:text-red-800 transition">The Ritual</a>
+                <a href="#katha" class="text-stone-700 hover:text-red-800 transition">The Story</a>
+                <a href="#regional" class="text-stone-700 hover:text-red-800 transition">Variations</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="introduction" class="text-center mb-20">
+            <h2 class="text-4xl md:text-5xl font-bold text-red-800 mb-4">A Celebration of Love & Devotion</h2>
+            <p class="max-w-3xl mx-auto text-lg text-stone-700 leading-relaxed">
+                Karwa Chauth is a cherished Hindu festival where married women observe a day-long fast from sunrise to moonrise, praying for the longevity, well-being, and prosperity of their husbands. It is a beautiful expression of love, sacrifice, and the sacred bond of marriage, celebrated with immense devotion and festive spirit across various parts of India.
+            </p>
+        </section>
+        
+        <section id="thali" class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-red-800 mb-2">The Sacred Puja Thali</h2>
+                <p class="max-w-2xl mx-auto text-stone-700">The Puja Thali holds all the essential items for the ritual. Each element has a deep symbolic meaning, contributing to the sanctity of the ceremony. Click on each item on the thali below to discover its significance.</p>
+            </div>
+            <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                <div class="w-full md:w-1/2 flex justify-center items-center">
+                    <div id="thali-plate" class="thali-plate">
+                        <div class="thali-item" style="top: 10%; left: 42%;" data-item="diya" title="Diya (Lamp)">🪔</div>
+                        <div class="thali-item" style="top: 42%; right: 10%;" data-item="sieve" title="Chhalni (Sieve)">🕸️</div>
+                        <div class="thali-item" style="bottom: 10%; left: 42%;" data-item="water" title="Karwa (Water Pot)">🏺</div>
+                        <div class="thali-item" style="top: 42%; left: 10%;" data-item="sweets" title="Mithai (Sweets)">🍬</div>
+                        <div class="thali-item" style="top: 25%; right: 25%;" data-item="sindoor" title="Sindoor (Vermilion)">🔴</div>
+                        <div class="thali-item" style="bottom: 25%; right: 25%;" data-item="incense" title="Agarbatti (Incense)">✨</div>
+                        <div class="thali-item" style="bottom: 25%; left: 25%;" data-item="fruits" title="Phal (Fruits)">🍎</div>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <div id="thali-info" class="bg-rose-50 p-6 rounded-lg shadow-md border border-rose-200 min-h-[250px] transition-all duration-500">
+                        <h3 id="item-title" class="text-2xl font-bold text-red-900 mb-2">Select an Item</h3>
+                        <p id="item-description" class="text-stone-700">Click on an icon on the thali to learn about its role in the Karwa Chauth puja.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="vidhi" class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-red-800 mb-2">The Day's Ritual (Puja Vidhi)</h2>
+                <p class="max-w-2xl mx-auto text-stone-700">The festival follows a sequence of rituals from dawn till moonrise. Explore the key moments of the day by clicking on each step in the timeline.</p>
+            </div>
+            <div class="max-w-2xl mx-auto">
+                <div id="timeline-container">
+                </div>
+            </div>
+        </section>
+        
+        <section id="katha" class="mb-20 bg-rose-50 p-8 rounded-lg shadow-inner border border-rose-200">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-red-800 mb-2">The Legend (Vrat Katha)</h2>
+                <p class="max-w-2xl mx-auto text-stone-700">Listening to the Vrat Katha, the story of Queen Veeravati, is an indispensable part of the puja. It highlights the power of a wife's devotion and the importance of adhering to the rituals.</p>
+            </div>
+            <div class="max-w-4xl mx-auto text-stone-700 leading-relaxed space-y-4">
+                <p>The story revolves around a beautiful queen named Veeravati, the only sister to seven loving brothers. On her first Karwa Chauth, she observed a strict fast at her parents' home. By evening, she was desperately waiting for the moon to rise, feeling weak from thirst and hunger. Seeing their sister's distress, her brothers couldn't bear it. They created an illusion of a moon by placing a mirror in a pipal tree and holding a flame behind a sieve.</p>
+                <p>Mistaking it for the real moon, Veeravati broke her fast. The moment she took a bite of food, news arrived that her husband, the king, was gravely ill. Heartbroken, she rushed to his side and, on the way, met Goddess Parvati who revealed her brothers' deception. The Goddess advised her to re-observe the fast with complete devotion. Veeravati did so, and due to her unwavering faith and prayers, Yama, the god of death, was forced to restore her husband to life. Since then, it became a tradition for women to look at the moon through a sieve, remembering Veeravati's story and praying for their husbands' long lives.</p>
+            </div>
+        </section>
+        
+        <section id="regional" class="mb-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-red-800 mb-2">Regional Celebration Styles</h2>
+                <p class="max-w-2xl mx-auto text-stone-700">While the essence remains the same, Karwa Chauth celebrations have unique regional flavors. The chart below illustrates the conceptual focus of traditions in different parts of North India. Hover over the bars for more details.</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="regionalChart"></canvas>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-rose-100/50 mt-16 py-6">
+        <div class="container mx-auto px-6 text-center text-stone-600">
+            <p>An Interactive Guide to Karwa Chauth. Created with love and respect for tradition.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const thaliItemsData = {
+                diya: {
+                    title: '🪔 Diya (Earthen Lamp)',
+                    description: 'The lamp, lit with ghee, symbolizes purity, goodness, and light. It is used to perform the aarti and is a representation of the divine, dispelling darkness and ignorance.'
+                },
+                sieve: {
+                    title: '🕸️ Chhalni (Sieve)',
+                    description: 'The sieve is used to view the moon before breaking the fast. It symbolizes the act of separating the pure (the divine moon) from any negative influences, ensuring only blessings are received.'
+                },
+                water: {
+                    title: '🏺 Karwa (Water Pot)',
+                    description: 'A pitcher filled with water, called the Karwa, is central to the puja. It represents life and prosperity. Water is offered to the moon (Arghya) to seek its blessings.'
+                },
+                sweets: {
+                    title: '🍬 Mithai (Sweets)',
+                    description: 'Sweets are offered to the deity and are also used to break the fast. They symbolize happiness, auspiciousness, and the sweetness of the marital bond.'
+                },
+                sindoor: {
+                    title: '🔴 Sindoor (Vermilion Powder)',
+                    description: 'Sindoor is a sacred symbol of a married woman in Hindu culture. It represents her marital status and is a prayer for her husband\'s long life and well-being.'
+                },
+                incense: {
+                    title: '✨ Agarbatti (Incense Sticks)',
+                    description: 'Lighting incense sticks purifies the atmosphere and creates a divine ambiance. The fragrance is believed to please the deities and helps in concentrating during prayers.'
+                },
+                fruits: {
+                    title: '🍎 Phal (Fruits)',
+                    description: 'Fresh fruits are offered to the deities as a pure and natural offering (prasad). They represent gratitude for nature\'s bounty and a prayer for abundance.'
+                }
+            };
+
+            const thaliItems = document.querySelectorAll('.thali-item');
+            const itemTitle = document.getElementById('item-title');
+            const itemDescription = document.getElementById('item-description');
+            
+            let activeItem = null;
+
+            thaliItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const itemKey = item.dataset.item;
+                    const data = thaliItemsData[itemKey];
+
+                    itemTitle.innerText = data.title;
+                    itemDescription.innerText = data.description;
+                    
+                    if(activeItem) {
+                        activeItem.classList.remove('active');
+                    }
+                    item.classList.add('active');
+                    activeItem = item;
+                });
+            });
+
+            const timelineData = [
+                {
+                    time: "Before Sunrise",
+                    title: "Sargi",
+                    description: "Married women wake up before sunrise to eat 'Sargi,' a pre-dawn meal prepared by their mother-in-law. It consists of nutritious foods to sustain them through the day."
+                },
+                {
+                    time: "All Day",
+                    title: "The Nirjala Vrat (Fast)",
+                    description: "After Sargi, the 'Nirjala' fast begins, where women abstain from both food and water for the entire day until the moon rises."
+                },
+                {
+                    time: "Late Afternoon",
+                    title: "Community Puja & Katha",
+                    description: "Women dress in their finest traditional attire, often bridal colors like red or pink, and gather in groups to perform a collective puja and narrate the Vrat Katha (the story of the fast)."
+                },
+                {
+                    time: "Moonrise",
+                    title: "Offering Arghya to the Moon",
+                    description: "Upon moonrise, the fasting woman views the moon's reflection through a sieve (chhalni) and then sees her husband's face. She offers water (Arghya) to the moon to seek its blessings."
+                },
+                {
+                    time: "After Moonrise",
+                    title: "Breaking the Fast",
+                    description: "After the moon puja, the husband offers his wife the first sip of water and a bite of food, breaking her fast. This is followed by a festive family meal."
+                }
+            ];
+
+            const timelineContainer = document.getElementById('timeline-container');
+            timelineData.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'timeline-item';
+                if(index === 0) div.classList.add('active');
+                div.innerHTML = `
+                    <div class="timeline-dot"></div>
+                    <div class="text-sm text-red-700">${item.time}</div>
+                    <h3 class="font-bold text-xl text-stone-800 mb-1">${item.title}</h3>
+                    <p class="text-stone-600">${item.description}</p>
+                `;
+                div.addEventListener('click', () => {
+                    timelineContainer.querySelectorAll('.timeline-item').forEach(el => el.classList.remove('active'));
+                    div.classList.add('active');
+                });
+                timelineContainer.appendChild(div);
+            });
+
+            const ctx = document.getElementById('regionalChart').getContext('2d');
+            const regionalChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Punjab', 'Rajasthan', 'Uttar Pradesh', 'Gujarat'],
+                    datasets: [{
+                        label: 'Community Festivities',
+                        data: [9, 6, 7, 4],
+                        backgroundColor: '#E5A9A9',
+                    }, {
+                        label: 'Folk Music & Songs',
+                        data: [8, 7, 6, 3],
+                        backgroundColor: '#C88E8E',
+                    }, {
+                        label: 'Elaborate Thali Decoration',
+                        data: [6, 9, 7, 5],
+                        backgroundColor: '#A4907C',
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            display: false,
+                        },
+                        y: {
+                            stacked: true,
+                            ticks: {
+                                font: {
+                                    size: 14,
+                                    family: "'Lora', serif",
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(context) {
+                                    let region = context[0].label;
+                                    let tooltipText = {
+                                        'Punjab': 'Known for vibrant community gatherings and singing traditional songs like "Veero Kudiye Karwada".',
+                                        'Rajasthan': 'Famous for intricate henna designs and beautifully decorated Karwas (water pots).',
+                                        'Uttar Pradesh': 'Focuses on the group narration of the Vrat Katha and creating clay idols of Gauri Ma.',
+                                        'Gujarat': 'While less prevalent, observers often follow rituals similar to neighboring Rajasthan.'
+                                    };
+                                    return tooltipText[region] || region;
+                                },
+                                label: function(context) {
+                                    return ''; 
+                                }
+                            },
+                            displayColors: false,
+                            bodyFont: {
+                                size: 12
+                            },
+                            titleFont: {
+                                size: 14,
+                                weight: 'normal'
+                            },
+                            bodyAlign: 'center',
+                            titleAlign: 'center',
+                            bodySpacing: 0,
+                            titleSpacing: 0,
+                            yAlign: 'bottom',
+                        }
+                    }
+                }
+            });
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

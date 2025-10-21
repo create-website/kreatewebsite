@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Future of Finance: AI Transformation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Cool Slate & Gold -->
+    <!-- Application Structure Plan: The application is designed as a top-down narrative journey, guiding the user from the present state of AI in finance to its future evolution. This structure was chosen for its intuitive flow, starting with familiar concepts and progressively introducing more advanced topics. The layout uses distinct thematic sections: 1) A hero section with key metrics. 2) The "Current Landscape" showing established AI use cases. 3) "The Next Wave" which interactively introduces GenAI vs. Agentic AI. 4) A "5-Year Forecast" with an interactive timeline slider to show projections. 5) A summary of "Impact & Challenges." This design facilitates understanding by contextualizing new information against a baseline and making future projections tangible through interaction, rather than presenting a static, chapter-like report. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Current AI Use Cases -> Goal: Inform -> Viz: Donut Chart -> Interaction: Hover tooltips -> Justification: Shows composition of a whole clearly -> Library: Chart.js.
+        - Report Info: GenAI vs. Agentic AI Details -> Goal: Compare/Organize -> Viz: Tabbed content sections -> Interaction: Click buttons to switch views -> Justification: Allows focused exploration of new concepts without clutter -> Method: JS DOM manipulation.
+        - Report Info: Adoption of New AI -> Goal: Compare -> Viz: Bar Chart -> Interaction: Updates with tab selection -> Justification: Simple, direct comparison of interest vs. pilot stages -> Library: Chart.js.
+        - Report Info: 5-Year Investment & Maturity Forecast -> Goal: Show Change -> Viz: Interactive timeline slider controlling a line chart and text -> Interaction: User drags slider to see data evolve -> Justification: Creates an engaging, dynamic story of future growth -> Method: HTML range input + Chart.js.
+        - Report Info: Opportunities & Challenges -> Goal: Organize/Inform -> Viz: Styled HTML lists with unicode characters -> Interaction: Static -> Justification: Scannable and easily digestible summary -> Method: Tailwind CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover {
+            color: #4f46e5; /* indigo-600 */
+        }
+        .active-tab {
+            background-color: #4f46e5 !important;
+            color: #ffffff !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-indigo-600">AI in Finance</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#current-landscape" class="nav-link text-slate-600">Current Landscape</a>
+                <a href="#next-wave" class="nav-link text-slate-600">Next Wave</a>
+                <a href="#forecast" class="nav-link text-slate-600">5-Year Forecast</a>
+                <a href="#impact" class="nav-link text-slate-600">Impact</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-white border border-slate-300 rounded-md p-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <option value="#current-landscape">Current Landscape</option>
+                    <option value="#next-wave">Next Wave</option>
+                    <option value="#forecast">5-Year Forecast</option>
+                    <option value="#impact">Impact</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+        <section class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">The AI Revolution in Finance</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600">From automating tasks to generating novel insights, Artificial Intelligence is fundamentally reshaping financial services. Explore the current trends, the next wave of innovation, and the projected transformation over the next five years.</p>
+        </section>
+
+        <section id="current-landscape" class="mb-20 scroll-mt-24">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-slate-900">The Current AI Landscape</h3>
+                <p class="max-w-2xl mx-auto mt-2 text-slate-600">Today, financial institutions primarily leverage traditional AI and Machine Learning to optimize existing processes. This section explores the established use cases that form the foundation of AI adoption in the industry.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                    <h4 class="text-xl font-bold text-center mb-4 text-slate-800">Primary AI Use Cases (2025)</h4>
+                    <p class="text-center text-slate-500 mb-6">Current AI deployment is concentrated in areas of risk mitigation, operational efficiency, and algorithmic processing. Hover over the chart to see the distribution.</p>
+                    <div class="chart-container">
+                        <canvas id="useCaseChart"></canvas>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                        <h4 class="font-bold text-lg text-indigo-600">Risk Management & Compliance</h4>
+                        <p class="text-slate-600">AI algorithms analyze vast datasets in real-time to detect fraudulent transactions, assess credit risk with greater accuracy, and ensure compliance with evolving regulations, forming the largest segment of AI application.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                        <h4 class="font-bold text-lg text-indigo-600">Algorithmic Trading</h4>
+                        <p class="text-slate-600">High-frequency trading platforms use AI to execute trades based on complex market signals, optimizing for speed and price. This represents a significant portion of daily trading volume.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                        <h4 class="font-bold text-lg text-indigo-600">Customer Service & Operations</h4>
+                        <p class="text-slate-600">AI-powered chatbots handle routine customer inquiries, while robotic process automation (RPA) streamlines back-office tasks like data entry and reconciliation, improving efficiency and reducing costs.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="next-wave" class="mb-20 scroll-mt-24">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-slate-900">The Next Wave: Generative & Agentic AI</h3>
+                <p class="max-w-2xl mx-auto mt-2 text-slate-600">Beyond optimization, the next frontier of AI promises to create, reason, and act. This section differentiates between Generative and Agentic AI, highlighting their potential to unlock entirely new capabilities and business models in finance.</p>
+            </div>
+            <div class="flex justify-center mb-8">
+                <div class="flex space-x-1 bg-slate-200 rounded-full p-1">
+                    <button id="gen-ai-btn" class="ai-type-btn active-tab px-6 py-2 rounded-full font-medium transition">Generative AI</button>
+                    <button id="agentic-ai-btn" class="ai-type-btn px-6 py-2 rounded-full font-medium transition">Agentic AI</button>
+                </div>
+            </div>
+
+            <div id="ai-content-container" class="grid grid-cols-1 md:grid-cols-5 gap-8 items-start">
+                <div id="gen-ai-content" class="md:col-span-3 space-y-6">
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                        <h4 class="text-2xl font-bold text-slate-800 mb-2">What is Generative AI?</h4>
+                        <p class="text-slate-600">Generative AI creates new content—text, code, images, and data—based on patterns learned from existing information. In finance, it acts as a powerful co-pilot for human experts, augmenting their abilities to analyze and communicate.</p>
+                        <h5 class="font-bold mt-6 mb-2 text-slate-700">Potential Use Cases:</h5>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1">
+                            <li><strong>Hyper-Personalized Client Communication:</strong> Generating custom market summaries and financial advice for individual clients.</li>
+                            <li><strong>Automated Reporting:</strong> Instantly creating detailed compliance, risk, and performance reports from raw data.</li>
+                            <li><strong>Code Generation for Quants:</strong> Assisting quantitative analysts in writing and debugging complex trading models.</li>
+                            <li><strong>Synthetic Data for Model Training:</strong> Creating realistic but anonymized data to train other AI models without privacy risks.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="agentic-ai-content" class="hidden md:col-span-3 space-y-6">
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                        <h4 class="text-2xl font-bold text-slate-800 mb-2">What is Agentic AI?</h4>
+                        <p class="text-slate-600">Agentic AI goes a step further than generation. These are autonomous systems that can set goals, make plans, and execute multi-step tasks to achieve objectives with minimal human intervention. They are the "doers" of the AI world.</p>
+                        <h5 class="font-bold mt-6 mb-2 text-slate-700">Potential Use Cases:</h5>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1">
+                            <li><strong>Autonomous Portfolio Management:</strong> AI agents that monitor markets 24/7, identify opportunities, and automatically rebalance portfolios based on pre-defined risk tolerance.</li>
+                            <li><strong>Automated Claims Processing:</strong> End-to-end handling of insurance claims, from initial filing and verification to fraud analysis and payout.</li>
+                            <li><strong>Proactive Threat Remediation:</strong> Identifying cybersecurity threats and autonomously executing countermeasures to secure systems.</li>
+                            <li><strong>Complex Financial Research:</strong> Tasking an agent to research a new market, gather data from multiple sources, perform analysis, and deliver a summary report.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                    <h4 class="text-xl font-bold text-center mb-6 text-slate-800">Institutional Interest & Adoption</h4>
+                    <div class="chart-container" style="max-width: 400px; height: 380px;">
+                        <canvas id="adoptionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="forecast" class="mb-20 scroll-mt-24">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-slate-900">The 5-Year Transformation Forecast</h3>
+                 <p class="max-w-2xl mx-auto mt-2 text-slate-600">The next 3-5 years will see a dramatic shift in AI investment and maturity. This section provides a dynamic forecast of this evolution. Use the slider to travel through time and see how investment priorities and the state of Finance IT are expected to change.</p>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                <div class="mb-8">
+                    <label for="timeline-slider" class="block text-center font-bold text-lg text-slate-800 mb-4">Drag to Explore the Future: <span id="slider-year" class="text-indigo-600">2025</span></label>
+                    <input id="timeline-slider" type="range" min="2025" max="2030" value="2025" step="1" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+                    <div class="w-full flex justify-between text-xs px-1 mt-1 text-slate-500">
+                        <span>'25</span><span>'26</span><span>'27</span><span>'28</span><span>'29</span><span>'30</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h4 class="text-xl font-bold text-center mb-4 text-slate-800">Projected AI Investment Focus</h4>
+                        <div class="chart-container" style="height: 350px; max-width: 550px;">
+                            <canvas id="projectionChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                         <h4 class="text-xl font-bold text-center mb-4 text-slate-800">Expected State of Finance IT</h4>
+                         <div id="it-maturity-text" class="bg-indigo-50 p-6 rounded-lg text-slate-700 min-h-[350px] flex items-center">
+                            <p>Initial text</p>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="scroll-mt-24">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-slate-900">Impact & Challenges</h3>
+                <p class="max-w-2xl mx-auto mt-2 text-slate-600">The transition to an AI-driven financial ecosystem presents immense opportunities alongside significant hurdles. Understanding this duality is key to navigating the transformation successfully.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                    <h4 class="text-2xl font-bold text-emerald-600 mb-4">Key Opportunities</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-emerald-500 mr-3 mt-1">✅</span>
+                            <div><strong class="text-slate-800">Radical Efficiency:</strong> Automating complex workflows far beyond current RPA, from client onboarding to trade settlement, freeing up human capital for strategic tasks.</div>
+                        </li>
+                        <li class="flex items-start">
+                             <span class="text-emerald-500 mr-3 mt-1">✅</span>
+                            <div><strong class="text-slate-800">True Personalization at Scale:</strong> Crafting unique financial products, advice, and experiences for millions of individual customers simultaneously.</div>
+                        </li>
+                         <li class="flex items-start">
+                             <span class="text-emerald-500 mr-3 mt-1">✅</span>
+                            <div><strong class="text-slate-800">New Product & Market Creation:</strong> Using AI to identify unmet needs and create novel, data-driven financial instruments and services.</div>
+                        </li>
+                         <li class="flex items-start">
+                             <span class="text-emerald-500 mr-3 mt-1">✅</span>
+                            <div><strong class="text-slate-800">Alpha Generation:</strong> Uncovering subtle, predictive signals in unconventional data sources that are invisible to human analysts.</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                    <h4 class="text-2xl font-bold text-amber-600 mb-4">Significant Challenges</h4>
+                     <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-amber-500 mr-3 mt-1">⚠️</span>
+                            <div><strong class="text-slate-800">Regulatory & Ethical Uncertainty:</strong> Navigating "black box" algorithms, ensuring fairness, and adapting to regulations that are struggling to keep pace with technology.</div>
+                        </li>
+                         <li class="flex items-start">
+                            <span class="text-amber-500 mr-3 mt-1">⚠️</span>
+                            <div><strong class="text-slate-800">Data Security & Privacy:</strong> Protecting vast amounts of sensitive financial data from increasingly sophisticated cyber threats targeting AI systems.</div>
+                        </li>
+                         <li class="flex items-start">
+                            <span class="text-amber-500 mr-3 mt-1">⚠️</span>
+                            <div><strong class="text-slate-800">Talent Gap & Upskilling:</strong> Finding and retaining talent with expertise in both finance and cutting-edge AI, and retraining the existing workforce.</div>
+                        </li>
+                         <li class="flex items-start">
+                            <span class="text-amber-500 mr-3 mt-1">⚠️</span>
+                            <div><strong class="text-slate-800">High Cost of Implementation:</strong> Significant upfront investment in computing infrastructure, data pipelines, and specialized software required for advanced AI.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+<!--
+    <footer class="bg-slate-800 text-slate-400 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>This interactive report is a conceptual synthesis of current industry trends in AI and finance.</p>
+            <p class="text-sm mt-2">&copy; 2025 Financial Insights Group. All rights reserved.</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const useCaseData = {
+                labels: ['Risk & Compliance', 'Algorithmic Trading', 'Customer Service & Ops', 'Wealth Management', 'Other'],
+                datasets: [{
+                    label: 'Use Case Distribution',
+                    data: [45, 25, 15, 10, 5],
+                    backgroundColor: [
+                        '#4f46e5', // Indigo 600
+                        '#6366f1', // Indigo 500
+                        '#818cf8', // Indigo 400
+                        '#a5b4fc', // Indigo 300
+                        '#c7d2fe'  // Indigo 200
+                    ],
+                    hoverOffset: 4,
+                    borderColor: '#f8fafc',
+                }]
+            };
+
+            const adoptionData = {
+                genAI: {
+                    labels: ['Exploring / Researching', 'Piloting / PoC', 'In Production'],
+                    datasets: [{
+                        label: 'Generative AI Interest',
+                        data: [65, 25, 10],
+                        backgroundColor: '#6366f1',
+                        borderColor: '#4f46e5',
+                        borderWidth: 1
+                    }]
+                },
+                agenticAI: {
+                    labels: ['Exploring / Researching', 'Piloting / PoC', 'In Production'],
+                    datasets: [{
+                        label: 'Agentic AI Interest',
+                        data: [80, 15, 5],
+                        backgroundColor: '#818cf8',
+                        borderColor: '#6366f1',
+                        borderWidth: 1
+                    }]
+                }
+            };
+            
+            const projectionData = {
+                years: [2025, 2026, 2027, 2028, 2029, 2030],
+                traditional: [70, 65, 55, 45, 35, 30],
+                generative: [20, 25, 35, 40, 45, 45],
+                agentic: [10, 10, 10, 15, 20, 25]
+            };
+
+            const itMaturityContent = {
+                2025: '<strong>Focus: Foundational.</strong> IT departments concentrate on data infrastructure, cloud migration, and piloting traditional AI models for efficiency gains. Security is focused on protecting data inputs.',
+                2026: '<strong>Focus: Experimentation.</strong> Budgets for GenAI pilots increase. Teams begin exploring internal use cases like code assistance and report generation. The first questions about GenAI governance emerge.',
+                2027: '<strong>Focus: Integration.</strong> GenAI starts moving into production for co-pilot roles (client comms, marketing). The need for a unified AI platform becomes critical. Early-stage Agentic AI research begins in R&D labs.',
+                2028: '<strong>Focus: Augmentation.</strong> GenAI is a standard tool for many analysts. The first client-facing Agentic AI pilots (e.g., automated advisory) are launched with heavy human oversight. Regulatory bodies provide initial frameworks.',
+                2029: '<strong>Focus: Automation.</strong> Agentic AI handles more complex, multi-step processes autonomously within sandboxed environments. IT focus shifts to managing AI agent interactions and ensuring ethical behavior and explainability.',
+                2030: '<strong>Focus: Autonomy.</strong> Mature financial institutions operate a hybrid human-AI workforce. Agentic systems perform autonomous research and portfolio adjustments. IT transforms into an "AI Orchestration" function, managing a fleet of specialized agents.'
+            };
+
+            const chartOptions = (title, displayLegend = false) => ({
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: displayLegend,
+                        position: 'bottom',
+                        labels: {
+                            color: '#334155' // slate-700
+                        }
+                    },
+                    title: {
+                        display: false,
+                    }
+                },
+                scales: {
+                     x: {
+                        ticks: { color: '#475569' }, // slate-600
+                        grid: { display: false }
+                    },
+                    y: {
+                        ticks: { color: '#475569' }, // slate-600
+                        grid: { color: '#e2e8f0' } // slate-200
+                    }
+                }
+            });
+
+            const useCaseCtx = document.getElementById('useCaseChart').getContext('2d');
+            const useCaseChart = new Chart(useCaseCtx, {
+                type: 'doughnut',
+                data: useCaseData,
+                options: chartOptions('Primary AI Use Cases', true)
+            });
+
+            const adoptionCtx = document.getElementById('adoptionChart').getContext('2d');
+            const adoptionChart = new Chart(adoptionCtx, {
+                type: 'bar',
+                data: adoptionData.genAI,
+                options: { ...chartOptions('Institutional Interest', false), indexAxis: 'y' }
+            });
+
+            const projectionCtx = document.getElementById('projectionChart').getContext('2d');
+            const projectionChart = new Chart(projectionCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        { label: 'Traditional AI', data: [], borderColor: '#a5b4fc', backgroundColor: '#a5b4fc20', fill: true, tension: 0.3 },
+                        { label: 'Generative AI', data: [], borderColor: '#6366f1', backgroundColor: '#6366f120', fill: true, tension: 0.3 },
+                        { label: 'Agentic AI', data: [], borderColor: '#4f46e5', backgroundColor: '#4f46e520', fill: true, tension: 0.3 }
+                    ]
+                },
+                options: { ...chartOptions('Projected AI Investment Focus', true), scales: { x: { grid: { display: false } }, y: { suggestedMin: 0, suggestedMax: 100, ticks: { callback: value => value + '%' } } } }
+            });
+
+            const genAiBtn = document.getElementById('gen-ai-btn');
+            const agenticAiBtn = document.getElementById('agentic-ai-btn');
+            const genAiContent = document.getElementById('gen-ai-content');
+            const agenticAiContent = document.getElementById('agentic-ai-content');
+
+            genAiBtn.addEventListener('click', () => {
+                genAiBtn.classList.add('active-tab');
+                agenticAiBtn.classList.remove('active-tab');
+                genAiContent.classList.remove('hidden');
+                agenticAiContent.classList.add('hidden');
+                adoptionChart.data = adoptionData.genAI;
+                adoptionChart.update();
+            });
+
+            agenticAiBtn.addEventListener('click', () => {
+                agenticAiBtn.classList.add('active-tab');
+                genAiBtn.classList.remove('active-tab');
+                agenticAiContent.classList.remove('hidden');
+                genAiContent.classList.add('hidden');
+                adoptionChart.data = adoptionData.agenticAI;
+                adoptionChart.update();
+            });
+            
+            const timelineSlider = document.getElementById('timeline-slider');
+            const sliderYearEl = document.getElementById('slider-year');
+            const itMaturityTextEl = document.getElementById('it-maturity-text');
+
+            function updateProjection(year) {
+                const yearIndex = projectionData.years.indexOf(parseInt(year));
+                sliderYearEl.textContent = year;
+                
+                projectionChart.data.labels = projectionData.years.slice(0, yearIndex + 1);
+                projectionChart.data.datasets[0].data = projectionData.traditional.slice(0, yearIndex + 1);
+                projectionChart.data.datasets[1].data = projectionData.generative.slice(0, yearIndex + 1);
+                projectionChart.data.datasets[2].data = projectionData.agentic.slice(0, yearIndex + 1);
+                projectionChart.update();
+                
+                itMaturityTextEl.innerHTML = `<p>${itMaturityContent[year]}</p>`;
+            }
+
+            timelineSlider.addEventListener('input', (e) => {
+                updateProjection(e.target.value);
+            });
+            
+            updateProjection(2025);
+
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', (e) => {
+                const targetId = e.target.value;
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

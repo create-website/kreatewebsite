@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayodhya Ram Mandir: A Grand Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #F9F9F9; color: #4B5267; }
+        h1, h2, h3 { font-family: 'Teko', sans-serif; letter-spacing: 0.05em; }
+        .chart-container { position: relative; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; max-height: 400px; } }
+        .timeline-item::before { content: ''; position: absolute; top: 18px; left: -10px; width: 20px; height: 20px; background-color: #FFD338; border-radius: 9999px; border: 4px solid #F9F9F9; }
+        .timeline-container { border-left: 4px solid #FFD338; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white text-center py-12" style="background-image: linear-gradient(to top, #ffffff, #fffbeb);">
+        <div class="container mx-auto px-6">
+            <h1 class="text-5xl md:text-7xl font-semibold" style="color:#FF8C42;">SHRI RAM JANMABHOOMI MANDIR</h1>
+            <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto">A visual journey exploring the faith, architecture, and monumental scale of a civilizational landmark in Ayodhya.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 md:py-20 space-y-20">
+
+        <section id="overview">
+            <h2 class="text-4xl md:text-5xl text-center text-[#4B5267] uppercase">The Scale of Devotion</h2>
+            <p class="text-center mt-2 mb-12 max-w-2xl mx-auto">The Ram Mandir is a project of immense proportions. These key figures provide a snapshot of the monumental effort and resources dedicated to its construction, reflecting both modern engineering and timeless faith.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-5xl mb-3" style="color: #FF8C42;">🏞️</div>
+                    <p class="text-lg font-semibold text-gray-600">Total Complex Area</p>
+                    <p class="text-4xl font-bold text-[#4B5267] mt-1">70 Acres</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-5xl mb-3" style="color: #FF8C42;">🏛️</div>
+                    <p class="text-lg font-semibold text-gray-600">Mandir Height</p>
+                    <p class="text-4xl font-bold text-[#4B5267] mt-1">161 Feet</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-5xl mb-3" style="color: #FF8C42;">🏗️</div>
+                    <p class="text-lg font-semibold text-gray-600">Carved Pillars</p>
+                    <p class="text-4xl font-bold text-[#4B5267] mt-1">392</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-5xl mb-3" style="color: #FF8C42;">💰</div>
+                    <p class="text-lg font-semibold text-gray-600">Project Cost</p>
+                    <p class="text-4xl font-bold text-[#4B5267] mt-1">₹1,800 Crore</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline">
+            <h2 class="text-4xl md:text-5xl text-center text-[#4B5267] uppercase">A Journey Through Centuries</h2>
+            <p class="text-center mt-2 mb-12 max-w-2xl mx-auto">The path to the Ram Mandir's realization is a story that spans nearly 500 years. This timeline highlights the most pivotal moments in its long and complex history, from early disputes to its celebrated inauguration.</p>
+            <div class="timeline-container relative pl-10 md:pl-16">
+                <div class="timeline-item relative pb-10">
+                    <h3 class="text-2xl font-semibold" style="color: #FF8C42;">1528: The Disputed Structure</h3>
+                    <p class="mt-1 text-md">The Babri Masjid is built at the site, which has been traditionally identified by Hindus as the birthplace of Lord Ram, setting the stage for a centuries-long dispute.</p>
+                </div>
+                <div class="timeline-item relative pb-10">
+                    <h3 class="text-2xl font-semibold" style="color: #FF8C42;">1949: The Appearance</h3>
+                    <p class="mt-1 text-md">Idols of Ram Lalla are placed inside the structure. The site is subsequently declared disputed, and the gates are locked.</p>
+                </div>
+                <div class="timeline-item relative pb-10">
+                    <h3 class="text-2xl font-semibold" style="color: #FF8C42;">2019: The Landmark Verdict</h3>
+                    <p class="mt-1 text-md">India's Supreme Court awards the disputed land to a trust for the construction of a Ram temple, concluding the decades-long legal battle.</p>
+                </div>
+                <div class="timeline-item relative">
+                    <h3 class="text-2xl font-semibold" style="color: #FF8C42;">2024: The Consecration</h3>
+                    <p class="mt-1 text-md">The Pran Pratishtha ceremony marks the consecration of the new Ram Lalla idol, and the temple officially opens its doors to millions of devotees.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2 class="text-4xl md:text-5xl text-center text-[#4B5267] uppercase">Blueprint of Faith</h2>
+            <p class="text-center mt-2 mb-12 max-w-2xl mx-auto">Designed in the traditional Nagara style, the temple is an architectural marvel built to last over a thousand years without using any iron or steel. Its structure is a testament to ancient Indian engineering and craftsmanship.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h3 class="text-3xl text-center font-semibold mb-4 text-[#4B5267]">Key Features</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-2xl mr-3" style="color: #FF8C42;">❖</span>
+                            <span class="flex-1"><strong>Nagara Style:</strong> A classic North Indian temple architecture characterized by its soaring spires (shikharas).</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-2xl mr-3" style="color: #FF8C42;">❖</span>
+                            <span class="flex-1"><strong>Three-Storied Structure:</strong> The temple spans three floors, with the idol of Ram Lalla residing on the ground floor.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-2xl mr-3" style="color: #FF8C42;">❖</span>
+                            <span class="flex-1"><strong>Five Mandaps:</strong> The main structure includes five grand halls: Nritya Mandap, Rang Mandap, Sabha Mandap, Prarthna, and Kirtan Mandaps.</span>
+                        </li>
+                         <li class="flex items-start">
+                            <span class="text-2xl mr-3" style="color: #FF8C42;">❖</span>
+                            <span class="flex-1"><strong>Durable Materials:</strong> Built primarily from Bansi Paharpur Pink Sandstone, with extensive use of granite and high-quality marble for details.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-3xl text-center font-semibold mb-4 text-[#4B5267]">Material Composition</h3>
+                    <div class="chart-container">
+                        <canvas id="materialsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="impact">
+            <h2 class="text-4xl md:text-5xl text-center text-[#4B5267] uppercase">The Unprecedented Footfall</h2>
+            <p class="text-center mt-2 mb-12 max-w-2xl mx-auto">Since its inauguration, the Ram Mandir has become a major pilgrimage site, drawing massive crowds daily. The chart below shows the estimated daily visitor numbers, highlighting its immediate and profound impact.</p>
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h3 class="text-3xl text-center font-semibold mb-4 text-[#4B5267]">Estimated Daily Visitors</h3>
+                <div class="chart-container mx-auto" style="height: 350px; max-width: 800px;">
+                    <canvas id="visitorsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#4B5267] text-white text-center py-6 mt-12">
+        <p>An infographic by Canvas Infographics. Data sourced from public reports.</p>
+    </footer>
+
+    <script>
+        function wrapLabel(str) {
+            if (str.length <= 16) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > 16) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const sharedTooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        };
+
+        const materialsCtx = document.getElementById('materialsChart').getContext('2d');
+        const materialsData = {
+            labels: ['Pink Sandstone', 'High-Quality Marble', 'Granite', 'Copper & Wood'],
+            datasets: [{
+                data: [65, 20, 10, 5],
+                backgroundColor: ['#FF8C42', '#FFD338', '#4B5267', '#A0AEC0'],
+                hoverOffset: 4
+            }]
+        };
+        new Chart(materialsCtx, {
+            type: 'doughnut',
+            data: materialsData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                ...sharedTooltipOptions,
+                plugins: {
+                    ...sharedTooltipOptions.plugins,
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+
+        const visitorsCtx = document.getElementById('visitorsChart').getContext('2d');
+        const visitorsData = {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4 (Post-Inauguration)'],
+            datasets: [{
+                label: 'Average Daily Visitors (in Lakhs)',
+                data: [2.5, 2.2, 1.8, 3.5],
+                backgroundColor: '#FF8C42',
+                borderColor: '#c46427',
+                borderWidth: 1,
+                borderRadius: 5
+            }]
+        };
+        new Chart(visitorsCtx, {
+            type: 'bar',
+            data: visitorsData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#4B5267' },
+                        grid: { color: '#e2e8f0' }
+                    },
+                    x: {
+                        ticks: { color: '#4B5267' },
+                        grid: { display: false }
+                    }
+                },
+                ...sharedTooltipOptions,
+                plugins: {
+                    ...sharedTooltipOptions.plugins,
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

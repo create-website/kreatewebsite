@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Story of Karwa Chauth: An Interactive Exploration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Harmony -->
+    <!-- Application Structure Plan: A thematic, single-page scrolling experience with a sticky navigation header. The structure is designed for intuitive exploration, starting with a high-level introduction, moving to the core ritual, then delving into the narrative/historical context, and finally analyzing its modern form. This non-linear but guided approach allows users to engage with the content based on their interests—be it the practical steps of the ritual, the mythological stories, or the socio-economic impact—making a dense report easily digestible and engaging. Key interactions include a clickable timeline for rituals, tabbed interfaces for stories and regional variations, and a data visualization for economic growth. -->
+    <!-- Visualization & Content Choices: 
+        - Economic Growth: Report Info -> ₹15k Cr vs ₹22k Cr. Goal -> Compare/Show Change. Viz -> Bar Chart. Interaction -> Tooltip on hover. Justification -> Clear visual comparison of two data points. Library -> Chart.js.
+        - Ritual Steps: Report Info -> Sargi, Fast, Puja, Moon Sighting. Goal -> Organize a process. Viz -> Interactive horizontal timeline. Interaction -> Click to reveal details. Justification -> Intuitive for chronological events, keeps UI clean. Method -> HTML/CSS/JS.
+        - Legends & Regional Variations: Report Info -> Multiple stories/customs. Goal -> Organize content. Viz -> Tabbed component. Interaction -> Click to switch content. Justification -> Standard, space-saving UI for categorized information. Method -> HTML/CSS/JS.
+        - Socio-Historical Roots: Report Info -> Three origin theories. Goal -> Inform/Organize. Viz -> Icon-driven card layout. Interaction -> Click to expand. Justification -> Visually distinct and encourages user exploration. Method -> HTML/CSS/JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FEFBF6;
+            color: #4A4A4A;
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        .nav-link.active {
+            color: #A45C40;
+            border-bottom-color: #A45C40;
+        }
+        .tab-button.active {
+            background-color: #A45C40;
+            color: #FEFBF6;
+        }
+    </style>
+</head>
+<body class="bg-amber-50 text-stone-700">
+
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="#hero" class="text-xl font-bold font-serif text-rose-900">Karwa Chauth</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#the-vow" class="nav-link text-stone-600 hover:text-rose-800 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">The Vow</a>
+                        <a href="#the-ritual" class="nav-link text-stone-600 hover:text-rose-800 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">The Ritual</a>
+                        <a href="#the-stories" class="nav-link text-stone-600 hover:text-rose-800 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">The Stories</a>
+                        <a href="#the-roots" class="nav-link text-stone-600 hover:text-rose-800 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">The Roots</a>
+                        <a href="#modern-festival" class="nav-link text-stone-600 hover:text-rose-800 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Modern Lens</a>
+                        <a href="#global-celebration" class="nav-link text-stone-600 hover:text-rose-800 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Global Reach</a>
+                    </div>
+                </div>
+                 <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-stone-600 hover:text-rose-800 hover:bg-amber-100 focus:outline-none">
+                        <span class="text-2xl">☰</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#the-vow" class="nav-link block text-stone-600 hover:text-rose-800 px-3 py-2 rounded-md text-base font-medium">The Vow</a>
+                <a href="#the-ritual" class="nav-link block text-stone-600 hover:text-rose-800 px-3 py-2 rounded-md text-base font-medium">The Ritual</a>
+                <a href="#the-stories" class="nav-link block text-stone-600 hover:text-rose-800 px-3 py-2 rounded-md text-base font-medium">The Stories</a>
+                <a href="#the-roots" class="nav-link block text-stone-600 hover:text-rose-800 px-3 py-2 rounded-md text-base font-medium">The Roots</a>
+                <a href="#modern-festival" class="nav-link block text-stone-600 hover:text-rose-800 px-3 py-2 rounded-md text-base font-medium">Modern Lens</a>
+                <a href="#global-celebration" class="nav-link block text-stone-600 hover:text-rose-800 px-3 py-2 rounded-md text-base font-medium">Global Reach</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="relative min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(254, 251, 246, 0.5), rgba(254, 251, 246, 1)), url('https://placehold.co/1920x1080/EADEB8/A45C40?text=');">
+            <div class="text-center p-8">
+                <h1 class="text-5xl md:text-7xl font-bold text-rose-900/90 mb-4 tracking-tight">Karwa Chauth</h1>
+                <p class="text-xl md:text-2xl text-stone-600 font-serif italic max-w-2xl mx-auto">An enduring celebration of love, devotion, and tradition, evolving through the ages.</p>
+                <a href="#the-vow" class="mt-8 inline-block bg-rose-800 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-rose-900 transition-transform transform hover:scale-105">Start Exploring</a>
+            </div>
+        </section>
+
+        <section id="the-vow" class="py-20 md:py-28">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-4xl font-bold text-rose-900 mb-6">The Central Vow</h2>
+                <p class="text-lg max-w-3xl mx-auto leading-relaxed text-stone-600">
+                    This section introduces the foundational principle of Karwa Chauth. At its heart, the festival is defined by the *vrat*, a rigorous fast undertaken by married women. This act of devotion is a profound prayer for the longevity, health, and prosperity of their husbands, symbolizing love, sacrifice, and spiritual strength.
+                </p>
+                <div class="mt-12 p-8 bg-white/60 rounded-xl shadow-md border border-amber-200 inline-block">
+                    <p class="text-2xl font-serif italic text-rose-800">"From sunrise to moonrise, a day of fasting, a lifetime of love."</p>
+                    <p class="mt-4 text-stone-600">The traditional *nirjala vrat* involves abstaining from all food and water, a testament to a wife's unwavering devotion and inner resolve.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="the-ritual" class="py-20 md:py-28 bg-white/70">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-rose-900 text-center mb-6">Anatomy of the Day</h2>
+                <p class="text-lg max-w-3xl mx-auto leading-relaxed text-stone-600 text-center mb-16">
+                    Explore the structured sequence of rituals that define the day of Karwa Chauth. From the pre-dawn meal to the climactic sighting of the moon, each step is rich with symbolism and communal significance. This interactive timeline allows you to click on each stage to understand its meaning and the actions performed.
+                </p>
+                <div id="ritual-timeline" class="relative">
+                    <div class="hidden md:block border-l-2 border-dashed border-rose-800/50 absolute h-full top-0 left-1/2 -ml-px"></div>
+                    <div id="ritual-content" class="md:w-1/2 mx-auto bg-white p-6 rounded-lg shadow-lg border border-amber-200 mb-8 min-h-[150px]">
+                        <h3 id="ritual-title" class="text-2xl font-bold text-rose-800 mb-2 font-serif">Select a Ritual</h3>
+                        <p id="ritual-description" class="text-stone-600">Click on a step below to learn more about it.</p>
+                    </div>
+                    <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 flex-wrap">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="the-stories" class="py-20 md:py-28">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-rose-900 text-center mb-6">The Narrative Tapestry</h2>
+                <p class="text-lg max-w-3xl mx-auto leading-relaxed text-stone-600 text-center mb-12">
+                    The power of Karwa Chauth is deeply rooted in its captivating legends. These stories, passed down through generations, provide the festival with its spiritual charter and cultural meaning. This section presents the most significant mythological tales that are often narrated during the evening *puja*, each highlighting the profound strength of wifely devotion (*pativrata shakti*).
+                </p>
+                <div class="max-w-4xl mx-auto">
+                    <div id="story-tabs" class="flex flex-wrap justify-center border-b border-amber-300 mb-8">
+                    </div>
+                    <div id="story-content-container" class="bg-white/60 p-6 md:p-8 rounded-lg shadow-md border border-amber-200 min-h-[300px]">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="the-roots" class="py-20 md:py-28 bg-white/70">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-rose-900 text-center mb-6">Socio-Historical Roots</h2>
+                <p class="text-lg max-w-3xl mx-auto leading-relaxed text-stone-600 text-center mb-16">
+                    Beyond mythology, the origins of Karwa Chauth are grounded in the real-world concerns of ancient and medieval society. This section explores the pragmatic theories behind the festival's beginnings, revealing its role in ensuring community stability, agricultural prosperity, and crucial social support networks for women.
+                </p>
+                <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                </div>
+            </div>
+        </section>
+
+        <section id="modern-festival" class="py-20 md:py-28">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-rose-900 text-center mb-6">A Festival in the 21st Century</h2>
+                <p class="text-lg max-w-3xl mx-auto leading-relaxed text-stone-600 text-center mb-16">
+                    Karwa Chauth today is shaped as much by modernity as by tradition. This section examines its contemporary evolution through the lens of mass media, consumer culture, and shifting gender roles. From a solemn observance to a glamorous global event, explore the forces that have transformed the festival into what it is today.
+                </p>
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="bg-white/60 p-6 rounded-lg shadow-md border border-amber-200">
+                        <h3 class="text-2xl font-bold text-rose-800 mb-4 font-serif text-center">The Economic Engine</h3>
+                        <p class="text-center text-stone-600 mb-4">The festival's popularity has turned it into a major economic event, with spending soaring in recent years.</p>
+                        <div class="chart-container">
+                            <canvas id="economicChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="space-y-8">
+                        <div class="bg-white/60 p-6 rounded-lg shadow-md border border-amber-200">
+                            <h3 class="text-2xl font-bold text-rose-800 mb-4 font-serif">The Bollywood Gaze</h3>
+                            <p class="text-stone-600">Hindi cinema has transformed Karwa Chauth from a ritual into a grand romantic gesture, popularizing it across the globe. Films like <span class="font-semibold">DDLJ</span> and <span class="font-semibold">Kabhi Khushi Kabhie Gham</span> created an aspirational, glamorous image of the festival.</p>
+                        </div>
+                        <div class="bg-white/60 p-6 rounded-lg shadow-md border border-amber-200">
+                            <h3 class="text-2xl font-bold text-rose-800 mb-4 font-serif">Shifting Gender Roles</h3>
+                            <p class="text-stone-600">Increasingly, the festival is evolving from a wife's unilateral sacrifice to a symbol of shared partnership. More men now fast with their wives, and unmarried couples also participate, reflecting modern interpretations of love and equality.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="global-celebration" class="py-20 md:py-28 bg-white/70">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-rose-900 text-center mb-6">Global Reach & Regional Flavors</h2>
+                <p class="text-lg max-w-3xl mx-auto leading-relaxed text-stone-600 text-center mb-12">
+                    While the core fast remains the same, Karwa Chauth is celebrated with unique regional customs across India. It has also become a significant cultural event for the Indian diaspora worldwide, enabled by technology. This section explores the diverse expressions of the festival, from the grand celebrations in Punjab to its modern adoption across the globe.
+                </p>
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <div class="max-w-xl mx-auto">
+                        <h3 class="text-2xl font-bold text-rose-800 mb-4 font-serif text-center">A Mosaic of Customs in India</h3>
+                        <div id="region-tabs" class="flex flex-wrap justify-center border-b border-amber-300 mb-8">
+                        </div>
+                        <div id="region-content-container" class="bg-white p-6 md:p-8 rounded-lg shadow-md border border-amber-200 min-h-[250px]">
+                        </div>
+                    </div>
+                     <div class="bg-white p-8 rounded-lg shadow-md border border-amber-200 flex flex-col justify-center">
+                        <h3 class="text-2xl font-bold text-rose-800 mb-4 font-serif text-center">The Global Vrat & 2025 Observance</h3>
+                        <p class="text-stone-600 mb-6">For the Indian diaspora, technology bridges distances, allowing couples to perform rituals via video call. The festival is a powerful link to cultural heritage. Below are the 2025 observance details for Seattle, WA, USA, highlighting the need for location-specific timings.</p>
+                        <div class="border-t border-amber-300 pt-4">
+                            <h4 class="font-bold text-lg text-center text-rose-900">Karwa Chauth 2025 - Seattle, WA</h4>
+                             <ul class="mt-2 space-y-1 text-sm text-stone-600">
+                                <li><strong>Vrat Date:</strong> Thursday, October 9, 2025</li>
+                                <li><strong>Puja Time:</strong> 06:32 PM to 07:49 PM</li>
+                                <li><strong>Moonrise:</strong> 07:33 PM</li>
+                                <li><strong>Fasting Time:</strong> 07:20 AM to 07:33 PM</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+<!--
+    <footer class="bg-rose-900/90 text-amber-50 mt-20">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center">
+            <p>An Interactive Exploration of Karwa Chauth</p>
+            <p class="text-sm opacity-70 mt-1">Designed to bring tradition to life through technology.</p>
+        </div>
+    </footer>
+-->
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const contentData = {
+        rituals: [
+            { id: 'sargi', title: 'Sargi (Pre-Dawn Meal)', description: 'The day begins before sunrise with Sargi, a meal gifted from the mother-in-law. It includes foods that provide energy for the arduous fast ahead, reinforcing the female bond within the family.' },
+            { id: 'fast', title: 'The Nirjala Vrat', description: 'Once the sun rises, the strict waterless fast begins. Women abstain from all food and water. The day is spent in leisure, applying cosmetics, and preparing for the evening ceremony.' },
+            { id: 'puja', title: 'Evening Puja', description: 'In the late afternoon, women adorn themselves in festive attire and gather for communal worship. The legends of Karwa Chauth are narrated, and they perform the "feri" ritual, passing their puja thalis in a circle.' },
+            { id: 'moon', title: 'Moon Sighting & Breaking Fast', description: 'The fast culminates with the moonrise. A woman views the moon through a sieve, then her husband. He then offers her the first sip of water and morsel of food, officially breaking the fast.' }
+        ],
+        stories: [
+            { id: 'veeravati', title: 'Queen Veeravati', content: 'The most popular tale is of Queen Veeravati, who was tricked by her loving brothers into breaking her fast early. This led to her husband\'s death, but her devotion and repentance moved Goddess Parvati to instruct her to re-observe the fast correctly, which ultimately revived him. It underscores the need for sincere devotion.' },
+            { id: 'karwa', title: 'The Courage of Karwa', content: 'This legend gives the festival its name. A devoted wife named Karwa saved her husband from a crocodile by binding it with cotton yarn and threatening the god of death, Yama, with a curse. Fearing her power as a devoted wife (pativrata), Yama relented and granted her husband a long life.' },
+            { id: 'mahabharata', title: 'The Mahabharata Link', content: 'To give the festival classical authority, it\'s linked to the epic. When the Pandavas faced great hardship, Draupadi prayed to Lord Krishna, who advised her to observe the Karwa Chauth fast, just as Goddess Parvati had done. Her observance ensured the Pandavas overcame their troubles.' },
+            { id: 'savitri', title: 'Savitri and Satyavan', content: 'This archetypal tale is thematically linked to the festival. Savitri cleverly debated with Yama, the god of death, to win back her husband Satyavan\'s life. Her intelligence and unwavering devotion serve as the ultimate paradigm of a wife triumphing over fate.' }
+        ],
+        roots: [
+            { icon: '🛡️', title: 'Military Campaigns', description: 'One theory suggests the festival began with women in martial communities of North-Western India praying for the safe return of their soldier husbands from long military campaigns.' },
+            { icon: '🌾', title: 'Agricultural Significance', description: 'The festival aligns with the Rabi crop (wheat) sowing season. The fast may have started as a prayer for a bountiful harvest, linking the husband\'s prosperity to the fertility of the land.' },
+            { icon: '🤝', title: 'Feminine Friendship', description: 'In a time of arranged marriages, the festival was a way for new brides to form lifelong "god-sister" bonds with other women in their new village, creating a vital emotional and social support system.' }
+        ],
+        regions: [
+            { id: 'punjab', title: 'Punjab & Haryana', content: 'This is the festival\'s epicenter, marked by grand social events, boisterous community bonding, elaborate Sargi traditions, and the singing of folk songs.' },
+            { id: 'up', title: 'Uttar Pradesh', content: 'Celebrations here carry a deep spiritual emphasis. A distinctive feature is the worship of Gaur Mata (Mother Earth), with idols often made from clay or cow dung.' },
+            { id: 'rajasthan', title: 'Rajasthan', content: 'Known for its visual splendor, women don colorful leheriya or bandhani sarees. A unique custom is the exchange of intricately decorated karwas (pots) among women.' },
+            { id: 'maharashtra', title: 'Maharashtra', content: 'The observance is simpler here. As the day coincides with Sankashti Chaturthi, the focus is often more on the worship of Lord Ganesha than on grand social festivities.' }
+        ]
+    };
+
+    const setupInteractiveSection = (containerId, contentArray, renderFunction) => {
+        const container = document.querySelector(containerId);
+        if (container) {
+            contentArray.forEach(item => {
+                container.innerHTML += renderFunction(item);
+            });
+        }
+    };
+
+    const setupTabs = (tabsContainerId, contentContainerId, contentArray) => {
+        const tabsContainer = document.getElementById(tabsContainerId);
+        const contentContainer = document.getElementById(contentContainerId);
+
+        contentArray.forEach((item, index) => {
+            const button = document.createElement('button');
+            button.className = `tab-button text-sm md:text-base font-semibold py-2 px-4 cursor-pointer transition-colors duration-300 rounded-t-lg ${index === 0 ? 'active' : ''}`;
+            button.textContent = item.title;
+            button.dataset.target = item.id;
+            tabsContainer.appendChild(button);
+
+            const contentDiv = document.createElement('div');
+            contentDiv.id = item.id;
+            contentDiv.className = `tab-content ${index !== 0 ? 'hidden' : ''}`;
+            contentDiv.innerHTML = `<p>${item.content}</p>`;
+            contentContainer.appendChild(contentDiv);
+        });
+
+        tabsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('tab-button')) {
+                const targetId = e.target.dataset.target;
+                
+                tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+
+                contentContainer.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                    if (content.id === targetId) {
+                        content.classList.remove('hidden');
+                    }
+                });
+            }
+        });
+    };
+    
+    const ritualTimelineContainer = document.querySelector('#ritual-timeline .flex');
+    const ritualTitle = document.getElementById('ritual-title');
+    const ritualDescription = document.getElementById('ritual-description');
+
+    contentData.rituals.forEach((ritual, index) => {
+        const isEven = index % 2 === 0;
+        const button = document.createElement('button');
+        button.className = `ritual-step w-full md:w-auto text-center p-4 bg-white rounded-lg shadow-md hover:shadow-xl hover:bg-amber-100 transition-all duration-300 border border-amber-200 cursor-pointer`;
+        button.dataset.title = ritual.title;
+        button.dataset.description = ritual.description;
+        button.innerHTML = `<h4 class="font-bold text-rose-800">${ritual.title}</h4>`;
+        ritualTimelineContainer.appendChild(button);
+    });
+
+    ritualTimelineContainer.addEventListener('click', e => {
+        const step = e.target.closest('.ritual-step');
+        if (step) {
+            ritualTitle.textContent = step.dataset.title;
+            ritualDescription.textContent = step.dataset.description;
+            
+            document.querySelectorAll('.ritual-step').forEach(btn => btn.classList.remove('bg-amber-100', 'ring-2', 'ring-rose-800'));
+            step.classList.add('bg-amber-100', 'ring-2', 'ring-rose-800');
+        }
+    });
+
+    setupTabs('story-tabs', 'story-content-container', contentData.stories);
+    setupTabs('region-tabs', 'region-content-container', contentData.regions);
+
+    const rootsContainer = document.querySelector('#the-roots .grid');
+    contentData.roots.forEach(root => {
+        const card = document.createElement('div');
+        card.className = 'bg-white p-6 rounded-lg shadow-md border border-amber-200 text-center';
+        card.innerHTML = `
+            <div class="text-4xl mb-4">${root.icon}</div>
+            <h3 class="text-xl font-bold text-rose-800 mb-2 font-serif">${root.title}</h3>
+            <p class="text-stone-600">${root.description}</p>
+        `;
+        rootsContainer.appendChild(card);
+    });
+
+    const ctx = document.getElementById('economicChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Previous Year', '2024 Estimate'],
+            datasets: [{
+                label: 'Business Generated (in ₹ Crore)',
+                data: [15000, 22000],
+                backgroundColor: [
+                    'rgba(197, 133, 115, 0.6)',
+                    'rgba(164, 92, 64, 0.6)'
+                ],
+                borderColor: [
+                    'rgb(197, 133, 115)',
+                    'rgb(164, 92, 64)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '₹' + value / 1000 + 'k Cr';
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `₹${context.raw.toLocaleString('en-IN')} Crore`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const header = document.getElementById('header');
+    
+    const observerOptions = {
+        root: null,
+        rootMargin: `-${header.offsetHeight}px 0px 0px 0px`,
+        threshold: 0.4
+    };
+
+    const sectionObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${id}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => {
+        sectionObserver.observe(section);
+    });
+    
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+    });
+});
+</script>
+</body>
+</html>

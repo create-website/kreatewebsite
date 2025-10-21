@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buddha Purnima: Day of Enlightenment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Serene Lotus (Pink, White, Blue) -->
+    <!-- Application Structure Plan: A narrative infographic that explains Buddha Purnima's significance. The structure is: 1. Hero section. 2. "What is Buddha Purnima?". 3. "The Life of Siddhartha Gautama". 4. "The Four Noble Truths". 5. "Traditions of Peace & Compassion". 6. "A Taste of Simplicity" chart. This flow guides the user through the life, teachings, and celebration of the Buddha. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The Four Noble Truths -> Goal: Organize/Inform -> Viz: A four-part grid layout -> Justification: A clear, structured way to present the foundational philosophy of Buddhism. -> Library/Method: HTML/CSS.
+        - Data Point: Key traditions -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the main devotional activities. -> Library/Method: HTML/CSS.
+        - Data Point: Simple festive food -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display common vegetarian dishes. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #F0F8FF; /* Alice Blue */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-blue { color: #3B82F6; }
+        .palette-text-pink { color: #EC4899; }
+        .palette-text-gray { color: #4B5563; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #3B82F6; /* Blue */
+            border: 3px solid #EC4899; /* Pink */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-blue tracking-wider">Buddha Purnima</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">Celebrating the Birth, Enlightenment, and Nirvana of the Buddha</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Buddha Purnima?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Buddha Purnima, also known as Vesak, is the most sacred day for Buddhists worldwide. It is a "Triple Blessed Day" that commemorates three momentous events in the life of Siddhartha Gautama, the Buddha: his birth, his enlightenment (Nirvana), and his passing (Parinirvana).
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-blue mb-4">🎉</div>
+                    <h3 class="text-3xl font-bold text-gray-900">The Triple Blessed Day</h3>
+                    <p class="mt-2 text-gray-600">The festival uniquely celebrates the Buddha's birth as Prince Siddhartha, his supreme enlightenment under the Bodhi tree, and his final passing into Parinirvana.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-gray mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Festival Timing</h3>
+                    <p class="mt-2 text-gray-600">It is observed on the full moon day (Purnima) of the Vaisakha month in the Buddhist and Hindu calendars, typically falling in April or May.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-pink mb-4">☮️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Message of Peace</h3>
+                    <p class="mt-2 text-gray-600">The day is dedicated to the Buddha's teachings of peace, compassion, and the path to liberation from suffering for all sentient beings.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Life of Siddhartha Gautama</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Born as a prince in Lumbini (modern-day Nepal) around the 5th century BCE, Siddhartha lived a sheltered life of luxury. However, he became deeply troubled after witnessing the realities of human suffering: old age, sickness, and death.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">🌳</div>
+                        <p class="text-xl font-bold mt-2 palette-text-blue">The Path to Enlightenment</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">At the age of 29, he renounced his royal life to seek the ultimate truth and an end to suffering. After years of extreme asceticism, he realized that the path lay in the "Middle Way," avoiding extremes of indulgence and self-mortification. Seating himself under a Bodhi tree in Bodh Gaya, he meditated deeply and, on a full moon night in Vaisakha, he attained supreme enlightenment, understanding the nature of reality and the cause of suffering. From then on, he was known as the Buddha, "the awakened one," and spent the rest of his life teaching the path (Dharma) to others.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="virtues" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Four Noble Truths</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The core of the Buddha's teachings is encapsulated in the Four Noble Truths, which diagnose the human condition and prescribe the path to liberation.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">1️⃣</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Truth of Suffering (Dukkha)</h3>
+                    <p class="mt-2 text-sm text-gray-600">Life inherently involves suffering, dissatisfaction, and stress. Birth, aging, sickness, and death are all forms of suffering.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">2️⃣</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Truth of the Origin of Suffering</h3>
+                    <p class="mt-2 text-sm text-gray-600">The cause of suffering is craving, attachment, and aversion—our desires for things to be different than they are.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">3️⃣</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Truth of the Cessation of Suffering</h3>
+                    <p class="mt-2 text-sm text-gray-600">It is possible to end suffering by eliminating craving, attachment, and ignorance.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">4️⃣</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Truth of the Path to Cessation</h3>
+                    <p class="mt-2 text-sm text-gray-600">The way to end suffering is to follow the Noble Eightfold Path, which includes right understanding, right thought, right speech, and right action.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Traditions of Peace & Compassion</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Buddha Purnima is celebrated with peaceful and devotional activities that reflect the core values of the Buddha's teachings.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🏛️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Visiting Temples & Monasteries</h3>
+                    <p class="mt-2 text-sm text-gray-600">Devotees visit temples to listen to sermons, chant scriptures, and offer flowers, candles, and incense.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🕊️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Acts of Compassion</h3>
+                    <p class="mt-2 text-sm text-gray-600">Following the principle of compassion, many people engage in charity, give alms to the poor, and free caged birds as a symbol of liberation.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">💧</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Watering the Bodhi Tree</h3>
+                    <p class="mt-2 text-sm text-gray-600">Devotees pour water on the roots of Bodhi trees, honoring the place of the Buddha's enlightenment.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🕯️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Observing Precepts</h3>
+                    <p class="mt-2 text-sm text-gray-600">Many lay followers observe the Eight Precepts for the day, which includes practicing vegetarianism and abstaining from worldly pleasures.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Simplicity</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The food associated with Buddha Purnima is simple, vegetarian, and sattvic, reflecting the principles of non-violence and mindfulness. The most common dish is Kheer, a sweet rice pudding.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Common Festival Foods</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Kheer (Sweet Rice Pudding)', 
+                'Simple Vegetarian Meals', 
+                'Fruits and Juices', 
+                'Plain Rice & Dal'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Commonality on Buddha Purnima',
+                        data: [100, 90, 85, 80],
+                        backgroundColor: [
+                           '#EC4899', // Pink
+                           '#3B82F6', // Blue
+                           '#60A5FA', // Light Blue
+                           '#FBCFE8'  // Light Pink
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Commonality in Observance',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

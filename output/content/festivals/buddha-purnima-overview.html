@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Vesak Moon: Buddha Purnima Overview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Lotus Dawn -->
+    <!-- Application Structure Plan: The application is structured thematically to guide the user from general understanding to specific details, prioritizing an intuitive, non-linear exploration over the report's linear format. It starts with a broad introduction (Hero, 'What is Vesak?'), moves to the foundational narrative (Timeline of Buddha's Life), explores the core ideas (Teachings), showcases global diversity (Celebrations), explains the practices (Rituals), and finally provides practical information (Dates). This structure was chosen because it allows users to engage with the content based on their interests—a historian might start with the timeline, a practitioner with the teachings, and a cultural enthusiast with the global celebrations—making the dense information highly accessible and digestible. -->
+    <!-- Visualization & Content Choices: Report Info -> Goal -> Viz/Presentation Method -> Interaction -> Justification. 1. Buddha's Life -> Organize/Inform -> Interactive Timeline (HTML/CSS) -> Click event points -> More engaging than a long text block. 2. Global Celebrations -> Compare/Explore -> Interactive Card Grid -> Click country cards to show details -> Avoids a dense table and provides a focused, visually sorted view. 3. Festival Dates -> Inform/Query -> Year Selector Dropdown -> Select year to update dates -> Simplifies the complex calendrical data into a simple user-driven query. 4. Core Teachings -> Organize/Inform -> Tabbed Content Panes -> Click tabs -> Segments complex philosophical concepts into manageable, distinct sections (Truths vs. Path). All interactions are designed to reveal information progressively, preventing overwhelm and encouraging exploration. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #D97706;
+            transition: width 0.3s ease;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #D97706;
+        }
+        .nav-link.active::after, .nav-link:hover::after {
+            width: 100%;
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 1.25rem;
+            left: -0.45rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 9999px;
+            background-color: #FDFBF8;
+            border: 4px solid #FBBF24;
+            z-index: 10;
+            transition: background-color 0.3s ease;
+        }
+        .timeline-item.active::before {
+            background-color: #D97706;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tab.active {
+            border-color: #D97706;
+            color: #D97706;
+            background-color: #FEF3C7;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-xl font-bold text-amber-700">The Vesak Moon</div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#significance" class="nav-link">Significance</a>
+                    <a href="#life" class="nav-link">The Buddha's Life</a>
+                    <a href="#dharma" class="nav-link">Teachings</a>
+                    <a href="#celebrations" class="nav-link">Celebrations</a>
+                    <a href="#rituals" class="nav-link">Rituals</a>
+                    <a href="#dates" class="nav-link">Dates</a>
+                </div>
+                <div class="md:hidden">
+                    <select id="mobile-nav" class="bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-700">
+                        <option value="#home">Home</option>
+                        <option value="#significance">Significance</option>
+                        <option value="#life">The Buddha's Life</option>
+                        <option value="#dharma">Teachings</option>
+                        <option value="#celebrations">Celebrations</option>
+                        <option value="#rituals">Rituals</option>
+                        <option value="#dates">Dates</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="min-h-[60vh] flex items-center bg-amber-50">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-amber-800 mb-4">Buddha Purnima: An Interactive Journey</h1>
+                <p class="text-lg md:text-xl text-amber-700 max-w-3xl mx-auto">Explore the profound story, timeless teachings, and vibrant global celebrations of Vesak, the most sacred day in the Buddhist calendar.</p>
+            </div>
+        </section>
+
+        <section id="significance" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">The Thrice-Blessed Festival</h2>
+                    <p class="text-lg mb-12">Buddha Purnima, known globally as Vesak, is uniquely sacred. It commemorates three pivotal events in the life of Gautama Buddha that all occurred on the same day—the full moon of the Vaisakha month: his birth, his enlightenment, and his final passing. This section allows you to explore the profound meaning behind this extraordinary cosmic convergence.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="card text-center p-8 bg-amber-50 rounded-lg border border-amber-200">
+                        <div class="text-5xl mb-4">🪷</div>
+                        <h3 class="text-2xl font-bold mb-2 text-amber-800">The Birth</h3>
+                        <p>As Prince Siddhartha Gautama in Lumbini, his arrival marked the beginning of a journey that would change humanity's spiritual landscape.</p>
+                    </div>
+                    <div class="card text-center p-8 bg-amber-50 rounded-lg border border-amber-200">
+                        <div class="text-5xl mb-4">🌳</div>
+                        <h3 class="text-2xl font-bold mb-2 text-amber-800">The Enlightenment</h3>
+                        <p>Beneath the Bodhi tree in Bodh Gaya, he attained Nirvana, discovering the path to end suffering and becoming the Buddha, the "Awakened One."</p>
+                    </div>
+                    <div class="card text-center p-8 bg-amber-50 rounded-lg border border-amber-200">
+                        <div class="text-5xl mb-4">🕊️</div>
+                        <h3 class="text-2xl font-bold mb-2 text-amber-800">The Parinirvana</h3>
+                        <p>In Kushinagar, at the end of his life, he entered the final state of release from the cycle of rebirth, leaving a legacy of teachings for the world.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="life" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">The Path to Awakening</h2>
+                    <p class="text-lg mb-12">The life of Siddhartha Gautama is the foundational narrative of Buddhism, a journey from princely luxury to profound wisdom. Each event illustrates a core tenet of the Dharma. Interact with the timeline below to follow his transformative story from birth to final passing.</p>
+                </div>
+                <div class="flex flex-col md:flex-row gap-8 md:gap-12">
+                    <div class="md:w-1/3">
+                        <div id="timeline-nav" class="relative border-l-4 border-amber-200 pl-8 space-y-10">
+                        </div>
+                    </div>
+                    <div id="timeline-content" class="md:w-2/3 bg-white p-8 rounded-lg shadow-md min-h-[300px] fade-in">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dharma" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">The Heart of the Dharma</h2>
+                    <p class="text-lg mb-12">The enlightenment the Buddha attained was a direct understanding of reality and the path to liberation. These teachings, the Dharma, form the philosophical core of Buddhism. Use the tabs below to explore the foundational principles: the Four Noble Truths and the Noble Eightfold Path.</p>
+                </div>
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex border-b border-gray-200 mb-6">
+                        <button class="tab py-3 px-6 font-semibold text-gray-600 border-b-2 border-transparent" data-tab="truths">The Four Noble Truths</button>
+                        <button class="tab py-3 px-6 font-semibold text-gray-600 border-b-2 border-transparent" data-tab="path">The Noble Eightfold Path</button>
+                    </div>
+                    <div id="dharma-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="celebrations" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">A World of Celebration</h2>
+                    <p class="text-lg mb-12">While the core meaning of Vesak is universal, its expression is filtered through the rich lens of local culture. From serene candlelight processions in Thailand to Sri Lanka's brilliant festival of lanterns, the day is celebrated in beautifully diverse ways. Select a country to discover its unique traditions.</p>
+                </div>
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <div class="lg:w-1/3">
+                        <div id="country-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-4">
+                        </div>
+                    </div>
+                    <div id="country-content" class="lg:w-2/3 bg-white p-8 rounded-lg shadow-md min-h-[400px] fade-in">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rituals" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                     <h2 class="text-3xl md:text-4xl font-bold mb-4">The Grammar of Devotion</h2>
+                    <p class="text-lg mb-12">The celebrations of Buddha Purnima are built upon shared devotional acts. These rituals are not empty formalities but are a form of embodied learning, translating abstract concepts into tangible actions that cultivate virtue and wisdom. Explore the symbolism behind these common practices.</p>
+                </div>
+                <div id="rituals-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+            </div>
+        </section>
+
+        <section id="dates" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">When is Vesak?</h2>
+                    <p class="text-lg mb-8">The date of Vesak is determined by lunisolar calendars, leading to variations worldwide. While most of South & Southeast Asia observe it on the Vaisakha full moon, East Asia often uses the fourth month of the Chinese lunar calendar. Select a year to see the upcoming dates for different traditions.</p>
+                    <select id="year-selector" class="text-lg p-3 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500">
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                    </select>
+                </div>
+                <div id="dates-content" class="mt-12 max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
+                </div>
+            </div>
+        </section>
+    </main>
+<!--
+    <footer class="bg-amber-800 text-amber-100 py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>An interactive exploration of the Buddha Purnima festival.</p>
+            <p class="text-sm mt-2 opacity-75">Content synthesized from "The Vesak Moon: An Analytical Report".</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const data = {
+                life: [
+                    { id: 'birth', title: 'Birth and Prophecy', content: 'Born as Prince Siddhartha Gautama in Lumbini (modern Nepal), a prophecy foretold he would become either a great king or a supreme spiritual teacher. His father shielded him from worldly suffering to ensure he chose the former.' },
+                    { id: 'sights', title: 'The Four Sights', content: 'At age 29, fateful chariot rides exposed him to an old man, a sick person, a corpse, and a serene ascetic. These sights shattered his sheltered view, awakening him to the reality of suffering and the possibility of a spiritual path.' },
+                    { id: 'renunciation', title: 'The Great Renunciation', content: 'Disturbed by the truths of existence, he left his palace, wife, and child to become a homeless wanderer. For six years, he practiced extreme asceticism, seeking liberation through self-mortification.' },
+                    { id: 'enlightenment', title: 'The Middle Way & Enlightenment', content: 'Realizing extreme asceticism was fruitless, he discovered the "Middle Way"—a path of balance. After regaining strength, he sat under the Bodhi tree in Bodh Gaya and, at age 35, attained supreme enlightenment (Nirvana), becoming the Buddha.' },
+                    { id: 'teaching', title: 'The Teacher', content: 'For the next 45 years, the Buddha taught the Dharma, the path he had discovered. He established a monastic order (Sangha) and shared his teachings, including the Four Noble Truths and the Eightfold Path, with all.' },
+                    { id: 'parinirvana', title: 'The Final Passing', content: 'At age 80, in Kushinagar, he passed away, achieving Parinirvana—the final release from the cycle of rebirth. His last words urged his disciples to "strive on with diligence."' }
+                ],
+                dharma: {
+                    truths: {
+                        title: 'The Four Noble Truths',
+                        content: `
+                            <p class="mb-6">This is the cornerstone of the Buddha's teaching, often compared to a medical diagnosis: it identifies the illness, its cause, the possibility of a cure, and the prescription.</p>
+                            <ul class="space-y-4">
+                                <li><strong class="text-amber-700">1. The Truth of Suffering (Dukkha):</strong> Life is inherently characterized by dissatisfaction, from obvious pain to the subtle stress of impermanence.</li>
+                                <li><strong class="text-amber-700">2. The Truth of the Origin of Suffering (Samudāya):</strong> The root cause of suffering is craving, grasping, and attachment (taṇhā).</li>
+                                <li><strong class="text-amber-700">3. The Truth of the Cessation of Suffering (Nirodha):</strong> It is possible to end suffering by completely relinquishing this craving, a state known as Nirvana.</li>
+                                <li><strong class="text-amber-700">4. The Truth of the Path (Magga):</strong> The method to end suffering is the Noble Eightfold Path.</li>
+                            </ul>`
+                    },
+                    path: {
+                        title: 'The Noble Eightfold Path',
+                        content: `
+                            <p class="mb-6">This is the practical prescription for liberation, comprising eight interconnected practices grouped into three essential trainings.</p>
+                            <div class="space-y-6">
+                                <div>
+                                    <h4 class="text-xl font-semibold text-amber-700 mb-2">Wisdom (Paññā)</h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><strong>Right Understanding:</strong> Understanding the Four Noble Truths.</li>
+                                        <li><strong>Right Intention:</strong> Cultivating intentions of non-attachment, goodwill, and compassion.</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-semibold text-amber-700 mb-2">Ethical Conduct (Sīla)</h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><strong>Right Speech:</strong> Abstaining from lying, divisive, or harsh speech.</li>
+                                        <li><strong>Right Action:</strong> Abstaining from killing, stealing, and sexual misconduct.</li>
+                                        <li><strong>Right Livelihood:</strong> Earning a living in a way that does not harm others.</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-semibold text-amber-700 mb-2">Mental Discipline (Samādhi)</h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><strong>Right Effort:</strong> Preventing unwholesome states and cultivating wholesome ones.</li>
+                                        <li><strong>Right Mindfulness:</strong> Maintaining clear awareness of the present moment.</li>
+                                        <li><strong>Right Concentration:</strong> Developing a focused mind through meditation.</li>
+                                    </ul>
+                                </div>
+                            </div>`
+                    }
+                },
+                countries: [
+                    { id: 'sri_lanka', name: 'Sri Lanka 🇱🇰', title: 'Vesak: The Festival of Light', content: 'Sri Lanka\'s celebration is a spectacular national festival. The island is illuminated by intricate paper lanterns (Vesak koodu) and massive lighted panels (pandals) depicting Buddhist stories. A key tradition is dansal, where communities set up stalls to offer free food and drink to everyone, embodying the virtue of giving (dāna).' },
+                    { id: 'thailand', name: 'Thailand 🇹🇭', title: 'Visakha Bucha: Serene Devotion', content: 'In Thailand, the day is marked by serene and contemplative reverence. Devotees visit temples to make merit and listen to sermons. The most iconic tradition is the Wian Tian, a silent, meditative candlelight procession where followers walk clockwise three times around the main temple hall at dusk, honoring the Buddha, Dharma, and Sangha.' },
+                    { id: 'india', name: 'India 🇮🇳', title: 'Buddha Purnima: Return to the Roots', content: 'In the land of its origin, celebrations are centered on key pilgrimage sites like Bodh Gaya (enlightenment), Sarnath (first sermon), and Kushinagar (passing). Devotees visit temples (Viharas), listen to sutras, and make offerings of kheer (sweet rice porridge), commemorating the meal that sustained the Buddha before his enlightenment.' },
+                    { id: 'nepal', name: 'Nepal 🇳🇵', title: 'Buddha Jayanti: National Pride', content: 'As the Buddha\'s birthplace, Nepal celebrates with great pride. Lumbini, a UNESCO World Heritage site, becomes a global hub for pilgrimage. In cities like Kathmandu, vibrant processions with Buddha statues on chariots fill the streets. Releasing caged birds as a symbol of granting freedom is a common act of merit.' },
+                    { id: 'bhutan', name: 'Bhutan 🇧🇹', title: 'Saga Dawa: A Month of Virtue', content: 'In Bhutan, the observance is part of the holy month of Saga Dawa. The entire month is dedicated to virtuous acts. Devotees observe a strict vegetarian diet and light thousands of butter lamps in monasteries, with the light symbolizing wisdom illuminating the darkness of ignorance.' },
+                    { id: 'hong_kong', name: 'Hong Kong 🇭🇰', title: 'Fódàn: Bathing the Buddha', content: 'Known as Fódàn (Buddha\'s Birthday), a central ritual is the "Bathing the Buddha" ceremony. Devotees pour fragrant, blessed water over a statue of the infant Buddha. This symbolic act represents the purification of one\'s own mind and the washing away of greed, hatred, and ignorance.' }
+                ],
+                rituals: [
+                    { title: 'Bathing the Buddha', icon: '💧', content: 'Pouring fragrant water over a statue of the infant Buddha. This is a symbolic act of purifying one\'s own mind and cleansing the defilements of greed, hatred, and ignorance.' },
+                    { title: 'Light Offerings', icon: '🕯️', content: 'Lighting candles or butter lamps. The flame represents the light of the Buddha\'s wisdom and enlightenment, which dispels the darkness of ignorance.' },
+                    { title: 'Flower Offerings', icon: '🌸', content: 'Offering fresh flowers, which serve as a beautiful, sensory reminder of the truth of impermanence (anicca). Just as the blossoms wilt, so too do all conditioned things.' },
+                    { title: 'Charity (Dāna)', icon: '🎁', content: 'Performing acts of kindness, such as donating food and supplies to monasteries or helping the poor. This practice cultivates compassion and generates wholesome karma (merit).' },
+                    { title: 'Observing Precepts', icon: '🙏', content: 'Many lay followers undertake the Five or Eight Precepts for the day, abstaining from acts like killing, stealing, and false speech to practice self-discipline and purify their conduct.' },
+                    { title: 'Releasing Animals', icon: '🐦', content: 'A popular merit-making activity where captive animals like birds or fish are set free. This is a powerful symbolic gesture of bestowing freedom and compassion for all living beings.' }
+                ],
+                dates: {
+                    '2025': [
+                        { date: 'May 5, Monday', region: 'East Asia (China, Korea, Vietnam)' },
+                        { date: 'May 12, Monday', region: 'South & Southeast Asia (India, Nepal, Sri Lanka, etc.)' }
+                    ],
+                    '2026': [
+                        { date: 'May 1, Friday', region: 'South & Southeast Asia (India, Nepal)' },
+                        { date: 'May 31, Sunday', region: 'Southeast Asia (Cambodia, Thailand, Singapore, etc.)' }
+                    ],
+                    '2027': [
+                        { date: 'May 20, Thursday', region: 'Southeast Asia (Cambodia, Thailand, Singapore, etc.)' }
+                    ],
+                    '2028': [
+                        { date: 'May 8, Monday', region: 'East Asia / Southeast Asia' }
+                    ],
+                    '2029': [
+                        { date: 'May 27, Sunday', region: 'East Asia / Southeast Asia' }
+                    ]
+                }
+            };
+
+            const timelineNav = document.getElementById('timeline-nav');
+            const timelineContent = document.getElementById('timeline-content');
+            data.life.forEach((item, index) => {
+                const navItem = document.createElement('div');
+                navItem.className = 'timeline-item relative cursor-pointer';
+                navItem.dataset.id = item.id;
+                navItem.innerHTML = `<h4 class="text-xl font-semibold mb-1">${item.title}</h4>`;
+                timelineNav.appendChild(navItem);
+            });
+
+            const updateTimeline = (id) => {
+                const item = data.life.find(i => i.id === id);
+                timelineContent.innerHTML = `
+                    <h3 class="text-2xl font-bold mb-4 text-amber-800">${item.title}</h3>
+                    <p class="text-lg">${item.content}</p>
+                `;
+                timelineContent.classList.remove('fade-in');
+                void timelineContent.offsetWidth; 
+                timelineContent.classList.add('fade-in');
+
+                document.querySelectorAll('.timeline-item').forEach(el => {
+                    el.classList.toggle('active', el.dataset.id === id);
+                });
+            };
+
+            timelineNav.addEventListener('click', (e) => {
+                const target = e.target.closest('.timeline-item');
+                if (target) {
+                    updateTimeline(target.dataset.id);
+                }
+            });
+            updateTimeline('birth');
+
+            const dharmaContent = document.getElementById('dharma-content');
+            const dharmaTabs = document.querySelectorAll('.tab');
+            const updateDharma = (tabId) => {
+                const content = data.dharma[tabId];
+                dharmaContent.innerHTML = `<div class="bg-amber-50 p-6 rounded-lg fade-in">${content.content}</div>`;
+                dharmaTabs.forEach(tab => {
+                    tab.classList.toggle('active', tab.dataset.tab === tabId);
+                });
+            };
+            dharmaTabs.forEach(tab => {
+                tab.addEventListener('click', () => updateDharma(tab.dataset.tab));
+            });
+            updateDharma('truths');
+
+            const countryGrid = document.getElementById('country-grid');
+            const countryContent = document.getElementById('country-content');
+            data.countries.forEach(country => {
+                const gridItem = document.createElement('button');
+                gridItem.className = 'country-selector text-left p-4 rounded-lg border-2 border-transparent transition-all duration-300 hover:bg-amber-100 hover:border-amber-300';
+                gridItem.dataset.id = country.id;
+                gridItem.innerHTML = `<span class="text-lg font-semibold">${country.name}</span>`;
+                countryGrid.appendChild(gridItem);
+            });
+
+            const updateCountry = (id) => {
+                const country = data.countries.find(c => c.id === id);
+                countryContent.innerHTML = `
+                    <h3 class="text-2xl font-bold mb-2 text-amber-800">${country.title}</h3>
+                    <p class="text-lg">${country.content}</p>
+                `;
+                countryContent.classList.remove('fade-in');
+                void countryContent.offsetWidth;
+                countryContent.classList.add('fade-in');
+
+                document.querySelectorAll('.country-selector').forEach(el => {
+                    el.classList.toggle('bg-amber-100', el.dataset.id === id);
+                    el.classList.toggle('border-amber-400', el.dataset.id === id);
+                });
+            };
+            countryGrid.addEventListener('click', e => {
+                const target = e.target.closest('.country-selector');
+                if (target) {
+                    updateCountry(target.dataset.id);
+                }
+            });
+            updateCountry('sri_lanka');
+
+            const ritualsGrid = document.getElementById('rituals-grid');
+            data.rituals.forEach(ritual => {
+                const card = document.createElement('div');
+                card.className = 'card bg-amber-50 rounded-lg p-6 border border-amber-200';
+                card.innerHTML = `
+                    <div class="text-4xl mb-3">${ritual.icon}</div>
+                    <h3 class="text-xl font-bold mb-2 text-amber-800">${ritual.title}</h3>
+                    <p>${ritual.content}</p>
+                `;
+                ritualsGrid.appendChild(card);
+            });
+
+            const yearSelector = document.getElementById('year-selector');
+            const datesContent = document.getElementById('dates-content');
+            const updateDates = (year) => {
+                const yearData = data.dates[year] || [];
+                if (yearData.length > 0) {
+                    datesContent.innerHTML = `
+                        <h3 class="text-2xl font-bold text-center mb-4 text-amber-800">Vesak in ${year}</h3>
+                        <ul class="space-y-3">
+                            ${yearData.map(d => `
+                                <li class="flex justify-between items-center p-3 bg-amber-50 rounded-md">
+                                    <span class="font-semibold">${d.date}</span>
+                                    <span class="text-sm text-gray-600 text-right">${d.region}</span>
+                                </li>
+                            `).join('')}
+                        </ul>`;
+                } else {
+                    datesContent.innerHTML = `<p class="text-center">Date information for ${year} is not available.</p>`;
+                }
+            };
+            yearSelector.addEventListener('change', (e) => updateDates(e.target.value));
+            updateDates(yearSelector.value);
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 60) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+            
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', (e) => {
+                const targetId = e.target.value;
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

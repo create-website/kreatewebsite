@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sacred Ritual of Śrāddha</title>
+    <!-- Chosen Palette: Soft Saffron -->
+    <!-- Application Structure Plan: The application is designed as a single-page, multi-section layout with a sticky top navigation for easy exploration. This non-linear, thematic structure was chosen over a simple document format to make the dense, scholarly information more accessible and engaging for a general audience. The structure is divided into four key themes: 'Why' (the philosophy), 'How' (the ritual steps), 'When' (the timing), and 'Global Context' (comparisons). This allows users to jump to the section that interests them most, facilitating self-directed learning. Key interactions include clickable cards for the 'Three Debts,' a step-by-step interactive timeline for the ceremony, and a comparative chart for global traditions, all designed to break down complex information into digestible, interactive chunks. -->
+    <!-- Visualization & Content Choices: The report is qualitative, so visualizations focus on organizing and comparing concepts rather than plotting numerical data. 1) The Three Debts (Ṛṇatraya): Goal is to organize and explain a core concept. Presented as interactive HTML cards. Interaction: Click to reveal details. Justification: More engaging than a static list. 2) The Ceremony Steps: Goal is to show a process. Presented as a vertical timeline using HTML/CSS. Interaction: Users can visually follow the sequence. Justification: Clearly illustrates the flow of the ritual. 3) Types of Śrāddha: Goal is to organize categories. Presented as a structured HTML table. Interaction: Clean, scannable layout. Justification: Best format for categorical data. 4) Global Ancestor Veneration Comparison: Goal is to compare. Presented as a horizontal bar chart using Chart.js. Interaction: Visual comparison of abstract qualities (e.g., 'Solemnity vs. Festivity'). Justification: A chart provides a quick, powerful visual summary of the comparisons detailed in the text. Library: Chart.js (Canvas). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDF8F2; /* Warm Neutral Background */
+            color: #4A4A4A;
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active {
+            color: #D97706; /* Saffron Accent */
+            border-bottom-color: #D97706;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #F3EADF;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background-color: #FBBF24; /* Saffron Accent Light */
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -40px;
+            top: 5px;
+            height: 18px;
+            width: 18px;
+            border: 3px solid #FBBF24;
+            border-radius: 50%;
+            background-color: #FDF8F2;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-2xl font-bold text-amber-700">Śrāddha</div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#why" class="nav-link text-gray-600 hover:text-amber-600 border-b-2 border-transparent pb-1">The Philosophy</a>
+                    <a href="#how" class="nav-link text-gray-600 hover:text-amber-600 border-b-2 border-transparent pb-1">The Ritual</a>
+                    <a href="#when" class="nav-link text-gray-600 hover:text-amber-600 border-b-2 border-transparent pb-1">The Calendar</a>
+                    <a href="#context" class="nav-link text-gray-600 hover:text-amber-600 border-b-2 border-transparent pb-1">Global Context</a>
+                </div>
+                <div class="md:hidden">
+                    <select id="mobile-nav" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                        <option value="#why">The Philosophy</option>
+                        <option value="#how">The Ritual</option>
+                        <option value="#when">The Calendar</option>
+                        <option value="#context">Global Context</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-amber-800 mb-4">The Sacred Bond: Understanding Śrāddha</h1>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600">An interactive exploration of the profound Hindu ritual of honoring ancestors. Discover the deep-rooted philosophy, intricate ceremonies, and enduring relevance of this sacred act of remembrance.</p>
+        </section>
+
+        <div id="content-sections">
+            <section id="why" class="mb-20 pt-16 -mt-16">
+                <h2 class="text-3xl font-bold text-center mb-2 text-amber-700">The Philosophy: Why is Śrāddha Performed?</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Śrāddha is more than a memorial; it's a vital practice embedded in core Hindu doctrines about the soul, the afterlife, and cosmic duty. This section explores the profound theological "why" behind the ritual, explaining its purpose in supporting the soul's journey and maintaining cosmic harmony.</p>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                    <div class="card p-6 rounded-xl">
+                        <h3 class="font-bold text-xl mb-3 text-amber-800">Journey of the Soul (<em>Ātman</em>)</h3>
+                        <p class="text-gray-600">After death, the soul (<em>preta</em>) embarks on a year-long journey. Śrāddha rites provide spiritual nourishment, helping to form a subtle body for the soul, easing its passage to the ancestral realm (<em>Pitṛloka</em>) and aiding its path toward a better rebirth or final liberation (<em>mokṣa</em>).</p>
+                    </div>
+                    <div class="card p-6 rounded-xl">
+                        <h3 class="font-bold text-xl mb-3 text-amber-800">The Ancestors (<em>Pitṛs</em>)</h3>
+                        <p class="text-gray-600">Ancestors are active beings who can bless or hinder their descendants. Pleased <em>pitṛs</em> grant health, wealth, and prosperity. Neglecting them can lead to <em>Pitru Dosha</em>, an ancestral affliction causing hardship. Śrāddha is the primary means to ensure their contentment and secure their blessings.</p>
+                    </div>
+                    <div class="card p-6 rounded-xl md:col-span-2 lg:col-span-1">
+                        <h3 class="font-bold text-xl mb-3 text-amber-800">Karma and <em>Saṃsāra</em></h3>
+                        <p class="text-gray-600">The ritual is a powerful karmic act. It can mitigate an ancestor's negative karma and support their progress through <em>saṃsāra</em>, the cycle of birth, death, and rebirth. It purifies both the deceased and the performer, aligning the entire lineage on a path toward spiritual evolution.</p>
+                    </div>
+                </div>
+
+                <div class="card p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-center mb-6 text-amber-800">Ṛṇatraya: The Three Sacred Debts</h3>
+                    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Vedic philosophy holds that every person is born with three fundamental debts. Fulfilling them is a prerequisite for a righteous life and spiritual liberation. Click on each debt to learn more.</p>
+                    <div id="debt-container" class="grid md:grid-cols-3 gap-6 text-center">
+                        <div class="debt-card p-4 border-2 border-amber-200 rounded-lg cursor-pointer hover:bg-amber-50" data-debt="deva">
+                            <div class="text-4xl mb-2">🕉️</div>
+                            <h4 class="font-semibold text-lg text-amber-700">Deva-ṛṇa</h4>
+                            <p class="text-sm text-gray-500">Debt to the Gods</p>
+                        </div>
+                        <div class="debt-card p-4 border-2 border-amber-200 rounded-lg cursor-pointer hover:bg-amber-50" data-debt="rishi">
+                            <div class="text-4xl mb-2">📜</div>
+                            <h4 class="font-semibold text-lg text-amber-700">Rṣi-ṛṇa</h4>
+                            <p class="text-sm text-gray-500">Debt to the Sages</p>
+                        </div>
+                        <div class="debt-card p-4 border-2 border-amber-200 rounded-lg cursor-pointer hover:bg-amber-50" data-debt="pitri">
+                            <div class="text-4xl mb-2">👨‍👩‍👧‍👦</div>
+                            <h4 class="font-semibold text-lg text-amber-700">Pitṛ-ṛṇa</h4>
+                            <p class="text-sm text-gray-500">Debt to the Ancestors</p>
+                        </div>
+                    </div>
+                    <div id="debt-details" class="mt-6 p-6 bg-amber-50 rounded-lg text-center hidden">
+                        <h5 id="debt-title" class="font-bold text-xl mb-2 text-amber-800"></h5>
+                        <p id="debt-description" class="text-gray-700"></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="how" class="mb-20 pt-16 -mt-16">
+                <h2 class="text-3xl font-bold text-center mb-2 text-amber-700">The Ritual: How is Śrāddha Performed?</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">The Śrāddha ceremony is a meticulously structured rite where each action and offering is rich with symbolism. It serves as a temporary bridge between the worlds of the living, the ancestors, and the divine. Explore the key steps and symbolic elements of this sacred performance.</p>
+                
+                <div class="flex flex-col md:flex-row gap-12">
+                    <div class="md:w-1/2">
+                        <h3 class="text-2xl font-bold mb-6 text-amber-800">The Central Rites: A Step-by-Step Guide</h3>
+                        <div class="relative pl-8 border-l-2 border-amber-200">
+                            <div class="timeline-item mb-8">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-semibold text-lg">1. Purification (<em>Śuddhi</em>)</h4>
+                                <p class="text-gray-600 text-sm">The space and the performer (<em>Karta</em>) are purified through cleaning, ritual baths, and wearing clean attire to create a sacred environment.</p>
+                            </div>
+                            <div class="timeline-item mb-8">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-semibold text-lg">2. Invocation (<em>Āvāhana</em>)</h4>
+                                <p class="text-gray-600 text-sm">Through chanting mantras, the <em>Karta</em> formally invites the spirits of the ancestors and deities to be present and accept the offerings.</p>
+                            </div>
+                            <div class="timeline-item mb-8">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-semibold text-lg">3. Fire Ritual (<em>Homa</em>)</h4>
+                                <p class="text-gray-600 text-sm">Offerings of ghee and grains are made to a sacred fire. The fire god, Agni, acts as a divine messenger, carrying the essence of the offerings to the ancestors.</p>
+                            </div>
+                            <div class="timeline-item mb-8">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-semibold text-lg">4. Water Libation (<em>Tarpan</em>)</h4>
+                                <p class="text-gray-600 text-sm">Sacred water, mixed with black sesame seeds and Kusha grass, is offered to quench the spiritual thirst of the ancestors and wash away impurities.</p>
+                            </div>
+                             <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-semibold text-lg">5. Rice Ball Offering (<em>Pinda Daan</em>)</h4>
+                                <p class="text-gray-600 text-sm">The climactic act. Cooked rice balls (<em>pindas</em>) are offered to three generations of ancestors. These symbolically constitute a subtle body for the spirit's onward journey.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <h3 class="text-2xl font-bold mb-6 text-amber-800">Symbolism of Offerings</h3>
+                        <div class="space-y-6">
+                            <div class="card p-4 rounded-lg flex items-center">
+                                <span class="text-3xl mr-4">🍚</span>
+                                <div>
+                                    <h4 class="font-semibold">Sattvic Food</h4>
+                                    <p class="text-sm text-gray-600">Pure, simple vegetarian food, avoiding ingredients like onion and garlic, to maintain ritual purity.</p>
+                                </div>
+                            </div>
+                            <div class="card p-4 rounded-lg flex items-center">
+                                <span class="text-3xl mr-4">⚫</span>
+                                <div>
+                                    <h4 class="font-semibold">Black Sesame Seeds (<em>Tila</em>)</h4>
+                                    <p class="text-sm text-gray-600">Associated with Lord Vishnu, they are believed to remove negative energies and attract ancestral spirits.</p>
+                                </div>
+                            </div>
+                            <div class="card p-4 rounded-lg flex items-center">
+                                <span class="text-3xl mr-4">🌿</span>
+                                <div>
+                                    <h4 class="font-semibold">Kusha Grass (<em>Darbha</em>)</h4>
+                                    <p class="text-sm text-gray-600">A sacred element used for purification, creating seats for spirits, and protecting the ritual from negative influences.</p>
+                                </div>
+                            </div>
+                             <div class="card p-4 rounded-lg flex items-center">
+                                <span class="text-3xl mr-4">🐦</span>
+                                <div>
+                                    <h4 class="font-semibold">Crows (<em>Kāka</em>)</h4>
+                                    <p class="text-sm text-gray-600">Seen as messengers of Yama (god of death) or the ancestors themselves. If a crow accepts the food offering, it's a sign the ancestors are pleased.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="when" class="mb-20 pt-16 -mt-16">
+                <h2 class="text-3xl font-bold text-center mb-2 text-amber-700">The Sacred Calendar: When is Śrāddha Performed?</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">The act of remembrance is woven into the Hindu lunisolar calendar, with specific periods designated as especially powerful for honoring ancestors. The timing is not arbitrary but cosmologically significant, ensuring a recurring connection with the ancestral realm.</p>
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <div class="card p-6 rounded-xl">
+                        <h3 class="font-bold text-xl mb-3 text-amber-800">Pitru Paksha: The Fortnight of Ancestors</h3>
+                        <p class="text-gray-600">A 16-lunar day period, usually in September/October, when ancestral spirits are believed to descend to earth. Performing Śrāddha during this time is considered exceptionally meritorious and brings contentment to the ancestors for the entire year. It is an inauspicious time for worldly celebrations.</p>
+                    </div>
+                    <div class="card p-6 rounded-xl">
+                        <h3 class="font-bold text-xl mb-3 text-amber-800">Sarvapitri Amavasya: Day of Universal Remembrance</h3>
+                        <p class="text-gray-600">The final day of Pitru Paksha (the new moon day). It is a universal day to remember all ancestors, especially for those whose death anniversary (<em>tithi</em>) is unknown. A ritual on this day is considered as fruitful as one performed at the holy site of Gaya.</p>
+                    </div>
+                </div>
+
+                <div class="card p-8 rounded-xl overflow-x-auto">
+                    <h3 class="text-2xl font-bold text-center mb-6 text-amber-800">A Taxonomy of Śrāddha Types</h3>
+                    <table class="w-full text-left">
+                        <thead class="bg-amber-50">
+                            <tr>
+                                <th class="p-3 font-semibold text-amber-800">Type</th>
+                                <th class="p-3 font-semibold text-amber-800">Purpose</th>
+                                <th class="p-3 font-semibold text-amber-800">Occasion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-amber-100">
+                                <td class="p-3 font-medium">Nitya Śrāddha</td>
+                                <td class="p-3 text-gray-600">Daily remembrance</td>
+                                <td class="p-3 text-gray-600">Daily</td>
+                            </tr>
+                            <tr class="border-b border-amber-100">
+                                <td class="p-3 font-medium">Naimittika Śrāddha</td>
+                                <td class="p-3 text-gray-600">For a single, specific individual</td>
+                                <td class="p-3 text-gray-600">Annual death <em>tithi</em></td>
+                            </tr>
+                            <tr class="border-b border-amber-100">
+                                <td class="p-3 font-medium">Kamya Śrāddha</td>
+                                <td class="p-3 text-gray-600">To fulfill a specific worldly desire</td>
+                                <td class="p-3 text-gray-600">Auspicious times (e.g., specific <em>nakṣatras</em>)</td>
+                            </tr>
+                            <tr class="border-b border-amber-100">
+                                <td class="p-3 font-medium">Vriddhi Śrāddha</td>
+                                <td class="p-3 text-gray-600">For family growth and prosperity</td>
+                                <td class="p-3 text-gray-600">Joyous occasions (marriage, birth)</td>
+                            </tr>
+                             <tr>
+                                <td class="p-3 font-medium">Parvana Śrāddha</td>
+                                <td class="p-3 text-gray-600">For a collective group of ancestors</td>
+                                <td class="p-3 text-gray-600">Festival days (e.g., Pitru Paksha)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="context" class="pt-16 -mt-16">
+                <h2 class="text-3xl font-bold text-center mb-2 text-amber-700">Global Context: Ancestor Veneration Worldwide</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">The impulse to honor ancestors is a universal human experience. Comparing Śrāddha with other global traditions like Mexico's <em>Día de los Muertos</em> and China's <em>Qingming</em> Festival highlights both shared themes of remembrance and the unique philosophical perspectives that shape each ritual.</p>
+
+                <div class="card p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-center mb-6 text-amber-800">Comparative Analysis of Rituals</h3>
+                    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">This chart visualizes the key differences in atmosphere and philosophical purpose between three major ancestor veneration traditions. While all focus on remembrance, their tones and ultimate goals vary significantly.</p>
+                    <div class="chart-container">
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+<!--
+    <footer class="bg-amber-800 text-amber-100 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <h3 class="text-2xl font-bold mb-3">The Enduring Relevance of Śrāddha</h3>
+            <p class="max-w-3xl mx-auto text-amber-200">In a world of rapid change, Śrāddha continues to be a powerful bridge connecting past, present, and future. Whether practiced traditionally, adapted by the global diaspora, or reinterpreted through acts of charity, it remains a vital expression of reverence, responsibility, and the unbreakable bond of family across generations.</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const debtCards = document.querySelectorAll('.debt-card');
+            const debtDetails = document.getElementById('debt-details');
+            const debtTitle = document.getElementById('debt-title');
+            const debtDescription = document.getElementById('debt-description');
+            
+            const debtData = {
+                deva: {
+                    title: 'Deva-ṛṇa: Debt to the Gods',
+                    description: 'This is the debt owed to the divine beings (devas) for sustaining the cosmos and providing life\'s essentials like light, air, and water. It is repaid through worship and sacrificial rituals (yajñas).'
+                },
+                rishi: {
+                    title: 'Rṣi-ṛṇa: Debt to the Sages',
+                    description: 'This is the debt owed to the great sages (ṛṣis) who revealed the sacred wisdom of the Vedas. It is repaid through the study of scriptures, living a righteous life (dharma), and passing knowledge to future generations.'
+                },
+                pitri: {
+                    title: 'Pitṛ-ṛṇa: Debt to the Ancestors',
+                    description: 'This is the debt owed to the ancestors (pitṛs) for one\'s physical body, lineage, and the gift of life itself. It is repaid by continuing the family line and, crucially, by the faithful performance of ancestral rites like Śrāddha.'
+                }
+            };
+
+            debtCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const debtKey = card.dataset.debt;
+                    debtTitle.textContent = debtData[debtKey].title;
+                    debtDescription.textContent = debtData[debtKey].description;
+                    debtDetails.classList.remove('hidden');
+
+                    debtCards.forEach(c => c.classList.remove('bg-amber-100', 'border-amber-500'));
+                    card.classList.add('bg-amber-100', 'border-amber-500');
+                });
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            function updateActiveLink() {
+                let index = sections.length;
+                while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
+                
+                navLinks.forEach((link) => link.classList.remove('active'));
+                if (index >= 0 && navLinks[index]) {
+                    navLinks[index].classList.add('active');
+                    mobileNav.value = navLinks[index].getAttribute('href');
+                }
+            }
+
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+
+            mobileNav.addEventListener('change', (e) => {
+                const target = document.querySelector(e.target.value);
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            const comparisonChart = new Chart(ctx, {
+                type: 'horizontalBar',
+                data: {
+                    labels: ['Śrāddha (Hinduism)', 'Día de los Muertos (Mexico)', 'Qingming Festival (China)'],
+                    datasets: [{
+                        label: 'Atmosphere (Solemn to Festive)',
+                        data: [1, 9, 6],
+                        backgroundColor: 'rgba(217, 119, 6, 0.7)',
+                        borderColor: 'rgba(217, 119, 6, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Purpose (Spiritual Duty to Social Celebration)',
+                        data: [2, 8, 5],
+                        backgroundColor: 'rgba(251, 191, 36, 0.7)',
+                        borderColor: 'rgba(251, 191, 36, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Ritual Characteristics (Scale 1-10)',
+                        fontSize: 14,
+                        fontColor: '#4A4A4A'
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                max: 10,
+                                stepSize: 2,
+                                fontColor: '#4A4A4A'
+                            },
+                            gridLines: {
+                                color: 'rgba(0,0,0,0.05)'
+                            }
+                        }],
+                        yAxes: [{
+                             ticks: {
+                                fontColor: '#4A4A4A'
+                            },
+                            gridLines: {
+                                display: false
+                            }
+                        }]
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                let label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += tooltipItem.xLabel;
+                                return label;
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Agentic AI Revolution</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Application Structure Plan: The infographic follows a top-down narrative structure designed for intuitive scrolling. It starts with a high-impact hero section to grab attention with key stats. It then logically flows into defining 'What is Agentic AI?' using a simple diagram. The core of the infographic is the 'Industry Deep Dive,' which uses a bar chart to show agent distribution, providing a macro view of adoption. This is followed by a section on 'Risks & The Governance Paradox,' using donut charts for easy comprehension of percentages. The structure concludes with 'The Future Trajectory,' summarizing key trends. This linear, story-driven flow is optimal for an infographic format, guiding the user from introduction to conclusion seamlessly. -->
+    <!-- Visualization & Content Choices: Data Point: Key market forecasts (15% decisions by AI, 40% project cancellation). Goal: Inform. Chosen Visualization: Single Big Number. Justification/Library/Method: Large, bold text is the most direct and impactful way to present critical KPIs, instantly conveying their significance. No library needed. Data Point: The 4-stage operational cycle. Goal: Organize/Explain Process. Chosen Visualization: Flow Chart Diagram. Justification/Library/Method: A visual flow chart using structured HTML/CSS with Tailwind is clearer than a text list for explaining a cyclical process. NO SVG/Mermaid. Data Point: Distribution of 26 agents across 6 industries. Goal: Compare. Chosen Visualization: Bar Chart. Justification/Library/Method: A Bar Chart (Chart.js/Canvas) is ideal for comparing quantities across discrete categories (industries), making it easy to see which sectors have the most applications. Data Point: Project failure rate (40%). Goal: Inform/Compare. Chosen Visualization: Donut Chart. Justification/Library/Method: A Donut Chart (Chart.js/Canvas) is excellent for showing a simple part-to-whole relationship, effectively highlighting the significant portion of projects that fail. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F8FF; /* AliceBlue - Lightest Blue */
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #0047AB, #007FFF); /* Cobalt to Azure */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#F0F8FF] text-[#002D62]">
+
+    <div class="container mx-auto px-4 py-8 md:px-8 md:py-12">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-black gradient-text mb-4">THE AGENTIC AI REVOLUTION</h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto text-[#0047AB]">How autonomous AI systems are moving beyond chat to execute complex workflows and solve trillion-dollar problems across global industries.</p>
+        </header>
+
+        <section class="mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-200">
+                    <p class="text-6xl md:text-7xl font-extrabold text-[#007FFF]">15%</p>
+                    <h3 class="mt-2 text-lg font-bold text-[#0047AB]">of Enterprise Decisions</h3>
+                    <p class="text-sm text-gray-600">will be made autonomously by agentic AI by 2028, a massive leap from virtually zero today.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-200">
+                    <p class="text-6xl md:text-7xl font-extrabold text-[#007FFF]">$8T</p>
+                    <h3 class="mt-2 text-lg font-bold text-[#0047AB]">In Systemic Inefficiencies</h3>
+                    <p class="text-sm text-gray-600">The estimated global cost of waste in sectors like manufacturing and logistics that agentic AI aims to solve.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-200">
+                    <p class="text-6xl md:text-7xl font-extrabold text-[#007FFF]">&gt;40%</p>
+                    <h3 class="mt-2 text-lg font-bold text-[#0047AB]">of AI Projects Canceled</h3>
+                    <p class="text-sm text-gray-600">The forecasted failure rate for agentic AI initiatives by 2027 due to high costs and legacy system friction.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20 bg-white p-8 md:p-12 rounded-2xl shadow-lg border border-gray-200">
+            <h2 class="text-3xl font-bold text-center text-[#0047AB] mb-8">What is Agentic AI? From Thinking to Doing</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-lg text-gray-700 mb-4">Agentic AI is not just another chatbot. It's a system that can independently <strong class="text-[#007FFF]">perceive</strong> its environment, <strong class="text-[#007FFF]">reason</strong> to create a plan, and <strong class="text-[#007FFF]">act</strong> on that plan by interacting with other software and APIs. It takes ownership of entire workflows.</p>
+                    <p class="text-gray-600">Think of it as the difference between an AI that can <strong class="text-[#0047AB]">write an email</strong> (Generative AI) and an AI that can <strong class="text-[#0047AB]">decide an email needs to be sent, write it, find the contact, send it, and schedule a follow-up</strong> (Agentic AI).</p>
+                </div>
+                <div class="flex flex-col space-y-4">
+                    <div class="flex items-center p-4 bg-blue-50 rounded-lg">
+                        <div class="w-12 h-12 bg-[#007FFF] text-white rounded-full flex items-center justify-center font-bold text-2xl mr-4">1</div>
+                        <div><h4 class="font-bold text-lg">PERCEIVE</h4><p class="text-sm text-gray-600">Collects real-time data from APIs, databases, and sensors.</p></div>
+                    </div>
+                    <div class="self-center text-3xl text-[#007FFF]">&#11167;</div>
+                    <div class="flex items-center p-4 bg-blue-50 rounded-lg">
+                        <div class="w-12 h-12 bg-[#005FAD] text-white rounded-full flex items-center justify-center font-bold text-2xl mr-4">2</div>
+                        <div><h4 class="font-bold text-lg">REASON</h4><p class="text-sm text-gray-600">Uses LLMs to understand goals and create a multi-step plan.</p></div>
+                    </div>
+                    <div class="self-center text-3xl text-[#007FFF]">&#11167;</div>
+                    <div class="flex items-center p-4 bg-blue-50 rounded-lg">
+                        <div class="w-12 h-12 bg-[#0047AB] text-white rounded-full flex items-center justify-center font-bold text-2xl mr-4">3</div>
+                        <div><h4 class="font-bold text-lg">ACT</h4><p class="text-sm text-gray-600">Executes the plan by calling external tools and software.</p></div>
+                    </div>
+                     <div class="self-center text-3xl text-[#007FFF]">&#11167;</div>
+                    <div class="flex items-center p-4 bg-blue-50 rounded-lg">
+                        <div class="w-12 h-12 bg-[#002D62] text-white rounded-full flex items-center justify-center font-bold text-2xl mr-4">4</div>
+                        <div><h4 class="font-bold text-lg">LEARN</h4><p class="text-sm text-gray-600">Evaluates outcomes to refine strategies for future tasks.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center text-[#0047AB] mb-2">Agentic AI Across Industries</h2>
+            <p class="text-center text-lg text-gray-700 mb-8 max-w-2xl mx-auto">From finance to healthcare, 26 key agentic applications are emerging to tackle specific, high-value problems. Here's a look at the distribution of these agents across major sectors.</p>
+            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
+                <div class="chart-container">
+                    <canvas id="industryChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center text-[#0047AB] mb-8">Risks & The Governance Paradox</h2>
+             <p class="text-center text-lg text-gray-700 mb-8 max-w-2xl mx-auto">Greater autonomy demands greater oversight. The path to an agentic enterprise is filled with challenges, from high project failure rates to the critical need for robust governance to manage risks like algorithmic bias and liability.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
+                    <h3 class="text-xl font-bold text-center text-[#0047AB] mb-4">The Pilot-to-Production Gap</h3>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="failureRateChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-600 mt-4">High costs and integration friction with legacy systems are the primary drivers of this significant failure rate.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
+                    <h3 class="text-xl font-bold text-center text-[#0047AB] mb-4">Top Ethical & Operational Risks</h3>
+                     <div class="space-y-4 mt-6">
+                        <div class="flex items-start">
+                            <span class="text-2xl text-[#007FFF] mr-3">&#9888;</span>
+                            <div><h4 class="font-bold">Algorithmic Bias</h4><p class="text-sm text-gray-600">AI models can perpetuate and amplify biases present in training data, leading to unfair outcomes.</p></div>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-2xl text-[#007FFF] mr-3">&#9888;</span>
+                            <div><h4 class="font-bold">Liability & Accountability</h4><p class="text-sm text-gray-600">Unclear legal frameworks for when an autonomous agent makes a costly error.</p></div>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-2xl text-[#007FFF] mr-3">&#9888;</span>
+                            <div><h4 class="font-bold">Explainability (The "Black Box")</h4><p class="text-sm text-gray-600">Difficulty in explaining why an AI made a specific decision, a critical need in regulated industries.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<!--
+
+        <footer class="text-center mt-16 border-t pt-8 border-[#007FFF]/30">
+            <p class="text-sm text-gray-600">Source: Analysis based on the report "The Agentic Enterprise: How Autonomous AI is Solving Trillion-Dollar Problems Across Industries."</p>
+        </footer>
+-->
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const processLabel = (label) => {
+                if (label.length > 16) {
+                    const words = label.split(' ');
+                    const lines = [];
+                    let currentLine = '';
+                    for (const word of words) {
+                        if ((currentLine + word).length > 16) {
+                            lines.push(currentLine.trim());
+                            currentLine = '';
+                        }
+                        currentLine += word + ' ';
+                    }
+                    lines.push(currentLine.trim());
+                    return lines;
+                }
+                return label;
+            };
+            
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            const industryData = {
+                'Tech, Media & Telecom': 5,
+                'Financial Services/Insurance': 5,
+                'Auto/Industrial': 5,
+                'Public Sector': 5,
+                'Healthcare/Life Sciences': 5,
+                'Retail/CPG': 1
+            };
+
+            const industryCtx = document.getElementById('industryChart').getContext('2d');
+            new Chart(industryCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(industryData).map(processLabel),
+                    datasets: [{
+                        label: 'Number of Key Agentic Applications',
+                        data: Object.values(industryData),
+                        backgroundColor: '#007FFF',
+                        borderColor: '#0047AB',
+                        borderWidth: 2,
+                        borderRadius: 8,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#E0EFFF'
+                            },
+                            ticks: {
+                                color: '#002D62',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#0047AB',
+                                font: {
+                                    size: 14,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Distribution of 26 Agentic Applications by Sector',
+                            color: '#002D62',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            padding: {
+                                bottom: 20
+                            }
+                        },
+                        tooltip: {
+                           callbacks: {
+                                title: tooltipTitleCallback
+                           }
+                        }
+                    }
+                }
+            });
+
+            const failureRateCtx = document.getElementById('failureRateChart').getContext('2d');
+            new Chart(failureRateCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Projects Canceled', 'Projects Proceeding'],
+                    datasets: [{
+                        data: [40, 60],
+                        backgroundColor: ['#87CEEB', '#0047AB'], /* SkyBlue, Cobalt */
+                        borderColor: '#FFFFFF',
+                        borderWidth: 4,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#002D62',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                         tooltip: {
+                           callbacks: {
+                                title: tooltipTitleCallback
+                           }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

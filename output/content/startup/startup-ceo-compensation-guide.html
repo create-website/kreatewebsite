@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEO Compensation Guide for WA C-Corps</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The application is designed as a single-page tabbed interface to provide a clear, user-guided journey through the complex topic of CEO compensation. This structure was chosen over a long-scroll page to prevent user overwhelm and allow them to focus on one area at a time (Salary, Health, Retirement). The 'Overview' tab acts as a dashboard, giving a high-level summary and visual breakdown, while subsequent tabs provide detailed, actionable information with interactive elements like checklists and accordions. This task-oriented flow (understand -> explore details -> review compliance) is more intuitive for a business owner trying to solve a specific problem. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Overall Compensation Mix -> Goal: Inform/Organize -> Viz: Doughnut Chart -> Interaction: Hover tooltips -> Justification: Provides an immediate visual summary of how compensation components are balanced. -> Library: Chart.js (Canvas).
+        - Report Info: Process for setting salary -> Goal: Organize/Inform -> Viz: Interactive Checklist -> Interaction: Click to reveal details -> Justification: Breaks down a formal process into manageable, less intimidating steps. -> Library/Method: HTML/JS.
+        - Report Info: Comparing 401(k) options -> Goal: Compare -> Viz: HTML Table -> Interaction: Static -> Justification: The most direct and clear way to compare features side-by-side. -> Library/Method: HTML/Tailwind.
+        - Report Info: Compliance & Tax Rules -> Goal: Inform -> Viz: Accordion -> Interaction: Click to expand/collapse -> Justification: Organizes detailed but distinct pieces of information cleanly, allowing users to drill down without cluttering the UI. -> Library/Method: HTML/JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #333333;
+        }
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            border-color: #3B82F6;
+            color: #3B82F6;
+            font-weight: 600;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">CEO Compensation Guide</h1>
+            <p class="text-lg text-gray-600">For C-Corporations in Washington State</p>
+        </header>
+
+        <nav class="flex flex-wrap justify-center border-b-2 border-gray-200 mb-8">
+            <button class="tab-btn active text-sm md:text-base py-3 px-4 md:px-6 border-b-2 border-transparent" data-tab="overview">Overview</button>
+            <button class="tab-btn text-sm md:text-base py-3 px-4 md:px-6 border-b-2 border-transparent" data-tab="salary">Salary</button>
+            <button class="tab-btn text-sm md:text-base py-3 px-4 md:px-6 border-b-2 border-transparent" data-tab="health">Health Benefits</button>
+            <button class="tab-btn text-sm md:text-base py-3 px-4 md:px-6 border-b-2 border-transparent" data-tab="retirement">Retirement</button>
+            <button class="tab-btn text-sm md:text-base py-3 px-4 md:px-6 border-b-2 border-transparent" data-tab="compliance">Key Considerations</button>
+        </nav>
+
+        <main>
+            <section id="overview" class="content-section active">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Structuring Your Compensation Package</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">
+                        As a C-Corp CEO in Washington, you can pay yourself through a mix of salary and benefits. This interactive guide explains the primary methods for structuring your compensation in a way that is both tax-efficient and compliant. The key is to find the right balance that meets your personal financial goals and the company's budget.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                         <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Hypothetical Compensation Mix</h3>
+                        <div class="chart-container">
+                            <canvas id="compensationChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                            <h4 class="text-lg font-semibold text-gray-700">➔ Base Salary</h4>
+                            <p class="text-gray-600 mt-1">The foundation of your compensation. It must be "reasonable" in the eyes of the IRS. This is considered an expense for the corporation.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                            <h4 class="text-lg font-semibold text-gray-700">➔ Health & Retirement</h4>
+                            <p class="text-gray-600 mt-1">Tax-advantaged benefits like HSAs and 401(k) plans. These are powerful tools for building wealth and are deductible expenses for the company.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                            <h4 class="text-lg font-semibold text-gray-700">➔ Dividends</h4>
+                            <p class="text-gray-600 mt-1">Payments from company profits. Unlike salary, they are not a deductible business expense and are subject to double taxation.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="salary" class="content-section">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Setting a Reasonable Salary</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">
+                        The IRS requires that compensation paid to a CEO who is also a shareholder must be "reasonable" for the services performed. An unreasonably high salary could be reclassified as a non-deductible dividend. Use the checklist below to understand the process for establishing and documenting your salary.
+                    </p>
+                </div>
+                <div class="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Process for Establishing Salary:</h3>
+                    <ul class="space-y-3">
+                        <li class="process-step cursor-pointer group">
+                            <div class="flex items-center">
+                                <span class="h-6 w-6 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center mr-3">1</span>
+                                <span class="font-medium text-gray-700 group-hover:text-blue-600">Research Comparable Salaries</span>
+                            </div>
+                            <div class="process-detail pl-9 pt-2 text-gray-600 text-sm hidden">
+                                Document what similar positions in your industry and geographic location (Washington State) are paid. Use data from salary websites, industry surveys, or a compensation consultant.
+                            </div>
+                        </li>
+                        <li class="process-step cursor-pointer group">
+                            <div class="flex items-center">
+                                <span class="h-6 w-6 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center mr-3">2</span>
+                                <span class="font-medium text-gray-700 group-hover:text-blue-600">Define CEO Duties & Responsibilities</span>
+                            </div>
+                            <div class="process-detail pl-9 pt-2 text-gray-600 text-sm hidden">
+                                Create a formal job description that outlines your qualifications, the complexity of your duties, hours worked, and overall value to the corporation.
+                            </div>
+                        </li>
+                        <li class="process-step cursor-pointer group">
+                            <div class="flex items-center">
+                                <span class="h-6 w-6 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center mr-3">3</span>
+                                <span class="font-medium text-gray-700 group-hover:text-blue-600">Assess Company's Financial Performance</span>
+                            </div>
+                            <div class="process-detail pl-9 pt-2 text-gray-600 text-sm hidden">
+                                The company's ability to pay is a key factor. Your salary should be justifiable based on the corporation's gross and net income.
+                            </div>
+                        </li>
+                        <li class="process-step cursor-pointer group">
+                            <div class="flex items-center">
+                                <span class="h-6 w-6 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center mr-3">4</span>
+                                <span class="font-medium text-gray-700 group-hover:text-blue-600">Hold a Board of Directors Meeting</span>
+                            </div>
+                            <div class="process-detail pl-9 pt-2 text-gray-600 text-sm hidden">
+                                Formally approve the salary package. Even if you are the sole board member, this is a critical step for corporate formality.
+                            </div>
+                        </li>
+                        <li class="process-step cursor-pointer group">
+                            <div class="flex items-center">
+                                <span class="h-6 w-6 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center mr-3">5</span>
+                                <span class="font-medium text-gray-700 group-hover:text-blue-600">Document in Corporate Minutes</span>
+                            </div>
+                            <div class="process-detail pl-9 pt-2 text-gray-600 text-sm hidden">
+                                The board resolution, including the salary amount and the justification (referencing the research), must be recorded in the official corporate minutes. This is your primary defense in an audit.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="health" class="content-section">
+                 <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Health Savings Accounts (HSA)</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">
+                        An HSA is a tax-advantaged savings account used for healthcare expenses, available to individuals with a High-Deductible Health Plan (HDHP). A C-Corp can make contributions to the CEO's HSA, which are tax-deductible for the business and not counted as taxable income for the CEO.
+                    </p>
+                </div>
+                 <div class="max-w-4xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                             <h3 class="text-lg font-semibold text-gray-700 mb-4">How It Works:</h3>
+                             <ol class="list-decimal list-inside space-y-3 text-gray-600">
+                                <li><strong>Establish an HDHP:</strong> The CEO must be enrolled in a qualified High-Deductible Health Plan. This can be a group plan offered by the corporation or an individual plan.</li>
+                                <li><strong>Open an HSA Account:</strong> The CEO opens an HSA account at a bank or financial institution that offers them.</li>
+                                <li><strong>Corporation Contributes:</strong> The C-Corp makes direct contributions to the CEO's HSA. This is typically done through payroll as an employer contribution.</li>
+                                <li><strong>Document Formally:</strong> The company's HSA contribution plan should be documented in an employee benefits plan or a board resolution.</li>
+                             </ol>
+                        </div>
+                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center">
+                             <h3 class="text-lg font-semibold text-gray-700">Projected 2025 Max Contributions</h3>
+                             <p class="text-gray-500 text-sm mb-4">(Employer + Employee)</p>
+                             <div class="flex space-x-8">
+                                <div>
+                                    <p class="text-3xl font-bold text-blue-600">$4,300</p>
+                                    <p class="text-gray-600">Self-Only</p>
+                                </div>
+                                <div>
+                                    <p class="text-3xl font-bold text-blue-600">$8,550</p>
+                                    <p class="text-gray-600">Family</p>
+                                </div>
+                             </div>
+                             <p class="text-xs text-gray-500 mt-4">Individuals age 55+ can contribute an additional $1,000 catch-up.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="retirement" class="content-section">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Retirement Plans (401k)</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">
+                        A C-Corp can establish a 401(k) plan to provide retirement benefits for the CEO. Contributions made by the corporation are a tax-deductible business expense. For a company where the CEO is the only (or one of very few) employees, a Solo 401(k) is often the best choice due to its high contribution limits and administrative ease.
+                    </p>
+                </div>
+                <div class="max-w-4xl mx-auto">
+                     <h3 class="text-lg font-semibold text-gray-700 mb-4 text-center">Plan Comparison</h3>
+                     <div class="overflow-x-auto">
+                        <table class="w-full text-left bg-white rounded-xl shadow-sm border border-gray-100">
+                            <thead>
+                                <tr class="border-b">
+                                    <th class="p-4 font-semibold">Feature</th>
+                                    <th class="p-4 font-semibold">Solo 401(k)</th>
+                                    <th class="p-4 font-semibold">Traditional 401(k)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600">
+                                <tr class="border-b">
+                                    <td class="p-4 font-medium">Best For</td>
+                                    <td class="p-4">Owner-only businesses (or with spouse)</td>
+                                    <td class="p-4">Companies with non-owner employees</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-medium">Contribution Roles</td>
+                                    <td class="p-4">CEO acts as both "employee" and "employer", making contributions in both roles.</td>
+                                    <td class="p-4">Employee makes contributions; employer may match or provide profit sharing.</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-4 font-medium">2025 Max (projected)</td>
+                                    <td class="p-4">$23,000 (employee) + 25% of compensation (employer), up to $69,000 total.</td>
+                                    <td class="p-4">$23,000 (employee) + employer contributions, up to $69,000 total.</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-4 font-medium">Administration</td>
+                                    <td class="p-4">Simpler, less paperwork, no complex discrimination testing.</td>
+                                    <td class="p-4">More complex, requires annual testing to ensure fairness to all employees.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-medium">Loan Option</td>
+                                    <td class="p-4">Yes, can borrow up to 50% or $50,000.</td>
+                                    <td class="p-4">Yes, subject to plan rules.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                     </div>
+                </div>
+            </section>
+
+            <section id="compliance" class="content-section">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Key Considerations & Compliance</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">
+                        Maintaining corporate formalities and understanding tax obligations is crucial. These points are essential for any C-Corp in Washington when structuring CEO compensation. This is not exhaustive legal or tax advice.
+                    </p>
+                </div>
+                <div class="max-w-3xl mx-auto space-y-3" id="accordion-container">
+                    <div class="accordion-item bg-white rounded-xl border border-gray-100 shadow-sm">
+                        <button class="accordion-header w-full flex justify-between items-center p-5 text-left">
+                            <span class="font-semibold text-gray-800">Corporate Documentation</span>
+                            <span class="accordion-icon text-blue-500 font-bold text-xl">＋</span>
+                        </button>
+                        <div class="accordion-content px-5 pb-5">
+                            <p class="text-gray-600">
+                                All compensation decisions—salary, bonuses, benefit plan adoption—must be approved by the Board of Directors and meticulously documented in the corporate minutes. This creates a paper trail that justifies the decisions as legitimate business expenses.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="accordion-item bg-white rounded-xl border border-gray-100 shadow-sm">
+                        <button class="accordion-header w-full flex justify-between items-center p-5 text-left">
+                            <span class="font-semibold text-gray-800">Payroll Taxes and Withholding</span>
+                            <span class="accordion-icon text-blue-500 font-bold text-xl">＋</span>
+                        </button>
+                        <div class="accordion-content px-5 pb-5">
+                            <p class="text-gray-600">
+                                Salary paid to the CEO is subject to payroll taxes (Social Security, Medicare). The corporation is responsible for withholding these taxes, as well as federal income tax, and remitting them to the IRS. The corporation also pays its own share of these taxes. Use a payroll service to ensure compliance.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="accordion-item bg-white rounded-xl border border-gray-100 shadow-sm">
+                        <button class="accordion-header w-full flex justify-between items-center p-5 text-left">
+                            <span class="font-semibold text-gray-800">Washington State Specifics</span>
+                            <span class="accordion-icon text-blue-500 font-bold text-xl">＋</span>
+                        </button>
+                        <div class="accordion-content px-5 pb-5">
+                            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                <li><strong>No State Income Tax:</strong> Washington does not have a personal or corporate state income tax.</li>
+                                <li><strong>B&O Tax:</strong> The corporation's gross receipts are subject to the Business & Occupancy (B&O) tax. Your salary and benefits are business expenses that reduce net profit, but they do not reduce B&O tax liability.</li>
+                                <li><strong>Paid Family and Medical Leave (PFML):</strong> Premiums for WA PFML must be paid on employee wages.</li>
+                            </ul>
+                        </div>
+                    </div>
+                     <div class="accordion-item bg-white rounded-xl border border-gray-100 shadow-sm">
+                        <button class="accordion-header w-full flex justify-between items-center p-5 text-left">
+                            <span class="font-semibold text-gray-800">Consult Professionals</span>
+                            <span class="accordion-icon text-blue-500 font-bold text-xl">＋</span>
+                        </button>
+                        <div class="accordion-content px-5 pb-5">
+                            <p class="text-gray-600">
+                                This guide is for informational purposes only. It is highly recommended to consult with a qualified CPA for tax planning and a corporate attorney to ensure all actions are compliant and properly documented.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(item => item.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    const target = tab.getAttribute('data-tab');
+                    contentSections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === target) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            const processSteps = document.querySelectorAll('.process-step');
+            processSteps.forEach(step => {
+                step.addEventListener('click', () => {
+                    const detail = step.querySelector('.process-detail');
+                    detail.classList.toggle('hidden');
+                });
+            });
+
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                const content = item.querySelector('.accordion-content');
+                const icon = item.querySelector('.accordion-icon');
+
+                header.addEventListener('click', () => {
+                    const isOpened = content.style.maxHeight && content.style.maxHeight !== '0px';
+
+                    accordionItems.forEach(i => {
+                        i.querySelector('.accordion-content').style.maxHeight = '0px';
+                        i.querySelector('.accordion-icon').textContent = '＋';
+                    })
+
+                    if (!isOpened) {
+                         content.style.maxHeight = content.scrollHeight + 'px';
+                         icon.textContent = '－';
+                    }
+                });
+            });
+
+            const ctx = document.getElementById('compensationChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Base Salary', 'Retirement Contributions', 'Health Benefits', 'Other Benefits/Bonus'],
+                    datasets: [{
+                        label: 'Compensation Mix',
+                        data: [60, 20, 10, 10],
+                        backgroundColor: [
+                            '#3B82F6', 
+                            '#60A5FA', 
+                            '#93C5FD',
+                            '#BFDBFE'  
+                        ],
+                        borderColor: '#FDFBF8',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: "'Inter', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

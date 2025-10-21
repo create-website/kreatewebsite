@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Art and Science of Janampatri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Cosmic Harmony -->
+    <!-- Application Structure Plan: The application is designed as a single-page exploratory journey, moving from foundational knowledge to practical application and historical context. It uses a thematic section-based structure rather than a simple Q&A format. The core of the app is an interactive tabbed interface ('The Cosmic Blueprint') which breaks down the complex components of a Janampatri into digestible, non-linear pieces (What, Building Blocks, Creation, Interpretation). This structure was chosen to empower users to explore at their own pace and focus on areas of interest, which is more effective for learning a complex topic than a linear document. The flow is logical: Welcome -> Core Concepts (interactive tabs) -> Practical Benefits -> Historical Context. This enhances usability by preventing information overload and encouraging engagement. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Core components of a Janampatri (Planets, Houses, Signs). -> Goal: Organize & show relationships. -> Viz Method: Chart.js Polar Area Chart. -> Interaction: Hover to see tooltips with definitions. -> Justification: Visually represents the three pillars of a Janampatri as interconnected and equally important, which is more impactful than a simple list. -> Library: Chart.js.
+        - Report Info: The process of creating a Janampatri. -> Goal: Inform & organize a sequence. -> Presentation Method: A numbered, step-by-step visual flowchart created with HTML/CSS. -> Interaction: Clear visual progression. -> Justification: A flowchart simplifies a multi-step process, making it easy to follow and understand the logical sequence of actions required. It is responsive and more accessible than a static image. -> Method: HTML/Tailwind CSS.
+        - Report Info: Benefits of Janampatri analysis. -> Goal: Inform & highlight key takeaways. -> Presentation Method: A grid of cards with Unicode icons. -> Interaction: Visually scannable. -> Justification: Cards break down information into distinct points, and icons provide quick visual cues, making the benefits easy to absorb at a glance. -> Method: HTML/Tailwind CSS.
+        - Report Info: History and significance. -> Goal: Show change over time. -> Presentation Method: A vertical timeline built with HTML/CSS. -> Interaction: Users scroll through key historical milestones. -> Justification: A timeline is the most intuitive way to present historical information, showing evolution and key events in chronological order. -> Method: HTML/Tailwind CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfaef;
+            color: #4a4a4a;
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #4f46e5;
+            border-bottom-color: #4f46e5;
+        }
+        .tab-button {
+            transition: all 0.3s;
+        }
+        .tab-button.active {
+            background-color: #4f46e5;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">Janampatri Explorer</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#introduction" class="nav-link text-gray-600 font-semibold pb-1">Introduction</a>
+                <a href="#blueprint" class="nav-link text-gray-600 font-semibold pb-1">The Blueprint</a>
+                <a href="#benefits" class="nav-link text-gray-600 font-semibold pb-1">Benefits</a>
+                <a href="#history" class="nav-link text-gray-600 font-semibold pb-1">History</a>
+            </div>
+            <div class="md:hidden">
+                 <select id="mobile-nav" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <option value="#introduction">Introduction</option>
+                    <option value="#blueprint">The Blueprint</option>
+                    <option value="#benefits">Benefits</option>
+                    <option value="#history">History</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="introduction" class="text-center min-h-[60vh] flex flex-col justify-center items-center">
+            <h2 class="text-4xl md:text-6xl font-bold text-gray-800 mb-4">The Art and Science of <span class="text-[#4f46e5]">Janampatri</span></h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-8">
+                A Janampatri, or birth chart, is a profound astrological map based on the principles of Vedic astrology. It captures the precise alignment of celestial bodies at your exact moment of birth, offering a unique cosmic blueprint of your life's potential, challenges, personality, and karmic journey. This application is your guide to understanding this ancient and intricate system.
+            </p>
+            <a href="#blueprint" class="bg-[#f59e0b] text-white font-bold py-3 px-8 rounded-full hover:bg-opacity-90 transition-transform transform hover:scale-105 shadow-lg">
+                Explore the Blueprint
+            </a>
+        </section>
+
+        <section id="blueprint" class="py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800">The Cosmic Blueprint</h2>
+                <p class="max-w-2xl mx-auto text-gray-600 mt-4">
+                    A Janampatri is constructed from several key components that work in harmony. This section allows you to explore these building blocks, understand how a chart is created, and learn the basics of its interpretation. Select a topic below to begin your exploration.
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8 border-b border-gray-200 pb-4">
+                    <button class="tab-button active text-sm md:text-base font-semibold py-2 px-4 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200" data-tab="what">What is a Janampatri?</button>
+                    <button class="tab-button text-sm md:text-base font-semibold py-2 px-4 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200" data-tab="blocks">The Building Blocks</button>
+                    <button class="tab-button text-sm md:text-base font-semibold py-2 px-4 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200" data-tab="creation">Creating the Chart</button>
+                    <button class="tab-button text-sm md:text-base font-semibold py-2 px-4 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200" data-tab="interpretation">Interpretation</button>
+                </div>
+
+                <div id="tab-content" class="mt-8">
+                    <div id="what" class="tab-content active fade-in">
+                        <h3 class="text-2xl font-bold text-center text-gray-800 mb-6">A Celestial Snapshot</h3>
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="text-gray-700 space-y-4">
+                                <p>The Janampatri is essentially a diagram that represents the positions of the planets and other celestial bodies in the sky, from the perspective of a specific time and place on Earth—your birth. It's divided into 12 sections called "houses" or "Bhavas," each representing a different area of life such as career, relationships, health, and spirituality.</p>
+                                <p>The Ascendant (Lagna), the zodiac sign rising on the eastern horizon at the moment of birth, is the starting point of the chart and determines the first house. The placement of planets within these houses and signs reveals specific energies, tendencies, and life events. It's not about fatalism, but about understanding the cosmic energies you were born with and learning how to navigate them.</p>
+                            </div>
+                            <div class="p-4 bg-white rounded-lg shadow-lg border border-gray-100 flex justify-center items-center">
+                                <div class="w-full h-full text-center font-mono text-xs text-gray-500 border-4 border-gray-800 relative aspect-square max-w-[300px] md:max-w-full">
+                                    <div class="absolute inset-0 grid grid-cols-2 grid-rows-2 transform rotate-45">
+                                        <div class="border border-gray-400 flex justify-center items-center">1</div>
+                                        <div class="border border-gray-400 flex justify-center items-center">2</div>
+                                        <div class="border border-gray-400 flex justify-center items-center">12</div>
+                                        <div class="border border-gray-400 flex justify-center items-center">3</div>
+                                    </div>
+                                    <div class="absolute inset-0 grid grid-cols-2 grid-rows-2">
+                                        <div class="border border-gray-400 flex justify-center items-center">4</div>
+                                        <div class="border border-gray-400 flex justify-center items-center">11</div>
+                                        <div class="border border-gray-400 flex justify-center items-center">5</div>
+                                        <div class="border border-gray-400 flex justify-center items-center">10</div>
+                                    </div>
+                                    <div class="absolute inset-0 grid grid-cols-2 grid-rows-2 transform -rotate-45">
+                                        <div class="border border-gray-400 flex justify-center items-center">6</div>
+                                        <div class="border border-gray-400 flex justify-center items-center">9</div>
+                                        <div class="border border-gray-400 flex justify-center items-center">7</div>
+                                        <div class="border border-gray-400 flex justify-center items-center">8</div>
+                                    </div>
+                                    <div class="absolute inset-0 flex justify-center items-center text-base font-bold text-indigo-600">
+                                        North Indian Chart
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="blocks" class="tab-content fade-in">
+                        <h3 class="text-2xl font-bold text-center text-gray-800 mb-6">The Three Pillars of Vedic Astrology</h3>
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="chart-container">
+                                <canvas id="componentsChart"></canvas>
+                            </div>
+                            <div class="text-gray-700 space-y-4">
+                                <p>A birth chart is built upon three fundamental pillars. The interplay between them forms the basis for all astrological interpretation.</p>
+                                <ul class="space-y-3 list-inside">
+                                    <li><strong class="text-indigo-600">The 9 Grahas (Planets):</strong> Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, and the two lunar nodes, Rahu & Ketu. Each Graha carries a unique energy and governs different aspects of our being.</li>
+                                    <li><strong class="text-indigo-600">The 12 Bhavas (Houses):</strong> Each house represents a specific domain of life, like self, wealth, siblings, home, creativity, health, relationships, etc.</li>
+                                    <li><strong class="text-indigo-600">The 12 Rashis (Zodiac Signs):</strong> Aries to Pisces. The signs are fields of energy that color the expression of the planets and houses they occupy.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="creation" class="tab-content fade-in">
+                        <h3 class="text-2xl font-bold text-center text-gray-800 mb-6">From Birth Data to Cosmic Map</h3>
+                        <p class="text-center max-w-2xl mx-auto text-gray-600 mb-8">Creating an accurate Janampatri is a meticulous process that transforms simple birth details into a detailed astrological chart. It requires precision and knowledge of astronomical calculations.</p>
+                         <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-[#4f46e5] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl mr-4">1</div>
+                                <div class="bg-white p-4 rounded-lg shadow-md border border-gray-100 flex-grow">
+                                    <h4 class="font-bold text-gray-800">Gathering Essential Data</h4>
+                                    <p class="text-gray-600">The three essential pieces of information are: Date of Birth, Exact Time of Birth, and Place of Birth (City, State, Country).</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-[#4f46e5] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl mr-4">2</div>
+                                <div class="bg-white p-4 rounded-lg shadow-md border border-gray-100 flex-grow">
+                                    <h4 class="font-bold text-gray-800">Astronomical Calculations</h4>
+                                    <p class="text-gray-600">Using astronomical data (ephemeris), an astrologer calculates the planetary longitudes and the Ascendant (Lagna) for the exact moment and location of birth.</p>
+                                </div>
+                            </div>
+                             <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-[#4f46e5] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl mr-4">3</div>
+                                <div class="bg-white p-4 rounded-lg shadow-md border border-gray-100 flex-grow">
+                                    <h4 class="font-bold text-gray-800">Casting the Chart</h4>
+                                    <p class="text-gray-600">The calculated positions are then placed into the chosen chart format (like the North Indian diamond style). The Ascendant sign is placed in the first house, and the remaining signs and planets are filled in accordingly.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-[#4f46e5] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl mr-4">4</div>
+                                <div class="bg-white p-4 rounded-lg shadow-md border border-gray-100 flex-grow">
+                                    <h4 class="font-bold text-gray-800">Divisional Charts & Dasha System</h4>
+                                    <p class="text-gray-600">Further calculations are done to create divisional charts (Vargas) for deeper analysis of specific life areas, and the Vimshottari Dasha system is calculated to map out planetary periods and life timelines.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="interpretation" class="tab-content fade-in">
+                        <h3 class="text-2xl font-bold text-center text-gray-800 mb-6">Reading the Cosmic Language</h3>
+                        <p class="text-center max-w-2xl mx-auto text-gray-600 mb-8">Interpretation is the heart of astrology. It involves synthesizing the information from the chart to create a holistic narrative of an individual's life. It's a skill that blends science with intuition.</p>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                                <h4 class="font-bold text-lg text-indigo-700">Planetary Placements</h4>
+                                <p class="text-gray-600 mt-2">The core of interpretation is analyzing which planet sits in which house and in which sign. For example, Jupiter in the 10th house (career) can indicate success in teaching or counseling, while Saturn there might suggest a slow but steady rise through hard work.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                                <h4 class="font-bold text-lg text-indigo-700">Yogas and Doshas</h4>
+                                <p class="text-gray-600 mt-2">Specific combinations of planets create "Yogas" (favorable alignments indicating fortune and success) or "Doshas" (challenging alignments that may indicate obstacles). Identifying these is key to a detailed reading.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                                <h4 class="font-bold text-lg text-indigo-700">Planetary Aspects</h4>
+                                <p class="text-gray-600 mt-2">Planets cast "drishti" or aspects on other houses and planets, influencing them from a distance. A planet's aspect can significantly alter the interpretation of the house it aspects.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                                <h4 class="font-bold text-lg text-indigo-700">The Dasha System</h4>
+                                <p class="text-gray-600 mt-2">The Vimshottari Dasha system reveals which planetary energies will be most active during specific periods of life. This helps in understanding the timing of events and the changing themes throughout one's journey.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="benefits" class="py-20 bg-indigo-50 rounded-2xl">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Unlocking Your Potential</h2>
+                <p class="max-w-2xl mx-auto text-gray-600 mt-4">Understanding your Janampatri can provide profound insights and practical guidance for various aspects of your life. It serves as a tool for self-awareness and strategic life planning.</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                 <div class="bg-white p-6 rounded-lg shadow-lg text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-4xl text-[#f59e0b] mb-4">🌟</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Self-Discovery</h3>
+                    <p class="text-gray-600">Gain a deeper understanding of your inherent strengths, weaknesses, personality traits, and hidden talents.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-4xl text-[#f59e0b] mb-4">💼</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Career Guidance</h3>
+                    <p class="text-gray-600">Identify suitable career paths and professional environments where you are most likely to thrive and find fulfillment.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-4xl text-[#f59e0b] mb-4">❤️</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Relationship Compatibility</h3>
+                    <p class="text-gray-600">Analyze relationship dynamics and compatibility (Kundli matching) for marriage and partnerships.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-4xl text-[#f59e0b] mb-4">🌿</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Health Insights</h3>
+                    <p class="text-gray-600">Identify potential health vulnerabilities and periods that may require extra care and attention.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-4xl text-[#f59e0b] mb-4">⏰</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Timing of Events</h3>
+                    <p class="text-gray-600">Understand favorable and challenging time periods for important life decisions and events.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-4xl text-[#f59e0b] mb-4">💎</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Remedial Measures</h3>
+                    <p class="text-gray-600">Suggests astrological remedies (Upayas) like mantras, charity, or gemstone recommendations to mitigate challenges.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="history" class="py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800">A Timeless Tradition</h2>
+                <p class="max-w-2xl mx-auto text-gray-600 mt-4">Vedic astrology, or Jyotisha, has a rich and ancient history, rooted in sacred texts and passed down through millennia of scholarly tradition.</p>
+            </div>
+            <div class="relative max-w-2xl mx-auto">
+                <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-indigo-200"></div>
+                <div class="relative mb-8">
+                    <div class="absolute left-1/2 -ml-3 z-10 w-6 h-6 bg-[#4f46e5] rounded-full border-4 border-white"></div>
+                    <div class="ml-auto md:ml-0 md:w-1/2 md:pr-8 text-right md:text-right">
+                        <div class="bg-white p-4 rounded-lg shadow-md border border-gray-100 inline-block md:float-right">
+                            <h3 class="font-bold text-lg text-indigo-700">Vedic Origins (c. 1500-500 BCE)</h3>
+                            <p class="text-gray-600">The earliest roots of Jyotisha are found in the Vedas, the ancient sacred texts of Hinduism, primarily focusing on auspicious timing for rituals.</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="relative mb-8">
+                    <div class="absolute left-1/2 -ml-3 z-10 w-6 h-6 bg-[#4f46e5] rounded-full border-4 border-white"></div>
+                    <div class="mr-auto md:mr-0 md:w-1/2 md:pl-8 md:text-left text-right">
+                        <div class="bg-white p-4 rounded-lg shadow-md border border-gray-100 inline-block md:float-left">
+                            <h3 class="font-bold text-lg text-indigo-700">Classical Period (c. 200-1000 CE)</h3>
+                            <p class="text-gray-600">Great sages like Parashara (author of Brihat Parashara Hora Shastra) and Varahamihira systematized natal astrology, laying the foundation for the Janampatri as we know it today.</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="relative mb-8">
+                    <div class="absolute left-1/2 -ml-3 z-10 w-6 h-6 bg-[#4f46e5] rounded-full border-4 border-white"></div>
+                    <div class="ml-auto md:ml-0 md:w-1/2 md:pr-8 text-right md:text-right">
+                        <div class="bg-white p-4 rounded-lg shadow-md border border-gray-100 inline-block md:float-right">
+                            <h3 class="font-bold text-lg text-indigo-700">Medieval Development</h3>
+                            <p class="text-gray-600">Scholars continued to refine techniques, writing extensive commentaries and developing specialized branches of astrology like Tajika (annual horoscopy).</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="relative">
+                    <div class="absolute left-1/2 -ml-3 z-10 w-6 h-6 bg-[#4f46e5] rounded-full border-4 border-white"></div>
+                    <div class="mr-auto md:mr-0 md:w-1/2 md:pl-8 md:text-left text-right">
+                        <div class="bg-white p-4 rounded-lg shadow-md border border-gray-100 inline-block md:float-left">
+                            <h3 class="font-bold text-lg text-indigo-700">Modern Era</h3>
+                            <p class="text-gray-600">The advent of computers revolutionized the creation of charts, making complex calculations instant and accurate. Today, Vedic astrology is a global practice, blending ancient wisdom with modern technology.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2025 Janampatri Explorer. An interactive guide to Vedic Astrology.</p>
+            <p class="text-sm text-gray-400 mt-2">This application is for educational purposes only and is not a substitute for professional astrological consultation.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetId = tab.dataset.tab;
+
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === targetId) {
+                            content.classList.add('active');
+                            if (targetId === 'blocks') {
+                                renderChart();
+                            }
+                        }
+                    });
+                });
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            const activateNavLink = () => {
+                let index = sections.length;
+                while(--index && window.scrollY + 50 < sections[index].offsetTop) {}
+                
+                navLinks.forEach((link) => link.classList.remove('active'));
+                const activeLink = document.querySelector(`.nav-link[href="#${sections[index].id}"]`);
+                if(activeLink) activeLink.classList.add('active');
+            };
+
+            activateNavLink();
+            window.addEventListener('scroll', activateNavLink);
+
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', (e) => {
+                const targetId = e.target.value;
+                document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+            });
+
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            let componentsChartInstance = null;
+            function renderChart() {
+                const ctx = document.getElementById('componentsChart').getContext('2d');
+                if (componentsChartInstance) {
+                   return; 
+                }
+                const data = {
+                    labels: [
+                        'The 9 Grahas (Planets)',
+                        'The 12 Bhavas (Houses)',
+                        'The 12 Rashis (Zodiac Signs)'
+                    ],
+                    datasets: [{
+                        label: 'Pillars of Janampatri',
+                        data: [1, 1, 1],
+                        backgroundColor: [
+                            'rgba(79, 70, 229, 0.6)',
+                            'rgba(245, 158, 11, 0.6)',
+                            'rgba(16, 185, 129, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(79, 70, 229, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(16, 185, 129, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                };
+
+                const options = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scale: {
+                        ticks: {
+                            display: false,
+                            beginAtZero: true,
+                            max: 1.2
+                        },
+                         grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        angleLines: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    if (label === 'The 9 Grahas (Planets)') return 'Entities representing cosmic energies.';
+                                    if (label === 'The 12 Bhavas (Houses)') return 'Domains of life experience.';
+                                    if (label === 'The 12 Rashis (Zodiac Signs)') return 'Fields of energy coloring expression.';
+                                    return '';
+                                }
+                            }
+                        }
+                    }
+                };
+
+                componentsChartInstance = new Chart(ctx, {
+                    type: 'polarArea',
+                    data: data,
+                    options: options
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint: The AI Retirement Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: The application is structured as a single-page, scrollable journey with a fixed top navigation. This thematic structure (The Human Element, Core Engine, User Experience, Guardrails) transforms the dense report into an engaging narrative. It starts with the 'why' (the human need), explains the 'how' (the technology), shows the 'what' (the product), and covers the 'rules' (compliance), which is a more intuitive flow for a broad audience than the original report's linear structure. Key interactions include interactive charts for data exploration, clickable diagrams to explain complex architecture, and filters for comparative analysis, all designed to make the content digestible and memorable. -->
+    <!-- Visualization & Content Choices: 
+        - Retirement Lifecycle: Goal: Inform/Engage. Method: Interactive Stepper (HTML/CSS/JS). Justification: Visually represents the journey, more engaging than a list.
+        - Savings Benchmarks: Goal: Inform/Compare. Method: Interactive Bar Chart (Chart.js) with a slider. Justification: Personalizes the data, making it dynamic and relatable.
+        - Withdrawal Strategies: Goal: Compare. Method: Line Chart (Chart.js) comparing 4% rule vs. Dynamic. Justification: Clearly visualizes the benefit of the advanced strategy.
+        - ML Architecture: Goal: Organize/Inform. Method: Diagram via HTML/CSS Grid. Justification: Simplifies a complex pipeline into a clear, non-graphical flow.
+        - Competitive Landscape: Goal: Compare. Method: Filterable HTML table. Justification: Allows for easy comparison of competitors.
+        - Compliance Checklist: Goal: Inform. Method: Styled HTML list. Justification: Makes dense regulations scannable and less intimidating.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 700px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        .nav-link.active { color: #4F46E5; border-bottom-color: #4F46E5; }
+        .nav-link { transition: all 0.2s ease-in-out; border-bottom-width: 2px; border-bottom-color: transparent; }
+        .stage-item.active { background-color: #EEF2FF; border-color: #4F46E5; }
+        .stage-item { transition: all 0.2s ease-in-out; }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 antialiased">
+
+    <div class="flex flex-col min-h-screen">
+        <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-30 shadow-sm">
+            <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-xl font-bold text-indigo-600">AI Retirement Blueprint</h1>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="#intro" class="nav-link px-3 py-2 text-sm font-medium text-stone-600 hover:text-indigo-600">Introduction</a>
+                            <a href="#human-element" class="nav-link px-3 py-2 text-sm font-medium text-stone-600 hover:text-indigo-600">The Human Element</a>
+                            <a href="#core-engine" class="nav-link px-3 py-2 text-sm font-medium text-stone-600 hover:text-indigo-600">The Core Engine</a>
+                            <a href="#user-experience" class="nav-link px-3 py-2 text-sm font-medium text-stone-600 hover:text-indigo-600">The User Experience</a>
+                            <a href="#guardrails" class="nav-link px-3 py-2 text-sm font-medium text-stone-600 hover:text-indigo-600">The Guardrails</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main class="flex-grow">
+            <section id="intro" class="py-20 md:py-28 bg-white">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h2 class="text-4xl font-bold tracking-tight text-stone-900 sm:text-5xl lg:text-6xl">Beyond Robo-Advisors</h2>
+                    <p class="mt-6 max-w-3xl mx-auto text-lg leading-8 text-stone-600">This interactive report deconstructs the blueprint for a next-generation AI retirement assistant. We'll explore the shift from automated investing to holistic, personalized financial wellness, powered by intelligent technology designed for trust and transparency.</p>
+                </div>
+            </section>
+
+            <section id="human-element" class="py-20 md:py-28">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-3xl mx-auto text-center mb-16">
+                        <h3 class="text-indigo-600 text-base font-semibold tracking-wider uppercase">The Human Element</h3>
+                        <p class="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">The Journey of Retirement</p>
+                        <p class="mt-4 text-lg text-stone-600">A successful AI assistant must understand that retirement isn't a single event, but a multi-stage human lifecycle. This section explores the qualitative framework that must be encoded into the AI's logic, allowing it to provide guidance that is context-aware and adaptive to a user's evolving needs and emotions.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <div id="stages-container" class="space-y-4"></div>
+                        </div>
+                        <div id="stage-details" class="p-8 bg-white rounded-xl shadow-lg border border-stone-200 min-h-[300px]">
+                            <h4 id="stage-title" class="text-2xl font-bold text-stone-900"></h4>
+                            <p id="stage-description" class="mt-4 text-stone-600"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="py-20 md:py-28 bg-white">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-3xl mx-auto text-center mb-16">
+                        <h3 class="text-indigo-600 text-base font-semibold tracking-wider uppercase">Quantitative Foundations</h3>
+                        <p class="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Personalized Savings Benchmarks</p>
+                         <p class="mt-4 text-lg text-stone-600">While the journey is personal, the foundation is quantitative. The AI must translate generic benchmarks into personalized targets. Interact with the chart below to see how recommended savings multiples change based on age, a core calculation for any retirement plan.</p>
+                    </div>
+                     <div class="chart-container">
+                        <canvas id="savingsChart"></canvas>
+                    </div>
+                    <div class="mt-8 max-w-2xl mx-auto">
+                        <label for="age-slider" class="block text-sm font-medium text-stone-700">Your Current Age: <span id="age-value" class="font-bold text-indigo-600">40</span></label>
+                        <input id="age-slider" type="range" min="30" max="67" value="40" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer mt-2 accent-indigo-600">
+                    </div>
+                </div>
+            </section>
+
+            <section id="core-engine" class="py-20 md:py-28">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-3xl mx-auto text-center mb-16">
+                        <h3 class="text-indigo-600 text-base font-semibold tracking-wider uppercase">The Core Engine</h3>
+                        <p class="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Engineering the Intelligence</p>
+                        <p class="mt-4 text-lg text-stone-600">The AI's intelligence isn't magic; it's a sophisticated, multi-layered architecture. This section breaks down the technology that securely acquires data, applies advanced predictive models, and delivers hyper-personalized insights, forming the brain of the financial assistant.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-stone-200">
+                        <h4 class="text-xl font-bold text-center mb-8">Modular Machine Learning Architecture</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                            <div class="p-6 border border-stone-200 rounded-lg">
+                                <h5 class="font-semibold text-lg">1. User Profiling</h5>
+                                <p class="text-sm text-stone-500 mt-2">Uses <span class="font-semibold text-indigo-600">Supervised Learning</span> (e.g., Random Forests) to classify a user's risk tolerance based on survey data and financial behavior.</p>
+                            </div>
+                            <div class="p-6 border border-stone-200 rounded-lg">
+                                <h5 class="font-semibold text-lg">2. Cash Flow Projection</h5>
+                                <p class="text-sm text-stone-500 mt-2">Uses <span class="font-semibold text-indigo-600">Time-Series Forecasting</span> (e.g., LSTMs) on transactional data to predict future income and expenses.</p>
+                            </div>
+                            <div class="p-6 border border-stone-200 rounded-lg">
+                                <h5 class="font-semibold text-lg">3. Portfolio Optimization</h5>
+                                <p class="text-sm text-stone-500 mt-2">Uses <span class="font-semibold text-indigo-600">Reinforcement Learning</span> to find optimal investment strategies by simulating market scenarios.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="py-20 md:py-28 bg-white">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                     <div class="max-w-3xl mx-auto text-center mb-16">
+                        <h3 class="text-indigo-600 text-base font-semibold tracking-wider uppercase">Distribution Phase</h3>
+                        <p class="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Smarter Withdrawal Strategies</p>
+                         <p class="mt-4 text-lg text-stone-600">The classic "4% Rule" is dangerously outdated because it ignores market conditions. An intelligent AI uses a dynamic approach, adjusting withdrawals based on portfolio performance. The chart below simulates how these two strategies might perform through market volatility.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="withdrawalChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="user-experience" class="py-20 md:py-28">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-3xl mx-auto text-center mb-16">
+                        <h3 class="text-indigo-600 text-base font-semibold tracking-wider uppercase">The User Experience</h3>
+                        <p class="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Designing for Trust & Engagement</p>
+                        <p class="mt-4 text-lg text-stone-600">A powerful AI is useless if the product is confusing or untrustworthy. This section explores how to bridge the gap between complex technology and the end-user through intuitive design, clear data visualization, and a user experience that builds confidence.</p>
+                    </div>
+
+                    <div class="mb-16">
+                        <h4 class="text-xl font-bold text-center mb-8">Competitive Landscape: Robo-Advisors</h4>
+                        <div class="overflow-x-auto bg-white p-4 rounded-xl shadow-lg border border-stone-200">
+                            <table id="robo-table" class="w-full text-sm text-left text-stone-500">
+                                <thead class="text-xs text-stone-700 uppercase bg-stone-100">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">Platform</th>
+                                        <th scope="col" class="px-6 py-3">Business Model</th>
+                                        <th scope="col" class="px-6 py-3">Target Audience</th>
+                                        <th scope="col" class="px-6 py-3">Key Differentiator</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                         <h4 class="text-xl font-bold text-center mb-8">Choosing the Right Visualization</h4>
+                         <p class="text-center text-stone-600 max-w-2xl mx-auto mb-8">The AI must transform raw data into intuitive stories. Different charts tell different stories. Select a goal below to see the appropriate visualization.</p>
+                        <div class="bg-white p-8 rounded-xl shadow-lg border border-stone-200">
+                            <div class="flex justify-center space-x-2 mb-8" id="viz-selector">
+                                <button data-viz="composition" class="viz-btn bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium">Composition</button>
+                                <button data-viz="trend" class="viz-btn bg-white text-stone-700 px-4 py-2 rounded-md text-sm font-medium border border-stone-300">Trend</button>
+                                <button data-viz="comparison" class="viz-btn bg-white text-stone-700 px-4 py-2 rounded-md text-sm font-medium border border-stone-300">Comparison</button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                <div id="viz-info">
+                                    <h5 id="viz-title" class="text-lg font-semibold text-stone-900"></h5>
+                                    <p id="viz-description" class="mt-2 text-stone-600"></p>
+                                </div>
+                                <div class="chart-container h-64 max-h-[250px]">
+                                    <canvas id="viz-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="guardrails" class="py-20 md:py-28 bg-white">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-3xl mx-auto text-center mb-16">
+                        <h3 class="text-indigo-600 text-base font-semibold tracking-wider uppercase">The Guardrails</h3>
+                        <p class="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Compliance, Security & Ethics</p>
+                        <p class="mt-4 text-lg text-stone-600">Building an AI that manages life savings is a profound responsibility. This section outlines the non-negotiable legal, security, and ethical frameworks that must be built into the system's DNA from day one to mitigate risk and earn user trust.</p>
+                    </div>
+
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                         <div>
+                            <h4 class="font-bold text-xl mb-4">Regulatory Framework</h4>
+                            <p class="text-stone-600 mb-6">The AI operates as a Registered Investment Adviser (RIA), legally bound by a <span class="font-semibold">fiduciary duty</span>. This is the highest standard of care, requiring the AI to always act in the user's best interest. This isn't a suggestion—it's encoded into the algorithm.</p>
+                            <ul class="space-y-4">
+                                <li class="flex items-start">
+                                    <span class="flex-shrink-0 h-6 w-6 text-indigo-600">&#10003;</span>
+                                    <span class="ml-3"><strong class="text-stone-900">SEC & FINRA Compliance:</strong> Adherence to the Investment Advisers Act of 1940, Suitability rules, and Regulation Best Interest.</span>
+                                </li>
+                                <li class="flex items-start">
+                                     <span class="flex-shrink-0 h-6 w-6 text-indigo-600">&#10003;</span>
+                                    <span class="ml-3"><strong class="text-stone-900">KYC/AML Procedures:</strong> Robust Customer Identification Programs (CIP) to prevent financial crime, mandated by the USA PATRIOT Act.</span>
+                                </li>
+                            </ul>
+                         </div>
+                         <div>
+                             <h4 class="font-bold text-xl mb-4">Privacy & Security Checklist</h4>
+                            <p class="text-stone-600 mb-6">Handling sensitive financial data requires a fortress-like approach to security and compliance with global privacy laws like GDPR and CCPA.</p>
+                            <ul class="space-y-4">
+                                <li class="flex items-start">
+                                    <span class="flex-shrink-0 h-6 w-6 text-indigo-600">&#10003;</span>
+                                    <span class="ml-3"><strong class="text-stone-900">End-to-End Encryption:</strong> All data is encrypted at rest (AES-256) and in transit (TLS 1.2+).</span>
+                                </li>
+                                <li class="flex items-start">
+                                     <span class="flex-shrink-0 h-6 w-6 text-indigo-600">&#10003;</span>
+                                    <span class="ml-3"><strong class="text-stone-900">Data Minimization:</strong> Collect only the data that is strictly necessary for the specified purpose.</span>
+                                </li>
+                                <li class="flex items-start">
+                                     <span class="flex-shrink-0 h-6 w-6 text-indigo-600">&#10003;</span>
+                                    <span class="ml-3"><strong class="text-stone-900">User Control:</strong> Providing users with the right to access, port, and delete their data upon request.</span>
+                                </li>
+                            </ul>
+                         </div>
+                     </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="bg-stone-800 text-white">
+            <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center text-sm text-stone-400">
+                <p>This interactive report is a conceptual synthesis based on the provided document. All data is illustrative.</p>
+                <p>&copy; 2025 AI Retirement Blueprint. All Rights Reserved.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const retirementStages = [
+                { id: 'exploring', title: '1. Pre-Retirement (The "Exploring" Stage)', description: 'This phase is characterized by anticipation and planning. The AI\'s role is educational, helping users define a concrete vision for retirement by modeling lifestyles and their financial requirements.' },
+                { id: 'transition', title: '2. Transition', description: 'Marking the exit from the workforce, this is a time of financial and personal change. The AI acts as a guide, helping users adapt to a new income structure and identity outside of work.' },
+                { id: 'honeymoon', title: '3. Honeymoon (The "Nesting" Stage)', description: 'A period of freedom and excitement, often involving a surge in discretionary spending. The AI\'s withdrawal models must account for this higher spending rate without jeopardizing long-term sustainability.' },
+                { id: 'disenchantment', title: '4. Disenchantment', description: 'Challenging realities can emerge, like health issues or market downturns. The AI proactively models these risks, helping users build contingency reserves and turn potential panic into prepared resilience.' },
+                { id: 'reorientation', title: '5. Reorientation (The "Reflecting" Stage)', description: 'In this final stage, individuals find new purpose. The AI\'s role shifts to supporting legacy planning, such as modeling charitable giving or establishing trusts for heirs.' }
+            ];
+
+            const roboData = [
+                { platform: 'Wealthfront', model: '0.25% AUM Fee', audience: 'Tech-savvy investors', differentiator: 'Strong digital-only features' },
+                { platform: 'Betterment', model: 'Hybrid AUM Fee', audience: 'Beginners, optional advice seekers', differentiator: 'Hybrid model with goal-based tools' },
+                { platform: 'Empower', model: 'High AUM Fee for Advisory', audience: 'High-Net-Worth Individuals', differentiator: 'High-touch service with human advisors' },
+                { platform: 'Schwab Intelligent Portfolios', model: 'No advisory fee (basic)', audience: 'Existing Schwab clients', differentiator: 'Integration into a major brokerage' },
+                { platform: 'Fidelity Go', model: 'No fee < $25k', audience: 'Beginners, existing Fidelity clients', differentiator: 'No-fee entry point with proprietary funds' }
+            ];
+            
+            const vizData = {
+                composition: {
+                    title: 'Composition: Showing Parts of a Whole',
+                    description: 'Use Pie or Doughnut charts to show the breakdown of a whole, such as asset allocation in a portfolio or spending by category in a budget.',
+                    chartType: 'doughnut',
+                    data: { labels: ['Stocks', 'Bonds', 'Alternatives'], datasets: [{ data: [60, 30, 10], backgroundColor: ['#4F46E5', '#818CF8', '#C7D2FE'] }] }
+                },
+                trend: {
+                    title: 'Trend: Showing Change Over Time',
+                    description: 'Use Line charts to visualize trends, such as the growth of your net worth or the performance of your investments over several years.',
+                    chartType: 'line',
+                    data: { labels: ['2021', '2022', '2023', '2024', '2025'], datasets: [{ label: 'Net Worth', data: [150, 180, 170, 210, 250], borderColor: '#4F46E5', tension: 0.1, fill: false }] }
+                },
+                comparison: {
+                    title: 'Comparison: Comparing Across Categories',
+                    description: 'Use Bar charts to compare values across different categories, like comparing savings rates between different age groups or investment performance across different funds.',
+                    chartType: 'bar',
+                    data: { labels: ['You', 'Peer Average', 'Top 10%'], datasets: [{ label: 'Annual Savings', data: [12000, 8500, 25000], backgroundColor: ['#4F46E5', '#A5B4FC', '#6366F1'] }] }
+                }
+            };
+            
+            let savingsChart, withdrawalChart, vizChart;
+
+            function initSavingsChart() {
+                const ctx = document.getElementById('savingsChart').getContext('2d');
+                const ageSlider = document.getElementById('age-slider');
+                const ageValue = document.getElementById('age-value');
+                
+                const benchmarks = { 30: 1, 35: 2, 40: 3, 45: 4, 50: 6, 55: 7, 60: 8, 67: 10 };
+                const labels = Object.keys(benchmarks);
+                const data = Object.values(benchmarks);
+
+                savingsChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Salary Multiple to Have Saved',
+                            data: data,
+                            backgroundColor: labels.map(age => parseInt(age) === 40 ? '#4F46E5' : '#C7D2FE'),
+                            borderColor: labels.map(age => parseInt(age) === 40 ? '#4338CA' : '#A5B4FC'),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            title: { display: true, text: 'Recommended Savings by Age (Multiple of Annual Salary)' }
+                        },
+                        scales: { y: { beginAtZero: true, title: { display: true, text: 'Salary Multiple' } }, x: { title: { display: true, text: 'Age' } } }
+                    }
+                });
+
+                ageSlider.addEventListener('input', (e) => {
+                    const age = e.target.value;
+                    ageValue.textContent = age;
+                    savingsChart.data.datasets[0].backgroundColor = labels.map(l => parseInt(l) == age ? '#4F46E5' : '#C7D2FE');
+                    savingsChart.data.datasets[0].borderColor = labels.map(l => parseInt(l) == age ? '#4338CA' : '#A5B4FC');
+                    savingsChart.update();
+                });
+            }
+
+            function initWithdrawalChart() {
+                const ctx = document.getElementById('withdrawalChart').getContext('2d');
+                const years = Array.from({length: 20}, (_, i) => `Year ${i + 1}`);
+                const marketPerformance = [1.12, 1.15, 0.9, 1.2, 1.05, 0.85, 0.95, 1.18, 1.1, 1.22, 0.92, 1.1, 1.08, 0.98, 1.16, 1.05, 1.25, 0.88, 1.14, 1.07];
+                const initialPortfolio = 1000000;
+
+                function calculateWithdrawals(strategy) {
+                    let portfolio = initialPortfolio;
+                    let lastWithdrawal = initialPortfolio * 0.04;
+                    const data = [];
+                    for (const perf of marketPerformance) {
+                        let withdrawal;
+                        if (strategy === '4% Rule') {
+                           withdrawal = lastWithdrawal * 1.02; 
+                        } else { // Dynamic
+                            const portfolioChange = (portfolio * perf) - portfolio;
+                            const withdrawalChange = portfolioChange > 0 ? 1.05 : 0.985;
+                            withdrawal = lastWithdrawal * withdrawalChange;
+                        }
+                        portfolio = (portfolio - withdrawal) * perf;
+                        data.push(portfolio > 0 ? portfolio : 0);
+                        lastWithdrawal = withdrawal;
+                    }
+                    return data;
+                }
+
+                withdrawalChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: years,
+                        datasets: [
+                            {
+                                label: '4% Rule Portfolio Balance',
+                                data: calculateWithdrawals('4% Rule'),
+                                borderColor: '#F87171',
+                                backgroundColor: '#FEE2E2',
+                                tension: 0.1
+                            },
+                            {
+                                label: 'Dynamic Spending Portfolio Balance',
+                                data: calculateWithdrawals('Dynamic'),
+                                borderColor: '#4F46E5',
+                                backgroundColor: '#EEF2FF',
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top' },
+                            title: { display: true, text: 'Portfolio Balance Over 20 Years' }
+                        },
+                        scales: { y: { ticks: { callback: value => `$${(value / 1000000).toFixed(1)}M` }, title: {display: true, text: 'Portfolio Value'} } }
+                    }
+                });
+            }
+
+            function initStages() {
+                const container = document.getElementById('stages-container');
+                const titleEl = document.getElementById('stage-title');
+                const descriptionEl = document.getElementById('stage-description');
+
+                retirementStages.forEach((stage, index) => {
+                    const item = document.createElement('div');
+                    item.className = `stage-item p-4 border-l-4 cursor-pointer rounded-r-lg ${index === 0 ? 'active' : 'border-stone-200 bg-white'}`;
+                    item.textContent = stage.title;
+                    item.dataset.stageId = stage.id;
+                    container.appendChild(item);
+                });
+
+                function updateStage(stageId) {
+                    const stage = retirementStages.find(s => s.id === stageId);
+                    if (stage) {
+                        titleEl.textContent = stage.title;
+                        descriptionEl.textContent = stage.description;
+
+                        document.querySelectorAll('.stage-item').forEach(el => {
+                            el.classList.toggle('active', el.dataset.stageId === stageId);
+                            el.classList.toggle('border-stone-200', el.dataset.stageId !== stageId);
+                            el.classList.toggle('bg-white', el.dataset.stageId !== stageId);
+                        });
+                    }
+                }
+                
+                container.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('stage-item')) {
+                        updateStage(e.target.dataset.stageId);
+                    }
+                });
+
+                updateStage(retirementStages[0].id);
+            }
+
+            function initRoboTable() {
+                const tbody = document.querySelector('#robo-table tbody');
+                roboData.forEach(item => {
+                    const row = tbody.insertRow();
+                    row.className = 'bg-white border-b';
+                    row.innerHTML = `<th scope="row" class="px-6 py-4 font-medium text-stone-900 whitespace-nowrap">${item.platform}</th><td class="px-6 py-4">${item.model}</td><td class="px-6 py-4">${item.audience}</td><td class="px-6 py-4">${item.differentiator}</td>`;
+                });
+            }
+            
+            function initVizSelector() {
+                const selectorContainer = document.getElementById('viz-selector');
+                const titleEl = document.getElementById('viz-title');
+                const descriptionEl = document.getElementById('viz-description');
+                const canvas = document.getElementById('viz-chart');
+                const ctx = canvas.getContext('2d');
+
+                function updateViz(vizId) {
+                    const config = vizData[vizId];
+                    if (!config) return;
+
+                    titleEl.textContent = config.title;
+                    descriptionEl.textContent = config.description;
+                    
+                    if (vizChart) {
+                        vizChart.destroy();
+                    }
+
+                    vizChart = new Chart(ctx, {
+                        type: config.chartType,
+                        data: config.data,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: config.chartType !== 'doughnut' } }
+                        }
+                    });
+                    
+                    document.querySelectorAll('.viz-btn').forEach(btn => {
+                        if (btn.dataset.viz === vizId) {
+                            btn.classList.add('bg-indigo-600', 'text-white');
+                            btn.classList.remove('bg-white', 'text-stone-700', 'border', 'border-stone-300');
+                        } else {
+                            btn.classList.remove('bg-indigo-600', 'text-white');
+                            btn.classList.add('bg-white', 'text-stone-700', 'border', 'border-stone-300');
+                        }
+                    });
+                }
+
+                selectorContainer.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'BUTTON' && e.target.dataset.viz) {
+                        updateViz(e.target.dataset.viz);
+                    }
+                });
+
+                updateViz('composition');
+            }
+            
+            function initNavObserver() {
+                const sections = document.querySelectorAll('section[id]');
+                const navLinks = document.querySelectorAll('.nav-link');
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(link => {
+                                link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                            });
+                        }
+                    });
+                }, { rootMargin: "-50% 0px -50% 0px" });
+
+                sections.forEach(section => {
+                    observer.observe(section);
+                });
+                
+                navLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetId = link.getAttribute('href');
+                        document.querySelector(targetId).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    });
+                });
+            }
+
+            initSavingsChart();
+            initWithdrawalChart();
+            initStages();
+            initRoboTable();
+            initVizSelector();
+            initNavObserver();
+        });
+    </script>
+</body>
+</html>

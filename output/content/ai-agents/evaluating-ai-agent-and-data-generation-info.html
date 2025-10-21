@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Rise of Agentic AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic tells a linear story in four parts: 1. The Agentic Shift (Introduction), 2. How Agents Work (Architecture & Patterns), 3. The Evaluation Challenge (Metrics), and 4. Governing the Future (Risks). This structure was chosen to guide the user from foundational concepts to complex challenges in a logical progression, making the dense report material accessible. -->
+    <!-- Visualization & Content Choices: 
+        - Agent Architecture: Goal: Organize. Method: Flowchart-style diagram (HTML/CSS). Justification: Visually deconstructs the system into understandable components without SVG/Mermaid.
+        - Design Patterns: Goal: Compare. Method: Bar Chart (Chart.js). Justification: Effectively compares the implementation complexity of different patterns.
+        - Evaluation Shift: Goal: Inform. Method: Large stat and Donut Chart (Chart.js). Justification: Highlights the key takeaway that evaluation must focus on the entire process.
+        - Risk Matrix: Goal: Organize. Method: Styled grid (HTML/CSS). Justification: Presents a complex taxonomy of risks in a clear, organized format.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F3E9; /* Off-white background */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .kpi-card {
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #E5E7EB;
+        }
+        .flowchart-node {
+            background-color: #FFFFFF;
+            border: 2px solid #FF6B6B;
+            color: #1A535C;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .flowchart-arrow {
+            font-size: 2.5rem;
+            color: #FF6B6B;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-8 max-w-5xl">
+
+        <!-- Header Section -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4" style="color: #1A535C;">The Internal State</h1>
+            <p class="text-xl md:text-2xl font-medium" style="color: #4ECDC4;">A Visual Guide to Evaluating & Governing Autonomous AI Agents</p>
+        </header>
+
+        <!-- Section 1: The Agentic Shift -->
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10" style="color: #1A535C;">The Agentic Shift: From Reactive Tools to Proactive Collaborators</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="kpi-card text-center">
+                    <h3 class="text-2xl font-bold mb-2" style="color: #FF6B6B;">Generative AI</h3>
+                    <p class="text-lg mb-4 text-gray-600">Processes a prompt and provides a corresponding output. Its agency is fundamentally reactive and transaction-centered.</p>
+                    <div class="text-6xl font-extrabold" style="color: #FF6B6B;">→</div>
+                </div>
+                <div class="kpi-card text-center">
+                     <h3 class="text-2xl font-bold mb-2" style="color: #4ECDC4;">Agentic AI</h3>
+                    <p class="text-lg mb-4 text-gray-600">Designed to achieve high-level objectives. It's a stateful, goal-oriented system that can plan and execute tasks over time.</p>
+                    <div class="text-6xl font-extrabold" style="color: #4ECDC4;">✓</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: How Agents Work -->
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10" style="color: #1A535C;">How Agents Work: Architecture & Design Patterns</h2>
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h3 class="text-2xl font-semibold text-center mb-8" style="color: #1A535C;">The Core Architectural Components</h3>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">An agent's intelligence comes from a system of interconnected components. The LLM "brain" is supported by memory, planning, and tools to overcome its limitations and interact with the world.</p>
+                <div class="grid grid-cols-1 md:grid-cols-7 items-center gap-y-4 md:gap-x-4">
+                    <div class="flowchart-node md:col-span-3">LLM (Reasoning Engine)</div>
+                    <div class="flowchart-arrow text-center hidden md:block">+</div>
+                    <div class="flowchart-arrow text-center md:hidden">↓</div>
+                    <div class="flowchart-node md:col-span-3">Planning Module</div>
+                    <div class="col-span-1 md:col-span-7 flowchart-arrow text-center">↓</div>
+                    <div class="flowchart-node md:col-span-3">Memory System</div>
+                    <div class="flowchart-arrow text-center hidden md:block">+</div>
+                    <div class="flowchart-arrow text-center md:hidden">↓</div>
+                    <div class="flowchart-node md:col-span-3">Tool Integration</div>
+                </div>
+            </div>
+
+            <div class="mt-16">
+                 <h3 class="text-2xl font-semibold text-center mb-8" style="color: #1A535C;">Agentic Design Pattern Complexity</h3>
+                 <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">Agentic behaviors are enabled by powerful design patterns. While highly effective, their implementation complexity varies significantly, impacting development and maintenance.</p>
+                <div class="kpi-card">
+                    <div class="chart-container">
+                        <canvas id="patternsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: The Evaluation Challenge -->
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10" style="color: #1A535C;">The Evaluation Challenge: Beyond the Final Answer</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Traditional AI evaluation focuses only on the final output. For agents, this is insufficient. We must evaluate the entire process—the internal reasoning, planning, and tool use—to ensure safety and reliability.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="kpi-card flex flex-col items-center justify-center text-center">
+                    <div class="text-7xl font-extrabold" style="color: #FF6B6B;">40%</div>
+                    <p class="text-xl font-semibold mt-4 text-gray-700">of Agentic AI projects are predicted to be scrapped by 2027 due to operational failures and lack of ROI (Gartner).</p>
+                </div>
+                 <div class="kpi-card">
+                    <h3 class="text-2xl font-semibold text-center mb-4" style="color: #1A535C;">Focus of Evaluation</h3>
+                    <div class="chart-container" style="height: 280px; max-height: 300px;">
+                        <canvas id="evaluationFocusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Governing the Future -->
+        <section>
+            <h2 class="text-3xl font-bold text-center mb-10" style="color: #1A535C;">Governing the Future: A Taxonomy of Agentic Risks</h2>
+             <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">The autonomy of agents introduces a new class of stateful and dynamic threats. Governance must be continuous and embedded within the system's architecture to manage these risks effectively.</p>
+            <div class="space-y-6">
+                <div class="kpi-card">
+                    <h3 class="font-bold text-xl mb-2" style="color: #FF6B6B;">Memory & State Risk: Memory Poisoning</h3>
+                    <p class="text-gray-600">An attacker subtly injects false data into the agent's memory, causing long-term behavioral drift and flawed decision-making.</p>
+                </div>
+                <div class="kpi-card">
+                    <h3 class="font-bold text-xl mb-2" style="color: #FF6B6B;">Reasoning & Planning Risk: Goal Manipulation</h3>
+                    <p class="text-gray-600">An adversary alters the agent's perceived goals or planning logic, hijacking its intent to perform unauthorized actions.</p>
+                </div>
+                <div class="kpi-card">
+                    <h3 class="font-bold text-xl mb-2" style="color: #FF6B6B;">Tool & Action Risk: Tool Misuse</h3>
+                    <p class="text-gray-600">The agent is tricked into using its integrated tools for malicious purposes, such as data exfiltration or unauthorized transactions.</p>
+                </div>
+                <div class="kpi-card">
+                    <h3 class="font-bold text-xl mb-2" style="color: #FF6B6B;">Systemic Risk: Model Collapse</h3>
+                    <p class="text-gray-600">The agent is retrained on its own flawed internal data, leading to a degenerative feedback loop that erodes accuracy and diversity.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const wrapLabel = (label, maxWidth) => {
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > maxWidth) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const palette = {
+            primary: '#FF6B6B', // Coral Red
+            secondary: '#4ECDC4', // Turquoise
+            tertiary: '#FFE66D', // Yellow
+            dark: '#1A535C', // Dark Teal
+            light: '#F7F3E9' // Off-white
+        };
+
+        // Chart 1: Design Patterns
+        const patternsCtx = document.getElementById('patternsChart').getContext('2d');
+        new Chart(patternsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Reflection', 'Tool Use', 'ReAct', ['Multi-Agent', 'System']],
+                datasets: [{
+                    label: 'Implementation Complexity',
+                    data: [2, 4, 7, 9], // Arbitrary complexity scores 1-10
+                    backgroundColor: [palette.secondary, palette.tertiary, palette.primary, palette.dark],
+                    borderRadius: 8,
+                    barThickness: 30,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Complexity Score (1-10)', color: palette.dark, font: { weight: 'bold' } },
+                        grid: { display: false },
+                        ticks: { color: palette.dark }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: palette.dark, font: { size: 14, weight: '500' } }
+                    }
+                }
+            }
+        });
+
+        // Chart 2: Evaluation Focus
+        const evaluationCtx = document.getElementById('evaluationFocusChart').getContext('2d');
+        new Chart(evaluationCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Final Output', 'Internal Process (Planning, Reasoning, Tool Use)'],
+                datasets: [{
+                    data: [20, 80],
+                    backgroundColor: [palette.primary, palette.secondary],
+                    borderColor: palette.light,
+                    borderWidth: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: palette.dark,
+                            font: { size: 12 },
+                            boxWidth: 20
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

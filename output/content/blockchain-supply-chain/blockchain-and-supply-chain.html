@@ -1,0 +1,384 @@
+
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain in Supply Chain</title>
+    <!-- Chosen Palette: Slate & Teal Harmony -->
+    <!-- Application Structure Plan: A thematic, single-page narrative structure guides the user from the problem to the solution and its applications. The flow is: Hero > Problem > Solution > Interactive 'How it Works' Diagram > 'Benefits' Chart > 'Use Cases' Tabs. This storytelling approach was chosen over a dashboard because the goal is to educate the user on a complex concept step-by-step, making it more digestible and engaging. Key interactions include the clickable process diagram and tabbed content, which allow users to explore details without being overwhelmed by information overload. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: The core concept of blockchain for supply chain traceability.
+        - Problem Section -> Goal: Inform -> Viz/Presentation: Icon-based info cards (HTML/Tailwind/Unicode) -> Interaction: None, simple visual scan -> Justification: Quickly communicates the core issues in a visually appealing, easy-to-digest format.
+        - How It Works Section -> Goal: Organize & Explain Process -> Viz/Presentation: Interactive flowchart diagram (HTML/CSS/JS) -> Interaction: User clicks on each stage to highlight it and view details -> Justification: Transforms a complex, linear process into an engaging, self-paced learning tool. This is the central interactive piece.
+        - Benefits Section -> Goal: Compare & Quantify -> Viz/Presentation: Bar Chart (Chart.js Canvas) -> Interaction: Hover tooltips on bars reveal "data" -> Justification: Provides a clear, quantitative-style visualization of the advantages, making the benefits feel more tangible and significant. The chart container is responsive and size-constrained.
+        - Use Cases Section -> Goal: Organize & Inform -> Viz/Presentation: Tabbed content area (HTML/CSS/JS) -> Interaction: User clicks tabs to switch between industry examples -> Justification: Segments related information cleanly, preventing a long, cluttered page and allowing users to focus on specific areas of interest.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #0d9488;
+        }
+        .process-step {
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .process-step.active {
+            background-color: #0d9488;
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .process-step.active .step-icon {
+            color: white;
+        }
+        .process-line {
+            height: 2px;
+            background-color: #cbd5e1;
+            flex-grow: 1;
+        }
+        .tab-button.active {
+            border-color: #0d9488;
+            background-color: #ccfbf1;
+            color: #134e4a;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 40vh;
+            max-height: 400px;
+            width: 100%;
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-slate-800">Supply Chain Reimagined</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#problem" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">The Problem</a>
+                        <a href="#solution" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">The Solution</a>
+                        <a href="#how-it-works" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">How It Works</a>
+                        <a href="#benefits" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Benefits</a>
+                        <a href="#use-cases" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Use Cases</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="py-20 md:py-32">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-4xl md:text-6xl font-bold tracking-tight text-teal-700">Know the Full Story of Every Product.</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-slate-600">This application explores how blockchain technology creates an unbreakable, transparent digital record of a product's journey, from its raw materials to the hands of the consumer. Navigate through the sections to understand the problems with today's supply chains and how blockchain provides a revolutionary solution.</p>
+            </div>
+        </section>
+
+        <section id="problem" class="py-16 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h3 class="text-3xl font-bold tracking-tight text-slate-900">The Black Box of Traditional Supply Chains</h3>
+                    <p class="mt-3 max-w-2xl mx-auto text-lg text-slate-600">Today's supply chains are often complex and fragmented, making them vulnerable to errors, fraud, and inefficiency. This section highlights the key challenges that blockchain technology aims to solve, showing why a new approach is necessary for trust and reliability in a global market.</p>
+                </div>
+                <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-sm">
+                        <div class="flex items-center">
+                            <span class="text-4xl mr-4 text-teal-600">🔍</span>
+                            <div>
+                                <h4 class="text-lg font-semibold">Lack of Transparency</h4>
+                                <p class="mt-1 text-slate-600">It's nearly impossible for consumers (and even companies) to trace a product's true origin and journey.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-sm">
+                        <div class="flex items-center">
+                           <span class="text-4xl mr-4 text-teal-600">🎭</span>
+                            <div>
+                                <h4 class="text-lg font-semibold">Counterfeiting & Fraud</h4>
+                                <p class="mt-1 text-slate-600">Fake goods enter the market, damaging brand reputation and posing risks to consumers.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-sm">
+                        <div class="flex items-center">
+                           <span class="text-4xl mr-4 text-teal-600">⏳</span>
+                            <div>
+                                <h4 class="text-lg font-semibold">Inefficiencies & Delays</h4>
+                                <p class="mt-1 text-slate-600">Complex paperwork and lack of real-time data cause bottlenecks and slow down the entire process.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solution" class="py-16">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h3 class="text-3xl font-bold tracking-tight text-slate-900">The Blockchain Solution: A Single Source of Truth</h3>
+                    <p class="mt-3 max-w-2xl mx-auto text-lg text-slate-600">Blockchain introduces a shared, unchangeable ledger that every participant in the supply chain can view and trust. In this section, we compare the old way with the new, blockchain-powered approach to illustrate the fundamental shift towards transparency and security.</p>
+                </div>
+                <div class="mt-12 grid md:grid-cols-2 gap-8 items-start">
+                    <div class="border border-red-300 bg-red-50 p-6 rounded-lg">
+                        <h4 class="text-xl font-bold text-red-800">Traditional System</h4>
+                        <p class="text-red-700 mt-2">Data is siloed in separate, private databases. Information is passed from one party to the next, with many opportunities for data loss, manipulation, or error.</p>
+                        <ul class="mt-4 space-y-2 text-red-900">
+                            <li class="flex items-start"><span class="mr-2 mt-1">🔴</span><span>Opaque and difficult to verify</span></li>
+                            <li class="flex items-start"><span class="mr-2 mt-1">🔴</span><span>Vulnerable to single points of failure or fraud</span></li>
+                            <li class="flex items-start"><span class="mr-2 mt-1">🔴</span><span>Slow, paper-based, and inefficient</span></li>
+                        </ul>
+                    </div>
+                    <div class="border border-teal-300 bg-teal-50 p-6 rounded-lg">
+                        <h4 class="text-xl font-bold text-teal-800">Blockchain-Enabled System</h4>
+                        <p class="text-teal-700 mt-2">All transactions are recorded on a decentralized, shared ledger. Every entry is permanent, time-stamped, and visible to all permissioned participants.</p>
+                         <ul class="mt-4 space-y-2 text-teal-900">
+                            <li class="flex items-start"><span class="mr-2 mt-1">🟢</span><span>Transparent and easily auditable</span></li>
+                            <li class="flex items-start"><span class="mr-2 mt-1">🟢</span><span>Secure, immutable, and tamper-proof</span></li>
+                            <li class="flex items-start"><span class="mr-2 mt-1">🟢</span><span>Fast, digital, and highly efficient</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="py-16 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h3 class="text-3xl font-bold tracking-tight text-slate-900">Interactive: The Product Journey on Blockchain</h3>
+                    <p class="mt-3 max-w-2xl mx-auto text-lg text-slate-600">This interactive diagram visualizes how a product's journey is recorded on the blockchain at every step. Click on each stage to see what information is added to the product's permanent digital identity. This process creates a transparent and trustworthy history that anyone can verify.</p>
+                </div>
+                <div class="mt-12">
+                    <div id="process-flow" class="flex items-center flex-col md:flex-row justify-center">
+                    </div>
+                    <div id="process-details" class="mt-8 bg-slate-50 p-6 rounded-lg shadow-inner min-h-[120px] text-center flex items-center justify-center">
+                        <p class="text-slate-600">Click a step above to see the details.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="benefits" class="py-16">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h3 class="text-3xl font-bold tracking-tight text-slate-900">Quantifiable Business Benefits</h3>
+                     <p class="mt-3 max-w-2xl mx-auto text-lg text-slate-600">Adopting blockchain in the supply chain isn't just about transparency; it delivers measurable improvements across the board. The chart below visualizes the potential impact on key performance indicators, from reducing fraud to enhancing consumer trust. Hover over each bar to see the estimated improvement.</p>
+                </div>
+                <div class="mt-12 chart-container">
+                    <canvas id="benefitsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="use-cases" class="py-16 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h3 class="text-3xl font-bold tracking-tight text-slate-900">Real-World Applications</h3>
+                    <p class="mt-3 max-w-2xl mx-auto text-lg text-slate-600">The impact of blockchain traceability spans numerous industries where authenticity and origin are paramount. Select a tab below to explore specific examples and understand how different sectors leverage this technology to build trust, ensure safety, and protect their brands.</p>
+                </div>
+                <div class="mt-8 max-w-4xl mx-auto">
+                    <div class="border-b border-gray-200">
+                        <nav id="tabs" class="-mb-px flex space-x-4" aria-label="Tabs">
+                            
+                        </nav>
+                    </div>
+                    <div id="tab-contents" class="mt-5">
+                       
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+            <p>An Interactive Exploration of Blockchain in Supply Chain Management.</p>
+            <p class="text-sm text-slate-400 mt-2">Built to demonstrate the clarity and engagement of interactive reporting.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const processData = [
+                { id: 'raw-material', icon: '🌿', title: 'Raw Material', description: 'Origin farm, harvest date, and organic certifications are recorded on the blockchain, creating the first block in the chain.' },
+                { id: 'processing', icon: '🏭', title: 'Processing', description: 'The processing facility adds data about quality checks, processing methods, and batch numbers to the product\'s digital record.' },
+                { id: 'logistics', icon: '🚚', title: 'Logistics', description: 'Each handover in transit is recorded. Location, temperature data from smart sensors, and customs clearance are added to the chain.' },
+                { id: 'retail', icon: '🏪', title: 'Retail', description: 'The retailer receives the product, scans it, and confirms its arrival. This event is recorded, finalizing the journey to the store.' },
+                { id: 'consumer', icon: '📱', title: 'Consumer', description: 'The consumer can scan a QR code on the product to view its entire, verified history from origin to shelf.' }
+            ];
+
+            const processFlowContainer = document.getElementById('process-flow');
+            let firstStep = true;
+            processData.forEach((step, index) => {
+                if (index > 0) {
+                     const line = document.createElement('div');
+                     line.className = 'process-line w-full md:w-auto mt-4 mb-4 md:m-0';
+                     processFlowContainer.appendChild(line);
+                }
+                const stepEl = document.createElement('div');
+                stepEl.className = 'process-step bg-white border border-slate-200 rounded-full w-32 h-32 md:w-36 md:h-36 flex flex-col items-center justify-center p-2 text-center shadow-md';
+                stepEl.dataset.id = step.id;
+                stepEl.innerHTML = `
+                    <div class="step-icon text-4xl text-teal-500">${step.icon}</div>
+                    <div class="font-semibold text-sm mt-2">${step.title}</div>
+                `;
+                processFlowContainer.appendChild(stepEl);
+            });
+
+            const processSteps = document.querySelectorAll('.process-step');
+            const processDetails = document.getElementById('process-details');
+
+            processSteps.forEach(step => {
+                step.addEventListener('click', () => {
+                    processSteps.forEach(s => s.classList.remove('active'));
+                    step.classList.add('active');
+                    const stepData = processData.find(d => d.id === step.dataset.id);
+                    processDetails.innerHTML = `<p class="text-slate-800 text-lg">${stepData.description}</p>`;
+                });
+            });
+
+            if (processSteps.length > 0) {
+                processSteps[0].click();
+            }
+            
+            const chartData = {
+                labels: ['Enhanced Traceability', 'Fraud Reduction', 'Supply Chain Efficiency', 'Improved Brand Reputation', 'Consumer Trust'],
+                datasets: [{
+                    label: 'Impact Score',
+                    data: [95, 85, 70, 90, 88],
+                    backgroundColor: '#14b8a6',
+                    borderColor: '#0f766e',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                }]
+            };
+
+            const benefitsChartCtx = document.getElementById('benefitsChart').getContext('2d');
+            new Chart(benefitsChartCtx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#e2e8f0',
+                            },
+                            ticks: {
+                                color: '#475569',
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false,
+                            },
+                            ticks: {
+                                color: '#475569',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            titleFont: {
+                                size: 16
+                            },
+                            bodyFont: {
+                                size: 14
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    return `Estimated Improvement: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const tabsData = [
+                 { id: 'food', title: 'Food & Agriculture', content: 'Track a head of lettuce from a specific farm, through temperature-controlled shipping, to the grocery store. Consumers can verify it\'s genuinely organic and learn its origin, reducing food fraud and ensuring safety.' },
+                 { id: 'luxury', title: 'Luxury Goods', content: 'Verify the authenticity of a luxury watch. Each component, from the Swiss movement to the leather strap, is recorded. This prevents counterfeits and protects brand value, assuring buyers they own a genuine item.' },
+                 { id: 'pharma', title: 'Pharmaceuticals', content: 'Ensure the integrity of life-saving medicines. Track a batch of vaccines from the manufacturing plant to the clinic, monitoring temperature and handling to prevent spoilage and counterfeit drugs from entering the supply chain.' },
+                 { id: 'automotive', title: 'Automotive', content: 'Trace every part in a vehicle, from the engine block to the airbag sensor. This simplifies recalls by instantly identifying affected vehicles and provides a verifiable service history, increasing resale value.' }
+            ];
+            
+            const tabsContainer = document.getElementById('tabs');
+            const tabContentsContainer = document.getElementById('tab-contents');
+
+            tabsData.forEach((tab, index) => {
+                const tabButton = document.createElement('button');
+                tabButton.className = 'tab-button whitespace-nowrap py-2 px-4 border-b-2 font-medium text-sm rounded-t-lg transition-colors duration-200';
+                tabButton.textContent = tab.title;
+                tabButton.dataset.target = tab.id;
+                
+                const tabContent = document.createElement('div');
+                tabContent.id = tab.id;
+                tabContent.className = 'tab-content bg-slate-100 p-6 rounded-lg';
+                tabContent.innerHTML = `<p class="text-slate-700">${tab.content}</p>`;
+
+                if (index === 0) {
+                    tabButton.classList.add('active');
+                    tabContent.classList.add('active');
+                }
+
+                tabsContainer.appendChild(tabButton);
+                tabContentsContainer.appendChild(tabContent);
+            });
+            
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const targetId = button.dataset.target;
+                    tabContents.forEach(content => {
+                        if (content.id === targetId) {
+                            content.classList.add('active');
+                        } else {
+                            content.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

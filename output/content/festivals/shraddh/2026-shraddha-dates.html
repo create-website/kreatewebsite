@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shraddha Calendar & Guide Infographic 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Narrative & Structure Plan: The infographic follows a narrative structure to guide the user from general understanding to specific action. It starts with a bold title and key headline stats for 2026 to grab attention. It then flows into a visual timeline of the 16-day period, providing a clear overview. Next, it uses a donut chart to break down the composition of the days, adding another layer of understanding. A step-by-step flowchart simplifies the process of finding a specific date. The infographic concludes with the spiritual context. This top-down approach makes the information digestible and tells a complete story. -->
+    <!-- Visualization Choices: Data Point: The 16-day Pitru Paksha period for 2026. -> Goal: Change (Show a sequence over time). -> Chosen Visualization: HTML/CSS Timeline. -> Justification/Method: A timeline is more visually engaging for a sequence of dates than a simple list, turning the calendar into a narrative element. Implemented with structured HTML and Tailwind CSS. (Confirms NO SVG). Data Point: Composition of Shraddha days (regular vs. special). -> Goal: Compare (Show composition). -> Chosen Visualization: Donut Chart. -> Justification/Method: A donut chart provides a quick, clear visual summary of the proportion of special observance days within the period, highlighting their significance. Implemented with Chart.js on a Canvas element. (Confirms NO SVG). Data Point: The process to determine one's specific Shraddha date. -> Goal: Organize (Show a process). -> Chosen Visualization: HTML/CSS Flowchart. -> Justification/Method: A flowchart visually simplifies a decision-making process, making the rules easier to follow than plain text. Implemented with structured HTML and Tailwind CSS. (Confirms NO SVG/Mermaid). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.07);
+            border: 1px solid #e9ecef;
+        }
+        .main-accent { color: #0a9396; }
+        .bg-main-accent { background-color: #0a9396; }
+        .highlight-accent { color: #ee9b00; }
+        .bg-highlight-accent { background-color: #ee9b00; }
+        .bg-secondary-accent { background-color: #94d2bd; }
+        .border-main-accent { border-color: #0a9396; }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #fff;
+            border: 4px solid #0a9396;
+            z-index: 1;
+        }
+        .flowchart-step {
+            position: relative;
+            padding-left: 30px;
+        }
+        .flowchart-step::before {
+            content: '➤';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ee9b00;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        .flowchart-step:first-child::before {
+            content: '●';
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <header class="bg-white py-6 shadow-sm">
+        <div class="max-w-6xl mx-auto text-center px-4">
+            <h1 class="text-4xl md:text-5xl font-extrabold main-accent tracking-tight">Honoring Ancestors</h1>
+            <p class="mt-2 text-lg text-gray-600">The 2026 Pitru Paksha Shraddha Infographic</p>
+        </div>
+    </header>
+
+    <main class="py-12">
+        <div class="max-w-6xl mx-auto px-4 space-y-16">
+
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="card p-6">
+                    <p class="text-5xl font-bold main-accent">16</p>
+                    <p class="text-gray-600 mt-2 font-medium">Lunar Days of Remembrance</p>
+                </div>
+                <div class="card p-6">
+                    <p class="text-3xl font-bold main-accent">Sep 26, 2026</p>
+                    <p class="text-gray-600 mt-2 font-medium">Pitru Paksha Begins</p>
+                </div>
+                <div class="card p-6">
+                    <p class="text-3xl font-bold main-accent">Oct 10, 2026</p>
+                    <p class="text-gray-600 mt-2 font-medium">Pitru Paksha Concludes</p>
+                </div>
+            </section>
+            
+            <section class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+                <div class="lg:col-span-3 card p-6 md:p-8">
+                    <h2 class="text-2xl font-bold main-accent mb-4">The 16-Day Timeline for 2026</h2>
+                     <p class="text-gray-600 mb-8">Pitru Paksha unfolds over sixteen lunar days, or Tithis. Each day is an opportunity to perform Shraddha for ancestors who passed away on that specific Tithi. The timeline below maps each Tithi to its 2026 date.</p>
+                    <div class="relative border-l-4 border-main-accent ml-4 pl-8 space-y-8">
+                        <div class="timeline-item relative">
+                            <h3 class="font-bold text-lg text-gray-800">Purnima Shraddha</h3>
+                            <p class="text-sm highlight-accent font-semibold">Sep 26</p>
+                        </div>
+                         <div class="timeline-item relative">
+                            <h3 class="font-bold text-lg text-gray-800">Pratipada to Ashtami Shraddha</h3>
+                            <p class="text-sm highlight-accent font-semibold">Sep 27 - Oct 3</p>
+                        </div>
+                        <div class="timeline-item relative">
+                            <h3 class="font-bold text-lg text-gray-800">Navami Shraddha (Avidhava Navami)</h3>
+                            <p class="text-sm highlight-accent font-semibold">Oct 4</p>
+                        </div>
+                        <div class="timeline-item relative">
+                            <h3 class="font-bold text-lg text-gray-800">Dashami to Trayodashi Shraddha</h3>
+                            <p class="text-sm highlight-accent font-semibold">Oct 5 - Oct 8</p>
+                        </div>
+                        <div class="timeline-item relative">
+                            <h3 class="font-bold text-lg text-gray-800">Chaturdashi Shraddha</h3>
+                            <p class="text-sm highlight-accent font-semibold">Oct 9</p>
+                        </div>
+                         <div class="timeline-item relative">
+                            <h3 class="font-bold text-lg text-gray-800">Sarva Pitru Amavasya</h3>
+                            <p class="text-sm highlight-accent font-semibold">Oct 10</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 card p-6 md:p-8">
+                    <h2 class="text-2xl font-bold main-accent mb-4">Anatomy of the Fortnight</h2>
+                    <p class="text-gray-600 mb-6">While most days correspond to a standard lunar day (Tithi), several days have special significance for specific ancestors.</p>
+                    <div class="chart-container relative mx-auto w-full h-64 max-w-sm max-h-64">
+                        <canvas id="shraddhaDaysChart"></canvas>
+                    </div>
+                     <div class="mt-6 text-sm text-center text-gray-500">This chart illustrates the proportion of standard Tithi-based Shraddha days versus days with special designations.</div>
+                </div>
+            </section>
+            
+            <section class="card p-6 md:p-8">
+                <h2 class="text-2xl font-bold main-accent mb-4">How to Find Your Shraddha Date: A Simple Guide</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <p class="text-gray-600 leading-relaxed">Finding the correct day is a straightforward process based on the lunar day, or Tithi, of an ancestor's passing. This flowchart breaks down the simple rules to follow.</p>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flowchart-step">
+                            <h3 class="font-bold text-lg">Identify the Ancestor's Tithi</h3>
+                            <p class="text-gray-600">Determine the lunar day (e.g., Panchami, Dashami) on which they passed.</p>
+                        </div>
+                        <div class="flowchart-step">
+                            <h3 class="font-bold text-lg">Check for Special Cases</h3>
+                            <p class="text-gray-600">Was it an unnatural death? (Use Chaturdashi). Was she a married woman who died before her husband? (Use Navami).</p>
+                        </div>
+                         <div class="flowchart-step">
+                            <h3 class="font-bold text-lg">Match the Tithi</h3>
+                             <p class="text-gray-600">If no special case applies, find the corresponding Tithi in the Pitru Paksha calendar and perform Shraddha on that day.</p>
+                        </div>
+                        <div class="flowchart-step">
+                             <h3 class="font-bold text-lg">Unknown Tithi?</h3>
+                            <p class="text-gray-600">If the Tithi is unknown, or you've missed the date, perform the rites for all ancestors on Sarva Pitru Amavasya.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="card p-6 md:p-8 text-center bg-main-accent text-white">
+                 <h2 class="text-3xl font-bold mb-4">The Spiritual Significance</h2>
+                 <p class="max-w-3xl mx-auto leading-relaxed">Pitru Paksha is a sacred bridge connecting generations. Performing Shraddha is an act of profound gratitude, believed to provide peace to the souls of ancestors and, in return, invite their blessings of health, prosperity, and well-being for the family. It is a time to honor our roots and acknowledge the legacy that shapes our present.</p>
+            </section>
+
+        </div>
+    </main>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('shraddhaDaysChart').getContext('2d');
+            const shraddhaDaysChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Standard Tithi Days', 'Special Observance Days'],
+                    datasets: [{
+                        label: 'Types of Shraddha Days',
+                        data: [13, 3],
+                        backgroundColor: [
+                            '#0a9396',
+                            '#ee9b00'
+                        ],
+                        borderColor: [
+                            '#ffffff',
+                            '#ffffff'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                color: '#4A5568'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    } else {
+                                      return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

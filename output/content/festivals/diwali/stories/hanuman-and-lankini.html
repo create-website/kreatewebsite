@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanuman and Lankini: The Guardian's Defeat</title>
+    <meta name="description" content="The story of Hanuman's encounter with Lankini, the powerful guardian demoness of Lanka. Learn how Hanuman's victory served as a prophetic omen for the city's downfall in the epic Ramayana.">
+    <meta name="keywords" content="Hanuman, Lankini, Ramayana, Lanka, Sita, Rama, guardian of Lanka, Hindu mythology, Vanara">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4B5563; 
+        }
+        .font-sanskrit {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+        }
+        .tab-active {
+            border-color: #D97706;
+            background-color: #FFFBEB;
+            color: #D97706;
+        }
+        .step-item-active {
+            background-color: #D97706;
+            color: #FFFFFF;
+            transform: scale(1.1);
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The page is designed as a short, focused narrative detailing a single, pivotal event. The structure is chronological to build tension: 1) The Arrival sets the scene of Hanuman reaching the city gates. 2) The Guardian introduces his formidable opponent, Lankini. 3) The Confrontation is the core interactive section, breaking down the fight into three clear steps. 4) The Prophecy reveals the deeper meaning of the victory. This structure is ideal for a short story, allowing the user to experience the encounter's drama and significance in a clear, linear fashion. -->
+    <!-- Visualization & Content Choices: Report Info: The fight sequence -> Goal: Show Process/Action -> Viz/Method: Interactive step-based diagram -> Interaction: Click each step (Challenge, Blow, Submission) to follow the confrontation -> Justification: This method effectively breaks down a quick, decisive action into a comprehensible and engaging narrative sequence. | Report Info: Lankini's dual role (guardian and omen) -> Goal: Inform/Compare -> Viz/Method: Tabbed content -> Interaction: Click tabs for "Guardian's Duty" and "Prophecy Fulfilled" -> Justification: Clearly separates Lankini's initial role from her final realization, highlighting the dramatic shift in the story and its meaning. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-amber-100/30 sticky top-0 z-50 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="font-sanskrit text-2xl font-bold text-amber-800">लंकिनी-पराजय</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#arrival" class="text-stone-600 hover:text-amber-700 transition">The Arrival</a>
+                    <a href="#guardian" class="text-stone-600 hover:text-amber-700 transition">The Guardian</a>
+                    <a href="#confrontation" class="text-stone-600 hover:text-amber-700 transition">The Confrontation</a>
+                    <a href="#prophecy" class="text-stone-600 hover:text-amber-700 transition">The Prophecy</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="arrival" class="text-center my-12 md:my-20">
+            <h1 class="font-sanskrit text-5xl md:text-7xl font-bold text-amber-900 leading-tight">The Gatekeeper of Lanka</h1>
+            <p class="mt-4 text-xl md:text-2xl text-stone-600">A Victory Foretold</p>
+            <p class="mt-6 max-w-3xl mx-auto text-stone-500">
+                Having crossed the impossible ocean, Hanuman landed silently on the shores of the enemy's island kingdom. Before him lay the magnificent, golden city of Lanka, teeming with Ravana's rakshasa forces. His first task was to enter this fortress, but at its very gate stood his first test: the city's ancient and powerful guardian, Lankini.
+            </p>
+        </section>
+
+        <section id="guardian" class="my-16 md:my-24 py-12 bg-amber-50/50 rounded-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">Lankini, Spirit of the City</h2>
+            <p class="text-center text-stone-600 mb-8 max-w-3xl mx-auto">Lankini was no ordinary guard. She was a formidable demoness, the very embodiment of Lanka's spirit, personally appointed by the creator Brahma to protect the city. For ages, she had stood invincible, her fierce gaze stopping any unauthorized being from entering her domain.</p>
+            <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-stone-200/80 text-center">
+                <div class="text-6xl my-4">👹</div>
+                <h3 class="font-sanskrit text-3xl font-bold text-amber-700">लंकिनी</h3>
+                <p class="text-stone-500 mt-2">The Invincible Guardian, who could change her form at will and possessed immense strength. Her duty was absolute, her loyalty to Lanka, unwavering.</p>
+            </div>
+        </section>
+        
+        <section id="confrontation" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">A Decisive Encounter</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">To avoid detection, Hanuman shrank his form to the size of a cat and prepared to slip through the gates. But nothing escaped Lankini's watch. The confrontation was swift, brutal, and profoundly significant.</p>
+            
+            <div>
+                <div class="flex flex-col md:flex-row justify-center items-center md:space-x-4 mb-6">
+                    <button class="step-item step-item-active w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 mb-2 md:mb-0" data-step="1">1. The Challenge</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white mb-2 md:mb-0" data-step="2">2. The Blow</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white" data-step="3">3. The Submission</button>
+                </div>
+
+                <div id="step-details" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md min-h-[150px]">
+                    <h4 id="step-title" class="font-bold text-xl text-amber-700 mb-2">Step 1: The Challenge</h4>
+                    <p id="step-description" class="text-stone-600">Appearing before Hanuman, Lankini roared, "Stop, little monkey! Who are you to dare enter Lanka? I am the guardian of this city, and you shall not pass while I live!" She mocked his Vanara form, unaware of the divine power it concealed.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="prophecy" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Prophecy Fulfilled</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Lankini's defeat was more than just a physical victory for Hanuman; it was the fulfillment of an ancient prophecy that signaled the end of Ravana's reign.</p>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="flex border-b border-stone-300 mb-6">
+                    <button class="tab-button tab-active flex-1 text-center font-semibold p-3 border-b-2 transition" data-tab="omen">Brahma's Words</button>
+                    <button class="tab-button flex-1 text-center font-semibold p-3 border-b-2 border-transparent text-stone-500 transition" data-tab="significance">A Gate and a Gateway</button>
+                </div>
+                <div id="tab-content">
+                    <div id="omen-content" class="tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">An Omen of Doom</h3>
+                        <p class="text-stone-600">Staggering to her feet, bloodied and humbled, Lankini looked at Hanuman with awe and terror. She recalled the words of Lord Brahma himself: "The day a monkey overpowers you with a single blow, know that the end for the rakshasas has come." She understood then that Hanuman was no mere intruder but a divine agent of destruction for Lanka.</p>
+                    </div>
+                    <div id="significance-content" class="hidden tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">The First Victory</h3>
+                        <p class="text-stone-600">Her duty now void by destiny, Lankini stepped aside. "Go, son of the Wind God," she said, "and accomplish your task. The city is yours to search." Hanuman's victory at the gate was the first symbolic crack in Lanka's defenses. It boosted his morale and confirmed that his mission was righteous and destined for success. The guardian herself had opened the way.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-100 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-stone-500">
+            <p>An interactive retelling of Hanuman's first victory within the walls of Lanka.</p>
+            <p class="text-sm mt-2">Inspired by the epic Ramayana.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stepData = {
+                1: { title: 'Step 1: The Challenge', description: 'Appearing before Hanuman, Lankini roared, "Stop, little monkey! Who are you to dare enter Lanka? I am the guardian of this city, and you shall not pass while I live!" She mocked his Vanara form, unaware of the divine power it concealed.' },
+                2: { title: 'Step 2: The Blow', description: 'When Lankini struck him, Hanuman, wishing only to subdue her, not kill her, retaliated with a calculated blow from his left fist. The impact was immense, sending the powerful demoness reeling to the ground, utterly defeated.' },
+                3: { title: 'Step 3: The Submission', description: 'Stunned and in pain, Lankini recognized the divine strength behind the blow. She immediately submitted, bowing before Hanuman and accepting that a great power had finally come to challenge Lanka. Her aggression turned to acceptance of fate.' }
+            };
+
+            const stepItems = document.querySelectorAll('.step-item');
+            const stepTitle = document.getElementById('step-title');
+            const stepDescription = document.getElementById('step-description');
+
+            stepItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    stepItems.forEach(i => i.classList.remove('step-item-active', 'bg-white'));
+                    stepItems.forEach(i => {
+                        if (i !== item) i.classList.add('bg-white');
+                    });
+                    item.classList.add('step-item-active');
+                    item.classList.remove('bg-white');
+
+                    const step = item.dataset.step;
+                    stepTitle.textContent = stepData[step].title;
+                    stepDescription.textContent = stepData[step].description;
+                });
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+                    button.classList.add('tab-active');
+
+                    const tab = button.dataset.tab;
+                    tabPanes.forEach(pane => {
+                        if (pane.id === `${tab}-content`) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+

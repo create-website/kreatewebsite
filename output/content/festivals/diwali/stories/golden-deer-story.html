@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Golden Deer: A Deceptive Lure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4B5563; 
+        }
+        .font-sanskrit {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+        }
+        .tab-active {
+            border-color: #D97706;
+            background-color: #FFFBEB;
+            color: #D97706;
+        }
+        .step-item-active {
+            background-color: #D97706;
+            color: #FFFFFF;
+            transform: scale(1.1);
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: This page uses a linear, narrative structure to recount the pivotal story of the Golden Deer. The flow is chronological to build suspense: 1) The Setup introduces the idyllic life in Panchavati and Ravana's plot. 2) The Lure details Sita's desire for the deer and Rama's decision. 3) The Chase is an interactive step-by-step element that illustrates the frustrating pursuit. 4) The Climax uses tabs to separate Maricha's deceptive cry from Sita's abduction, allowing the user to focus on each tragic turning point. This narrative design is most effective for a story-driven episode, making the events easy to follow and emotionally resonant. -->
+    <!-- Visualization & Content Choices: Report Info: Maricha's role -> Goal: Inform/Show Change -> Viz/Method: Interactive HTML card -> Interaction: Click a button to reveal his true form -> Justification: Visually represents the core deception of the story in a simple, engaging way. | Report Info: Rama's pursuit -> Goal: Show Process/Journey -> Viz/Method: Interactive step-based diagram -> Interaction: Click each step to follow the chase -> Justification: Breaks down the long chase into digestible segments, emphasizing the deer's elusive nature. | Report Info: Maricha's cry and Sita's abduction -> Goal: Organize/Compare -> Viz/Method: HTML Tabbed content -> Interaction: Click tabs to see the two key events of the climax -> Justification: Separates the two interconnected but distinct moments, clarifying the cause-and-effect that led to the tragedy. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-amber-100/30 sticky top-0 z-50 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="font-sanskrit text-2xl font-bold text-amber-800">स्वर्ण मृग</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#setup" class="text-stone-600 hover:text-amber-700 transition">The Setup</a>
+                    <a href="#lure" class="text-stone-600 hover:text-amber-700 transition">The Lure</a>
+                    <a href="#chase" class="text-stone-600 hover:text-amber-700 transition">The Chase</a>
+                    <a href="#climax" class="text-stone-600 hover:text-amber-700 transition">The Climax</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section class="text-center my-12 md:my-20">
+            <h1 class="font-sanskrit text-5xl md:text-7xl font-bold text-amber-900 leading-tight">The Golden Deer</h1>
+            <p class="mt-4 text-xl md:text-2xl text-stone-600">A Story of Deception and Desire</p>
+            <p class="mt-6 max-w-3xl mx-auto text-stone-500">
+                In the heart of the Dandaka forest, within their peaceful hermitage at Panchavati, lived Rama, Sita, and Lakshmana. Their idyllic exile was about to be shattered by a cunning plot, a glittering illusion that would set in motion the epic conflict of the Ramayana. This is the story of Maricha, the golden deer.
+            </p>
+        </section>
+
+        <section id="setup" class="my-16 md:my-24 py-12 bg-amber-50/50 rounded-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Demon's Plot</h2>
+            <p class="text-center text-stone-600 mb-8 max-w-3xl mx-auto">Enraged by the humiliation of his sister Surpanakha, the demon king Ravana devised a plan to abduct Sita. He commanded his uncle, the shapeshifting rakshasa Maricha, to assume the form of an irresistible golden deer to lure Rama and Lakshmana away from their hermitage.</p>
+            <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-stone-200/80">
+                <h3 id="maricha-title" class="font-sanskrit text-3xl font-bold text-amber-700 text-center">Maricha (मारीच)</h3>
+                <div id="deer-form" class="text-center">
+                    <div class="text-6xl my-4">🦌</div>
+                    <p class="text-stone-500 mt-2">The Golden Deer with skin of molten gold and horns of sapphire.</p>
+                </div>
+                <div id="demon-form" class="hidden text-center">
+                    <div class="text-6xl my-4">👹</div>
+                    <p class="text-stone-500 mt-2">Maricha, the rakshasa, forced to obey Ravana's command.</p>
+                </div>
+                <button id="transform-button" class="w-full mt-4 bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Reveal True Form</button>
+            </div>
+        </section>
+
+        <section id="lure" class="my-16 md:my-24 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-800">Sita's Desire</h2>
+            <p class="mt-4 text-lg max-w-3xl mx-auto text-stone-600">
+                When the magical deer pranced near their hermitage, its beauty captivated Sita instantly. She pleaded with Rama to capture the creature for her, either as a pet for their hermitage or for its magnificent golden pelt. Though Lakshmana suspected a trick, Rama, unable to deny Sita's wish, agreed to pursue the deer, instructing Lakshmana to stay and protect her at all costs.
+            </p>
+        </section>
+
+        <section id="chase" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Elusive Chase</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Rama set off in pursuit, but the golden deer was no ordinary animal. It was a master of illusion, leading him deeper and deeper into the forest. Follow the steps of the frustrating chase.</p>
+            
+            <div>
+                <div class="flex flex-col md:flex-row justify-center items-center md:space-x-4 mb-6">
+                    <button class="step-item step-item-active w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 mb-2 md:mb-0" data-step="1">1. The Glimpse</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white mb-2 md:mb-0" data-step="2">2. The Disappearance</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white" data-step="3">3. The Realization</button>
+                </div>
+
+                <div id="step-details" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md min-h-[150px]">
+                    <h4 id="step-title" class="font-bold text-xl text-amber-700 mb-2">Step 1: The Glimpse</h4>
+                    <p id="step-description" class="text-stone-600">The deer would appear just within Rama's reach, glittering in a sunbeam, only to playfully leap away the moment he drew close, always keeping a tantalizing distance.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="climax" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Fatal Cry</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Far from the hermitage, the chase reached its tragic conclusion. This section details the final moments that sealed Sita's fate, separating Maricha's final act from Ravana's terrible entrance.</p>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="flex border-b border-stone-300 mb-6">
+                    <button class="tab-button tab-active flex-1 text-center font-semibold p-3 border-b-2 transition" data-tab="deception">Maricha's Final Act</button>
+                    <button class="tab-button flex-1 text-center font-semibold p-3 border-b-2 border-transparent text-stone-500 transition" data-tab="abduction">Ravana's Arrival</button>
+                </div>
+                <div id="tab-content">
+                    <div id="deception-content" class="tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">A Deceptive Plea for Help</h3>
+                        <p class="text-stone-600">Frustrated, Rama realized he was being tricked. He fired a divine arrow, striking Maricha. As the demon fell, he reverted to his true form and, with his dying breath, cried out in a perfect imitation of Rama's voice: "Oh, Sita! Oh, Lakshmana!" The cry carried through the forest, a final, fatal piece of the deception.</p>
+                    </div>
+                    <div id="abduction-content" class="hidden tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">The Lakshmana Rekha is Crossed</h3>
+                        <p class="text-stone-600">Hearing the cry, a panicked Sita begged Lakshmana to go to his brother's aid. Despite his warnings and his duty to protect her, Sita's harsh words compelled him to leave. He drew a protective line, the Lakshmana Rekha, around the cottage, warning her not to cross it. Seizing his chance, Ravana appeared as a wandering sage. He tricked Sita into crossing the line to offer him alms, then revealed his true form and abducted her, carrying her away to Lanka in his flying chariot, Pushpaka Vimana.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-100 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-stone-500">
+            <p>An interactive retelling of the story that triggered the great war of the Ramayana.</p>
+            <p class="text-sm mt-2">Inspired by the epic Ramayana.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const transformButton = document.getElementById('transform-button');
+            const deerForm = document.getElementById('deer-form');
+            const demonForm = document.getElementById('demon-form');
+            let isDeer = true;
+
+            transformButton.addEventListener('click', () => {
+                isDeer = !isDeer;
+                deerForm.classList.toggle('hidden');
+                demonForm.classList.toggle('hidden');
+                transformButton.textContent = isDeer ? 'Reveal True Form' : 'Show Golden Deer';
+            });
+
+            const stepData = {
+                1: { title: 'Step 1: The Glimpse', description: 'The deer would appear just within Rama\'s reach, glittering in a sunbeam, only to playfully leap away the moment he drew close, always keeping a tantalizing distance.' },
+                2: { title: 'Step 2: The Disappearance', description: 'It would then vanish behind thickets of trees or into deep ravines, only to reappear moments later in an entirely different direction, seemingly mocking Rama\'s efforts and exhausting him.' },
+                3: { title: 'Step 3: The Realization', description: 'This unnatural behavior finally made Rama understand Lakshmana\'s warning. This was no ordinary animal; it was a rakshasa\'s illusion designed to draw him far away from Sita. His objective changed from capture to elimination.' }
+            };
+
+            const stepItems = document.querySelectorAll('.step-item');
+            const stepTitle = document.getElementById('step-title');
+            const stepDescription = document.getElementById('step-description');
+
+            stepItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    stepItems.forEach(i => i.classList.remove('step-item-active', 'bg-white'));
+                    stepItems.forEach(i => {
+                        if (i !== item) i.classList.add('bg-white');
+                    });
+                    item.classList.add('step-item-active');
+                    item.classList.remove('bg-white');
+
+                    const step = item.dataset.step;
+                    stepTitle.textContent = stepData[step].title;
+                    stepDescription.textContent = stepData[step].description;
+                });
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+                    button.classList.add('tab-active');
+
+                    const tab = button.dataset.tab;
+                    tabPanes.forEach(pane => {
+                        if (pane.id === `${tab}-content`) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+

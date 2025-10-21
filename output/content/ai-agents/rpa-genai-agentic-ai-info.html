@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Agentic Enterprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Application Structure Plan: The infographic follows a top-to-bottom narrative scroll. It begins with a high-impact hero section stating the core theme. It then visually explains the evolution of automation using a CSS-based timeline. A central radar chart provides a direct comparison of the technologies' attributes. The core of the infographic is a grid-based section detailing the impact on the value chain, using icons and stats for scannability. This is followed by a CSS flowchart explaining the "AI Manager" concept. The narrative concludes with the key strategic challenges and a final summary. This linear structure is ideal for a storytelling infographic, guiding the user logically from the foundational concepts to the strategic implications. -->
+    <!-- Visualization & Content Choices: 1. Evolution Timeline: Goal is to show change. Method is a structured HTML/CSS timeline. Justification: More visually engaging than a list for showing progression. NO SVG/Mermaid. 2. Technology Comparison: Goal is to compare. Method is a Chart.js Radar Chart. Justification: Excellent for comparing multiple entities (RPA, GenAI, Agentic AI) across multiple attributes (Autonomy, Data Needs, etc.) in a single, visually dense graphic. 3. Value Chain Impact: Goal is to inform. Method is a grid of styled cards with Unicode icons. Justification: Breaks down dense text from the report into easily digestible, visually separated points. 4. Agentic Workflow: Goal is to organize/explain a process. Method is a CSS Flexbox flowchart. Justification: Clearly visualizes the Plan -> Delegate -> Orchestrate loop, making an abstract concept concrete. NO SVG/Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .bg-brand-dark { background-color: #0B486B; }
+        .bg-brand-teal { background-color: #3B8686; }
+        .bg-brand-aqua { background-color: #79BD9A; }
+        .bg-brand-light-green { background-color: #A8DBA8; }
+        .bg-brand-lime { background-color: #CFF09E; }
+        .text-brand-dark { color: #0B486B; }
+        .text-brand-teal { color: #3B8686; }
+        .text-brand-aqua { color: #79BD9A; }
+        .border-brand-teal { border-color: #3B8686; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 500px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl py-12 sm:py-16">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-brand-dark">The Agentic Enterprise</h1>
+            <p class="mt-4 text-lg md:text-xl text-slate-600">From Automating Tasks to Owning Outcomes</p>
+        </header>
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center text-brand-dark mb-12">The Evolution of Automation</h2>
+            <div class="relative">
+                <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-brand-light-green hidden md:block"></div>
+                <div class="space-y-16 md:space-y-0 md:grid md:grid-cols-3 md:gap-8">
+                    <div class="text-center p-6 bg-white rounded-xl shadow-md border-t-4 border-brand-teal">
+                        <div class="text-4xl font-bold text-brand-teal mb-2">1</div>
+                        <h3 class="text-2xl font-bold text-brand-dark mb-2">RPA</h3>
+                        <p class="font-semibold text-brand-teal mb-3">Task Mimicry</p>
+                        <p class="text-sm">Emulates repetitive human actions on a user interface. Ideal for structured data and rule-based processes.</p>
+                    </div>
+                    <div class="text-center p-6 bg-white rounded-xl shadow-md border-t-4 border-brand-aqua">
+                        <div class="text-4xl font-bold text-brand-aqua mb-2">2</div>
+                        <h3 class="text-2xl font-bold text-brand-dark mb-2">Generative AI</h3>
+                        <p class="font-semibold text-brand-aqua mb-3">Content & Synthesis</p>
+                        <p class="text-sm">Understands unstructured data to create novel content, analysis, and human-like text.</p>
+                    </div>
+                    <div class="text-center p-6 bg-white rounded-xl shadow-md border-t-4 border-brand-dark">
+                        <div class="text-4xl font-bold text-brand-dark mb-2">3</div>
+                        <h3 class="text-2xl font-bold text-brand-dark mb-2">Agentic AI</h3>
+                        <p class="font-semibold text-brand-dark mb-3">Goal Achievement</p>
+                        <p class="text-sm">Autonomously plans and executes multi-step processes to achieve a high-level objective.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-20 bg-white p-6 sm:p-10 rounded-xl shadow-md">
+            <h2 class="text-3xl font-bold text-center text-brand-dark mb-4">The Automation Spectrum</h2>
+            <p class="text-center text-slate-600 mb-8 max-w-2xl mx-auto">Agentic AI represents a leap forward in autonomy and learning, enabling it to tackle complex, goal-driven work far beyond the scope of its predecessors.</p>
+            <div class="chart-container">
+                <canvas id="automationRadarChart"></canvas>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center text-brand-dark mb-12">Transforming the Enterprise Value Chain</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <p class="text-4xl mb-3">🔬</p>
+                    <h3 class="text-xl font-bold text-brand-dark mb-2">R&D & Discovery</h3>
+                    <p class="text-slate-600">Agents autonomously review literature, generate hypotheses, and run simulations, compressing research cycles from months to hours.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <p class="text-4xl mb-3">🏭</p>
+                    <h3 class="text-xl font-bold text-brand-dark mb-2">Manufacturing</h3>
+                    <p class="text-slate-600">Enables the "sentient factory" with generative design and autonomous maintenance, cutting failures by up to <strong class="text-brand-teal">70%</strong>.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <p class="text-4xl mb-3">🚚</p>
+                    <h3 class="text-xl font-bold text-brand-dark mb-2">Supply Chain</h3>
+                    <p class="text-slate-600">Creates self-healing supply chains that can detect disruptions and autonomously re-route shipments in real-time.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <p class="text-4xl mb-3">📈</p>
+                    <h3 class="text-xl font-bold text-brand-dark mb-2">Sales & Marketing</h3>
+                    <p class="text-slate-600">Manages the entire customer lifecycle with hyper-personalized outreach and real-time campaign orchestration.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <p class="text-4xl mb-3">💼</p>
+                    <h3 class="text-xl font-bold text-brand-dark mb-2">Corporate Core</h3>
+                    <p class="text-slate-600">Acts as a "digital connective tissue" in Finance and HR, automating end-to-end processes like fraud detection and employee onboarding.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-md">
+                    <p class="text-4xl mb-3">💬</p>
+                    <h3 class="text-xl font-bold text-brand-dark mb-2">Customer Service</h3>
+                    <p class="text-slate-600">Evolves beyond chatbots to autonomous agents that resolve complex issues end-to-end in a single interaction.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20 bg-brand-dark text-white p-8 sm:p-12 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center text-brand-lime mb-10">The AI Manager: How Agents Work</h2>
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-8">
+                <div class="text-center">
+                    <div class="bg-brand-teal rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-3">
+                        <p class="text-4xl">📝</p>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">1. Plan</h3>
+                    <p class="text-sm text-slate-300 max-w-xs">Decomposes a high-level goal into a sequence of executable steps.</p>
+                </div>
+                <div class="text-4xl text-brand-aqua hidden md:block">&rarr;</div>
+                 <div class="text-4xl text-brand-aqua md:hidden">&darr;</div>
+                <div class="text-center">
+                    <div class="bg-brand-aqua rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-3">
+                        <p class="text-4xl">🛠️</p>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">2. Delegate</h3>
+                    <p class="text-sm text-slate-300 max-w-xs">Selects and uses the right tools (APIs, code, RPA bots) for each step.</p>
+                </div>
+                <div class="text-4xl text-brand-light-green hidden md:block">&rarr;</div>
+                 <div class="text-4xl text-brand-light-green md:hidden">&darr;</div>
+                <div class="text-center">
+                    <div class="bg-brand-light-green rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-3">
+                        <p class="text-4xl">🔄</p>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">3. Orchestrate</h3>
+                    <p class="text-sm text-slate-300 max-w-xs">Monitors progress, handles errors, and adapts the plan until the goal is achieved.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center text-brand-dark mb-12">Strategic Imperatives for the Agentic Era</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <p class="text-3xl mb-2">📊</p>
+                    <h3 class="font-semibold text-brand-dark">Data Readiness</h3>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <p class="text-3xl mb-2">🏛️</p>
+                    <h3 class="font-semibold text-brand-dark">Governance</h3>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <p class="text-3xl mb-2">🛡️</p>
+                    <h3 class="font-semibold text-brand-dark">Security & Risk</h3>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <p class="text-3xl mb-2">🤝</p>
+                    <h3 class="font-semibold text-brand-dark">Human-AI Symbiosis</h3>
+                </div>
+            </div>
+        </section>
+
+<!--
+
+        <footer class="text-center border-t border-slate-200 pt-8 mt-12">
+            <p class="text-slate-500">The transition to the agentic era is not merely a technological upgrade; it is a strategic reinvention of the modern enterprise.</p>
+        </footer>
+-->
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('automationRadarChart').getContext('2d');
+
+            const data = {
+                labels: [
+                    'Autonomy',
+                    ['Data', 'Flexibility'],
+                    'Learning',
+                    'Process',
+                    'Complexity'
+                ],
+                datasets: [{
+                    label: 'RPA',
+                    data: [1, 2, 1, 1, 2],
+                    fill: true,
+                    backgroundColor: 'rgba(59, 134, 134, 0.2)',
+                    borderColor: 'rgb(59, 134, 134)',
+                    pointBackgroundColor: 'rgb(59, 134, 134)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(59, 134, 134)'
+                }, {
+                    label: 'Generative AI',
+                    data: [2, 4, 4, 2, 3],
+                    fill: true,
+                    backgroundColor: 'rgba(121, 189, 154, 0.2)',
+                    borderColor: 'rgb(121, 189, 154)',
+                    pointBackgroundColor: 'rgb(121, 189, 154)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(121, 189, 154)'
+                }, {
+                    label: 'Agentic AI',
+                    data: [5, 5, 5, 5, 5],
+                    fill: true,
+                    backgroundColor: 'rgba(11, 72, 107, 0.2)',
+                    borderColor: 'rgb(11, 72, 107)',
+                    pointBackgroundColor: 'rgb(11, 72, 107)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(11, 72, 107)'
+                }]
+            };
+
+            const config = {
+                type: 'radar',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                },
+                                color: '#0B486B'
+                            },
+                            ticks: {
+                                backdropColor: 'rgba(255, 255, 255, 0.75)',
+                                stepSize: 1,
+                                display: false
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 5
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    } else {
+                                      return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            new Chart(ctx, config);
+        });
+    </script>
+</body>
+</html>

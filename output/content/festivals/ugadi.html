@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ugadi: The Dawn of a New Year</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Spring Harvest (Mango, Neem, Jaggery) -->
+    <!-- Application Structure Plan: A narrative infographic that explains Ugadi's significance as a New Year celebration. The structure is: 1. Hero section. 2. "What is Ugadi?". 3. "The Legend of Creation". 4. "The Six Tastes of Life: Ugadi Pachadi". 5. "Traditions of a New Beginning". 6. "A Taste of Ugadi" chart. This flow is designed to highlight the festival's unique blend of astronomical, mythological, and philosophical importance. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: Ugadi Pachadi ingredients & symbolism -> Goal: Organize/Inform -> Viz: A custom six-part grid layout -> Justification: A more visually engaging and informative way to present this core ritual than a simple list, directly connecting the ingredient to its meaning. -> Library/Method: HTML/CSS.
+        - Data Point: Key traditions -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the main activities. -> Library/Method: HTML/CSS.
+        - Data Point: Key festive foods -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display other popular festival dishes. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #FDFDEA; /* Very Light Yellow-Green */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-green { color: #16A34A; }
+        .palette-text-orange { color: #F97316; }
+        .palette-text-yellow { color: #F59E0B; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #16A34A; /* Green */
+            border: 3px solid #F59E0B; /* Yellow */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-green tracking-wider">Ugadi</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">Welcoming the New Year in Southern India</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Ugadi?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Ugadi (or Yugadi) is the traditional New Year's Day for the people of Andhra Pradesh, Telangana, and Karnataka. The name is derived from the Sanskrit words "yuga" (age) and "adi" (beginning), signifying "the beginning of a new age." It is a festival of new beginnings, hope, and embracing all of life's flavors.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-green mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A New Beginning</h3>
+                    <p class="mt-2 text-gray-600">Ugadi is celebrated on the first day of the Hindu lunisolar month of Chaitra, which typically falls in March or April, marking the arrival of spring.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-yellow mb-4">☀️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Astronomical Significance</h3>
+                    <p class="mt-2 text-gray-600">The festival coincides with the first day after the new moon following the spring equinox, symbolizing a fresh start in nature's cycle.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-orange mb-4">🙏</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Day of Creation</h3>
+                    <p class="mt-2 text-gray-600">According to Hindu scriptures, Ugadi is the day when the creator-god, Lord Brahma, began the creation of the universe.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Legend of Creation</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The mythological origin of Ugadi is tied directly to the act of cosmic creation. It is believed that on this very day, Lord Brahma, one of the principal deities of the Hindu trinity, embarked on his monumental task of creating the universe.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">🌌</div>
+                        <p class="text-xl font-bold mt-2 palette-text-green">Brahma's First Day</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">The scriptures state that Ugadi marks the beginning of the current cosmic cycle, or *Yuga*. Lord Brahma started creating days, weeks, months, and years on this day to keep track of time, making it the inaugural day of the calendar. Celebrating Ugadi is thus a way of honoring the beginning of time itself and acknowledging the divine act of creation that brought forth all of existence. It serves as a reminder of life's cyclical nature and the opportunity for renewal with each passing year.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pachadi" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Six Tastes of Life: Ugadi Pachadi</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   The most significant ritual of Ugadi is the preparation and consumption of *Ugadi Pachadi* (or *Bevu Bella* in Karnataka). This special chutney combines six ingredients, each representing a different emotion or experience in life, reminding us to embrace all of life's flavors with equanimity.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-4xl mb-2">🌿</div>
+                    <h3 class="text-2xl font-bold text-green-700">Neem Flowers (Bitter)</h3>
+                    <p class="mt-2 text-sm text-gray-600">Symbolizes sadness, challenges, and the unpleasant experiences in life.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-4xl mb-2">🥭</div>
+                    <h3 class="text-2xl font-bold text-orange-500">Raw Mango (Tangy)</h3>
+                    <p class="mt-2 text-sm text-gray-600">Represents surprise, the unexpected twists and turns that life throws at us.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-4xl mb-2">🌶️</div>
+                    <h3 class="text-2xl font-bold text-red-600">Chilli Powder (Spicy)</h3>
+                    <p class="mt-2 text-sm text-gray-600">Stands for anger, frustration, and fiery moments.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-4xl mb-2">🧂</div>
+                    <h3 class="text-2xl font-bold text-gray-500">Salt (Salty)</h3>
+                    <p class="mt-2 text-sm text-gray-600">Symbolizes fear and the savory, interesting moments in life.</p>
+                </div>
+                 <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-4xl mb-2">🌴</div>
+                    <h3 class="text-2xl font-bold text-yellow-900">Jaggery (Sweet)</h3>
+                    <p class="mt-2 text-sm text-gray-600">Represents happiness, joy, and sweet moments.</p>
+                </div>
+                 <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-4xl mb-2">🍋</div>
+                    <h3 class="text-2xl font-bold text-yellow-500">Tamarind (Sour)</h3>
+                    <p class="mt-2 text-sm text-gray-600">Stands for disgust or the ability to discern and evaluate life's challenges.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Traditions of a New Beginning</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   The day of Ugadi is marked by several rituals that symbolize cleansing, renewal, and looking forward to the year ahead with optimism.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🚿</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Ritual Oil Bath</h3>
+                    <p class="mt-2 text-sm text-gray-600">The day begins before dawn with a special oil bath, which is believed to be as purifying as bathing in the holy Ganges.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">✨</div>
+                    <h3 class="text-2xl font-bold text-gray-900">New Clothes & Decorations</h3>
+                    <p class="mt-2 text-sm text-gray-600">People wear new clothes and decorate the entrances of their homes with fresh mango leaves, symbolizing prosperity and a good harvest.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🏛️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Temple Visits</h3>
+                    <p class="mt-2 text-sm text-gray-600">Families visit temples to offer prayers and seek blessings for a prosperous and happy new year.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">📖</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Panchanga Sravanam</h3>
+                    <p class="mt-2 text-sm text-gray-600">A priest or elder reads the predictions for the new year from the *Panchanga*, the traditional Hindu almanac.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Ugadi</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Apart from the symbolic Ugadi Pachadi, the festival is celebrated with a variety of delicious traditional dishes that are prepared and shared with family.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Popular Ugadi Dishes</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Pulihora (Tamarind Rice)', 
+                'Bobbatlu / Obbattu (Sweet Flatbread)', 
+                'Payasam (Sweet Pudding)', 
+                'Kosambari (Lentil Salad)'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity during Ugadi',
+                        data: [90, 100, 85, 80],
+                        backgroundColor: [
+                           '#F59E0B', // Yellow
+                           '#F97316', // Orange
+                           '#FB923C', // Light Orange
+                           '#16A34A'  // Green
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Popularity & Importance',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diwali: The Festival of Lights</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: A narrative infographic telling the story of Diwali. The structure flows from a high-level introduction to specific traditions and the five-day sequence. The flow is: 1. Hero section. 2. "What is Diwali?" with key facts. 3. "The Legends of Light" explaining the core stories of Rama's return and Lakshmi Puja. 4. "Core Traditions" in a grid. 5. "The Five Days of Diwali" timeline. 6. A concluding section on the festival's modern meaning. This narrative flow is chosen to build a comprehensive understanding of the festival's cultural and spiritual significance. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts of Diwali -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: Presents key information in a visually digestible and engaging format. -> Library/Method: HTML/CSS with Unicode.
+        - Data Point: Two primary legends (Rama/Lakshmi) -> Goal: Organize/Inform -> Viz: Two-column layout with descriptive text. -> Justification: Clearly separates and explains the two main mythological pillars of the festival. -> Library/Method: HTML/CSS.
+        - Data Point: Popular Diwali sweets -> Goal: Compare/Rank -> Viz: Horizontal Bar Chart -> Justification: Effectively ranks popular items and is visually appealing for this type of data. -> Library/Method: Chart.js (Canvas).
+        - Data Point: The five days of the festival -> Goal: Show Process/Change -> Viz: Vertical timeline -> Justification: The most intuitive method to represent a sequence of events, guiding the user through the five-day celebration. -> Library/Method: HTML/CSS.
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #1A202C; /* Dark background for a "night" feel */
+            color: #E2E8F0;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 450px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .card {
+            background-color: #2D3748;
+        }
+        .palette-bg-orange { background-color: #FF5733; }
+        .palette-text-orange { color: #FF5733; }
+        .palette-bg-yellow { background-color: #FFC300; }
+        .palette-text-yellow { color: #FFC300; }
+        .palette-bg-red { background-color: #C70039; }
+        .palette-text-red { color: #C70039; }
+        .palette-bg-maroon { background-color: #900C3F; }
+        .palette-text-maroon { color: #900C3F; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #FF5733;
+            border: 3px solid #FFC300;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .light-flicker {
+            animation: flicker 3s infinite alternate;
+        }
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow:
+                0 0 4px #FFC300,
+                0 0 11px #FFC300,
+                0 0 19px #FFC300,
+                0 0 40px #FF5733,
+                0 0 80px #FF5733,
+                0 0 90px #FF5733,
+                0 0 100px #FF5733,
+                0 0 150px #FF5733;
+            }
+            20%, 24%, 55% {        
+                text-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-yellow tracking-wider light-flicker">Diwali</h1>
+            <p class="text-xl md:text-2xl text-gray-400 mt-2">An Infographic on the Festival of Lights</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-white tracking-wide">What is Diwali?</h2>
+                <p class="mt-4 text-lg text-gray-400 px-4">
+                    Diwali, or Deepavali, is India's "Festival of Lights," a vibrant and joyous celebration that illuminates the country and the hearts of millions worldwide. It symbolizes the spiritual victory of light over darkness, good over evil, and knowledge over ignorance. This section introduces the festival's core tenets.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-orange mb-4">💡</div>
+                    <h3 class="text-3xl font-bold text-white">Light Over Darkness</h3>
+                    <p class="mt-2 text-gray-400">The lighting of diyas (earthen lamps) and candles is central, signifying the triumph of light and dispelling all shadows of negativity and despair.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-yellow mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-white">Festival Timing</h3>
+                    <p class="mt-2 text-gray-400">Celebrated over five days, it begins in the Hindu month of Kartika. The main night of Diwali falls on the darkest, new moon night, 20 days after Dussehra.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-red mb-4">💰</div>
+                    <h3 class="text-3xl font-bold text-white">Prosperity & Renewal</h3>
+                    <p class="mt-2 text-gray-400">Diwali is also a time to honor Lakshmi, the goddess of wealth and prosperity. It marks a new year for businesses and a time for fresh starts.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-white tracking-wide">The Legends of Light</h2>
+                <p class="mt-4 text-lg text-gray-400 px-4">
+                    Diwali's brilliance is rooted in powerful ancient stories that celebrate righteousness and prosperity. The return of Lord Rama to his kingdom and the worship of Goddess Lakshmi are the two central narratives that define the festival's spiritual heart.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                 <div class="card rounded-lg shadow-lg p-8 h-full">
+                    <h3 class="text-3xl font-bold palette-text-yellow mb-4 text-center">The Return of Lord Rama</h3>
+                    <p class="text-gray-300">The most famous legend connects directly to Dussehra. Diwali celebrates the day Lord Rama, his wife Sita, and his brother Lakshmana returned to their kingdom of Ayodhya after 14 years in exile and defeating the demon king Ravana. To celebrate their beloved king's return on a dark new moon night, the citizens of Ayodhya lit rows (avali) of lamps (deepa), giving the festival its name, Deepavali.</p>
+                    <div class="text-center mt-6">
+                        <div class="text-8xl">👑</div>
+                        <p class="font-bold text-gray-300">A kingdom rejoices for its righteous king.</p>
+                    </div>
+                </div>
+                 <div class="card rounded-lg shadow-lg p-8 h-full">
+                    <h3 class="text-3xl font-bold palette-text-orange mb-4 text-center">The Worship of Goddess Lakshmi</h3>
+                    <p class="text-gray-300">Diwali is also the most important day to worship Goddess Lakshmi, the divine bestower of wealth, fortune, and prosperity. It is believed that on Diwali night, Goddess Lakshmi visits the homes of her devotees. People clean their houses, decorate them with lights and rangoli, and leave doors and windows open to welcome the goddess, praying for a year of abundance and well-being for their families.</p>
+                     <div class="text-center mt-6">
+                        <div class="text-8xl">🪙</div>
+                        <p class="font-bold text-gray-300">Invoking prosperity and good fortune.</p>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="celebrations" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-white tracking-wide">The Glow of Tradition</h2>
+                <p class="mt-4 text-lg text-gray-400 px-4">
+                    Diwali is a sensory feast, brought to life by a host of cherished traditions. These practices fill homes with light, color, and joy, creating an atmosphere of celebration and togetherness that is shared by families and communities.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🪔</div>
+                    <h3 class="text-2xl font-bold text-white">Lighting Diyas</h3>
+                    <p class="mt-2 text-sm text-gray-400">Rows of earthen lamps are lit and placed in homes, courtyards, and public spaces to illuminate the night and symbolize the victory of light.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎨</div>
+                    <h3 class="text-2xl font-bold text-white">Creating Rangoli</h3>
+                    <p class="mt-2 text-sm text-gray-400">Intricate and colorful patterns are made on floors using colored powders, rice, or flower petals to welcome guests and deities.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎆</div>
+                    <h3 class="text-2xl font-bold text-white">Fireworks</h3>
+                    <p class="mt-2 text-sm text-gray-400">Firecrackers are burst to express joy and are believed to ward off evil spirits, lighting up the night sky in a spectacular display.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎁</div>
+                    <h3 class="text-2xl font-bold text-white">Exchanging Gifts</h3>
+                    <p class="mt-2 text-sm text-gray-400">Friends and families visit each other, exchanging sweets (mithai) and gifts as a gesture of love and good will.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="sweets" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-white tracking-wide">A Taste of Celebration</h2>
+                <p class="mt-4 text-lg text-gray-400 px-4">
+                    No Indian festival is complete without its special culinary delights, and Diwali is famous for its incredible variety of sweets, or 'mithai'. These treats are shared with loved ones and offered to the gods. This chart shows some of the most popular sweets enjoyed during the festival.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-white mb-4">Most Popular Diwali Sweets</h3>
+                <div class="chart-container">
+                    <canvas id="sweetsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-white tracking-wide">The Five Days of Diwali</h2>
+                <p class="mt-4 text-lg text-gray-400 px-4">
+                   Diwali is not a single day, but a five-day festival where each day has its own unique significance and rituals. This timeline guides you through the complete celebration, from the worship of wealth to the celebration of sibling bonds.
+                </p>
+            </div>
+            <div class="mt-12 max-w-3xl mx-auto">
+                <div class="relative pl-8 border-l-4 border-yellow-700">
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-orange">Day 1: Dhanteras</h3>
+                        <p class="text-gray-300">The festival begins with the worship of wealth. People clean their homes and buy new utensils, gold, or silver, as it is considered highly auspicious.</p>
+                    </div>
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-orange">Day 2: Naraka Chaturdasi (Choti Diwali)</h3>
+                        <p class="text-gray-300">The "small Diwali" celebrates Lord Krishna's victory over the demon Narakasura. It is a day for early morning ritual baths to cleanse away sin.</p>
+                    </div>
+                     <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-red">Day 3: Lakshmi Puja (Main Diwali)</h3>
+                        <p class="text-gray-300">This is the main day of the festival. Families gather in the evening to perform the Lakshmi Puja, lighting diyas and praying for prosperity and well-being.</p>
+                    </div>
+                     <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-yellow">Day 4: Govardhan Puja</h3>
+                        <p class="text-gray-300">This day commemorates Lord Krishna lifting the Govardhan Hill to protect villagers from the wrath of Indra, the god of rain. Food is arranged in a small mountain as an offering.</p>
+                    </div>
+                     <div class="timeline-item">
+                        <h3 class="text-2xl font-bold palette-text-orange">Day 5: Bhai Dooj</h3>
+                        <p class="text-gray-300">The festival concludes with a celebration of the bond between brothers and sisters. Sisters pray for their brothers' long life and prosperity, and brothers give gifts in return.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const sweetsChartCtx = document.getElementById('sweetsChart').getContext('2d');
+            const sweetsLabels = [
+                'Kaju Katli (Cashew Fudge)', 
+                'Jalebi (Syrupy Swirls)', 
+                'Ladoo (Sweet Balls)', 
+                'Gulab Jamun (Berry-sized Balls)',
+                'Barfi (Milk Fudge)'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(sweetsChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: sweetsLabels,
+                    datasets: [{
+                        label: 'Popularity Score',
+                        data: [95, 92, 88, 85, 80],
+                        backgroundColor: [
+                           '#900C3F', // Maroon
+                           '#C70039', // Red
+                           '#FF5733', // Orange
+                           '#FFC300', // Yellow
+                           '#F9A825'  // A darker yellow
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#2D3748'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Popularity During Diwali',
+                                color: '#A0AEC0'
+                            },
+                            ticks: { color: '#A0AEC0' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#A0AEC0'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

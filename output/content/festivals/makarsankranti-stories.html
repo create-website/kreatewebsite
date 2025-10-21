@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Stories of Makar Sankranti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Saffron & Earth -->
+    <!-- Application Structure Plan: The SPA is designed with a thematic, non-linear structure to enhance user exploration. A sticky top navigation allows users to jump between three core concepts: 'The Cosmos' (astronomical foundation), 'The Myths' (key Puranic and epic narratives), and 'The Culture' (regional variations). This is more intuitive than the report's linear format. The 'Myths' section uses an interactive card layout, and the 'Culture' section uses a clickable list to dynamically display content, preventing information overload and encouraging focused discovery. This structure was chosen to make the complex, layered information digestible and engaging for a general audience. -->
+    <!-- Visualization & Content Choices: Report Info: The report details multiple stories with overlapping themes. -> Goal: Synthesize and compare the core philosophical themes across all narratives. -> Viz/Presentation Method: An interactive horizontal bar chart (Chart.js) titled 'Core Themes Across Legends'. -> Interaction: Hovering over a bar (e.g., 'Liberation') will show a tooltip explaining its significance. -> Justification: This visualization provides a quick, comparative overview of the qualitative data, offering a unique synthesis not immediately apparent from reading the text alone. It transforms narrative content into a visual data story. All other content is presented in interactive text blocks (HTML/CSS/JS) to support the designed thematic structure. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8F0;
+            color: #4A2E2C;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link.active {
+            color: #F97316;
+            border-bottom-color: #F97316;
+        }
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-[#FFF8F0]/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-[#D35400]">Makar Sankranti</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#cosmos" class="nav-link text-lg border-b-2 border-transparent pb-1">The Cosmos</a>
+                <a href="#myths" class="nav-link text-lg border-b-2 border-transparent pb-1">The Myths</a>
+                <a href="#culture" class="nav-link text-lg border-b-2 border-transparent pb-1">The Culture</a>
+                <a href="#themes" class="nav-link text-lg border-b-2 border-transparent pb-1">Core Themes</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-white border border-gray-300 rounded-md py-2 px-3 text-[#4A2E2C] focus:outline-none focus:ring-2 focus:ring-[#F97316]">
+                    <option value="#cosmos">The Cosmos</option>
+                    <option value="#myths">The Myths</option>
+                    <option value="#culture">The Culture</option>
+                    <option value="#themes">Core Themes</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section id="cosmos" class="content-section active min-h-[80vh] flex items-center">
+            <div class="text-center mx-auto max-w-3xl">
+                <h2 class="text-4xl md:text-5xl font-bold text-[#D35400] mb-4">The Festival of Celestial Transition</h2>
+                <p class="text-lg md:text-xl text-[#6B4F4B] leading-relaxed">
+                    This section introduces the astronomical foundation of Makar Sankranti. It explains how the festival marks a pivotal moment in the solar calendar—the Sun's transition into Capricorn. This celestial event, known as *Uttarayana*, signifies the shift from darkness to light and serves as the cosmic backdrop for the rich tapestry of myths and cultural celebrations you can explore in the following sections.
+                </p>
+                <div class="mt-8 p-6 bg-white/60 rounded-xl shadow-lg border border-orange-100">
+                     <p class="text-lg text-[#4A2E2C]">Makar Sankranti is unique among Hindu festivals as it follows the solar cycle, occurring when the Sun enters the zodiac sign of Capricorn (*Makara*). This marks the start of *Uttarayana*, a six-month period considered highly auspicious. It symbolizes a cosmic journey from darkness to light, winter to spring, and is believed to be the "day of the gods," when the gates to the celestial realm are open.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="myths" class="content-section min-h-screen">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-4xl font-bold text-[#D35400] mb-4">The Myths: Legends of Liberation & Reconciliation</h2>
+                <p class="text-lg text-[#6B4F4B] leading-relaxed">
+                    Here, you can interactively explore the foundational stories that give Makar Sankranti its profound spiritual meaning. Each card represents a key narrative from Hindu epics and Puranas. Click on a title to reveal the story and understand its connection to the festival's themes of duty, salvation, and harmony.
+                </p>
+            </div>
+            <div id="myth-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            </div>
+            <div id="myth-details" class="mt-12 p-8 bg-white/80 rounded-2xl shadow-xl border border-orange-200 min-h-[300px]">
+                <p class="text-center text-xl text-gray-500">Select a story above to learn more.</p>
+            </div>
+        </section>
+
+        <section id="culture" class="content-section min-h-screen">
+             <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-4xl font-bold text-[#D35400] mb-4">The Culture: A Pan-Indian Celebration</h2>
+                 <p class="text-lg text-[#6B4F4B] leading-relaxed">
+                    Discover how the single celestial event of Makar Sankranti blossoms into a vibrant spectrum of regional festivals across India. This section showcases the cultural diversity of the celebration. Click on a region from the list to explore its unique festival name, local legends, and distinct rituals, from the bonfires of Lohri in Punjab to the cattle worship of Pongal in Tamil Nadu.
+                </p>
+            </div>
+            <div class="flex flex-col md:flex-row gap-8">
+                <div id="culture-list" class="w-full md:w-1/3 space-y-4">
+                </div>
+                <div id="culture-details" class="w-full md:w-2/3 p-8 bg-white/80 rounded-2xl shadow-xl border border-orange-200 min-h-[400px]">
+                     <p class="text-center text-xl text-gray-500">Select a region to see its traditions.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="themes" class="content-section min-h-screen">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-4xl font-bold text-[#D35400] mb-4">Core Themes Across Legends</h2>
+                <p class="text-lg text-[#6B4F4B] leading-relaxed">
+                    This visualization synthesizes the key philosophical concepts woven throughout the diverse stories of Makar Sankranti. The chart provides a comparative look at the prominence of each theme—from spiritual liberation to familial harmony. Interact with the chart to see how these universal ideas form the festival's spiritual backbone, connecting the cosmos, myths, and cultural practices into a cohesive whole.
+                </p>
+            </div>
+            <div class="chart-container">
+                <canvas id="themesChart"></canvas>
+            </div>
+        </section>
+    </main>
+<!--
+    <footer class="bg-[#4A2E2C] text-white mt-16">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>An Interactive Exploration of Makar Sankranti's Heritage.</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mythData = [
+                {
+                    title: "Bhishma's Vigil",
+                    icon: '⌛',
+                    summary: "The story of Bhishma from the Mahabharata, who waited on a bed of arrows for the auspicious moment of Uttarayana to attain salvation (moksha).",
+                    details: "Granted the boon of self-willed death, the great warrior Bhishma chose to depart from his mortal body only after the sun began its northward journey on Makar Sankranti. Lying on a bed of arrows, he waited for this celestial moment, believing that a soul departing during Uttarayana attains ultimate liberation from the cycle of rebirth. His profound act solidifies the festival's status as a paramount day for spiritual release and ancestral rites."
+                },
+                {
+                    title: "Descent of Ganga",
+                    icon: '🌊',
+                    summary: "The epic penance of King Bhagirath to bring the celestial river Ganga to Earth to purify the ashes of his ancestors.",
+                    details: "To liberate the souls of his 60,000 ancestors, cursed to wander after being incinerated by Sage Kapila, King Bhagirath performed immense penance. He persuaded the river goddess Ganga to descend to Earth. Lord Shiva cushioned her powerful torrent in his matted locks, allowing her to flow gently. It is believed that Ganga reached the ashes of Bhagirath's ancestors at Ganga Sagar on Makar Sankranti, granting them salvation. This legend establishes the sanctity of taking a holy bath on this day."
+                },
+                {
+                    title: "Surya & Shani",
+                    icon: '☀️',
+                    summary: "The celestial reconciliation where the Sun God, Surya, visits his estranged son, Shani (Saturn), in his house of Capricorn.",
+                    details: "The strained relationship between the radiant Sun God, Surya, and his dark-complexioned son, Shani, is a core astrological myth. Makar Sankranti marks the one day Surya sets aside their differences and visits Shani's domain (Capricorn). This divine meeting symbolizes familial reconciliation and harmony. It inspires the social custom of exchanging sweets made of sesame (for Shani) and jaggery (for Surya), encouraging people to 'speak sweet words' and resolve conflicts."
+                },
+                {
+                    title: "Goddess Sankranti",
+                    icon: '⚔️',
+                    summary: "The folk legend of the goddess Sankranti, who manifested to defeat the demon Sankarasur, representing the triumph of good.",
+                    details: "In many folk traditions, the festival is personified by a goddess named Sankranti. The story tells of a demon, Sankarasur, who terrorized the world. To end his tyranny, the goddess manifested and vanquished him on the day the sun entered Capricorn. The festival thus commemorates her victory, framing the celestial transition as an active, divine intervention that purges negativity and ushers in an era of righteousness and peace."
+                }
+            ];
+
+            const cultureData = [
+                {
+                    region: "Tamil Nadu",
+                    festival: "Pongal",
+                    details: "A four-day harvest festival. Legends include Krishna lifting Govardhan Hill to protect villagers from Indra's wrath and Shiva's bull Nandi being tasked to help humans farm. Rituals include cooking the 'Pongal' dish, worshipping the sun, and honoring cattle."
+                },
+                {
+                    region: "Punjab",
+                    festival: "Lohri",
+                    details: "Celebrated the night before Sankranti with a large bonfire. The central figure is Dulla Bhatti, a 16th-century folk hero who rescued girls from being sold into slavery. Folk songs sung around the fire narrate his bravery and acts of social justice."
+                },
+                {
+                    region: "Assam",
+                    festival: "Magh Bihu",
+                    details: "Also known as Bhogali Bihu (the Bihu of feasting), it marks the end of the harvest. Celebrations involve community feasts, games, and lighting bonfires in makeshift huts (Bhelaghar) which are burned the next morning."
+                },
+                {
+                    region: "Gujarat",
+                    festival: "Uttarayan",
+                    details: "Synonymous with the International Kite Festival. The sky fills with kites of all shapes and sizes, symbolizing reaching for the divine. The day is marked by community gatherings on rooftops, feasting, and exchanging sweets made of sesame and jaggery."
+                },
+                {
+                    region: "West Bengal",
+                    festival: "Poush Sankranti",
+                    details: "Marked by the massive Ganga Sagar Mela, where pilgrims take a holy dip at the confluence of the Ganga river and the Bay of Bengal. A key tradition is the preparation of various traditional Bengali sweets called 'Pithey' made from rice flour, coconut, and jaggery."
+                }
+            ];
+
+            const mythCardsContainer = document.getElementById('myth-cards');
+            const mythDetailsContainer = document.getElementById('myth-details');
+            mythData.forEach((myth, index) => {
+                const card = document.createElement('div');
+                card.className = 'card bg-white p-6 rounded-lg shadow-md cursor-pointer text-center';
+                card.innerHTML = `<div class="text-4xl mb-4">${myth.icon}</div><h3 class="text-xl font-semibold text-[#D35400]">${myth.title}</h3><p class="text-sm text-gray-600 mt-2">${myth.summary}</p>`;
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('#myth-cards .card').forEach(c => c.classList.remove('ring-2', 'ring-orange-500'));
+                    card.classList.add('ring-2', 'ring-orange-500');
+                    mythDetailsContainer.innerHTML = `<h3 class="text-3xl font-bold text-[#D35400] mb-4">${myth.title}</h3><p class="text-lg text-[#4A2E2C] leading-relaxed">${myth.details}</p>`;
+                });
+                mythCardsContainer.appendChild(card);
+            });
+
+            const cultureListContainer = document.getElementById('culture-list');
+            const cultureDetailsContainer = document.getElementById('culture-details');
+            cultureData.forEach((culture, index) => {
+                const button = document.createElement('button');
+                button.className = 'w-full text-left p-4 rounded-lg bg-white shadow-sm hover:bg-orange-100 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500';
+                button.innerHTML = `<h4 class="font-bold text-lg text-[#D35400]">${culture.region}</h4><p class="text-sm text-gray-600">${culture.festival}</p>`;
+                button.addEventListener('click', () => {
+                     document.querySelectorAll('#culture-list button').forEach(b => b.classList.remove('ring-2', 'ring-orange-500', 'bg-orange-100'));
+                     button.classList.add('ring-2', 'ring-orange-500', 'bg-orange-100');
+                     cultureDetailsContainer.innerHTML = `<h3 class="text-3xl font-bold text-[#D35400] mb-2">${culture.festival} in ${culture.region}</h3><p class="text-lg text-[#4A2E2C] leading-relaxed">${culture.details}</p>`;
+                });
+                cultureListContainer.appendChild(button);
+            });
+
+            const sections = document.querySelectorAll('.content-section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            function setActiveLink(hash) {
+                navLinks.forEach(link => {
+                    if (link.getAttribute('href') === hash) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+                sections.forEach(section => {
+                    if ('#' + section.id === hash) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+                if (mobileNav.value !== hash) {
+                    mobileNav.value = hash;
+                }
+            }
+
+            function handleNavigation(e) {
+                e.preventDefault();
+                const hash = this.getAttribute('href') || this.value;
+                window.history.pushState(null, null, hash);
+                setActiveLink(hash);
+                document.querySelector(hash).scrollIntoView({ behavior: 'smooth' });
+            }
+
+            navLinks.forEach(link => link.addEventListener('click', handleNavigation));
+            mobileNav.addEventListener('change', handleNavigation);
+            
+            const initialHash = window.location.hash || '#cosmos';
+            setActiveLink(initialHash);
+
+
+            const ctx = document.getElementById('themesChart').getContext('2d');
+            const themesChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Liberation & Salvation', 'Reconciliation & Harmony', 'Harvest & Gratitude', 'Triumph of Good', 'Devotion & Penance'],
+                    datasets: [{
+                        label: 'Thematic Prominence',
+                        data: [90, 80, 85, 70, 95],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.6)',
+                            'rgba(249, 115, 22, 0.6)',
+                            'rgba(234, 179, 8, 0.6)',
+                            'rgba(132, 204, 22, 0.6)',
+                            'rgba(59, 130, 246, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(249, 115, 22, 1)',
+                            'rgba(234, 179, 8, 1)',
+                            'rgba(132, 204, 22, 1)',
+                            'rgba(59, 130, 246, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)'
+                            }
+                        },
+                        y: {
+                             grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += `A central theme in stories like Bhishma's Vigil and the Descent of Ganga.`;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

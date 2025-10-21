@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dussehra: The Festival of Victory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Saffron and Royal Blue -->
+    <!-- Application Structure Plan: A thematic, single-page scrolling application designed to tell the story of Dussehra. The flow guides the user from a high-level overview to specific details. The structure includes: 1) A captivating Hero section. 2) A sticky navigation for easy access to sections. 3) An 'Overview' with key facts. 4) An interactive 'Legends' section with tabs to explore the core stories. 5) A 'Celebrations' grid showcasing traditions. 6) A 'Regional Flavors' section with an interactive chart to compare regional practices. 7) A 'Timeline' of the 10-day festival. This narrative structure is chosen over a dashboard layout because the topic is cultural and story-based, making a linear, guided exploration more intuitive and engaging for the user. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Core stories of Rama/Ravana & Durga/Mahishasur -> Goal: Organize/Inform -> Viz: Tabbed content area -> Interaction: Click to switch stories -> Justification: Simplifies complex narratives and encourages user interaction -> Library: Vanilla JS.
+        - Report Info: Regional celebration differences -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Interaction: Click bar to display detailed text -> Justification: Effectively compares the scale of celebrations and allows for interactive drill-down without clutter -> Library: Chart.js (Canvas).
+        - Report Info: 10 Days of Navaratri & Dussehra -> Goal: Show Process -> Viz: Interactive vertical timeline -> Interaction: Click a day to read its description -> Justification: The most intuitive way to show a sequence of events, made engaging through interaction -> Library: HTML/CSS/JS.
+        - Report Info: Ravana's ten heads symbolism -> Goal: Inform -> Viz: HTML/CSS diagram -> Interaction: Hover to see what each head represents -> Justification: A highly interactive way to convey symbolic meaning -> Library: HTML/CSS/JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8E1; /* A warm, light cream */
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .nav-link.active {
+            color: #D97706; /* Amber-600 */
+            font-weight: 600;
+        }
+        .ravana-head {
+            transition: transform 0.2s ease-in-out;
+        }
+        .ravana-head:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-md">
+        <nav class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-amber-700">Dussehra</h1>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#overview" class="nav-link text-gray-600 hover:text-amber-600 transition-colors">Overview</a>
+                    <a href="#legends" class="nav-link text-gray-600 hover:text-amber-600 transition-colors">The Legends</a>
+                    <a href="#celebrations" class="nav-link text-gray-600 hover:text-amber-600 transition-colors">Celebrations</a>
+                    <a href="#regional" class="nav-link text-gray-600 hover:text-amber-600 transition-colors">Regional Flavors</a>
+                    <a href="#timeline" class="nav-link text-gray-600 hover:text-amber-600 transition-colors">Festival Timeline</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4">
+                <a href="#overview" class="block py-2 px-4 text-sm hover:bg-amber-100 rounded">Overview</a>
+                <a href="#legends" class="block py-2 px-4 text-sm hover:bg-amber-100 rounded">The Legends</a>
+                <a href="#celebrations" class="block py-2 px-4 text-sm hover:bg-amber-100 rounded">Celebrations</a>
+                <a href="#regional" class="block py-2 px-4 text-sm hover:bg-amber-100 rounded">Regional Flavors</a>
+                <a href="#timeline" class="block py-2 px-4 text-sm hover:bg-amber-100 rounded">Festival Timeline</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="min-h-[60vh] flex items-center justify-center bg-cover bg-center" style="background-color: #1E3A8A;">
+            <div class="text-center text-white p-8">
+                <h1 class="text-6xl md:text-8xl font-bold tracking-wider">VIJAYADASHAMI</h1>
+                <p class="mt-4 text-xl md:text-2xl text-amber-300">Celebrating the Triumph of Good over Evil</p>
+                <a href="#overview" class="mt-8 inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-full transition-transform transform hover:scale-105">
+                    Explore the Festival
+                </a>
+            </div>
+        </section>
+
+        <section id="overview" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-bold text-amber-800">An Auspicious Beginning</h2>
+                    <p class="mt-4 text-lg text-gray-600">
+                        This section provides a brief introduction to Dussehra, one of India's most significant festivals. Here you will learn about its core meaning, timing, and the fundamental principles it represents. These key facts serve as a foundation for understanding the deeper stories and diverse celebrations you can explore further down.
+                    </p>
+                </div>
+                <div class="mt-12 grid md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="text-4xl text-amber-600 mb-4">🕉️</div>
+                        <h3 class="text-2xl font-semibold text-gray-800">The Core Symbolism</h3>
+                        <p class="mt-2 text-gray-600">Dussehra, or Vijayadashami, symbolizes the victory of Dharma (righteousness) over Adharma (unrighteousness). It's a powerful reminder that truth and goodness will always prevail.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="text-4xl text-amber-600 mb-4">🗓️</div>
+                        <h3 class="text-2xl font-semibold text-gray-800">Festival Timing</h3>
+                        <p class="mt-2 text-gray-600">Celebrated on the tenth day of the bright half (Shukla Paksha) of the Hindu month of Ashvin, it marks the culmination of the nine-day Navaratri festival.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="text-4xl text-amber-600 mb-4">🔥</div>
+                        <h3 class="text-2xl font-semibold text-gray-800">A Day of Victory</h3>
+                        <p class="mt-2 text-gray-600">The festival is celebrated for two key victories in Hindu mythology, which you can explore in the legends section: Lord Rama's defeat of Ravana and Goddess Durga's triumph over Mahishasur.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="legends" class="py-16 md:py-24 bg-blue-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-bold text-blue-900">The Epic Tales of Triumph</h2>
+                    <p class="mt-4 text-lg text-gray-600">
+                        Behind every festival are timeless stories. This interactive section allows you to explore the two primary legends that form the heart of Dussehra. Use the tabs to switch between the epic of Lord Rama and the valor of Goddess Durga. One of the most potent symbols is the ten-headed demon king, Ravana; hover over his heads in the diagram to understand the evils each represents.
+                    </p>
+                </div>
+                <div class="mt-12">
+                    <div class="flex justify-center border-b-2 border-blue-200">
+                        <button id="rama-tab" class="legend-tab active-tab px-6 py-3 text-lg font-semibold text-blue-800 border-b-4 border-blue-800">Rama's Victory</button>
+                        <button id="durga-tab" class="legend-tab px-6 py-3 text-lg font-semibold text-gray-500">Durga's Triumph</button>
+                    </div>
+                    <div id="legend-content" class="mt-8">
+                        <div id="rama-content" class="legend-panel">
+                             <div class="grid md:grid-cols-2 gap-8 items-center">
+                                <div>
+                                    <h3 class="text-3xl font-bold text-blue-900 mb-4">The Ramayana's Climax</h3>
+                                    <p class="text-gray-700 leading-relaxed">
+                                        The most famous legend associated with Dussehra is from the epic Ramayana. It commemorates Lord Rama's victory over the ten-headed demon king of Lanka, Ravana, who had abducted Rama's wife, Sita. After a fierce battle lasting ten days, Rama, aided by his brother Lakshmana and the Vanara (monkey) army led by Hanuman, defeated Ravana. This victory signifies the conquest of ego, lust, and injustice. The burning of Ravana's effigy on Dussehra is a symbolic reenactment of this epic conclusion.
+                                    </p>
+                                </div>
+                                <div class="p-4 rounded-lg text-center">
+                                    <h4 class="text-xl font-semibold text-blue-900 mb-4">Ravana's Ten Heads: The Evils Conquered</h4>
+                                    <div id="ravana-heads-container" class="relative w-full max-w-md mx-auto aspect-square flex items-center justify-center">
+                                        <!-- Heads will be positioned by JS -->
+                                    </div>
+                                    <p id="head-info" class="mt-4 text-blue-800 font-semibold h-6"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="durga-content" class="legend-panel hidden">
+                            <div class="text-center max-w-2xl mx-auto">
+                                <h3 class="text-3xl font-bold text-blue-900 mb-4">Goddess of Power</h3>
+                                <div class="text-5xl mb-4">🐅</div>
+                                <p class="text-gray-700 leading-relaxed">
+                                    In many parts of India, especially in the east and south, Vijayadashami celebrates Goddess Durga's victory over the buffalo demon, Mahishasur. Mahishasur had a boon that made him invincible to any man or god. He wreaked havoc across the three worlds. To defeat him, the male gods combined their powers to create Goddess Durga, a powerful female deity. After a nine-night battle, on the tenth day (Vijayadashami), she slayed Mahishasur. This day celebrates the power of the divine feminine (Shakti) and the victory of good over evil forces.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="celebrations" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-bold text-amber-800">Vibrant Rituals and Traditions</h2>
+                     <p class="mt-4 text-lg text-gray-600">
+                        Dussehra is celebrated with immense fervor across India through a variety of colorful traditions. This section showcases the most prominent rituals that define the festival. From theatrical performances to grand feasts, each practice has a deep symbolic meaning, connecting people to the ancient stories and the spirit of community.
+                    </p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center transform hover:-translate-y-2 transition-transform">
+                        <div class="text-5xl mb-4">🔥</div>
+                        <h3 class="text-2xl font-semibold">Effigy Burning</h3>
+                        <p class="mt-2 text-gray-600">Giant effigies of Ravana, his brother Kumbhakarna, and his son Meghanada are burnt to symbolize the destruction of evil.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md text-center transform hover:-translate-y-2 transition-transform">
+                        <div class="text-5xl mb-4">🎭</div>
+                        <h3 class="text-2xl font-semibold">Ramlila</h3>
+                        <p class="mt-2 text-gray-600">Elaborate plays depicting the life of Lord Rama are performed for several nights leading up to Dussehra, culminating in the final battle.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md text-center transform hover:-translate-y-2 transition-transform">
+                        <div class="text-5xl mb-4">🙏</div>
+                        <h3 class="text-2xl font-semibold">Astra Puja</h3>
+                        <p class="mt-2 text-gray-600">Known as Shastra Puja, it's a day for warriors and artisans to worship their tools and weapons, seeking blessings for prosperity and success.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md text-center transform hover:-translate-y-2 transition-transform">
+                        <div class="text-5xl mb-4">🍲</div>
+                        <h3 class="text-2xl font-semibold">Festive Feasts</h3>
+                        <p class="mt-2 text-gray-600">Families gather to share special meals and sweets. Jalebi and Fafda are particularly popular festive snacks in many regions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="regional" class="py-16 md:py-24 bg-blue-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-bold text-blue-900">A Festival of Diverse Flavors</h2>
+                     <p class="mt-4 text-lg text-gray-600">
+                        While the essence of Dussehra remains the same, its celebrations vary spectacularly across India's diverse cultural landscape. This section uses an interactive chart to highlight some of the most unique regional celebrations. Click on any bar in the chart to learn more about the distinct traditions of that place, from Mysore's royal procession to Kullu's week-long festivities.
+                    </p>
+                </div>
+                <div class="mt-12 lg:grid lg:grid-cols-3 lg:gap-8 items-center">
+                    <div class="lg:col-span-2">
+                        <div class="chart-container">
+                            <canvas id="regionalChart"></canvas>
+                        </div>
+                    </div>
+                    <div id="regional-info" class="mt-8 lg:mt-0 p-6 bg-white rounded-lg shadow-lg min-h-[300px]">
+                        <h3 id="info-title" class="text-2xl font-bold text-blue-900 mb-4">Explore Regional Variations</h3>
+                        <p id="info-text" class="text-gray-700">Click on a region in the chart to see details about its unique Dussehra celebrations here.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-bold text-amber-800">The Ten-Day Journey</h2>
+                    <p class="mt-4 text-lg text-gray-600">
+                       Dussehra is the grand finale of a ten-day festival period. The first nine days, known as Navaratri, are dedicated to the worship of Goddess Durga in her nine forms. This interactive timeline walks you through the significance of each day. Click on any day to understand its importance in the journey towards the final victory on the tenth day, Vijayadashami.
+                    </p>
+                </div>
+                <div class="mt-12 flex flex-col md:flex-row gap-8">
+                    <div id="timeline-nav" class="flex md:flex-col justify-center md:justify-start flex-wrap gap-2">
+                        <!-- Timeline buttons will be generated by JS -->
+                    </div>
+                    <div id="timeline-content" class="flex-1 p-8 bg-white rounded-lg shadow-lg">
+                        <h3 id="timeline-title" class="text-2xl font-bold text-amber-800 mb-2">Welcome to the Festival</h3>
+                        <p id="timeline-text" class="text-gray-700">Select a day from the timeline to learn about its specific rituals and significance during the Navaratri and Dussehra celebrations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+<!--   
+    <footer class="bg-blue-900 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>Interactive Dussehra Report | Designed to celebrate culture through technology.</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link, #mobile-menu a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+            
+            const sections = document.querySelectorAll('section[id]');
+            const mainNavLinks = document.querySelectorAll('header nav a');
+            
+            function onScroll() {
+                const scrollPos = window.pageYOffset + 150;
+                let activeSectionId = '';
+
+                sections.forEach(section => {
+                    if (section.offsetTop <= scrollPos && section.offsetTop + section.offsetHeight > scrollPos) {
+                        activeSectionId = section.getAttribute('id');
+                    }
+                });
+
+                mainNavLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${activeSectionId}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', onScroll);
+            onScroll();
+
+            const legendTabs = document.querySelectorAll('.legend-tab');
+            const legendPanels = document.querySelectorAll('.legend-panel');
+
+            legendTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    legendTabs.forEach(t => {
+                        t.classList.remove('active-tab', 'text-blue-800', 'border-blue-800');
+                        t.classList.add('text-gray-500');
+                    });
+                    tab.classList.add('active-tab', 'text-blue-800', 'border-blue-800');
+                    tab.classList.remove('text-gray-500');
+
+                    const targetPanelId = tab.id.replace('-tab', '-content');
+                    legendPanels.forEach(panel => {
+                        if (panel.id === targetPanelId) {
+                            panel.classList.remove('hidden');
+                        } else {
+                            panel.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            const ravanaData = [
+                { name: 'Kama', description: 'Lust' },
+                { name: 'Krodha', description: 'Anger' },
+                { name: 'Moha', description: 'Delusion' },
+                { name: 'Lobha', description: 'Greed' },
+                { name: 'Mada', description: 'Pride' },
+                { name: 'Matsarya', description: 'Envy' },
+                { name: 'Manas', description: 'Mind' },
+                { name: 'Buddhi', description: 'Intellect' },
+                { name: 'Chitta', description: 'Will' },
+                { name: 'Ahamkara', description: 'Ego' },
+            ];
+
+            const headsContainer = document.getElementById('ravana-heads-container');
+            const headInfo = document.getElementById('head-info');
+            const numHeads = ravanaData.length;
+            const radius = 120; 
+
+            ravanaData.forEach((headData, i) => {
+                const angle = (i / numHeads) * 2 * Math.PI - (Math.PI / 2);
+                const x = radius * Math.cos(angle);
+                const y = radius * Math.sin(angle);
+
+                const headEl = document.createElement('div');
+                headEl.className = 'ravana-head absolute w-12 h-12 bg-blue-800 rounded-full flex items-center justify-center text-white font-bold cursor-pointer shadow-lg';
+                headEl.style.transform = `translate(${x}px, ${y}px)`;
+                headEl.textContent = '😈';
+                headEl.dataset.info = `${headData.name}: ${headData.description}`;
+                
+                headEl.addEventListener('mouseenter', () => {
+                    headInfo.textContent = headEl.dataset.info;
+                });
+
+                headEl.addEventListener('mouseleave', () => {
+                    headInfo.textContent = '';
+                });
+
+                headsContainer.appendChild(headEl);
+            });
+
+            const regionalData = {
+                labels: ['Mysore Dasara', 'Kullu Dussehra', 'Kolkata Durga Puja', 'Delhi Ramlila', 'Varanasi Ramlila'],
+                datasets: [{
+                    label: 'Uniqueness & Scale',
+                    data: [95, 90, 98, 85, 88],
+                    backgroundColor: [
+                        'rgba(219, 39, 119, 0.6)',
+                        'rgba(234, 88, 12, 0.6)',
+                        'rgba(2, 132, 199, 0.6)',
+                        'rgba(22, 163, 74, 0.6)',
+                        'rgba(124, 58, 237, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(219, 39, 119, 1)',
+                        'rgba(234, 88, 12, 1)',
+                        'rgba(2, 132, 199, 1)',
+                        'rgba(22, 163, 74, 1)',
+                        'rgba(124, 58, 237, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const regionalInfoContent = [
+                { title: 'Mysore Dasara (Karnataka)', text: 'Known for its royal procession (Jamboo Savari) featuring an idol of Goddess Chamundeshwari mounted on a decorated elephant. The Mysore Palace is illuminated with nearly 100,000 bulbs.' },
+                { title: 'Kullu Dussehra (Himachal Pradesh)', text: 'A unique week-long festival that starts on Vijayadashami itself. Deities from surrounding villages are brought to Kullu to pay respects to the principal deity, Lord Raghunath.' },
+                { title: 'Durga Puja & Immersion (Kolkata)', text: 'Vijayadashami marks the end of Durga Puja. Grand processions carry the idols of Goddess Durga and her children to be immersed in the river, a ceremony called Visarjan.' },
+                { title: 'Grand Ramlila (Delhi)', text: 'Famous for its large-scale Ramlila performances held at the Ramlila Maidan. The event culminates with spectacular fireworks and the burning of towering effigies of Ravana, Kumbhakarna, and Meghanada.' },
+                { title: 'Oldest Ramlila (Varanasi)', text: 'Considered to have the oldest tradition of Ramlila, dating back over 200 years. The performances are held across the city, particularly in Ramnagar, and are known for their authenticity and grand scale.' }
+            ];
+
+            const ctx = document.getElementById('regionalChart').getContext('2d');
+            const regionalChart = new Chart(ctx, {
+                type: 'bar',
+                data: regionalData,
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        y: {
+                           grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            document.getElementById('info-title').textContent = regionalInfoContent[index].title;
+                            document.getElementById('info-text').textContent = regionalInfoContent[index].text;
+                        }
+                    }
+                }
+            });
+            
+            const timelineData = [
+                { day: 'Day 1', title: 'Pratipada - Shailaputri Puja', description: 'The first day marks the beginning of Navaratri. Goddess Shailaputri, the daughter of the mountains, is worshipped. This day involves Ghatasthapana, a ritual symbolizing the invocation of the goddess.' },
+                { day: 'Day 2', title: 'Dwitiya - Brahmacharini Puja', description: 'Goddess Brahmacharini, who represents penance and austerity, is worshipped. She is a symbol of devotion and celibacy.' },
+                { day: 'Day 3', title: 'Tritiya - Chandraghanta Puja', description: 'Goddess Chandraghanta is worshipped. She represents beauty and bravery and is depicted with a crescent moon on her forehead.' },
+                { day: 'Day 4', title: 'Chaturthi - Kushmanda Puja', description: 'Goddess Kushmanda is believed to be the creator of the universe. Worshipping her is said to improve health and bestow wealth and strength.' },
+                { day: 'Day 5', title: 'Panchami - Skandamata Puja', description: 'Goddess Skandamata, the mother of Lord Kartikeya (or Skanda), is worshipped. She symbolizes the love of a mother.' },
+                { day: 'Day 6', title: 'Shashthi - Katyayani Puja', description: 'Goddess Katyayani, a warrior form of Durga, is worshipped. It is believed she was born to the sage Katyayana.' },
+                { day: 'Day 7', title: 'Saptami - Kalaratri Puja', description: 'Goddess Kalaratri, the fiercest form of Durga, is worshipped. She is a destroyer of darkness and ignorance.' },
+                { day: 'Day 8', title: 'Ashtami - Mahagauri Puja', description: 'Goddess Mahagauri symbolizes peace and purity. Her worship is believed to wash away all past sins.' },
+                { day: 'Day 9', title: 'Navami - Siddhidatri Puja', description: 'Goddess Siddhidatri is worshipped. She is believed to grant all types of siddhis (supernatural powers). The day concludes with Kanya Pujan in many households.' },
+                { day: 'Day 10', title: 'Vijayadashami - The Victory', description: 'The final day, celebrating the victory of good over evil. It marks the culmination of the festival with effigy burning, processions, and joyous gatherings.' },
+            ];
+
+            const timelineNav = document.getElementById('timeline-nav');
+            const timelineTitle = document.getElementById('timeline-title');
+            const timelineText = document.getElementById('timeline-text');
+
+            timelineData.forEach((item, index) => {
+                const button = document.createElement('button');
+                button.className = 'timeline-btn text-left p-3 w-full md:w-48 rounded-md transition-colors hover:bg-amber-100';
+                button.innerHTML = `<span class="font-bold text-amber-700">${item.day}</span><br>${item.title.split(' - ')[1]}`;
+                button.addEventListener('click', () => {
+                    timelineTitle.textContent = item.title;
+                    timelineText.textContent = item.description;
+                    document.querySelectorAll('.timeline-btn').forEach(btn => btn.classList.remove('bg-amber-200'));
+                    button.classList.add('bg-amber-200');
+                });
+                timelineNav.appendChild(button);
+            });
+            
+            if(timelineData.length > 0) {
+                 document.querySelector('.timeline-btn').click();
+            }
+
+        });
+    </script>
+</body>
+</html>

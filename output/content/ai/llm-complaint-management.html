@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM-Powered Complaint Management System Blueprint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The SPA is designed as an interactive journey through the complaint management system's lifecycle, rather than a linear report. A sticky top navigation allows users to jump to key stages: The overall Architecture, a Deep Dive into Technology Choices (STT & LLM), the Implementation Strategy, and Operational Excellence. This thematic, non-linear structure enhances usability by letting users explore sections based on their interests. The core interaction is a clickable pipeline diagram that controls the visible content, making the exploration of the system's layers intuitive and engaging. This is superior to scrolling through a long document as it breaks down complex information into manageable, user-driven chunks. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: System Architecture (5 layers). Goal: Organize/Inform. Viz: Interactive HTML/CSS flowchart. Interaction: Click on a layer to reveal its detailed description. Justification: Visually represents the process flow and allows for focused learning without overwhelming the user. Method: HTML/CSS with Tailwind + JS.
+        - Report Info: STT API Comparison Table. Goal: Compare. Viz: Horizontal Bar Chart (Chart.js). Interaction: Hover for details on each provider. Justification: Translates a dense table into a quick, visual comparison of developer experience, a key decision factor. Method: Chart.js/Canvas.
+        - Report Info: LLM Classification Performance Table. Goal: Compare/Relationships. Viz: Combined Bar and Line Chart (Chart.js). Interaction: Hover for precise metrics (Accuracy, Cost, Speed). Justification: Effectively shows the trade-offs between cost, speed, and accuracy for different models, which is hard to grasp from a table. Method: Chart.js/Canvas.
+        - Report Info: Textual descriptions, lists, recommendations. Goal: Inform. Viz: Styled text blocks, cards, and lists. Interaction: Revealed/scrolled to via navigation. Justification: Provides necessary context and detail in a clean, readable format. Method: HTML/CSS with Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4B4B4B;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 60vh;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #D35400;
+            border-bottom-color: #D35400;
+        }
+        .pipeline-step {
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .pipeline-step.active {
+            background-color: #E67E22;
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .pipeline-step:not(.active):hover {
+            background-color: #FDEBD0;
+            transform: translateY(-2px);
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-gray-800">LLM Complaint System</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#architecture" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 border-b-2 border-transparent">Architecture</a>
+                        <a href="#tech-deep-dive" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 border-b-2 border-transparent">Tech Deep Dive</a>
+                        <a href="#implementation" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 border-b-2 border-transparent">Implementation</a>
+                        <a href="#operations" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 border-b-2 border-transparent">Operations</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <select id="mobile-nav" class="bg-white border border-gray-300 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        <option value="#architecture">Architecture</option>
+                        <option value="#tech-deep-dive">Tech Deep Dive</option>
+                        <option value="#implementation">Implementation</option>
+                        <option value="#operations">Operations</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="py-16 md:py-24 bg-orange-50/50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl md:text-5xl font-extrabold text-gray-900 leading-tight">Architecting an LLM-Powered Complaint Management System</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-gray-600">An interactive blueprint for building a robust, scalable, and intelligent system to transform customer feedback into actionable insights.</p>
+            </div>
+        </section>
+
+        <section id="architecture" class="py-16 md:py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900">The System Pipeline</h3>
+                    <p class="mt-2 text-lg text-gray-600">Explore the end-to-end lifecycle of customer communication. Click each stage to see details.</p>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-2 lg:space-x-4 mb-12">
+                    <div id="step-ingestion" class="pipeline-step active bg-white rounded-lg shadow-md p-4 w-full md:w-auto text-center">
+                        <span class="text-2xl">📥</span>
+                        <p class="font-semibold mt-2">1. Ingestion</p>
+                    </div>
+                    <div class="text-gray-400 text-2xl hidden md:block">&rarr;</div>
+                    <div id="step-transcription" class="pipeline-step bg-white rounded-lg shadow-md p-4 w-full md:w-auto text-center">
+                        <span class="text-2xl">✍️</span>
+                        <p class="font-semibold mt-2">2. Transcription & PII Redaction</p>
+                    </div>
+                    <div class="text-gray-400 text-2xl hidden md:block">&rarr;</div>
+                    <div id="step-ai" class="pipeline-step bg-white rounded-lg shadow-md p-4 w-full md:w-auto text-center">
+                        <span class="text-2xl">🧠</span>
+                        <p class="font-semibold mt-2">3. Core AI Layer</p>
+                    </div>
+                    <div class="text-gray-400 text-2xl hidden md:block">&rarr;</div>
+                    <div id="step-analysis" class="pipeline-step bg-white rounded-lg shadow-md p-4 w-full md:w-auto text-center">
+                        <span class="text-2xl">📊</span>
+                        <p class="font-semibold mt-2">4. Analysis & Action</p>
+                    </div>
+                    <div class="text-gray-400 text-2xl hidden md:block">&rarr;</div>
+                    <div id="step-hitl" class="pipeline-step bg-white rounded-lg shadow-md p-4 w-full md:w-auto text-center">
+                        <span class="text-2xl">🧑‍💻</span>
+                        <p class="font-semibold mt-2">5. Human-in-the-Loop</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 max-w-4xl mx-auto bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <div id="content-ingestion" class="content-section active">
+                        <h4 class="text-2xl font-bold text-gray-800">1. Ingestion Layer</h4>
+                        <p class="mt-4 text-gray-700">This is the entry point for all customer communications. The system is designed for multi-channel data intake, connecting to diverse sources like email servers, telephony system APIs for call recordings, and help desk platforms. Its primary function is to centralize unstructured data from various touchpoints into a single, unified processing queue, creating a comprehensive view of customer interactions.</p>
+                    </div>
+                    <div id="content-transcription" class="content-section">
+                        <h4 class="text-2xl font-bold text-gray-800">2. Transcription & Pre-processing</h4>
+                        <p class="mt-4 text-gray-700">Data undergoes transformation to become clean, secure, and machine-readable. Audio inputs are converted to text using a Speech-to-Text (STT) engine. All inputs then undergo essential pre-processing and, critically, Personally Identifiable Information (PII) redaction. This step ensures regulatory compliance and protects customer privacy by masking sensitive data with placeholders (e.g., ``) before it reaches the AI models.</p>
+                    </div>
+                    <div id="content-ai" class="content-section">
+                        <h4 class="text-2xl font-bold text-gray-800">3. Core AI Layer</h4>
+                        <p class="mt-4 text-gray-700">This is the intelligent heart of the system. The cleaned and secured text is fed into a Large Language Model (LLM), which executes two functions in a single, efficient call: generating a concise, abstractive summary of the interaction and performing a binary classification to determine if the communication constitutes a complaint. This is achieved via a structured JSON output to ensure reliability.</p>
+                    </div>
+                    <div id="content-analysis" class="content-section">
+                        <h4 class="text-2xl font-bold text-gray-800">4. Analysis & Action Layer</h4>
+                        <p class="mt-4 text-gray-700">The structured JSON output from the AI is routed here for advanced analytics, such as root cause analysis and trend monitoring. This data can reveal systemic issues by aggregating complaint topics over time. This layer also triggers automated actions in other enterprise systems, such as creating a high-priority ticket in a help desk or flagging a case in a CRM, bridging the gap between insight and action.</p>
+                    </div>
+                    <div id="content-hitl" class="content-section">
+                        <h4 class="text-2xl font-bold text-gray-800">5. Human-in-the-Loop (HITL) Layer</h4>
+                        <p class="mt-4 text-gray-700">Recognizing that no AI is infallible, this layer provides crucial human oversight. A subset of AI outputs is routed to human agents for review and validation. This serves two purposes: it ensures accuracy and handles ambiguous cases, and it generates high-quality, labeled data. This feedback is fed back into the system to refine prompts and fine-tune models, creating a continuous improvement cycle that makes the system smarter over time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech-deep-dive" class="py-16 md:py-20 bg-orange-50/50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900">Technology Deep Dive</h3>
+                    <p class="mt-2 text-lg text-gray-600">Comparing the key technologies that power the system.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                        <h4 class="text-2xl font-bold text-gray-800 text-center mb-2">Speech-to-Text (STT) API Comparison</h4>
+                        <p class="text-center text-gray-600 mb-6">Evaluating STT providers based on their developer experience, a key factor for rapid integration. A higher score means a more straightforward and well-documented API.</p>
+                        <div class="chart-container">
+                            <canvas id="sttChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                        <h4 class="text-2xl font-bold text-gray-800 text-center mb-2">LLM Zero-Shot Classification Performance</h4>
+                        <p class="text-center text-gray-600 mb-6">Comparing leading LLMs on their ability to classify complaints without specific training. This chart shows the trade-off between accuracy, cost, and speed.</p>
+                        <div class="chart-container">
+                            <canvas id="llmChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="implementation" class="py-16 md:py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900">Phased Implementation Strategy</h3>
+                    <p class="mt-2 text-lg text-gray-600">A pragmatic, two-phase approach to de-risk development and maximize value.</p>
+                </div>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-lg border-l-4 border-orange-500">
+                        <h4 class="text-2xl font-bold text-gray-800">Phase 1: API-First Deployment</h4>
+                        <p class="mt-4 text-gray-700">Launch quickly using a leading commercial LLM API (e.g., GPT-4o or Claude 3.5 Sonnet). This allows for rapid development and immediate value delivery without the high upfront cost of model training.</p>
+                        <ul class="mt-4 space-y-2 text-gray-600">
+                            <li><span class="text-orange-600 font-bold mr-2">&rarr;</span> Fast time-to-market</li>
+                            <li><span class="text-orange-600 font-bold mr-2">&rarr;</span> Low initial cost and overhead</li>
+                            <li><span class="text-orange-600 font-bold mr-2">&rarr;</span> Validate business case early</li>
+                            <li><span class="text-orange-600 font-bold mr-2">&rarr;</span> Begin collecting data via HITL</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border-l-4 border-green-500">
+                        <h4 class="text-2xl font-bold text-gray-800">Phase 2: Data-Driven Fine-Tuning</h4>
+                        <p class="mt-4 text-gray-700">Use the human-validated data collected in Phase 1 to fine-tune a smaller, specialized model. This improves accuracy on domain-specific language and reduces long-term operational costs.</p>
+                         <ul class="mt-4 space-y-2 text-gray-600">
+                            <li><span class="text-green-600 font-bold mr-2">&rarr;</span> Higher accuracy on niche terms</li>
+                            <li><span class="text-green-600 font-bold mr-2">&rarr;</span> Lower cost at high volume</li>
+                            <li><span class="text-green-600 font-bold mr-2">&rarr;</span> Greater control and consistency</li>
+                            <li><span class="text-green-600 font-bold mr-2">&rarr;</span> Creates a long-term strategic asset</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="operations" class="py-16 md:py-20 bg-orange-50/50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900">Achieving Operational Excellence</h3>
+                    <p class="mt-2 text-lg text-gray-600">Transforming data into a strategic intelligence engine that drives proactive improvement.</p>
+                </div>
+                <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h4 class="text-2xl font-bold text-gray-800">Root Cause & Trend Analysis</h4>
+                        <p class="mt-4 text-gray-700">The structured data from the LLM is aggregated to provide a quantitative view into the voice of the customer. Analytics dashboards can precisely quantify the drivers of dissatisfaction, allowing managers to pinpoint systemic failures and monitor for emerging trends in near real-time.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h4 class="text-2xl font-bold text-gray-800">Ethical AI & Human Oversight</h4>
+                        <p class="mt-4 text-gray-700">A commitment to fairness and trust is paramount. The system includes processes to monitor and mitigate algorithmic bias. The Human-in-the-Loop (HITL) workflow is a non-negotiable component, ensuring accuracy, handling ambiguity, and building customer trust.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+<!--
+
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
+            <p>Interactive Complaint Management Blueprint</p>
+            <p class="text-sm text-gray-400 mt-2">Generated based on the technical report "Architecting an LLM-Powered Complaint Management System".</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const pipelineSteps = document.querySelectorAll('.pipeline-step');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            function selectStep(stepId) {
+                pipelineSteps.forEach(step => {
+                    step.classList.remove('active');
+                });
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                const activeStep = document.getElementById(`step-${stepId}`);
+                const activeContent = document.getElementById(`content-${stepId}`);
+
+                if (activeStep) activeStep.classList.add('active');
+                if (activeContent) activeContent.classList.add('active');
+            }
+
+            pipelineSteps.forEach(step => {
+                step.addEventListener('click', () => {
+                    const stepId = step.id.replace('step-', '');
+                    selectStep(stepId);
+                });
+            });
+
+            const sttData = {
+                labels: ['AssemblyAI', 'Deepgram', 'Gladia', 'AWS Transcribe', 'Google Cloud STT', 'Microsoft Azure'],
+                datasets: [{
+                    label: 'Developer Experience Score (1-5)',
+                    data: [5, 5, 4, 3, 3, 3],
+                    backgroundColor: [
+                        'rgba(39, 174, 96, 0.7)',
+                        'rgba(46, 204, 113, 0.7)',
+                        'rgba(241, 196, 15, 0.7)',
+                        'rgba(230, 126, 34, 0.7)',
+                        'rgba(231, 76, 60, 0.7)',
+                        'rgba(52, 152, 219, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(39, 174, 96, 1)',
+                        'rgba(46, 204, 113, 1)',
+                        'rgba(241, 196, 15, 1)',
+                        'rgba(230, 126, 34, 1)',
+                        'rgba(231, 76, 60, 1)',
+                        'rgba(52, 152, 219, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const sttConfig = {
+                type: 'bar',
+                data: sttData,
+                options: {
+                    indexAxis: 'y',
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` Score: ${context.raw}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 5,
+                            title: {
+                                display: true,
+                                text: 'Score (Higher is Better)'
+                            }
+                        }
+                    }
+                }
+            };
+            
+            const sttChartCtx = document.getElementById('sttChart').getContext('2d');
+            if(sttChartCtx) new Chart(sttChartCtx, sttConfig);
+
+            const llmData = {
+                labels: ['Claude 3.5 Sonnet', 'GPT-4o', 'DeepSeek-V3', 'Claude 3.5 Haiku', 'GPT-4o-mini'],
+                datasets: [{
+                    type: 'bar',
+                    label: 'Accuracy (F1-Score)',
+                    data: [0.762, 0.736, 0.737, 0.722, 0.693],
+                    backgroundColor: 'rgba(52, 152, 219, 0.7)',
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    yAxisID: 'y'
+                }, {
+                    type: 'line',
+                    label: 'Cost per 1k Classifications ($)',
+                    data: [0.64, 0.45, 0.01, 0.17, 0.03],
+                    backgroundColor: 'rgba(231, 76, 60, 0.7)',
+                    borderColor: 'rgba(231, 76, 60, 1)',
+                    yAxisID: 'y1',
+                    tension: 0.1
+                }, {
+                    type: 'line',
+                    label: 'Inference Speed (s/prediction)',
+                    data: [1.8, 0.89, 26.69, 1.8, 0.86],
+                    backgroundColor: 'rgba(46, 204, 113, 0.7)',
+                    borderColor: 'rgba(46, 204, 113, 1)',
+                    yAxisID: 'y2',
+                    tension: 0.1,
+                    borderDash: [5, 5]
+                }]
+            };
+
+            const llmConfig = {
+                data: llmData,
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    stacked: false,
+                    plugins: {
+                        title: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        if (context.dataset.label.includes('Cost')) {
+                                            label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
+                                        } else if (context.dataset.label.includes('Speed')) {
+                                            label += `${context.parsed.y}s`;
+                                        } else {
+                                             label += context.parsed.y.toFixed(3);
+                                        }
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    const label = this.getLabelForValue(value);
+                                    return label.length > 16 ? label.substring(0, 16) + '...' : label;
+                                }
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Accuracy (F1)'
+                            },
+                            min: 0.65,
+                            max: 0.8
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Cost ($)'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                            min: 0,
+                            max: 0.7
+                        },
+                        y2: {
+                            type: 'linear',
+                            display: false, 
+                        }
+                    }
+                }
+            };
+            
+            const llmChartCtx = document.getElementById('llmChart').getContext('2d');
+            if(llmChartCtx) new Chart(llmChartCtx, llmConfig);
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main > section');
+
+            function onScroll() {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', onScroll);
+            onScroll(); 
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 70,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', function(e) {
+                const targetId = this.value;
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

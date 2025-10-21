@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onam: The Festival of Homecoming</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Kerala Kasavu (Ivory, Gold, Green) -->
+    <!-- Application Structure Plan: A narrative infographic that explains Onam's cultural and mythological significance. The structure is: 1. Hero section. 2. "What is Onam?". 3. "The Legend of King Mahabali". 4. "The Ten Days of Celebration". 5. "Traditions of Onam". 6. "A Taste of Onam Sadya" chart. This flow is designed to guide the user through the story of Mahabali's homecoming and the associated harvest celebrations. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The Ten Days -> Goal: Show Process -> Viz: Vertical timeline -> Justification: Effectively illustrates the build-up of festivities over the ten-day period. -> Library/Method: HTML/CSS.
+        - Data Point: Key traditions -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the main cultural elements like Pookkalam and Vallam Kali. -> Library/Method: HTML/CSS.
+        - Data Point: Key Sadya dishes -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display the essential components of the grand feast. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #FFFAF0; /* Floral White / Ivory */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-green { color: #228B22; } /* Forest Green */
+        .palette-text-gold { color: #FFD700; } /* Gold */
+        .palette-text-darkgold { color: #B8860B; } /* DarkGoldenRod */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #228B22; /* Green */
+            border: 3px solid #FFD700; /* Gold */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-green tracking-wider">Onam</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">The Grand Harvest Festival of Kerala</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Onam?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Onam is the official state festival of Kerala, a vibrant and elaborate ten-day celebration of harvest, culture, and mythology. It is celebrated by all Keralites, regardless of religion, and commemorates the annual homecoming of the legendary King Mahabali, whose reign was considered a golden era of prosperity and equality.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-green mb-4">🌾</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Harvest Festival</h3>
+                    <p class="mt-2 text-gray-600">Onam marks the end of the monsoon season and celebrates the bountiful rice harvest, bringing joy and prosperity to the land.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-gold mb-4">👑</div>
+                    <h3 class="text-3xl font-bold text-gray-900">King Mahabali's Return</h3>
+                    <p class="mt-2 text-gray-600">The festival is centered around the belief that the benevolent spirit of King Mahabali visits his people once every year during Onam.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-darkgold mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Festival Timing</h3>
+                    <p class="mt-2 text-gray-600">The celebrations begin on the Atham day and culminate on the tenth day, Thiru Onam, in the Malayalam month of Chingam (August–September).</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Legend of King Mahabali</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The story of Onam revolves around the wise and generous demon king, Mahabali. His reign was a time of perfect harmony and prosperity, but his growing power made the gods insecure. They sought the help of Lord Vishnu to curb his influence.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">👣</div>
+                        <p class="text-xl font-bold mt-2 palette-text-green">The Three Paces of Vamana</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">Vishnu took the form of a dwarf Brahmin boy named Vamana and visited King Mahabali, who was known for his generosity. Vamana asked for a grant of land that he could cover in three paces. The king readily agreed. Vamana then grew to a cosmic size. With his first step, he covered the earth, and with the second, he covered the heavens. For the third step, the righteous King Mahabali, realizing he was in the presence of the divine, offered his own head. Impressed by his devotion, Vishnu granted him a boon: Mahabali could return to visit his beloved kingdom and people once every year. This annual visit is celebrated as Onam.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Ten Days of Onam</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Onam is a ten-day festival, with each day having specific rituals that build up to the grand celebration of Thiru Onam.
+                </p>
+            </div>
+            <div class="mt-12 max-w-3xl mx-auto">
+                <div class="relative pl-8 border-l-4 border-yellow-200">
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-green">Day 1: Atham</h3>
+                        <p class="text-gray-600">The start of Onam. A small floral carpet, the Pookkalam, is laid out. This marks the beginning of Mahabali's preparations to return.</p>
+                    </div>
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-green">Days 2-8: Chithira to Pooradam</h3>
+                        <p class="text-gray-600">Each day, new layers of flowers are added to the Pookkalam, making it larger and more intricate. Festivities and shopping gain momentum.</p>
+                    </div>
+                     <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-green">Day 9: Uthradam (First Onam)</h3>
+                        <p class="text-gray-600">Considered the eve of Onam, it is believed that King Mahabali arrives in Kerala on this day. It's a day of last-minute preparations and grand feasts.</p>
+                    </div>
+                     <div class="timeline-item">
+                        <h3 class="text-2xl font-bold palette-text-darkgold">Day 10: Thiru Onam (Sacred Onam)</h3>
+                        <p class="text-gray-600">The main day of the festival. People wear new clothes (*Onakkodi*), visit temples, and enjoy the grand vegetarian feast, the Onam Sadya, with their families.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Traditions of Onam</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   The festival is a spectacular showcase of Kerala's rich culture, featuring a variety of art forms, rituals, and community events.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🌸</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Pookkalam</h3>
+                    <p class="mt-2 text-sm text-gray-600">Intricate floral carpets made on the ground with fresh flowers to welcome King Mahabali.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🍌</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Onam Sadya</h3>
+                    <p class="mt-2 text-sm text-gray-600">A lavish vegetarian feast served on a banana leaf, featuring dozens of dishes and representing the prosperity of Mahabali's reign.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🛶</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Vallam Kali</h3>
+                    <p class="mt-2 text-sm text-gray-600">The famous snake boat races, where long, elegant boats rowed by dozens of men compete on Kerala's backwaters.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🐅</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Pulikali</h3>
+                    <p class="mt-2 text-sm text-gray-600">A colorful folk art where performers, painted as tigers and hunters, dance to the beat of traditional drums.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Onam Sadya</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The Onam Sadya is the grandest part of the celebration, a multi-course meal that showcases the best of Keralan cuisine.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Essential Dishes of the Sadya</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Avial (Mixed Vegetables)', 
+                'Sambar (Lentil Stew)', 
+                'Payasam (Sweet Pudding)', 
+                'Pappadam & Upperi (Chips)'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Importance in Sadya',
+                        data: [100, 95, 98, 90],
+                        backgroundColor: [
+                           '#16A34A', // Green
+                           '#F97316', // Orange
+                           '#B8860B', // Dark Gold
+                           '#F59E0B'  // Yellow
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Importance in the Feast',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

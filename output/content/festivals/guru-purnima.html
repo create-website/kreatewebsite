@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guru Purnima Detail Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Subtle Saffron -->
+    <!-- Application Structure Plan: A thematic, single-page application with a fixed top navigation bar. The structure avoids a linear replication of the report, instead opting for distinct, interactive sections: 1. Introduction (Hero), 2. Core Concepts (Interactive Cards), 3. Origins Across Faiths (Interactive Chart driving content display), 4. Rituals & Practices (Clickable Grid), and 5. Modern Relevance (Comparative Chart). This design prioritizes user-driven exploration and comparison, making the dense, multifaceted information more accessible and engaging than a simple text document. The user can jump to any topic of interest, encouraging non-linear discovery. -->
+    <!-- Visualization & Content Choices: 1. Core Concepts: Report Info -> Definitions of Guru, Purnima, etc. -> Goal: Inform -> Presentation: Interactive Cards -> Interaction: Click to reveal text -> Justification: Breaks down foundational ideas into digestible chunks. 2. Origins: Report Info -> Comparison of Hindu, Buddhist, Jain origins -> Goal: Compare/Organize -> Viz: Horizontal Bar Chart (Chart.js) -> Interaction: Clicking a bar filters and displays detailed text for that tradition -> Justification: Transforms a static table into a dynamic, visual comparison tool. 3. Rituals: Report Info -> List of devotional practices -> Goal: Inform -> Presentation: Grid of clickable terms -> Interaction: Click to show definition in a modal-like view -> Justification: Creates an interactive glossary. 4. Modern Comparison: Report Info -> Guru Purnima vs. secular Teacher's Days -> Goal: Compare -> Viz: Horizontal Bar Chart (Chart.js) -> Interaction: Click bar to see details -> Justification: Visually contrasts the spiritual vs. professional ethos. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF5; /* Warm Neutral */
+            color: #4A4A4A;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #D97706; /* Saffron Accent */
+            border-bottom-color: #D97706;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #F3EFEA;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .ritual-card {
+            cursor: pointer;
+            border: 1px solid #F3EFEA;
+            background-color: #fff;
+        }
+        .ritual-card.active {
+            background-color: #FEF3C7; /* Light Saffron */
+            border-color: #D97706;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-amber-700">Guru Purnima</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#introduction" class="nav-link active">Introduction</a>
+                <a href="#concepts" class="nav-link">Core Concepts</a>
+                <a href="#origins" class="nav-link">Origins</a>
+                <a href="#rituals" class="nav-link">Rituals</a>
+                <a href="#modern" class="nav-link">Modern Relevance</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 border-t border-gray-200">
+            <a href="#introduction" class="block py-2 nav-link mobile-nav-link active">Introduction</a>
+            <a href="#concepts" class="block py-2 nav-link mobile-nav-link">Core Concepts</a>
+            <a href="#origins" class="block py-2 nav-link mobile-nav-link">Origins</a>
+            <a href="#rituals" class="block py-2 nav-link mobile-nav-link">Rituals</a>
+            <a href="#modern" class="block py-2 nav-link mobile-nav-link">Modern Relevance</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+        <section id="introduction" class="content-section active">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">The Luminous Night of Wisdom</h2>
+                <p class="text-lg text-gray-600 mb-8">
+                    Guru Purnima is a profound cultural and spiritual institution, a nexus where philosophy, celestial symbolism, and the tradition of knowledge transmission converge. This interactive guide invites you to explore the festival's multifaceted significance, from its ancient philosophical roots to its vibrant expression in the modern world.
+                </p>
+            </div>
+            <div class="mt-12 p-8 bg-white rounded-2xl shadow-sm border border-gray-100">
+                <p class="text-gray-700 leading-relaxed">
+                    Observed annually on the full moon of the Hindu month of Ashadha, Guru Purnima represents far more than a simple day of reverence. It is a celebration of the 'Guru' principle—the dispeller of darkness—and the sacred teacher-disciple lineage known as the *Guru-Shishya Parampara*. This application breaks down the festival's core components, allowing you to interactively discover its history across different faiths, understand its sacred rituals, and compare its ethos to modern teacher appreciation days. Navigate through the sections to uncover the layers of meaning behind this timeless tradition.
+                </p>
+            </div>
+        </section>
+
+        <section id="concepts" class="content-section">
+             <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">The Principle of Illumination</h2>
+                <p class="text-md text-gray-600">
+                    To understand Guru Purnima, one must first grasp its three foundational pillars. Click on each concept below to explore its deep philosophical and symbolic meaning. These principles form the bedrock upon which the festival's diverse practices are built.
+                </p>
+            </div>
+            <div id="concepts-container" class="grid md:grid-cols-3 gap-8">
+            </div>
+        </section>
+
+        <section id="origins" class="content-section">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">A Tapestry of Origins</h2>
+                <p class="text-md text-gray-600">
+                    Guru Purnima is celebrated across multiple Dharmic traditions, each anchoring the day to a foundational event in its lineage. Use the chart below to explore these convergent origin stories. Click on a tradition to reveal its unique narrative and thematic emphasis.
+                </p>
+            </div>
+            <div class="chart-container mb-8">
+                <canvas id="originsChart"></canvas>
+            </div>
+            <div id="origins-display" class="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 min-h-[200px] transition-all duration-500">
+            </div>
+        </section>
+
+        <section id="rituals" class="content-section">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">The Embodiment of Gratitude</h2>
+                <p class="text-md text-gray-600">
+                    The reverence for the Guru is expressed through a rich array of rituals and spiritual disciplines. These practices are designed to cultivate humility and deepen the disciple's connection to the teachings. Click on a ritual below to understand its practice and profound symbolic meaning.
+                </p>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div id="rituals-grid" class="lg:w-1/3 grid grid-cols-2 gap-4">
+                </div>
+                <div id="ritual-display" class="lg:w-2/3 p-8 bg-white rounded-2xl shadow-sm border border-gray-100 min-h-[250px] transition-all duration-500">
+                </div>
+            </div>
+        </section>
+
+        <section id="modern" class="content-section">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">The Enduring Light in the Modern World</h2>
+                <p class="text-md text-gray-600">
+                    While many cultures honor educators, the ethos of Guru Purnima is unique. The chart below compares Guru Purnima with secular Teacher's Days around the world. Click on each observance to understand its traditions and underlying philosophy, highlighting the distinction between professional appreciation and holistic spiritual guidance.
+                </p>
+            </div>
+            <div class="chart-container mb-8">
+                <canvas id="comparisonChart"></canvas>
+            </div>
+            <div id="comparison-display" class="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 min-h-[200px] transition-all duration-500">
+            </div>
+        </section>
+    </main>
+<!--
+    <footer class="bg-white mt-16 border-t border-gray-200">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-500">
+            <p>&copy; 2025 Interactive Cultural Guides. All rights reserved.</p>
+        </div>
+    </footer>
+-->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const appData = {
+        concepts: [
+            {
+                title: 'The Guru: Dispeller of Darkness',
+                icon: '💡',
+                summary: 'The term "Guru" comes from the Sanskrit roots "Gu" (darkness) and "Ru" (remover). A Guru is not just a teacher, but a luminous principle that eradicates spiritual ignorance, guiding a seeker toward self-realization.',
+                details: 'The concept transcends a physical person, representing a universal principle of illuminating consciousness. The external Guru awakens the dormant "Guru within" the disciple. This principle is so vital that the phrase "Mata Pitah Guru Daivam" places the Guru after parents but before God, as the bridge to the divine.'
+            },
+            {
+                title: 'Purnima: The Fullness of Wisdom',
+                icon: '🌕',
+                summary: 'The festival is timed on "Purnima," the full moon day of Ashadha. The full moon symbolizes completion, fullness, and the zenith of energetic and spiritual potential.',
+                details: 'Just as the moon is fully illuminated by the sun, the disciple\'s mind is believed to be most receptive to the Guru\'s wisdom on this day. The moon, as the presiding deity of the mind, represents a mind filled with love, purity, and total illumination, making it an auspicious time for spiritual practice.'
+            },
+            {
+                title: 'Guru-Shishya Parampara',
+                icon: '🔗',
+                summary: 'This is the sacred, unbroken teacher-disciple lineage through which wisdom is transmitted across generations. It forms the backbone of knowledge transmission in Dharmic traditions.',
+                details: 'Traditionally embodied in the "gurukul" system, it was an immersive environment for holistic development, focusing on selfless service (seva) and spiritual discipline alongside scriptures. This sacred bond is the central institution honored on Guru Purnima.'
+            }
+        ],
+        origins: [
+            { tradition: 'Hinduism (Yogic)', figure: 'Shiva (as Adiyogi)', event: 'First transmission of yogic science to the Saptarishis', emphasis: 'Universal consciousness & inner experience' },
+            { tradition: 'Hinduism (Vedic)', figure: 'Veda Vyasa', event: 'Birth of Veda Vyasa and compilation of the Vedas', emphasis: 'Preservation of scriptural wisdom' },
+            { tradition: 'Buddhism', figure: 'Gautama Buddha', event: 'Buddha\'s first sermon at Sarnath', emphasis: 'The establishment of the Dharma & Sangha' },
+            { tradition: 'Jainism', figure: 'Lord Mahavira', event: 'Mahavira gains his first disciple, Gautama Swami', emphasis: 'The formation of the monastic lineage' }
+        ],
+        rituals: [
+            { term: 'Guru Puja', description: 'Ritualistic worship of the Guru with offerings like flowers, fruits, and light.', meaning: 'An expression of reverence and gratitude; the offering of one\'s heart to the source of wisdom.' },
+            { term: 'Padapuja', description: 'Worship of the Guru\'s sandals (paduka) or feet.', meaning: 'Represents humility, surrender, and acceptance of the Guru\'s path as the foundation for one\'s spiritual journey.' },
+            { term: 'Gurudakshina', description: 'An offering of gratitude from a disciple to the Guru.', meaning: 'A token of appreciation for the priceless gift of knowledge; can be material or an act of service.' },
+            { term: 'Seva', description: 'Selfless service performed for the Guru or the community.', meaning: 'An act of devotion that purifies the ego and puts the Guru\'s teachings of compassion into practice.' },
+            { term: 'Satsang', description: 'A spiritual gathering for chanting, discourse, and meditation.', meaning: 'Creates a collective energy of devotion and shared learning, reinforcing the spiritual community.' },
+            { term: 'Mauna', description: 'The spiritual discipline of observing silence.', meaning: 'Conserves energy, quiets the mind, and turns awareness inward, fostering a state of deep introspection.' },
+            { term: 'Vassa', description: 'The three-month monastic rains retreat in Buddhism and Jainism.', meaning: 'A period of intensive study, meditation, and discipline, inaugurated on Guru Purnima.' },
+            { term: 'Uposatha', description: 'A Buddhist observance day for reaffirming commitment to the Dharma.', meaning: 'On Guru Purnima, lay followers often take on eight precepts to deepen their spiritual practice.' }
+        ],
+        comparison: [
+            { observance: 'Guru Purnima', traditions: 'Puja, meditation, spiritual discourses, seva', ethos: 'Spiritual & Holistic: Acknowledging the Guru\'s role in enlightenment and total life guidance.' },
+            { observance: 'US National Teacher Day', traditions: 'Gift cards, school lunches, thank-you notes', ethos: 'Professional & Appreciative: Thanking teachers for their work and contribution to society.' },
+            { observance: 'UK Thank a Teacher Day', traditions: 'E-cards, school events, advocacy campaigns', ethos: 'Professional & Advocacy-focused: Recognizing teachers\' work and advocating for their rights.' },
+            { observance: 'China\'s Teacher\'s Day', traditions: 'Gifts, school ceremonies, honoring Confucius', ethos: 'Cultural & Reverential: Rooted in deep societal respect for educators as moral and intellectual guides.' },
+            { observance: 'UNESCO World Teachers\' Day', traditions: 'Policy discussions, global reports, setting standards', ethos: 'Political & Professional: Focusing on the international status and rights of the teaching profession.' }
+        ]
+    };
+
+    const sections = document.querySelectorAll('.content-section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    function navigateToSection(hash) {
+        sections.forEach(section => {
+            if ('#' + section.id === hash) {
+                section.classList.add('active');
+            } else {
+                section.classList.remove('active');
+            }
+        });
+
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === hash) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+        
+        mobileMenu.classList.add('hidden');
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const hash = e.target.getAttribute('href');
+            navigateToSection(hash);
+            window.history.pushState(null, null, hash);
+        });
+    });
+
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    function initConcepts() {
+        const container = document.getElementById('concepts-container');
+        appData.concepts.forEach(concept => {
+            const card = document.createElement('div');
+            card.className = 'card rounded-2xl p-6 cursor-pointer';
+            card.innerHTML = `
+                <div class="text-4xl mb-4">${concept.icon}</div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">${concept.title}</h3>
+                <p class="text-gray-600 summary">${concept.summary}</p>
+                <p class="text-gray-600 details hidden mt-4">${concept.details}</p>
+            `;
+            card.addEventListener('click', () => {
+                card.querySelector('.summary').classList.toggle('hidden');
+                card.querySelector('.details').classList.toggle('hidden');
+            });
+            container.appendChild(card);
+        });
+    }
+
+    let originsChartInstance;
+    function initOrigins() {
+        const display = document.getElementById('origins-display');
+        const ctx = document.getElementById('originsChart').getContext('2d');
+
+        function updateDisplay(index) {
+            const data = appData.origins[index];
+            display.innerHTML = `
+                <h3 class="text-2xl font-bold text-amber-700 mb-4">${data.tradition}</h3>
+                <p class="mb-2"><strong class="font-semibold text-gray-700">Central Figure:</strong> ${data.figure}</p>
+                <p class="mb-2"><strong class="font-semibold text-gray-700">Key Event:</strong> ${data.event}</p>
+                <p><strong class="font-semibold text-gray-700">Thematic Emphasis:</strong> ${data.emphasis}</p>
+            `;
+        }
+
+        originsChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: appData.origins.map(o => o.tradition),
+                datasets: [{
+                    label: 'Tradition',
+                    data: Array(appData.origins.length).fill(10),
+                    backgroundColor: 'rgba(217, 119, 6, 0.2)',
+                    borderColor: 'rgba(217, 119, 6, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                },
+                scales: {
+                    x: { display: false },
+                    y: {
+                        ticks: {
+                            font: { size: 14 }
+                        }
+                    }
+                },
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        updateDisplay(index);
+                        originsChartInstance.data.datasets[0].backgroundColor = appData.origins.map((_, i) => i === index ? 'rgba(217, 119, 6, 0.6)' : 'rgba(217, 119, 6, 0.2)');
+                        originsChartInstance.update();
+                    }
+                }
+            }
+        });
+        updateDisplay(0);
+        originsChartInstance.data.datasets[0].backgroundColor[0] = 'rgba(217, 119, 6, 0.6)';
+        originsChartInstance.update();
+    }
+
+    function initRituals() {
+        const grid = document.getElementById('rituals-grid');
+        const display = document.getElementById('ritual-display');
+
+        function updateDisplay(index) {
+            const data = appData.rituals[index];
+            display.innerHTML = `
+                <h3 class="text-2xl font-bold text-amber-700 mb-4">${data.term}</h3>
+                <p class="mb-4"><strong class="font-semibold text-gray-700">Description:</strong> ${data.description}</p>
+                <p><strong class="font-semibold text-gray-700">Symbolic Meaning:</strong> ${data.meaning}</p>
+            `;
+            
+            document.querySelectorAll('.ritual-card').forEach((card, i) => {
+                card.classList.toggle('active', i === index);
+            });
+        }
+
+        appData.rituals.forEach((ritual, index) => {
+            const card = document.createElement('div');
+            card.className = 'ritual-card p-4 rounded-lg text-center font-semibold text-gray-700 transition-colors duration-300';
+            card.textContent = ritual.term;
+            card.addEventListener('click', () => updateDisplay(index));
+            grid.appendChild(card);
+        });
+        updateDisplay(0);
+    }
+    
+    let comparisonChartInstance;
+    function initComparison() {
+        const display = document.getElementById('comparison-display');
+        const ctx = document.getElementById('comparisonChart').getContext('2d');
+
+        function updateDisplay(index) {
+            const data = appData.comparison[index];
+            display.innerHTML = `
+                <h3 class="text-2xl font-bold text-amber-700 mb-4">${data.observance}</h3>
+                <p class="mb-2"><strong class="font-semibold text-gray-700">Core Traditions:</strong> ${data.traditions}</p>
+                <p><strong class="font-semibold text-gray-700">Underlying Ethos:</strong> ${data.ethos}</p>
+            `;
+        }
+
+        comparisonChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: appData.comparison.map(c => c.observance),
+                datasets: [{
+                    label: 'Observance',
+                    data: Array(appData.comparison.length).fill(10),
+                    backgroundColor: 'rgba(217, 119, 6, 0.2)',
+                    borderColor: 'rgba(217, 119, 6, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                },
+                scales: {
+                    x: { display: false },
+                    y: {
+                        ticks: {
+                            font: { size: 14 }
+                        }
+                    }
+                },
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        updateDisplay(index);
+                        comparisonChartInstance.data.datasets[0].backgroundColor = appData.comparison.map((_, i) => i === index ? 'rgba(217, 119, 6, 0.6)' : 'rgba(217, 119, 6, 0.2)');
+                        comparisonChartInstance.update();
+                    }
+                }
+            }
+        });
+        updateDisplay(0);
+        comparisonChartInstance.data.datasets[0].backgroundColor[0] = 'rgba(217, 119, 6, 0.6)';
+        comparisonChartInstance.update();
+    }
+
+    initConcepts();
+    initOrigins();
+    initRituals();
+    initComparison();
+
+    const initialHash = window.location.hash || '#introduction';
+    navigateToSection(initialHash);
+
+});
+</script>
+</body>
+</html>

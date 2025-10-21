@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Architecture of Agency: An Interactive Exploration of LLM Workflows</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Subtle Blue Accent -->
+    <!-- Application Structure Plan: The SPA is designed as a thematic, non-linear dashboard. This structure abandons the report's sequential format in favor of user-centric sections (Concepts, Architecture, Building, Impact, Challenges). This allows users to immediately navigate to their area of interest, making the dense information more accessible. Interactions like tabbed interfaces, clickable diagrams, and interactive charts are used to break down complex topics into digestible, explorable chunks, prioritizing user engagement and understanding over passive reading. -->
+    <!-- Visualization & Content Choices: 1. AI Paradigms (Table 1) -> Goal: Compare -> Viz: Interactive Grouped Bar Chart -> Interaction: Dropdown to select feature -> Justification: Makes comparison visual and user-driven. (Chart.js). 2. Architectural Pillars -> Goal: Organize/Explain -> Viz: HTML/CSS Diagram -> Interaction: Click to reveal details -> Justification: Visualizes system structure intuitively. (Tailwind). 3. Frameworks (Table 3) -> Goal: Compare -> Viz: Interactive Radar Chart -> Interaction: Hover tooltips, clickable legend -> Justification: Multi-variate comparison at a glance. (Chart.js). 4. Challenges -> Goal: Inform/Organize -> Viz: Expandable Grid -> Interaction: Click to expand/collapse -> Justification: Prevents information overload by showing overview first. (HTML/JS). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #383838;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #3B82F6;
+            border-bottom-color: #3B82F6;
+        }
+        .pillar-card, .challenge-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .pillar-card:hover, .challenge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">Agentic AI</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#concepts" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">Concepts</a>
+                <a href="#architecture" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">Architecture</a>
+                <a href="#building" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">Building</a>
+                <a href="#impact" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">Impact</a>
+                <a href="#challenges" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">Challenges</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                <span class="text-2xl">&#9776;</span>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#concepts" class="block py-2 text-gray-600">Concepts</a>
+            <a href="#architecture" class="block py-2 text-gray-600">Architecture</a>
+            <a href="#building" class="block py-2 text-gray-600">Building</a>
+            <a href="#impact" class="block py-2 text-gray-600">Impact</a>
+            <a href="#challenges" class="block py-2 text-gray-600">Challenges</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="hero" class="text-center mb-24">
+            <h2 class="text-4xl md:text-6xl font-bold text-gray-900 mb-4">The Architecture of Agency</h2>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                Explore the paradigm shift from passive AI to proactive, autonomous agents. This interactive report breaks down the core concepts, architectures, and real-world impact of agentic LLM workflows.
+            </p>
+        </section>
+
+        <section id="concepts" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-2 text-gray-800">Core Concepts</h3>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Agentic AI represents a fundamental leap, turning language models from text generators into goal-driven problem solvers. This section compares this new paradigm against other AI technologies to clarify its unique value.</p>
+            
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h4 class="text-2xl font-semibold text-center mb-6">AI System Paradigms: A Comparison</h4>
+                <div class="flex justify-center items-center mb-6">
+                    <label for="paradigm-selector" class="mr-4 font-medium text-gray-700">Compare by Feature:</label>
+                    <select id="paradigm-selector" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
+                        <option value="autonomy">Autonomy</option>
+                        <option value="adaptability">Adaptability</option>
+                        <option value="cost">Cost Profile</option>
+                    </select>
+                </div>
+                <div class="chart-container">
+                    <canvas id="paradigmChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-2 text-gray-800">How It Works: The Four Pillars</h3>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Autonomous action isn't magic; it's architecture. Agentic systems are built on four interdependent pillars that work together to enable reasoning, action, and learning. Click on each pillar to learn more.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <div class="lg:col-span-1 grid grid-cols-2 lg:grid-cols-1 gap-6">
+                    <div id="pillar-reasoning" class="pillar-card cursor-pointer bg-white p-6 rounded-xl shadow-md border-2 border-transparent">
+                        <h4 class="text-xl font-semibold text-blue-600 mb-2"><span class="text-2xl mr-2">&#129504;</span>Reasoning & Planning</h4>
+                        <p class="text-gray-600 text-sm">The agent's "brain," where goals are broken down into actionable steps.</p>
+                    </div>
+                    <div id="pillar-tools" class="pillar-card cursor-pointer bg-white p-6 rounded-xl shadow-md border-2 border-transparent">
+                        <h4 class="text-xl font-semibold text-green-600 mb-2"><span class="text-2xl mr-2">&#128736;</span>Tool Integration</h4>
+                        <p class="text-gray-600 text-sm">The agent's "hands," allowing it to interact with the external world via APIs and functions.</p>
+                    </div>
+                    <div id="pillar-memory" class="pillar-card cursor-pointer bg-white p-6 rounded-xl shadow-md border-2 border-transparent">
+                        <h4 class="text-xl font-semibold text-purple-600 mb-2"><span class="text-2xl mr-2">&#128173;</span>Memory</h4>
+                        <p class="text-gray-600 text-sm">Provides context and learning, from short-term session data to long-term experiences.</p>
+                    </div>
+                    <div id="pillar-reflection" class="pillar-card cursor-pointer bg-white p-6 rounded-xl shadow-md border-2 border-transparent">
+                        <h4 class="text-xl font-semibold text-yellow-600 mb-2"><span class="text-2xl mr-2">&#128269;</span>Reflection</h4>
+                        <p class="text-gray-600 text-sm">The capacity for self-correction and learning from the outcomes of actions.</p>
+                    </div>
+                </div>
+                <div id="pillar-details" class="lg:col-span-2 bg-white p-8 rounded-xl shadow-lg min-h-[300px] fade-in">
+                    <h4 id="pillar-title" class="text-2xl font-bold mb-4 text-gray-800">Select a Pillar</h4>
+                    <p id="pillar-content" class="text-gray-700 leading-relaxed">Click on one of the four pillars to the left to see a detailed explanation of its role in the agentic architecture. Understanding these components is key to grasping how agents move from simple instruction-following to complex problem-solving.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="building" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-2 text-gray-800">Building Agentic Systems</h3>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">From design patterns to orchestration frameworks, building an agentic workflow involves key architectural choices. This section provides a high-level comparison of the leading open-source frameworks available to developers.</p>
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h4 class="text-2xl font-semibold text-center mb-6">Framework Comparison</h4>
+                <div class="chart-container">
+                    <canvas id="frameworkChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-2 text-gray-800">Real-World Impact</h3>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Agentic AI is already automating complex processes across various industries. The most successful deployments divide broad problems into specialized roles fulfilled by collaborating agents.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h4 class="text-xl font-semibold mb-3 text-gray-800"><span class="text-2xl mr-2">&#128179;</span>Business Automation</h4>
+                    <p class="text-gray-600">Agents are streamlining functions in finance, HR, and supply chain management by handling tasks like financial reconciliation, resume screening, and real-time inventory optimization.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h4 class="text-xl font-semibold mb-3 text-gray-800"><span class="text-2xl mr-2">&#128187;</span>AI Software Engineers</h4>
+                    <p class="text-gray-600">Systems like Devin AI can now autonomously write, debug, and deploy code. They act as capable junior engineers, tackling backlogs and freeing up human developers for more strategic work.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h4 class="text-xl font-semibold mb-3 text-gray-800"><span class="text-2xl mr-2">&#128300;</span>Scientific Discovery</h4>
+                    <p class="text-gray-600">In fields like drug discovery, multi-agent systems automate the entire research cycle—from literature review and hypothesis generation to data analysis—dramatically accelerating the pace of innovation.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="challenges" class="scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-2 text-gray-800">Challenges & The Future</h3>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Widespread adoption depends on overcoming significant technical, security, and ethical hurdles. Click on a challenge below to explore the risks and potential mitigation strategies.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="challenge-card cursor-pointer bg-white p-6 rounded-xl shadow-md">
+                    <h4 class="text-lg font-semibold text-red-600">LLM Hallucination</h4>
+                    <div class="challenge-content hidden mt-3 text-gray-600 text-sm">
+                        <p><strong>Risk:</strong> Agents may act on fabricated information, leading to flawed decisions and harmful outcomes.</p>
+                        <p class="mt-2"><strong>Mitigation:</strong> Grounding responses with Retrieval-Augmented Generation (RAG), enforcing logical reasoning, and implementing self-consistency checks.</p>
+                    </div>
+                </div>
+                <div class="challenge-card cursor-pointer bg-white p-6 rounded-xl shadow-md">
+                    <h4 class="text-lg font-semibold text-red-600">Prompt Injection</h4>
+                    <div class="challenge-content hidden mt-3 text-gray-600 text-sm">
+                        <p><strong>Risk:</strong> Attackers can embed malicious instructions in data to hijack the agent's control flow, causing unintended actions or data leaks.</p>
+                        <p class="mt-2"><strong>Mitigation:</strong> Input sanitization, treating agents as privileged identities with least-privilege access, and monitoring for anomalous behavior.</p>
+                    </div>
+                </div>
+                <div class="challenge-card cursor-pointer bg-white p-6 rounded-xl shadow-md">
+                    <h4 class="text-lg font-semibold text-red-600">Algorithmic Bias</h4>
+                    <div class="challenge-content hidden mt-3 text-gray-600 text-sm">
+                        <p><strong>Risk:</strong> Agents can inherit and amplify societal biases from their training data, leading to unfair or discriminatory outcomes.</p>
+                        <p class="mt-2"><strong>Mitigation:</strong> Rigorous evaluation, trajectory analysis to detect biased reasoning, and maintaining a human-in-the-loop for sensitive decisions.</p>
+                    </div>
+                </div>
+                <div class="challenge-card cursor-pointer bg-white p-6 rounded-xl shadow-md">
+                    <h4 class="text-lg font-semibold text-orange-600">Latency & Cost</h4>
+                    <div class="challenge-content hidden mt-3 text-gray-600 text-sm">
+                        <p><strong>Risk:</strong> Multi-step workflows with many LLM calls can be slow and expensive, making them unsuitable for real-time applications.</p>
+                        <p class="mt-2"><strong>Mitigation:</strong> Using smaller, specialized models (SLMs) for routine tasks and reserving large models for high-level planning and reasoning.</p>
+                    </div>
+                </div>
+                <div class="challenge-card cursor-pointer bg-white p-6 rounded-xl shadow-md">
+                    <h4 class="text-lg font-semibold text-orange-600">Error Propagation</h4>
+                    <div class="challenge-content hidden mt-3 text-gray-600 text-sm">
+                        <p><strong>Risk:</strong> An error by one agent can cascade through a multi-agent system, leading to complete task failure that is difficult to debug.</p>
+                        <p class="mt-2"><strong>Mitigation:</strong> Modular design with clear responsibilities, robust state management, and comprehensive observability to trace errors to their root cause.</p>
+                    </div>
+                </div>
+                <div class="challenge-card cursor-pointer bg-white p-6 rounded-xl shadow-md">
+                    <h4 class="text-lg font-semibold text-orange-600">Accountability</h4>
+                    <div class="challenge-content hidden mt-3 text-gray-600 text-sm">
+                        <p><strong>Risk:</strong> The "black box" nature of LLMs makes it difficult to determine responsibility when an autonomous agent causes harm.</p>
+                        <p class="mt-2"><strong>Mitigation:</strong> Ensuring transparency through agent observability, trajectory evaluation, and developing new legal/ethical frameworks for autonomous systems.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+<!--
+
+    <footer class="bg-gray-100 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-600">
+            <p>Interactive report generated based on "The Architecture of Agency: A Comprehensive Analysis of LLM-Powered Agentic Workflows".</p>
+            <p class="text-sm mt-2">This is a conceptual, educational tool and does not constitute a formal research publication.</p>
+        </div>
+    </footer>
+
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const data = {
+                paradigms: {
+                    labels: ['Non-Agentic', 'Fine-Tuned', 'Traditional RAG', 'Agentic Workflow'],
+                    features: {
+                        autonomy: {
+                            title: 'Autonomy Level',
+                            values: [1, 1, 2, 3],
+                            labels: ['Low', 'Low', 'Medium', 'High']
+                        },
+                        adaptability: {
+                            title: 'Adaptability',
+                            values: [1, 1, 1, 3],
+                            labels: ['Low', 'Low', 'Low', 'High']
+                        },
+                        cost: {
+                            title: 'Relative Cost Profile',
+                            values: [1, 3, 2, 3],
+                            labels: ['Low', 'High', 'Medium', 'High']
+                        }
+                    }
+                },
+                pillars: {
+                    reasoning: {
+                        title: '&#129504; Reasoning & Planning',
+                        content: "This is the agent's cognitive core. The LLM breaks down a high-level goal (e.g., 'plan my trip') into a sequence of smaller, manageable sub-tasks. It then generates and adapts a plan to execute these steps. Advanced agents use frameworks like ReAct (Reasoning and Acting) to dynamically adjust their plan based on feedback after each action, allowing them to recover from errors and handle unexpected events."
+                    },
+                    tools: {
+                        title: '&#128736; Tool Integration',
+                        content: "Tools are the bridge to the outside world, enabling an agent to perform actions. Through 'function calling,' the LLM's reasoning engine can invoke external APIs, query databases, or run scripts. This transforms the agent from a passive text generator into an active problem-solver that can gather real-time information and execute tasks in other systems."
+                    },
+                    memory: {
+                        title: '&#128173; Memory',
+                        content: "Memory gives an agent context and the ability to learn. Short-term memory holds information for the current task, while long-term memory, often using vector databases, stores experiences across sessions. This allows for personalization and prevents the agent from repeating mistakes. Advanced memory systems create an interconnected knowledge graph that evolves over time."
+                    },
+                    reflection: {
+                        title: '&#128269; Reflection & Self-Correction',
+                        content: "This is the crucial feedback loop. After performing an action, the agent observes the outcome and reflects: Did it work? Did I get closer to my goal? This allows the agent to self-correct, retry a failed step with a different approach, or recognize that the task is complete. For high-stakes actions, this loop can include a 'Human-in-the-Loop' step, pausing the workflow for human approval."
+                    }
+                },
+                frameworks: {
+                    labels: ['Control Level', 'State Management', 'Human-in-the-Loop', 'Ease of Use', 'Flexibility'],
+                    datasets: [
+                        {
+                            label: 'LangGraph',
+                            data: [5, 5, 5, 2, 5],
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        },
+                        {
+                            label: 'AutoGen',
+                            data: [3, 3, 4, 4, 3],
+                            borderColor: 'rgba(16, 185, 129, 1)',
+                            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                        },
+                        {
+                            label: 'CrewAI',
+                            data: [2, 2, 3, 5, 2],
+                            borderColor: 'rgba(139, 92, 246, 1)',
+                            backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                        }
+                    ]
+                }
+            };
+
+            let paradigmChart;
+            const paradigmCtx = document.getElementById('paradigmChart').getContext('2d');
+
+            function createOrUpdateParadigmChart(feature) {
+                const featureData = data.paradigms.features[feature];
+                if (paradigmChart) {
+                    paradigmChart.data.datasets[0].data = featureData.values;
+                    paradigmChart.data.datasets[0].label = featureData.title;
+                    paradigmChart.options.plugins.tooltip.callbacks.label = function(context) {
+                        return featureData.labels[context.dataIndex];
+                    };
+                    paradigmChart.update();
+                } else {
+                    paradigmChart = new Chart(paradigmCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: data.paradigms.labels,
+                            datasets: [{
+                                label: featureData.title,
+                                data: featureData.values,
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(255, 159, 64, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(54, 162, 235, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 3.5,
+                                    ticks: {
+                                        stepSize: 1,
+                                        callback: function(value, index, values) {
+                                            if (value === 1) return 'Low';
+                                            if (value === 2) return 'Medium';
+                                            if (value === 3) return 'High';
+                                            return '';
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: true
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return featureData.labels[context.dataIndex];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+            
+            createOrUpdateParadigmChart('autonomy');
+            document.getElementById('paradigm-selector').addEventListener('change', (e) => {
+                createOrUpdateParadigmChart(e.target.value);
+            });
+
+            const frameworkCtx = document.getElementById('frameworkChart').getContext('2d');
+            new Chart(frameworkCtx, {
+                type: 'radar',
+                data: {
+                    labels: data.frameworks.labels,
+                    datasets: data.frameworks.datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 5,
+                            pointLabels: {
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.raw;
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const pillarCards = document.querySelectorAll('.pillar-card');
+            const pillarTitle = document.getElementById('pillar-title');
+            const pillarContent = document.getElementById('pillar-content');
+            const pillarDetailsContainer = document.getElementById('pillar-details');
+
+            pillarCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    pillarCards.forEach(c => c.classList.remove('border-blue-500'));
+                    card.classList.add('border-blue-500');
+                    
+                    const pillarKey = card.id.split('-')[1];
+                    const pillarData = data.pillars[pillarKey];
+                    
+                    pillarDetailsContainer.classList.remove('fade-in');
+                    void pillarDetailsContainer.offsetWidth; 
+                    pillarDetailsContainer.classList.add('fade-in');
+
+                    pillarTitle.innerHTML = pillarData.title;
+                    pillarContent.textContent = pillarData.content;
+                });
+            });
+
+            const challengeCards = document.querySelectorAll('.challenge-card');
+            challengeCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const content = card.querySelector('.challenge-content');
+                    const isVisible = !content.classList.contains('hidden');
+
+                    document.querySelectorAll('.challenge-content').forEach(c => c.classList.add('hidden'));
+                    
+                    if (!isVisible) {
+                        content.classList.remove('hidden');
+                    }
+                });
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 100) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

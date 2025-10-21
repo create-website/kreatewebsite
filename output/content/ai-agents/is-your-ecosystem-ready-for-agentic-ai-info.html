@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> The Agentic AI Enterprise Readiness Framework</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Application Structure Plan: The infographic follows a top-down narrative, guiding the user from high-level concepts to actionable insights. It starts with a hook defining the "Agentic Paradigm Shift," then breaks down the "Architectural Blueprint" to explain how it works. The core of the narrative is the "Enterprise Readiness Framework," which visualizes an organization's maturity across four key pillars. It concludes by showing the "Spectrum of Autonomy" to illustrate the journey and the "KPIs for Success" to define what to measure. This structure makes a complex topic digestible and strategically relevant for enterprise leaders. -->
+    <!-- Visualization & Content Choices: 1. Architectural Blueprint (Goal: Organize): A structured HTML/CSS diagram with styled cards and borders is used to represent the components, avoiding SVG/Mermaid. 2. Enterprise Readiness (Goal: Compare/Inform): A Chart.js Radar Chart is the central visualization. It's the best choice for showing a multi-dimensional "readiness score" across the four pillars, providing an instant, memorable "fingerprint" of maturity. 3. Spectrum of Autonomy (Goal: Change/Organize): A vertical timeline built with HTML/CSS clearly shows the progression from Level 1 to Level 5. 4. KPIs (Goal: Inform): Large, bold "Single Big Number" style cards are used to highlight critical metrics, making them scannable and impactful. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f9ff; /* sky-50 */
+            color: #0c4a6e; /* sky-900 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 500px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 500px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #00A6FB, #006494);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .kpi-card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0f2fe; /* sky-100 */
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #00A6FB;
+            border: 4px solid #ffffff;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+        <section class="text-center mb-24">
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4">
+                <span class="gradient-text">The Agentic Enterprise</span>
+            </h1>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-sky-800">A new paradigm is here. Agentic AI shifts from a tool for assistance to an engine for autonomous action. Success hinges not on the AI alone, but on the maturity of your enterprise ecosystem.</p>
+        </section>
+
+        <section class="mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">Architectural Blueprint for Agentic AI</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-sky-700 mb-12">An agentic system is not a monolith but a composite of interconnected components. Understanding this blueprint is the first step toward building a capable and resilient agentic ecosystem.</p>
+            <div class="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg border border-sky-200">
+                <div class="text-center p-4 rounded-lg bg-sky-800 text-white font-bold text-xl">Reasoning Engine (LLM)</div>
+                <div class="text-center text-2xl text-sky-400 font-thin">&darr;</div>
+                <div class="text-center p-4 rounded-lg bg-sky-600 text-white font-semibold">Orchestration Layer</div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4 text-center">
+                    <div class="p-3 rounded-lg bg-sky-100 border-2 border-dashed border-sky-300">
+                        <h4 class="font-semibold">Perception Module</h4>
+                    </div>
+                    <div class="p-3 rounded-lg bg-sky-100 border-2 border-dashed border-sky-300">
+                        <h4 class="font-semibold">Action Module</h4>
+                    </div>
+                    <div class="p-3 rounded-lg bg-sky-100 border-2 border-dashed border-sky-300">
+                        <h4 class="font-semibold">Memory Layer</h4>
+                    </div>
+                </div>
+                <div class="text-center text-2xl text-sky-400 font-thin">&uarr;</div>
+                <div class="text-center p-4 rounded-lg bg-sky-600 text-white font-semibold">Tooling & Integration Layer</div>
+            </div>
+        </section>
+
+        <section class="mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">The Enterprise Readiness Framework</h2>
+            <p class="max-w-4xl mx-auto text-center text-lg text-sky-700 mb-12">Your ability to harness agentic AI is directly proportional to your maturity across four critical pillars. This assessment visualizes a hypothetical organization's readiness, highlighting strengths and strategic gaps.</p>
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="chart-container">
+                    <canvas id="readinessChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-24">
+             <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">The Spectrum of Autonomy</h2>
+             <p class="max-w-3xl mx-auto text-center text-lg text-sky-700 mb-16">Agency is not a binary switch. It's a journey of increasing capability and trust, from simple assistance to full autonomy. Each level represents a deliberate business decision to cede more control for greater efficiency and scale.</p>
+             <div class="relative max-w-2xl mx-auto border-l-4 border-sky-200 pl-10">
+                <div class="timeline-item relative mb-10 p-6 bg-white rounded-xl shadow-md">
+                    <h3 class="font-bold text-xl mb-1">L1: Assisted Intelligence (Copilot)</h3>
+                    <p class="text-sky-700">System provides on-demand support for single-step tasks. User is in full control.</p>
+                </div>
+                <div class="timeline-item relative mb-10 p-6 bg-white rounded-xl shadow-md">
+                    <h3 class="font-bold text-xl mb-1">L2: Partial Automation (Workflow)</h3>
+                    <p class="text-sky-700">Executes predefined workflows but requires human approval at key checkpoints.</p>
+                </div>
+                <div class="timeline-item relative mb-10 p-6 bg-white rounded-xl shadow-md">
+                    <h3 class="font-bold text-xl mb-1">L3: Conditional Autonomy (Actor)</h3>
+                    <p class="text-sky-700">Independently plans and executes tasks, escalating to a human for edge cases.</p>
+                </div>
+                <div class="timeline-item relative mb-10 p-6 bg-white rounded-xl shadow-md">
+                    <h3 class="font-bold text-xl mb-1">L4: High Autonomy (Specialist)</h3>
+                    <p class="text-sky-700">Operates fully autonomously within its domain, handling failures without human intervention.</p>
+                </div>
+                <div class="timeline-item relative p-6 bg-white rounded-xl shadow-md">
+                    <h3 class="font-bold text-xl mb-1">L5: Full Autonomy (Collaborative)</h3>
+                    <p class="text-sky-700">Operates without domain limitations, learning and adapting at a human-expert level.</p>
+                </div>
+             </div>
+        </section>
+
+        <section>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">Measuring Success: Key Performance Indicators</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-sky-700 mb-12">To justify investment and guide improvement, organizations need to track KPIs that capture the full spectrum of impact, from operational efficiency to business growth.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="kpi-card">
+                    <div class="text-6xl font-extrabold gradient-text">95%</div>
+                    <h3 class="text-xl font-bold mt-2">Task Completion Rate</h3>
+                    <p class="text-sky-600 mt-1">Measures the agent's core competence and autonomy.</p>
+                </div>
+                <div class="kpi-card">
+                    <div class="text-6xl font-extrabold gradient-text">&lt;1%</div>
+                    <h3 class="text-xl font-bold mt-2">Human Escalation Rate</h3>
+                    <p class="text-sky-600 mt-1">Indicates where the agent's autonomy boundaries lie.</p>
+                </div>
+                <div class="kpi-card">
+                    <div class="text-6xl font-extrabold gradient-text">+25%</div>
+                    <h3 class="text-xl font-bold mt-2">Process Cycle Time Reduction</h3>
+                    <p class="text-sky-600 mt-1">Quantifies the direct productivity impact of the agent.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const readinessData = {
+            labels: [
+                'Data & Infrastructure',
+                'API & Integration',
+                'Security & Governance',
+                'Human-System Interaction',
+            ],
+            datasets: [{
+                label: 'Enterprise Readiness Score',
+                data: [75, 85, 60, 90],
+                fill: true,
+                backgroundColor: 'rgba(0, 166, 251, 0.2)',
+                borderColor: 'rgba(0, 166, 251, 1)',
+                pointBackgroundColor: 'rgba(0, 166, 251, 1)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(0, 166, 251, 1)'
+            }]
+        };
+
+        const config = {
+            type: 'radar',
+            data: readinessData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: {
+                            color: '#e0f2fe' // sky-100
+                        },
+                        grid: {
+                            color: '#e0f2fe' // sky-100
+                        },
+                        pointLabels: {
+                            font: {
+                                size: 14,
+                                weight: '600'
+                            },
+                            color: '#082f49' // sky-950
+                        },
+                        ticks: {
+                            backdropColor: 'rgba(255, 255, 255, 0.75)',
+                            stepSize: 25,
+                            font: {
+                                size: 12
+                            }
+                        },
+                        min: 0,
+                        max: 100
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            }
+                        },
+                        backgroundColor: '#051923',
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 12 },
+                        padding: 12,
+                        cornerRadius: 8,
+                    }
+                }
+            }
+        };
+
+        window.addEventListener('load', () => {
+            const readinessChart = new Chart(
+                document.getElementById('readinessChart'),
+                config
+            );
+        });
+    </script>
+</body>
+</html>

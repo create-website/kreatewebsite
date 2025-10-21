@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide: Feature Engineering in Financial ML</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Quantitative Calm -->
+    <!-- Application Structure Plan: The application is designed as a narrative learning path, progressing from foundational concepts to advanced applications. The structure is: 1) Hero/Intro: Establishes the core problem (low signal-to-noise). 2) The Feature Universe: An interactive explorer for data types (Part I of the report). 3) The Engineer's Toolkit: A hands-on section featuring an interactive demo of Fractional Differentiation (Part II). 4) The Importance Gauntlet: A comparative view of feature importance methods (Part III). 5) Advanced Frameworks: Visual, interactive diagrams explaining the Triple-Barrier Method and Meta-Labeling (Part IV). 6) Conclusion: A scannable checklist of practitioner takeaways. This structure was chosen over a direct 1:1 report mapping to make the complex material more digestible and engaging, transforming a passive reading experience into an active learning one. -->
+    <!-- Visualization & Content Choices: 
+        - Feature Universe -> Organize/Inform -> Interactive Tabs (HTML/JS) -> Clicking tabs reveals content -> Allows users to explore the vast feature landscape without being overwhelmed.
+        - Fractional Differentiation -> Goal: Explain a complex process -> Interactive Line Chart with Slider (Chart.js/JS) -> User adjusts 'd' value, sees chart/metrics update -> Makes the abstract concept of balancing stationarity and memory tangible and intuitive.
+        - Importance Methods -> Goal: Compare -> Interactive Cards (HTML/JS) -> Clicking a card reveals details -> A more engaging and less dense way to present the pros and cons of each method from the report's table.
+        - Triple-Barrier Method -> Goal: Explain a process -> Interactive Chart (Chart.js/JS) -> User places barriers, sees outcome -> Visually demonstrates how the labeling technique works in practice.
+        - Meta-Labeling -> Goal: Explain a framework -> Diagrammatic Flowchart (HTML/CSS) -> None -> Clearly illustrates the two-stage model structure, which is difficult to grasp from text alone.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        :root {
+            --bg-main: #F8F9FA;
+            --bg-card: #FFFFFF;
+            --text-primary: #212529;
+            --text-secondary: #495057;
+            --border-color: #DEE2E6;
+            --accent-primary: #005f73;
+            --accent-secondary: #0a9396;
+            --accent-danger: #9b2226;
+            --accent-success: #007B8A;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+        }
+        .font-mono {
+            font-family: 'Source Code Pro', monospace;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+            max-height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+        .nav-link.active {
+            color: var(--accent-primary);
+            font-weight: 600;
+            border-bottom-color: var(--accent-secondary);
+        }
+        .tab-button.active {
+            background-color: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="sticky top-0 bg-white/80 backdrop-blur-lg border-b border-gray-200 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <h1 class="text-xl font-bold text-gray-800">Financial ML Explorer</h1>
+                </div>
+                <div class="hidden sm:flex sm:items-center sm:space-x-8">
+                    <a href="#intro" class="nav-link border-b-2 border-transparent hover:border-gray-300 transition-colors duration-300 px-1 pt-1 text-sm font-medium text-gray-600 hover:text-gray-900">Introduction</a>
+                    <a href="#features" class="nav-link border-b-2 border-transparent hover:border-gray-300 transition-colors duration-300 px-1 pt-1 text-sm font-medium text-gray-600 hover:text-gray-900">Features</a>
+                    <a href="#engineering" class="nav-link border-b-2 border-transparent hover:border-gray-300 transition-colors duration-300 px-1 pt-1 text-sm font-medium text-gray-600 hover:text-gray-900">Engineering</a>
+                    <a href="#importance" class="nav-link border-b-2 border-transparent hover:border-gray-300 transition-colors duration-300 px-1 pt-1 text-sm font-medium text-gray-600 hover:text-gray-900">Importance</a>
+                    <a href="#frameworks" class="nav-link border-b-2 border-transparent hover:border-gray-300 transition-colors duration-300 px-1 pt-1 text-sm font-medium text-gray-600 hover:text-gray-900">Frameworks</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section id="intro" class="text-center py-20 lg:py-32">
+            <div class="max-w-4xl mx-auto px-4">
+                <h2 class="text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">From Raw Data to Robust Alpha</h2>
+                <p class="mt-6 text-lg text-gray-600">This guide explores the most critical aspect of financial machine learning: the journey from raw data to predictive features. In markets with a low signal-to-noise ratio, sophisticated feature engineering and rigorous validation are not just best practices—they are the only defense against discovering false patterns.</p>
+            </div>
+        </section>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
+
+            <section id="features">
+                <div class="text-center">
+                    <h3 class="text-3xl font-bold text-gray-900">The Feature Universe</h3>
+                    <p class="mt-3 max-w-2xl mx-auto text-md text-gray-600">The foundation of any model is its data. Financial features originate from a diverse set of sources, each offering a unique lens on market activity. Select a category to explore its key characteristics and potential pitfalls.</p>
+                </div>
+
+                <div class="mt-12">
+                    <div class="flex flex-wrap justify-center gap-2 mb-8">
+                        <button data-tab="market" class="tab-button text-sm font-medium py-2 px-4 rounded-full border border-gray-300 transition">Market Data</button>
+                        <button data-tab="fundamental" class="tab-button text-sm font-medium py-2 px-4 rounded-full border border-gray-300 transition">Fundamental Data</button>
+                        <button data-tab="alternative" class="tab-button text-sm font-medium py-2 px-4 rounded-full border border-gray-300 transition">Alternative Data</button>
+                        <button data-tab="macro" class="tab-button text-sm font-medium py-2 px-4 rounded-full border border-gray-300 transition">Macroeconomic Data</button>
+                    </div>
+                    <div id="feature-content" class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 min-h-[20rem] transition-opacity duration-500">
+                    </div>
+                </div>
+            </section>
+
+            <section id="engineering">
+                 <div class="text-center">
+                    <h3 class="text-3xl font-bold text-gray-900">The Engineer's Toolkit: Fractional Differentiation</h3>
+                    <p class="mt-3 max-w-3xl mx-auto text-md text-gray-600">Financial price series are non-stationary, violating a key assumption of many ML models. While simple returns achieve stationarity, they erase valuable long-term memory. Fractional differentiation offers a solution: find the minimum differencing required to make the series stationary, thereby preserving as much memory as possible. Use the slider below to see this trade-off in action.</p>
+                </div>
+                <div class="mt-12 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-200">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2">
+                             <div class="chart-container h-[300px] md:h-[350px] max-w-full">
+                                <canvas id="fdChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="flex flex-col justify-center">
+                            <div>
+                                <label for="fd-slider" class="block text-sm font-medium text-gray-700">Differencing Amount (d)</label>
+                                <input id="fd-slider" type="range" min="0" max="1" value="0" step="0.05" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-2">
+                                <p class="text-center font-mono mt-1 text-lg" id="fd-value">d = 0.00</p>
+                            </div>
+                            <div class="mt-8 space-y-4">
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <p class="text-sm text-gray-500">Stationarity (ADF p-value)</p>
+                                    <p class="text-xl font-semibold" id="adf-status">Non-Stationary</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <p class="text-sm text-gray-500">Memory Preservation (Correlation)</p>
+                                    <p class="text-xl font-semibold" id="corr-status">1.00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="importance">
+                <div class="text-center">
+                    <h3 class="text-3xl font-bold text-gray-900">The Importance Gauntlet</h3>
+                    <p class="mt-3 max-w-2xl mx-auto text-md text-gray-600">Once features are engineered, we must determine which are predictive and which are noise. This is critical to avoid overfitting. Each importance method has unique strengths and weaknesses. Click on a card to learn more.</p>
+                </div>
+                <div id="importance-cards" class="mt-12 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                </div>
+            </section>
+
+            <section id="frameworks">
+                <div class="text-center">
+                    <h3 class="text-3xl font-bold text-gray-900">State-of-the-Art Frameworks</h3>
+                    <p class="mt-3 max-w-2xl mx-auto text-md text-gray-600">Sophisticated feature engineering enables advanced modeling frameworks that align ML with the realities of trading.</p>
+                </div>
+
+                <div class="mt-12 space-y-16">
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-200">
+                        <h4 class="text-2xl font-bold text-gray-800">The Triple-Barrier Method</h4>
+                        <p class="mt-2 text-gray-600">Instead of fixed-time horizons, this method labels trades based on which of three barriers is hit first: a profit-take, a stop-loss, or a time limit. The barriers are dynamically scaled by volatility. This aligns the labels with practical risk management. Interact with the chart to see how barrier placement determines the outcome.</p>
+                        <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                            <div class="lg:col-span-2">
+                                <div class="chart-container h-[250px] md:h-[300px] max-w-full">
+                                    <canvas id="tbmChart"></canvas>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-center font-semibold text-lg mb-4">Trade Outcome: <span id="tbm-outcome" class="font-mono p-2 rounded-md">Pending...</span></p>
+                                <div class="space-y-3">
+                                    <button id="tbm-pt-btn" class="w-full text-white py-2 px-4 rounded-lg transition" style="background-color: var(--accent-secondary);">Set Profit-Take (2x Vol)</button>
+                                    <button id="tbm-sl-btn" class="w-full text-white py-2 px-4 rounded-lg transition" style="background-color: var(--accent-danger);">Set Stop-Loss (1x Vol)</button>
+                                    <button id="tbm-reset-btn" class="w-full bg-gray-500 text-white py-2 px-4 rounded-lg transition">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-200">
+                        <h4 class="text-2xl font-bold text-gray-800">Meta-Labeling: A Model of a Model</h4>
+                        <p class="mt-2 text-gray-600">This framework separates signal generation from bet sizing. A simple primary model generates many potential trade signals (high recall). A secondary ML model then acts as a filter, predicting which of those signals are likely to be profitable (high precision). This moves ML from the noisy task of signal generation to the higher-signal task of risk management.</p>
+                        <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                            <div class="flex flex-col md:flex-row items-center justify-around space-y-4 md:space-y-0 md:space-x-4 text-center">
+                                <div class="flex-1 p-4 bg-white rounded-lg shadow-sm">
+                                    <p class="font-semibold text-gray-700">1. Primary Model</p>
+                                    <p class="text-sm text-gray-500">(e.g., MA Crossover)</p>
+                                    <p class="mt-2 text-2xl font-bold" style="color: var(--accent-primary);">Generates Signal</p>
+                                    <p class="text-xs text-gray-500">(Long/Short)</p>
+                                </div>
+                                <div class="text-3xl font-bold text-gray-400">&rarr;</div>
+                                <div class="flex-1 p-4 bg-white rounded-lg shadow-sm border-2" style="border-color: var(--accent-secondary);">
+                                    <p class="font-semibold" style="color: var(--accent-secondary);">2. Meta-Model (ML)</p>
+                                    <p class="text-sm text-gray-500">(e.g., Random Forest)</p>
+                                    <p class="mt-2 text-2xl font-bold" style="color: var(--accent-secondary);">Filters Signal</p>
+                                    <p class="text-xs text-gray-500">(Predicts P(Win))</p>
+                                </div>
+                                <div class="text-3xl font-bold text-gray-400">&rarr;</div>
+                                <div class="flex-1 p-4 bg-white rounded-lg shadow-sm">
+                                    <p class="font-semibold text-gray-700">3. Final Decision</p>
+                                    <p class="text-sm text-gray-500">(Bet Sizing)</p>
+                                    <p class="mt-2 text-2xl font-bold" style="color: var(--accent-success);">Execute or Discard</p>
+                                    <p class="text-xs text-gray-500">(Based on P(Win))</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="mt-24 bg-gray-800 text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-2xl font-bold text-white">Practitioner's Checklist</h3>
+            <p class="mt-2 max-w-2xl mx-auto text-gray-400">Key recommendations distilled from the report for robust financial modeling.</p>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+                <div class="bg-gray-700 p-4 rounded-lg"><p><span class="font-bold text-teal-300">Data Integrity First:</span> Use Point-in-Time (PIT) data to eliminate lookahead bias.</p></div>
+                <div class="bg-gray-700 p-4 rounded-lg"><p><span class="font-bold text-teal-300">Engineer Robust Features:</span> Use techniques like Fractional Differentiation to preserve memory.</p></div>
+                <div class="bg-gray-700 p-4 rounded-lg"><p><span class="font-bold text-teal-300">Validate Rigorously:</span> Use specialized cross-validation (e.g., Purged K-Fold) to prevent data leakage.</p></div>
+                <div class="bg-gray-700 p-4 rounded-lg"><p><span class="font-bold text-teal-300">Be Skeptical of Importance:</span> Use multiple methods (MDA, SFI, SHAP) and seek economic rationale.</p></div>
+                <div class="bg-gray-700 p-4 rounded-lg"><p><span class="font-bold text-teal-300">Reframe the Problem:</span> Use Meta-Labeling to apply ML to risk management, not just signal generation.</p></div>
+                <div class="bg-gray-700 p-4 rounded-lg"><p><span class="font-bold text-teal-300">Avoid Data Snooping:</span> Understand that backtesting is not a research tool; feature importance is.</p></div>
+            </div>
+            <p class="mt-10 text-xs text-gray-500">Interactive application based on the report "Feature Engineering and Importance in Financial Machine Learning."</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const featureContentData = {
+                market: {
+                    title: 'Market Data',
+                    description: 'Derived from trading activity (price and volume), this is the most common data source. Raw data is rarely predictive; value comes from transformations that reveal dynamics like trend, momentum, and volatility.',
+                    examples: ['Returns (Simple, Log)', 'Moving Averages (SMA, EMA)', 'RSI, MACD, Bollinger Bands', 'On-Balance Volume (OBV)', 'Order Flow Imbalance (OFI)'],
+                    caution: 'High frequency data like order book features can be powerful but are noisy and have very short-lived predictive power.'
+                },
+                fundamental: {
+                    title: 'Fundamental Data',
+                    description: 'Extracted from financial statements (income, balance sheet), this data reflects a company\'s financial health and intrinsic value. It is crucial for value and quality-based strategies.',
+                    examples: ['P/E, P/B, P/S Ratios', 'Return on Equity (ROE)', 'Debt-to-Equity (D/E)', 'Revenue & EPS Growth'],
+                    caution: 'CRITICAL DANGER: Lookahead bias. Must use Point-in-Time (PIT) databases that store data as it was known on a specific date, before any restatements.'
+                },
+                alternative: {
+                    title: 'Alternative Data',
+                    description: 'Gathered from non-traditional sources, this data can provide a unique predictive edge by capturing economic activity before it appears in official reports. Requires specialized skills like NLP and image processing.',
+                    examples: ['News & Social Media Sentiment', 'Satellite Imagery (e.g., parking lots)', 'Credit Card Transactions', 'Web Traffic & App Usage'],
+                    caution: 'Often unstructured, expensive, and may have a limited history. The signal can decay as more market participants start using it.'
+                },
+                macro: {
+                    title: 'Macroeconomic & Cross-Asset Data',
+                    description: 'Captures the state of the broader economy and relationships between asset classes. Crucial for understanding market regimes and systemic risk factors that affect all assets.',
+                    examples: ['Interest Rates (Fed Funds)', 'Inflation (CPI)', 'GDP Growth', 'Credit Spreads', 'Commodity Prices (Oil, Copper)'],
+                    caution: 'Typically low frequency (monthly or quarterly), making it more suitable for long-term models rather than high-frequency trading.'
+                }
+            };
+            
+            const importanceData = [
+                { id: 'mdi', title: 'Mean Decrease Impurity (MDI)', text: 'Specific to tree models. Measures importance by how much a feature reduces node impurity (Gini/entropy).', pro: 'Fast and simple to compute.', con: 'In-sample, biased, and unreliable with correlated features. Highly prone to overfitting.'},
+                { id: 'mda', title: 'Mean Decrease Accuracy (MDA)', text: 'Model-agnostic. Measures importance by how much model performance drops when a feature is shuffled on out-of-sample data.', pro: 'More robust than MDI, model-agnostic.', con: 'Computationally expensive, underestimates importance of correlated features.'},
+                { id: 'sfi', title: 'Single Feature Importance (SFI)', text: 'Model-agnostic. Builds a model for each single feature and measures its standalone out-of-sample performance.', pro: 'Avoids substitution effects of correlated features.', con: 'Extremely slow, fails to capture feature interactions, prone to data snooping.'},
+                { id: 'shap', title: 'SHAP Values', text: 'Model-agnostic. Uses game theory to explain the output of any machine learning model, providing both global and local feature contributions.', pro: 'Theoretically sound, provides local interpretability.', con: 'Very computationally intensive.'}
+            ];
+
+            function updateFeatureContent(tabName) {
+                const data = featureContentData[tabName];
+                const container = document.getElementById('feature-content');
+                container.classList.remove('fade-in');
+                
+                requestAnimationFrame(() => {
+                    container.innerHTML = `
+                        <div class="lg:grid lg:grid-cols-3 lg:gap-8">
+                            <div>
+                                <h4 class="text-2xl font-bold text-gray-900">${data.title}</h4>
+                                <p class="mt-2 text-gray-600">${data.description}</p>
+                            </div>
+                            <div class="mt-8 lg:mt-0 lg:col-span-2">
+                                <h5 class="text-lg font-semibold text-gray-800">Examples</h5>
+                                <ul class="mt-4 space-y-2 text-gray-600">
+                                    ${data.examples.map(ex => `<li class="flex items-start"><span class="flex-shrink-0 mr-2 mt-1 w-2 h-2 rounded-full" style="background-color: var(--accent-secondary);"></span>${ex}</li>`).join('')}
+                                </ul>
+                                <div class="mt-6 p-4 rounded-lg bg-yellow-50 border border-yellow-200">
+                                    <p class="font-semibold text-yellow-800">Key Consideration</p>
+                                    <p class="text-sm text-yellow-700">${data.caution}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.classList.add('fade-in');
+                });
+            }
+
+            const featureTabs = document.querySelectorAll('.tab-button');
+            featureTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    featureTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    updateFeatureContent(tab.dataset.tab);
+                });
+            });
+            
+            function renderImportanceCards() {
+                const container = document.getElementById('importance-cards');
+                container.innerHTML = importanceData.map(item => `
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow duration-300">
+                        <h4 class="text-xl font-bold text-gray-900">${item.title}</h4>
+                        <p class="mt-2 text-sm text-gray-600 h-16">${item.text}</p>
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <p class="text-sm"><span class="font-semibold text-green-700">Pro:</span> ${item.pro}</p>
+                            <p class="text-sm mt-1"><span class="font-semibold text-red-700">Con:</span> ${item.con}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            let fdChart;
+            const priceData = Array.from({length: 100}, (_, i) => 100 + Math.sin(i / 10) * 10 + Math.random() * 5 + i * 0.2);
+            
+            function fractionalDifference(series, d) {
+                if (d == 0) return [...series];
+                if (d == 1) return series.slice(1).map((v, i) => v - series[i]);
+
+                const n = series.length;
+                let weights = [1];
+                for (let k = 1; k < n; k++) {
+                    weights.push(-weights[k-1] * (d - k + 1) / k);
+                }
+
+                let diffSeries = [];
+                for (let i = weights.length -1; i < n; i++) {
+                    let val = 0;
+                    for (let k = 0; k < weights.length; k++) {
+                        if (i - k >= 0) {
+                           val += weights[k] * series[i - k];
+                        }
+                    }
+                    diffSeries.push(val);
+                }
+                return diffSeries;
+            }
+            
+            function getCorrelation(arr1, arr2) {
+                const n = Math.min(arr1.length, arr2.length);
+                if (n === 0) return 0;
+                
+                const slicedArr1 = arr1.slice(arr1.length - n);
+                const slicedArr2 = arr2.slice(arr2.length - n);
+
+                const mean1 = slicedArr1.reduce((a, b) => a + b) / n;
+                const mean2 = slicedArr2.reduce((a, b) => a + b) / n;
+
+                let num = 0, den1 = 0, den2 = 0;
+                for(let i=0; i<n; i++) {
+                    num += (slicedArr1[i] - mean1) * (slicedArr2[i] - mean2);
+                    den1 += (slicedArr1[i] - mean1) ** 2;
+                    den2 += (slicedArr2[i] - mean2) ** 2;
+                }
+                return num / Math.sqrt(den1 * den2);
+            }
+
+            function updateFdChart(d) {
+                const diffData = fractionalDifference(priceData, d);
+                
+                fdChart.data.labels = Array.from({length: diffData.length}, (_, i) => i);
+                fdChart.data.datasets[0].data = diffData;
+                fdChart.update('none');
+
+                const correlation = getCorrelation(priceData, diffData);
+                document.getElementById('corr-status').textContent = correlation.toFixed(2);
+                document.getElementById('fd-value').textContent = `d = ${d.toFixed(2)}`;
+                
+                const adfStatus = document.getElementById('adf-status');
+                if (d >= 0.5) {
+                    adfStatus.textContent = 'Stationary';
+                    adfStatus.style.color = 'var(--accent-success)';
+                } else {
+                    adfStatus.textContent = 'Non-Stationary';
+                    adfStatus.style.color = 'var(--accent-danger)';
+                }
+            }
+
+            function createFdChart() {
+                const ctx = document.getElementById('fdChart').getContext('2d');
+                fdChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({length: priceData.length}, (_, i) => i),
+                        datasets: [{
+                            label: 'Time Series',
+                            data: priceData,
+                            borderColor: 'var(--accent-primary)',
+                            backgroundColor: 'rgba(0, 95, 115, 0.1)',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { x: { display: false }, y: { display: false } }
+                    }
+                });
+
+                const slider = document.getElementById('fd-slider');
+                slider.addEventListener('input', (e) => {
+                    updateFdChart(parseFloat(e.target.value));
+                });
+                updateFdChart(0);
+            }
+            
+            let tbmChart;
+            const tbmPriceData = Array.from({length: 50}, (_, i) => 100 + Math.sin(i / 5) * 5 + (Math.random() - 0.5) * 3);
+            const entryPoint = { x: 5, y: tbmPriceData[5] };
+            const dailyVol = 2.5;
+
+            function createTbmChart() {
+                 const ctx = document.getElementById('tbmChart').getContext('2d');
+                 tbmChart = new Chart(ctx, {
+                     type: 'line',
+                     data: {
+                        labels: Array.from({length: tbmPriceData.length}, (_, i) => i),
+                        datasets: [{
+                            label: 'Price Path',
+                            data: tbmPriceData,
+                            borderColor: 'var(--text-secondary)',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Entry',
+                            data: [{x: entryPoint.x, y: entryPoint.y}],
+                            pointStyle: 'circle',
+                            pointRadius: 8,
+                            pointBackgroundColor: 'var(--accent-primary)',
+                        }]
+                     },
+                     options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false }, annotation: { annotations: {} } },
+                        scales: { 
+                            x: {
+                                grid: { display: false },
+                                ticks: { display: false }
+                            },
+                             y: {
+                                grid: { color: '#e5e7eb' },
+                                ticks: { font: { size: 10 }}
+                            }
+                        }
+                     }
+                 });
+            }
+            
+            function updateTbmChart(ptLevel, slLevel) {
+                const annotations = {};
+                let outcome = 'Pending...';
+                let outcomeColor = 'gray';
+
+                if(ptLevel !== null) {
+                    annotations.ptLine = { type: 'line', yMin: ptLevel, yMax: ptLevel, borderColor: 'var(--accent-secondary)', borderWidth: 2, borderDash: [6, 6], label: { content: 'Profit-Take', enabled: true, position: 'start', backgroundColor: 'var(--accent-secondary)' }};
+                }
+                if(slLevel !== null) {
+                    annotations.slLine = { type: 'line', yMin: slLevel, yMax: slLevel, borderColor: 'var(--accent-danger)', borderWidth: 2, borderDash: [6, 6], label: { content: 'Stop-Loss', enabled: true, position: 'start', backgroundColor: 'var(--accent-danger)' }};
+                }
+                
+                let ptHit = null, slHit = null;
+                for(let i = entryPoint.x; i < tbmPriceData.length; i++) {
+                    if (ptLevel !== null && tbmPriceData[i] >= ptLevel) {
+                       ptHit = i;
+                       break;
+                    }
+                     if (slLevel !== null && tbmPriceData[i] <= slLevel) {
+                       slHit = i;
+                       break;
+                    }
+                }
+                
+                if (ptHit !== null && (slHit === null || ptHit <= slHit)) {
+                     annotations.hitPoint = { type: 'point', xValue: ptHit, yValue: tbmPriceData[ptHit], backgroundColor: 'var(--accent-secondary)', radius: 8 };
+                     outcome = 'WIN (+1)';
+                     outcomeColor = 'var(--accent-secondary)';
+                } else if (slHit !== null) {
+                     annotations.hitPoint = { type: 'point', xValue: slHit, yValue: tbmPriceData[slHit], backgroundColor: 'var(--accent-danger)', radius: 8 };
+                     outcome = 'LOSS (-1)';
+                     outcomeColor = 'var(--accent-danger)';
+                }
+
+
+                tbmChart.options.plugins.annotation.annotations = annotations;
+                tbmChart.update();
+                const outcomeEl = document.getElementById('tbm-outcome');
+                outcomeEl.textContent = outcome;
+                outcomeEl.style.backgroundColor = outcomeColor;
+                outcomeEl.style.color = outcome === 'Pending...' ? 'black' : 'white';
+            }
+
+            document.getElementById('tbm-pt-btn').addEventListener('click', () => updateTbmChart(entryPoint.y + 2 * dailyVol, tbmChart.options.plugins.annotation.annotations.slLine ? tbmChart.options.plugins.annotation.annotations.slLine.yMin : null));
+            document.getElementById('tbm-sl-btn').addEventListener('click', () => updateTbmChart(tbmChart.options.plugins.annotation.annotations.ptLine ? tbmChart.options.plugins.annotation.annotations.ptLine.yMin : null, entryPoint.y - 1 * dailyVol));
+            document.getElementById('tbm-reset-btn').addEventListener('click', () => updateTbmChart(null, null));
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach( section => {
+                    const sectionTop = section.offsetTop;
+                    if(pageYOffset >= sectionTop - 80){
+                        current = section.getAttribute('id');
+                    }
+                })
+                
+                navLinks.forEach( link => {
+                    link.classList.remove('active');
+                    if(link.getAttribute('href') === `#${current}`){
+                        link.classList.add('active');
+                    }
+                })
+            });
+
+            featureTabs[0].click();
+            renderImportanceCards();
+            createFdChart();
+            createTbmChart();
+            updateTbmChart(null, null);
+        });
+
+    </script>
+</body>
+</html>

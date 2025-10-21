@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/B Test Paired T-Test Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: "Calm Harmony" - A palette of warm neutrals (beige background), slate for text and containers, and a soft blue for accents and charts. -->
+    <!-- Application Structure Plan: A task-oriented, single-view SPA. The layout is a two-column dashboard: data input on the left, results/visualizations on the right. This structure guides the user through the logical workflow of performing a statistical test: 1) enter data, 2) set parameters, 3) calculate, 4) view and interpret results. This is more efficient for a utility tool than a multi-page or thematic approach. User flow is linear and focused on a single task. -->
+    <!-- Visualization & Content Choices: 1. Raw Data -> Goal: Input -> Textareas -> Pasting comma/newline separated values -> Standard for data tools. 2. Group Performance -> Goal: Compare -> Bar Chart (Chart.js) -> Shows mean of each group -> Quick visual check of which group performed better. 3. Statistical Significance -> Goal: Inform -> Dynamic Text Blocks -> Displays p-value, t-stat, etc. -> Direct presentation of key statistical outputs. 4. Difference Distribution -> Goal: Analyze -> Histogram of Differences (Chart.js Bar Chart) -> Shows consistency of the change -> Deeper insight into the test's core data. All interactions are driven by a single 'Calculate' button for simplicity. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F5F3;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900">A/B Test Paired T-Test Calculator</h1>
+            <p class="mt-2 text-slate-600 max-w-3xl mx-auto">Interactively analyze your A/B test results. This tool uses a paired t-test, which is ideal for when you have two measurements on the same subject (e.g., before-and-after scores for the same user). Enter your data below to determine if the difference between your control and variant groups is statistically significant.</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold mb-4 text-slate-900">1. Input Your Data</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label for="groupA" class="block text-sm font-medium text-slate-700">Group A (Control) Data</label>
+                        <textarea id="groupA" rows="8" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" placeholder="Paste comma or newline separated values, e.g.,&#10;10, 12, 15.5, 9, 14"></textarea>
+                    </div>
+                    <div>
+                        <label for="groupB" class="block text-sm font-medium text-slate-700">Group B (Variant) Data</label>
+                        <textarea id="groupB" rows="8" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" placeholder="Ensure data points correspond to Group A pairs.&#10;11, 13, 15, 11, 16.2"></textarea>
+                    </div>
+                    <div>
+                         <label for="alpha" class="block text-sm font-medium text-slate-700">Significance Level (α)</label>
+                         <select id="alpha" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                             <option value="0.05">0.05 (95% Confidence)</option>
+                             <option value="0.01">0.01 (99% Confidence)</option>
+                             <option value="0.10">0.10 (90% Confidence)</option>
+                         </select>
+                    </div>
+                </div>
+                <button id="calculateBtn" class="mt-6 w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">Calculate Significance</button>
+                 <div id="error-message" class="mt-4 text-red-600 text-sm font-medium hidden"></div>
+            </div>
+
+            <div id="results-section" class="bg-white p-6 rounded-lg shadow-md hidden">
+                <h2 class="text-2xl font-semibold mb-4 text-slate-900">2. Analysis & Results</h2>
+                <div id="results-summary" class="p-4 rounded-md mb-6 text-center">
+                    <p class="text-xl font-bold" id="summary-text"></p>
+                    <p class="text-sm" id="summary-detail"></p>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center mb-6">
+                    <div class="bg-slate-50 p-3 rounded-md">
+                        <p class="text-sm text-slate-600">p-value</p>
+                        <p id="p-value" class="text-2xl font-semibold"></p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-md">
+                        <p class="text-sm text-slate-600">t-statistic</p>
+                        <p id="t-statistic" class="text-2xl font-semibold"></p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-md">
+                        <p class="text-sm text-slate-600">Degrees of Freedom</p>
+                        <p id="df" class="text-2xl font-semibold"></p>
+                    </div>
+                </div>
+
+                <div class="space-y-8 mt-8">
+                    <div>
+                        <h3 class="text-lg font-semibold text-center mb-2">Group Mean Comparison</h3>
+                        <p class="text-sm text-slate-600 text-center mb-4">This chart shows the average performance of each group, giving a quick visual of which performed better on average.</p>
+                        <div class="chart-container">
+                            <canvas id="meansChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-center mb-2">Distribution of Differences</h3>
+                        <p class="text-sm text-slate-600 text-center mb-4">This histogram shows the frequency of the differences between paired data points (Group B - Group A). A distribution shifted away from zero suggests a consistent effect.</p>
+                        <div class="chart-container">
+                            <canvas id="diffsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div id="placeholder-section" class="bg-white p-6 rounded-lg shadow-md flex items-center justify-center text-slate-500">
+                <p class="text-center">Your results and visualizations will appear here after calculation.</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultsSection = document.getElementById('results-section');
+        const placeholderSection = document.getElementById('placeholder-section');
+        const errorMessage = document.getElementById('error-message');
+
+        let meansChartInstance = null;
+        let diffsChartInstance = null;
+        
+        const Stat = {
+            tCdf: function(t, df) {
+                let a = df / 2;
+                let x = df / (df + t * t);
+
+                function ibeta(x, a, b) {
+                    let bt = Math.exp(gammaln(a + b) - gammaln(a) - gammaln(b) + a * Math.log(x) + b * Math.log(1 - x));
+                    if (x < (a + 1) / (a + b + 2)) {
+                        return bt * betacf(x, a, b) / a;
+                    } else {
+                        return 1 - bt * betacf(1 - x, b, a) / b;
+                    }
+                }
+
+                function betacf(x, a, b) {
+                    const maxIterations = 100;
+                    const epsilon = 1.0e-15;
+                    let am = 1;
+                    let bm = 1;
+                    let az = 1;
+                    let qab = a + b;
+                    let qap = a + 1;
+                    let qam = a - 1;
+                    let bz = 1 - qab * x / qap;
+
+                    for (let m = 1; m <= maxIterations; m++) {
+                        let em = m;
+                        let tem = em + em;
+                        let d = em * (b - m) * x / ((qam + tem) * (a + tem));
+                        let ap = az + d * am;
+                        let bp = bz + d * bm;
+                        d = -(a + em) * (qab + em) * x / ((a + tem) * (qap + tem));
+                        let app = ap + d * az;
+                        let bpp = bp + d * bz;
+                        let aold = az;
+                        am = ap / bpp;
+                        bm = bp / bpp;
+                        az = app / bpp;
+                        bz = 1;
+                        if (Math.abs(az - aold) < (epsilon * Math.abs(az))) {
+                            return az;
+                        }
+                    }
+                    return az;
+                }
+
+                function gammaln(x) {
+                    let j = 0;
+                    let cof = [
+                        76.18009172947146, -86.50532032941677, 24.01409824083091,
+                        -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5
+                    ];
+                    let stp = 2.5066282746310005;
+                    let tmp = (x - 0.5) * Math.log(x + 5.5) - (x + 5.5);
+                    let ser = 1.000000000190015;
+                    for (j = 0; j < 6; j++) {
+                        ser += cof[j] / (x + 1 + j);
+                    }
+                    return tmp + Math.log(stp * ser / x);
+                }
+                
+                let p = ibeta(x, a, 0.5);
+                if (t > 0) {
+                   return 1 - p / 2;
+                } else {
+                   return p / 2;
+                }
+            }
+        };
+
+        calculateBtn.addEventListener('click', () => {
+            errorMessage.classList.add('hidden');
+            const dataA = document.getElementById('groupA').value.trim().split(/[\s,]+/).filter(Boolean).map(Number);
+            const dataB = document.getElementById('groupB').value.trim().split(/[\s,]+/).filter(Boolean).map(Number);
+            const alpha = parseFloat(document.getElementById('alpha').value);
+
+            if (dataA.length === 0 || dataB.length === 0 || dataA.some(isNaN) || dataB.some(isNaN)) {
+                showError("Please enter valid numerical data for both groups.");
+                return;
+            }
+
+            if (dataA.length !== dataB.length) {
+                showError("Group A and Group B must have the same number of data points for a paired test.");
+                return;
+            }
+            
+            if (dataA.length < 2) {
+                showError("You need at least two data points to perform the test.");
+                return;
+            }
+
+            placeholderSection.classList.add('hidden');
+            resultsSection.classList.remove('hidden');
+
+            const differences = dataB.map((val, i) => val - dataA[i]);
+            const n = differences.length;
+            const meanDiff = differences.reduce((a, b) => a + b, 0) / n;
+            const stdDevDiff = Math.sqrt(differences.map(x => Math.pow(x - meanDiff, 2)).reduce((a, b) => a + b, 0) / (n - 1));
+            const stdErrDiff = stdDevDiff / Math.sqrt(n);
+            const tStat = stdErrDiff > 0 ? meanDiff / stdErrDiff : 0;
+            const df = n - 1;
+
+            const pValue = tStat === 0 ? 1.0 : 2 * (1 - Stat.tCdf(Math.abs(tStat), df));
+
+            const meanA = dataA.reduce((a, b) => a + b, 0) / dataA.length;
+            const meanB = dataB.reduce((a, b) => a + b, 0) / dataB.length;
+            
+            displayResults(pValue, tStat, df, alpha, meanA, meanB);
+            renderMeansChart(meanA, meanB);
+            renderDiffsChart(differences);
+        });
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.remove('hidden');
+            resultsSection.classList.add('hidden');
+            placeholderSection.classList.remove('hidden');
+        }
+
+        function displayResults(pValue, tStat, df, alpha, meanA, meanB) {
+            document.getElementById('p-value').textContent = pValue.toFixed(4);
+            document.getElementById('t-statistic').textContent = tStat.toFixed(4);
+            document.getElementById('df').textContent = df;
+
+            const summaryDiv = document.getElementById('results-summary');
+            const summaryText = document.getElementById('summary-text');
+            const summaryDetail = document.getElementById('summary-detail');
+
+            if (pValue < alpha) {
+                summaryDiv.className = 'p-4 rounded-md mb-6 text-center bg-green-100 text-green-800';
+                summaryText.textContent = "Statistically Significant Result";
+                const winner = meanB > meanA ? 'Group B (Variant)' : 'Group A (Control)';
+                summaryDetail.textContent = `The difference between the groups is statistically significant. ${winner} performed better.`;
+            } else {
+                summaryDiv.className = 'p-4 rounded-md mb-6 text-center bg-slate-100 text-slate-800';
+                summaryText.textContent = "Result Not Statistically Significant";
+                summaryDetail.textContent = `The observed difference between the groups is not large enough to be considered statistically significant at the ${alpha} level.`;
+            }
+        }
+
+        function renderMeansChart(meanA, meanB) {
+            const ctx = document.getElementById('meansChart').getContext('2d');
+            if (meansChartInstance) {
+                meansChartInstance.destroy();
+            }
+            meansChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Group A (Control)', 'Group B (Variant)'],
+                    datasets: [{
+                        label: 'Mean Value',
+                        data: [meanA, meanB],
+                        backgroundColor: ['rgba(100, 116, 139, 0.6)', 'rgba(59, 130, 246, 0.6)'],
+                        borderColor: ['rgba(100, 116, 139, 1)', 'rgba(59, 130, 246, 1)'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Mean: ${context.raw.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Mean Value'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderDiffsChart(differences) {
+            const min = Math.min(...differences);
+            const max = Math.max(...differences);
+            const range = max - min;
+            const numBins = Math.min(10, Math.ceil(Math.sqrt(differences.length)));
+            const binWidth = range > 0 ? range / numBins : 1;
+            
+            const bins = {};
+            const labels = [];
+
+            for (let i = 0; i < numBins; i++) {
+                const binStart = min + i * binWidth;
+                const binEnd = binStart + binWidth;
+                const label = `${binStart.toFixed(2)} to ${binEnd.toFixed(2)}`;
+                labels.push(label);
+                bins[label] = 0;
+            }
+
+            differences.forEach(d => {
+                let binIndex = range > 0 ? Math.floor((d - min) / binWidth) : 0;
+                binIndex = Math.min(binIndex, numBins - 1);
+                const label = labels[binIndex];
+                if(label) bins[label]++;
+            });
+            
+            const ctx = document.getElementById('diffsChart').getContext('2d');
+            if (diffsChartInstance) {
+                diffsChartInstance.destroy();
+            }
+            diffsChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(bins),
+                    datasets: [{
+                        label: 'Frequency',
+                        data: Object.values(bins),
+                        backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Frequency (Count)'
+                            }
+                        },
+                        x: {
+                           title: {
+                               display: true,
+                               text: 'Difference (B - A)'
+                           }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

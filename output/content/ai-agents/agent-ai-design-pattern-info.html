@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI Design Patterns: An Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic is structured as a top-down journey into agentic AI. It begins with a high-level "What is an Agent?" hook, then visually deconstructs its "Anatomy." It proceeds to showcase the "Core Patterns" as actionable blueprints. A "Pattern Selection" radar chart provides a practical decision-making tool. The narrative concludes by illustrating a pattern "In Action" to solidify understanding. This flow was chosen to guide a user from abstract concepts to concrete examples in a visually engaging and logical sequence. -->
+    <!-- Visualization & Content Choices: 
+        - Agent Anatomy: Data Point -> Core components of an agent. Goal -> Organize/Inform. Viz -> HTML/CSS Diagram + Donut Chart (Chart.js). Justification -> A diagram shows the relationship between parts, while the donut chart emphasizes the LLM as the central "Planner." NO SVG.
+        - Core Patterns: Data Point -> ReAct, Reflection, Multi-Agent flows. Goal -> Organize/Show Process. Viz -> Styled HTML cards with Unicode arrows. Justification -> Clean, simple, and effective for showing sequential processes without complex libraries. NO SVG.
+        - Pattern Selection: Data Point -> Comparing patterns on multiple axes. Goal -> Compare. Viz -> Radar Chart (Chart.js). Justification -> Excellent for multi-variate comparison, offering a more engaging visual than a simple bar chart for an infographic. NO SVG.
+        - ReAct In Action: Data Point -> Step-by-step execution of a task. Goal -> Show Process. Viz -> Styled HTML vertical log. Justification -> Mimics a console output, which is an intuitive way to demonstrate the thought-action-observation loop. NO SVG.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #2E2E2E;
+            color: #F0F0F0;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 45vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .infographic-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .flow-arrow {
+            color: #F4B83E;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="container mx-auto px-4 py-8 md:py-16">
+
+        <header class="text-center mb-16 md:mb-24">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4">The Blueprint for Smart AI</h1>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-gray-300">
+                Agentic AI can reason, plan, and use tools to solve problems. This infographic breaks down the essential design patterns that make these advanced AI systems possible.
+            </p>
+        </header>
+
+        <section id="anatomy" class="mb-16 md:mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white">Anatomy of an AI Agent</h2>
+                <p class="mt-2 max-w-3xl mx-auto text-gray-300">An agent is more than just a model. It's a system of components working together. The Large Language Model (LLM) acts as the core reasoning engine, or "Planner," coordinating with other key parts.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div class="infographic-card rounded-xl p-6">
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="anatomyChart"></canvas>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="infographic-card rounded-xl p-5 flex items-center">
+                        <span class="text-3xl mr-4">💾</span>
+                        <div>
+                            <h3 class="font-bold text-white">Memory</h3>
+                            <p class="text-gray-400 text-sm">Stores conversation history and learned knowledge for context.</p>
+                        </div>
+                    </div>
+                     <div class="infographic-card rounded-xl p-5 flex items-center">
+                        <span class="text-3xl mr-4">🛠️</span>
+                        <div>
+                            <h3 class="font-bold text-white">Tools</h3>
+                            <p class="text-gray-400 text-sm">APIs and functions the agent can use, like web search or calculators.</p>
+                        </div>
+                    </div>
+                     <div class="infographic-card rounded-xl p-5 flex items-center">
+                        <span class="text-3xl mr-4">👤</span>
+                        <div>
+                            <h3 class="font-bold text-white">Profile</h3>
+                            <p class="text-gray-400 text-sm">Instructions defining the agent's identity, goals, and constraints.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="core-patterns" class="mb-16 md:mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white">Core Design Patterns</h2>
+                <p class="mt-2 max-w-3xl mx-auto text-gray-300">Patterns are reusable strategies for structuring how an agent thinks and acts. These are the fundamental blueprints for building capable agents.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="infographic-card rounded-xl p-6 text-center">
+                    <h3 class="text-xl font-bold text-white mb-3">ReAct</h3>
+                    <p class="text-gray-400 text-sm mb-4">The agent "thinks out loud" before acting, making its reasoning transparent.</p>
+                    <div class="flex items-center justify-center space-x-2">
+                        <span class="font-semibold">Thought</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="font-semibold">Action</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="font-semibold">Observe</span>
+                    </div>
+                </div>
+                <div class="infographic-card rounded-xl p-6 text-center">
+                    <h3 class="text-xl font-bold text-white mb-3">Reflection</h3>
+                    <p class="text-gray-400 text-sm mb-4">The agent critiques and improves its own work, leading to higher quality results.</p>
+                     <div class="flex items-center justify-center space-x-2">
+                        <span class="font-semibold">Generate</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="font-semibold">Critique</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="font-semibold">Refine</span>
+                    </div>
+                </div>
+                <div class="infographic-card rounded-xl p-6 text-center md:col-span-2 lg:col-span-1">
+                    <h3 class="text-xl font-bold text-white mb-3">Multi-Agent</h3>
+                    <p class="text-gray-400 text-sm mb-4">A team of specialized agents collaborates to solve complex problems.</p>
+                     <div class="flex items-center justify-center space-x-2">
+                        <span class="font-semibold">Manager</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="font-semibold">Specialists</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="selection" class="mb-16 md:mb-24">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white">How to Choose a Pattern</h2>
+                <p class="mt-2 max-w-3xl mx-auto text-gray-300">The right pattern depends on your goal. This chart compares key patterns across different factors to help you decide which blueprint fits your project's needs.</p>
+            </div>
+            <div class="infographic-card rounded-xl p-4 md:p-6">
+                 <div class="chart-container">
+                    <canvas id="patternRadarChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="in-action" class="mb-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white">ReAct Pattern In Action</h2>
+                <p class="mt-2 max-w-3xl mx-auto text-gray-300">Here’s a simplified look at how an agent uses the ReAct pattern to answer a question. Notice the cycle of thinking, acting, and observing the result.</p>
+            </div>
+            <div class="max-w-2xl mx-auto">
+                <div class="border-l-4 border-purple-400 pl-6 space-y-6">
+                    <div class="relative">
+                        <div class="absolute -left-[1.6rem] top-1 h-4 w-4 rounded-full bg-purple-400"></div>
+                        <p class="text-gray-400 text-sm">USER GOAL</p>
+                        <p class="font-semibold text-white text-lg">"What's the weather in Paris?"</p>
+                    </div>
+                    <div class="relative">
+                         <div class="absolute -left-[1.6rem] top-1 h-4 w-4 rounded-full bg-purple-400"></div>
+                        <p class="text-purple-300 text-sm">THOUGHT</p>
+                        <p class="text-gray-200">I need to find the weather. I should use my weather search tool.</p>
+                    </div>
+                    <div class="relative">
+                         <div class="absolute -left-[1.6rem] top-1 h-4 w-4 rounded-full bg-purple-400"></div>
+                        <p class="text-orange-300 text-sm">ACTION</p>
+                        <p class="text-gray-200 font-mono">search_weather(city="Paris")</p>
+                    </div>
+                    <div class="relative">
+                         <div class="absolute -left-[1.6rem] top-1 h-4 w-4 rounded-full bg-purple-400"></div>
+                        <p class="text-teal-300 text-sm">OBSERVATION</p>
+                        <p class="text-gray-200">API returned: { "temp": "15°C", "condition": "Sunny" }</p>
+                    </div>
+                    <div class="relative">
+                         <div class="absolute -left-[1.6rem] top-1 h-4 w-4 rounded-full bg-purple-400"></div>
+                        <p class="text-purple-300 text-sm">THOUGHT</p>
+                        <p class="text-gray-200">I have the answer. I will now respond to the user.</p>
+                    </div>
+                     <div class="relative">
+                         <div class="absolute -left-[1.6rem] top-1 h-4 w-4 rounded-full bg-green-400"></div>
+                        <p class="text-green-300 text-sm">FINAL ANSWER</p>
+                        <p class="font-semibold text-white text-lg">The weather in Paris is 15°C and sunny.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+<!--
+    <footer class="border-t border-gray-700 mt-12 py-8">
+        <div class="container mx-auto px-4 text-center text-gray-500 text-sm">
+            <p>An infographic exploring the fundamental blueprints of modern AI systems.</p>
+        </div>
+    </footer>
+-->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const chartTextColor = '#F0F0F0';
+    const chartGridColor = 'rgba(255, 255, 255, 0.15)';
+    const energeticPalette = {
+        purple: '#5D3A9B',
+        orange: '#E66C37',
+        yellow: '#F4B83E',
+        teal: '#63A8A4',
+        dark: '#2E2E2E'
+    };
+    
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        if (Array.isArray(label)) {
+          return label.join(' ');
+        } else {
+          return label;
+        }
+    };
+
+    const wrapLabel = (label) => {
+        if (label.length <= 16) { return label; }
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + ' ' + word).trim().length > 16) {
+                lines.push(currentLine.trim());
+                currentLine = word;
+            } else {
+                currentLine = (currentLine + ' ' + word).trim();
+            }
+        });
+        lines.push(currentLine.trim());
+        return lines;
+    };
+    
+    Chart.defaults.color = chartTextColor;
+    Chart.defaults.font.family = "'Inter', sans-serif";
+
+    const anatomyCtx = document.getElementById('anatomyChart')?.getContext('2d');
+    if (anatomyCtx) {
+        new Chart(anatomyCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Planner (LLM)', 'Memory', 'Tools', 'Profile'],
+                datasets: [{
+                    data: [50, 20, 20, 10],
+                    backgroundColor: [energeticPalette.purple, energeticPalette.teal, energeticPalette.orange, energeticPalette.yellow],
+                    borderColor: energeticPalette.dark,
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 20, font: { size: 14 } }
+                    },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+    }
+
+    const radarCtx = document.getElementById('patternRadarChart')?.getContext('2d');
+    if (radarCtx) {
+        new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Complexity', 'Autonomy', 'Cost', 'Control', 'Transparency'],
+                datasets: [{
+                    label: 'ReAct',
+                    data: [3, 6, 4, 7, 9],
+                    borderColor: energeticPalette.purple,
+                    backgroundColor: 'rgba(93, 58, 155, 0.2)',
+                    pointBackgroundColor: energeticPalette.purple,
+                }, {
+                    label: 'Reflection',
+                    data: [6, 7, 7, 6, 7],
+                    borderColor: energeticPalette.orange,
+                    backgroundColor: 'rgba(230, 108, 55, 0.2)',
+                    pointBackgroundColor: energeticPalette.orange,
+                }, {
+                    label: 'Multi-Agent',
+                    data: [9, 8, 9, 4, 5],
+                    borderColor: energeticPalette.teal,
+                    backgroundColor: 'rgba(99, 168, 164, 0.2)',
+                    pointBackgroundColor: energeticPalette.teal,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: chartGridColor },
+                        grid: { color: chartGridColor },
+                        pointLabels: { font: { size: 14 } },
+                        ticks: {
+                            backdropColor: 'transparent',
+                            stepSize: 2
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 10
+                    }
+                },
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+    }
+});
+</script>
+
+</body>
+</html>

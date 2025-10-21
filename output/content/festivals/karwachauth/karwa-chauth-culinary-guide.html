@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karwa Chauth Culinary Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Saffron & Rose -->
+    <!-- Application Structure Plan: A chronologically structured SPA guiding users through the culinary journey of Karwa Chauth day. It starts with the pre-dawn 'Sargi' meal, moves to 'Healthy Fasting Tips', then to 'Breaking the Fast' recipes, and concludes with a 'Sweets & Drinks' gallery. This task-oriented flow is intuitive for someone observing the festival. Navigation is facilitated by a sticky nav bar. Interactivity is centered on recipe exploration (click-to-view) and filtering, making the content digestible and not overwhelming. -->
+    <!-- Visualization & Content Choices: Report Info: Sargi Thali -> Goal: Organize/Inform -> Viz/Presentation: Interactive HTML cards -> Interaction: Click to show full recipe in a dedicated panel -> Justification: Keeps the main UI clean while providing deep information on demand. Report Info: Healthy Diet Tips -> Goal: Inform/Compare -> Viz/Presentation: Chart.js Donut Chart showing 'Ideal Sargi Composition' & HTML info-cards for tips -> Interaction: Hover on chart for details -> Justification: The chart provides a quick, visual data summary of a balanced meal, which is more impactful than text alone. Report Info: Sweets & Drinks -> Goal: Organize/Explore -> Viz/Presentation: Filterable grid of HTML cards -> Interaction: Buttons filter content by category -> Justification: Allows users to easily browse a larger set of items based on their interest. CONFIRMING NO SVG/Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #FFF8F0; 
+        }
+        .font-tangerine {
+            font-family: 'Tangerine', cursive;
+        }
+        .active-nav {
+            color: #D65D5B;
+            border-bottom: 2px solid #D65D5B;
+        }
+        .inactive-nav {
+            color: #7f5539;
+            border-bottom: 2px solid transparent;
+        }
+        .recipe-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .active-filter {
+            background-color: #D65D5B;
+            color: white;
+        }
+        .inactive-filter {
+            background-color: #fcece0;
+            color: #7f5539;
+        }
+        .chart-container {
+            position: relative; 
+            width: 100%; 
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) { 
+            .chart-container { 
+                height: 400px; 
+            } 
+        }
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="text-[#7f5539] smooth-scroll">
+
+    <header class="text-center py-8 px-4 bg-gradient-to-b from-[#FADCD9] to-[#FFF8F0]">
+        <h1 class="font-tangerine text-7xl md:text-8xl text-[#D65D5B]">Karwa Chauth</h1>
+        <p class="text-xl md:text-2xl mt-2 text-[#b08968]">A Culinary Guide to the Festival</p>
+        <p class="max-w-3xl mx-auto mt-4 text-sm md:text-base">
+            Welcome! This guide is your companion for the beautiful festival of Karwa Chauth. Discover recipes for the pre-dawn Sargi meal, tips for a healthy fast, delightful dishes to break your fast, and traditional sweets and drinks that make the celebration complete.
+        </p>
+    </header>
+
+    <nav id="navbar" class="sticky top-0 bg-[#FFF8F0] z-10 shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center items-center space-x-4 md:space-x-8 py-3 overflow-x-auto">
+                <a href="#sargi" class="nav-link inactive-nav font-semibold text-sm md:text-base whitespace-nowrap py-2">Sargi (Pre-Fast)</a>
+                <a href="#tips" class="nav-link inactive-nav font-semibold text-sm md:text-base whitespace-nowrap py-2">Fasting Tips</a>
+                <a href="#post-fast" class="nav-link inactive-nav font-semibold text-sm md:text-base whitespace-nowrap py-2">Breaking the Fast</a>
+                <a href="#sweets" class="nav-link inactive-nav font-semibold text-sm md:text-base whitespace-nowrap py-2">Sweets & Drinks</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 md:p-8">
+        
+        <section id="sargi" class="py-12">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#c67c4d]">Sargi Thali: The Pre-Dawn Meal</h2>
+            <p class="text-center max-w-2xl mx-auto mb-8">
+                Sargi is the meal eaten before sunrise to provide sustenance and energy for the day-long fast. A balanced Sargi should include complex carbohydrates, proteins, and healthy fats. Here are some ideas to make your Sargi both nutritious and delicious.
+            </p>
+            <div class="grid md:grid-cols-12 gap-8">
+                <div id="sargi-recipe-grid" class="md:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                </div>
+                <div id="sargi-recipe-display" class="md:col-span-6 bg-white rounded-2xl p-6 shadow-lg h-full min-h-[300px] flex flex-col justify-center">
+                    <div id="sargi-recipe-content">
+                         <p class="text-center text-lg text-gray-500">Select a recipe to view details</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tips" class="py-12 bg-white rounded-2xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#c67c4d]">Healthy Karwa Chauth Diet Tips</h2>
+            <p class="text-center max-w-2xl mx-auto mb-8">
+                Fasting can be challenging, but with the right approach, you can stay energetic and healthy throughout the day. This section provides tips for a balanced Sargi and advice on how to stay hydrated and comfortable while you fast.
+            </p>
+            <div class="grid lg:grid-cols-2 gap-8 items-center">
+                <div class="px-4">
+                    <h3 class="font-bold text-xl mb-4 text-center">Energy & Hydration Tips</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3 text-[#D65D5B]">❖</span>
+                            <div><strong>Stay Hydrated:</strong> Drink plenty of water before your fast begins. Coconut water or fresh juice in your Sargi can also help.</div>
+                        </li>
+                        <li class="flex items-start">
+                             <span class="text-xl mr-3 text-[#D65D5B]">❖</span>
+                            <div><strong>Avoid Sugar:</strong> Sugary foods can cause a quick energy crash. Opt for complex carbs like whole wheat roti or oats for sustained energy.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3 text-[#D65D5B]">❖</span>
+                            <div><strong>Include Protein:</strong> Foods like paneer, nuts, and yogurt will keep you feeling full for longer.</div>
+                        </li>
+                        <li class="flex items-start">
+                             <span class="text-xl mr-3 text-[#D65D5B]">❖</span>
+                            <div><strong>Keep Busy:</strong> Engaging in light activities can help distract you from feelings of hunger or thirst.</div>
+                        </li>
+                         <li class="flex items-start">
+                             <span class="text-xl mr-3 text-[#D65D5B]">❖</span>
+                            <div><strong>Break Fast Gently:</strong> Start with a glass of water and a date to rehydrate and replenish your sugar levels slowly before your main meal.</div>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                     <h3 class="font-bold text-xl mb-4 text-center">Ideal Sargi Plate Composition</h3>
+                    <div class="chart-container">
+                        <canvas id="sargiChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="post-fast" class="py-12">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#c67c4d]">Breaking the Fast</h2>
+             <p class="text-center max-w-2xl mx-auto mb-8">
+                After a day of fasting, it's important to eat a meal that is light, replenishing, and easy to digest. Here are some delicious and festive recipes that are perfect for breaking your fast and celebrating the evening.
+            </p>
+            <div class="grid md:grid-cols-12 gap-8">
+                 <div id="post-fast-recipe-display" class="md:col-span-6 bg-white rounded-2xl p-6 shadow-lg h-full min-h-[300px] flex flex-col justify-center order-2 md:order-1">
+                    <div id="post-fast-recipe-content">
+                         <p class="text-center text-lg text-gray-500">Select a recipe to view details</p>
+                    </div>
+                </div>
+                <div id="post-fast-recipe-grid" class="md:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-6 order-1 md:order-2">
+                </div>
+            </div>
+        </section>
+
+        <section id="sweets" class="py-12">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#c67c4d]">Festive Sweets & Drinks</h2>
+            <p class="text-center max-w-2xl mx-auto mb-8">
+                No festival is complete without traditional sweets and refreshing drinks. Explore this collection of beloved recipes, from rich kheer to refreshing chaach, to add a sweet touch to your Karwa Chauth celebrations.
+            </p>
+            <div class="flex justify-center space-x-2 md:space-x-4 mb-8">
+                <button class="filter-btn active-filter px-4 py-2 rounded-full font-semibold transition" data-filter="all">All</button>
+                <button class="filter-btn inactive-filter px-4 py-2 rounded-full font-semibold transition" data-filter="sweet">Sweets</button>
+                <button class="filter-btn inactive-filter px-4 py-2 rounded-full font-semibold transition" data-filter="drink">Drinks</button>
+            </div>
+            <div id="sweets-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="text-center p-6 bg-[#FADCD9] mt-8">
+        <p class="text-[#7f5539]">Happy Karwa Chauth!</p>
+    </footer>
+
+    <script>
+        const sargiRecipes = [
+            {
+                name: "Paneer Paratha",
+                description: "Wholesome flatbread stuffed with spiced cottage cheese.",
+                ingredients: ["2 cups Whole Wheat Flour", "1 cup Grated Paneer", "1 Onion, finely chopped", "1 Green Chili, chopped", "Coriander leaves", "Spices (Coriander, Cumin, Turmeric)", "Ghee/Oil for cooking", "Salt"],
+                instructions: "Knead a soft dough. Mix paneer, onion, chili, coriander, and spices for the filling. Roll out small discs of dough, place filling in the center, and seal. Roll out again into a paratha. Cook on a hot tawa with ghee until golden brown on both sides."
+            },
+            {
+                name: "Mixed Fruit Raita",
+                description: "A cooling yogurt dish with fresh fruits.",
+                ingredients: ["2 cups Plain Yogurt", "1 cup Mixed Fruits (Apple, Banana, Pomegranate)", "1 tsp Roasted Cumin Powder", "A pinch of Black Salt", "1 tbsp Sugar (optional)"],
+                instructions: "Whisk the yogurt until smooth. Add sugar if using. Gently fold in the chopped fruits. Sprinkle with cumin powder and black salt. Chill before serving."
+            },
+            {
+                name: "Almond & Date Milkshake",
+                description: "An energy-boosting drink to start your day.",
+                ingredients: ["1 cup Milk", "8-10 Almonds, soaked", "4-5 Dates, pitted", "A pinch of Cardamom Powder"],
+                instructions: "Peel the soaked almonds. Blend the almonds, dates, and a little milk to a smooth paste. Add the remaining milk and cardamom powder, and blend again until frothy. Serve immediately."
+            },
+            {
+                name: "Oats Upma",
+                description: "A quick, healthy, and savory oatmeal porridge.",
+                ingredients: ["1 cup Rolled Oats", "1 Onion, chopped", "1 Tomato, chopped", "Mixed Vegetables (Carrots, Peas)", "Mustard Seeds, Curry Leaves", "2 cups Water", "Oil, Salt"],
+                instructions: "Lightly dry roast the oats and set aside. In a pan, heat oil, add mustard seeds and curry leaves. Sauté onions, then add vegetables and tomatoes. Add water and salt, and bring to a boil. Stir in the roasted oats, cover, and cook for 5-7 minutes until done."
+            }
+        ];
+
+        const postFastRecipes = [
+            {
+                name: "Dahi Vada",
+                description: "Soft lentil dumplings soaked in creamy yogurt.",
+                ingredients: ["1 cup Urad Dal, soaked", "2 cups Yogurt, whisked", "Tamarind Chutney, Mint Chutney", "Roasted Cumin Powder, Red Chili Powder", "Oil for frying", "Salt"],
+                instructions: "Grind the soaked dal to a smooth batter. Beat until light and fluffy. Fry spoonfuls of batter in medium-hot oil until golden. Soak the fried vadas in warm water for 15-20 minutes, then gently squeeze out excess water. Arrange in a dish, pour over the whisked yogurt. Garnish with chutneys and spices."
+            },
+            {
+                name: "Aloo Puri",
+                description: "Fluffy fried bread served with a savory potato curry.",
+                ingredients: ["For Puri: 2 cups Wheat Flour, Oil for frying", "For Aloo Sabzi: 4 Potatoes, boiled & cubed", "2 Tomatoes, pureed", "Ginger-Garlic Paste", "Spices (Turmeric, Cumin, Coriander)", "Oil, Salt"],
+                instructions: "For sabzi, heat oil, add cumin seeds, then ginger-garlic paste and tomato puree. Add spices and cook until oil separates. Add potatoes, water for gravy, and salt. Simmer for 10 minutes. For puri, knead a stiff dough, roll out small circles, and deep fry in hot oil until they puff up."
+            },
+            {
+                name: "Moong Dal Cheela",
+                description: "Light and savory crepes made from green gram lentils.",
+                ingredients: ["1 cup Moong Dal, soaked", "1 Onion, chopped", "1 Green Chili", "Grated Ginger", "Coriander leaves", "Oil for cooking", "Salt"],
+                instructions: "Grind soaked moong dal with ginger and green chili to a smooth batter. Add salt, onion, and coriander. Heat a non-stick tawa, spread a ladleful of batter into a thin circle. Drizzle some oil around the edges and cook until golden brown. Flip and cook the other side."
+            },
+            {
+                name: "Sitafal Sabzi",
+                description: "A sweet and sour pumpkin curry.",
+                ingredients: ["500g Pumpkin (Sitafal), cubed", "1 tsp Fenugreek Seeds", "2 Dried Red Chilies", "1 tsp Turmeric Powder", "1 tsp Amchur (Dry Mango Powder)", "1 tbsp Jaggery/Sugar", "Oil, Salt"],
+                instructions: "Heat oil in a pan, add fenugreek seeds and dried red chilies. Once they splutter, add the pumpkin cubes, turmeric, and salt. Cover and cook on low heat until the pumpkin is tender. Mash it slightly. Add amchur and jaggery, mix well, and cook for another 2 minutes."
+            }
+        ];
+
+        const sweetsAndDrinks = [
+            { name: "Kheer", type: "sweet", icon: "🍮", description: "A classic Indian rice pudding made with milk, rice, and sugar, flavored with cardamom and nuts." },
+            { name: "Badam Milk", type: "drink", icon: "🥛", description: "Warm, comforting milk infused with the richness of almonds, saffron, and cardamom." },
+            { name: "Ghevar", type: "sweet", icon: "🍩", description: "A disc-shaped Rajasthani sweet made from flour, soaked in sugar syrup, and often topped with rabri." },
+            { name: "Chaach", type: "drink", icon: "🥤", description: "A refreshing spiced buttermilk that aids digestion and cools the body." },
+            { name: "Phirni", type: "sweet", icon: "🍚", description: "A creamy ground rice pudding, set in earthen bowls and garnished with pistachios." },
+            { name: "Thandai", type: "drink", icon: "🍹", description: "A cold, invigorating drink made with a mixture of almonds, fennel seeds, and other spices." },
+            { name: "Gulab Jamun", type: "sweet", icon: "⚫", description: "Soft, melt-in-your-mouth milk solids dumplings soaked in a fragrant sugar syrup." },
+            { name: "Lassi", type: "drink", icon: "🍶", description: "A popular yogurt-based drink, which can be sweet or salty, perfect for rehydration." }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const sargiGrid = document.getElementById('sargi-recipe-grid');
+            const sargiDisplay = document.getElementById('sargi-recipe-content');
+            const postFastGrid = document.getElementById('post-fast-recipe-grid');
+            const postFastDisplay = document.getElementById('post-fast-recipe-content');
+            const sweetsGrid = document.getElementById('sweets-grid');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            function createRecipeCard(recipe, section) {
+                const card = document.createElement('div');
+                card.className = 'recipe-card bg-white rounded-2xl p-4 shadow-md cursor-pointer flex flex-col items-center text-center';
+                card.innerHTML = `<h3 class="font-bold text-lg text-[#D65D5B]">${recipe.name}</h3><p class="text-sm mt-1">${recipe.description}</p>`;
+                card.addEventListener('click', () => {
+                    displayRecipe(recipe, section);
+                    document.querySelectorAll(`#${section}-recipe-grid .recipe-card`).forEach(c => c.classList.remove('ring-2', 'ring-[#D65D5B]'));
+                    card.classList.add('ring-2', 'ring-[#D65D5B]');
+                });
+                return card;
+            }
+
+            function displayRecipe(recipe, section) {
+                const displayArea = document.getElementById(`${section}-recipe-content`);
+                displayArea.innerHTML = `
+                    <h3 class="font-bold text-2xl mb-3 text-[#D65D5B]">${recipe.name}</h3>
+                    <div class="text-left">
+                        <h4 class="font-semibold text-lg mb-1">Ingredients:</h4>
+                        <ul class="list-disc list-inside mb-3 text-sm">
+                            ${recipe.ingredients.map(i => `<li>${i}</li>`).join('')}
+                        </ul>
+                        <h4 class="font-semibold text-lg mb-1">Instructions:</h4>
+                        <p class="text-sm">${recipe.instructions}</p>
+                    </div>
+                `;
+            }
+
+            sargiRecipes.forEach(recipe => sargiGrid.appendChild(createRecipeCard(recipe, 'sargi')));
+            postFastRecipes.forEach(recipe => postFastGrid.appendChild(createRecipeCard(recipe, 'post-fast')));
+            
+            if (sargiRecipes.length > 0) {
+                 displayRecipe(sargiRecipes[0], 'sargi');
+                 sargiGrid.children[0].classList.add('ring-2', 'ring-[#D65D5B]');
+            }
+            if(postFastRecipes.length > 0) {
+                displayRecipe(postFastRecipes[0], 'post-fast');
+                postFastGrid.children[0].classList.add('ring-2', 'ring-[#D65D5B]');
+            }
+
+            function populateSweetsGrid(filter) {
+                sweetsGrid.innerHTML = '';
+                const filteredItems = sweetsAndDrinks.filter(item => filter === 'all' || item.type === filter);
+                filteredItems.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-2xl p-6 shadow-md text-center recipe-card';
+                    card.innerHTML = `
+                        <div class="text-5xl mb-3">${item.icon}</div>
+                        <h3 class="font-bold text-xl text-[#D65D5B]">${item.name}</h3>
+                        <p class="text-sm mt-2">${item.description}</p>
+                    `;
+                    sweetsGrid.appendChild(card);
+                });
+            }
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active-filter');
+                        btn.classList.add('inactive-filter');
+                    });
+                    button.classList.add('active-filter');
+                    button.classList.remove('inactive-filter');
+                    populateSweetsGrid(button.dataset.filter);
+                });
+            });
+
+            populateSweetsGrid('all');
+            
+            const ctx = document.getElementById('sargiChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Complex Carbs', 'Protein', 'Healthy Fats', 'Fruits & Veggies'],
+                    datasets: [{
+                        label: 'Sargi Composition',
+                        data: [40, 25, 15, 20],
+                        backgroundColor: [
+                            '#e5989b',
+                            '#b5838d',
+                            '#7f5539',
+                            '#D65D5B'
+                        ],
+                        borderColor: '#FFF8F0',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#7f5539',
+                                font: {
+                                    family: "'Quicksand', sans-serif",
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            const navbar = document.getElementById('navbar');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: `-${navbar.offsetHeight}px`,
+                threshold: 0.4
+            };
+
+            const sectionObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active-nav', link.getAttribute('href') === `#${id}`);
+                            link.classList.toggle('inactive-nav', link.getAttribute('href') !== `#${id}`);
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

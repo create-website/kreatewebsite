@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guru Purnima Information</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: A top-to-bottom narrative infographic. It starts with a bold title and a brief introduction. It then flows through three main sections: 1. Core Concepts (using icon-driven cards for quick information), 2. A Comparative Look at Origins (using a bar chart for visual comparison), 3. The Path of Devotion (a custom HTML/CSS flowchart showing the progression of rituals), and 4. Modern Relevance (a donut chart comparing its ethos to secular days). This linear, scroll-based narrative is ideal for an infographic, telling a clear story from foundational philosophy to contemporary practice. -->
+    <!-- Visualization & Content Choices: 1. Core Concepts: Data -> Definitions of Guru, Purnima, Parampara -> Goal: Inform -> Viz: Icon Cards (Unicode + HTML/CSS) -> Justification: Breaks down complex ideas into three visually distinct, easily digestible points. 2. Origins Comparison: Data -> Table of origins across 4 faiths -> Goal: Compare -> Viz: Horizontal Bar Chart (Chart.js) -> Justification: A bar chart is more visually engaging and effective for comparing the thematic emphasis of the four traditions than a static table. 3. Rituals Progression: Data -> Analysis of rituals from external to internal -> Goal: Organize -> Viz: Flowchart (HTML/CSS) -> Justification: A flowchart clearly illustrates the pedagogical process described in the text, showing a journey from physical acts to internal realization. NO SVG/Mermaid used. 4. Modern Ethos: Data -> Comparison table of Guru Purnima vs. Teacher's Days -> Goal: Compare -> Viz: Donut Chart (Chart.js) -> Justification: A donut chart provides a simple, high-impact visual that immediately conveys the primary distinction between the spiritual focus of Guru Purnima and the professional focus of secular days. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A2463;
+            color: #FFFFFF;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .donut-chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 400px; }
+            .donut-chart-container { height: 350px; }
+        }
+        .flow-arrow {
+            content: '';
+            position: absolute;
+            right: -2.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 15px solid #FF8811;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-6 py-12 md:py-20">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4">The Luminous Night</h1>
+            <h2 class="text-2xl md:text-3xl font-semibold text-[#FFF275]">An Infographic Guide to Guru Purnima</h2>
+            <p class="max-w-3xl mx-auto mt-6 text-lg text-gray-300">
+                Observed on the full moon of Ashadha, Guru Purnima is a profound spiritual festival celebrating the transmission of wisdom. Explore the core concepts, diverse origins, and modern relevance of this timeless tradition.
+            </p>
+        </header>
+
+        <section class="mb-20">
+            <h3 class="text-3xl font-bold text-center mb-10 text-[#FFF275]">The Three Pillars of Illumination</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
+                    <span class="text-6xl mb-4 block">💡</span>
+                    <h4 class="text-2xl font-bold mb-2">The Guru</h4>
+                    <p class="text-gray-300">The "dispeller of darkness." Not just a teacher, but a universal principle of illuminating consciousness that guides a seeker from ignorance to self-realization.</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
+                    <span class="text-6xl mb-4 block">🌕</span>
+                    <h4 class="text-2xl font-bold mb-2">The Purnima</h4>
+                    <p class="text-gray-300">The full moon, symbolizing completion and fullness. On this day, the disciple's mind is believed to be most receptive to the Guru's wisdom, like the moon fully reflecting the sun's light.</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
+                    <span class="text-6xl mb-4 block">🔗</span>
+                    <h4 class="text-2xl font-bold mb-2">The Parampara</h4>
+                    <p class="text-gray-300">The sacred, unbroken teacher-disciple lineage. An "uninterrupted succession" through which subtle spiritual knowledge is transmitted across generations.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h3 class="text-3xl font-bold text-center mb-4 text-[#FFF275]">A Tapestry of Origins</h3>
+            <p class="text-lg text-gray-300 text-center max-w-3xl mx-auto mb-10">Guru Purnima is celebrated across multiple Dharmic traditions, each anchoring the day to a foundational event in its lineage. This chart compares the key figures and events commemorated.</p>
+            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20">
+                <div class="chart-container">
+                    <canvas id="originsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h3 class="text-3xl font-bold text-center mb-4 text-[#FFF275]">The Path of Gratitude</h3>
+            <p class="text-lg text-gray-300 text-center max-w-3xl mx-auto mb-12">The rituals of Guru Purnima form a "spiritual technology" designed to guide a disciple from external acts of reverence to a deep, internal realization of wisdom.</p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-y-8 md:gap-x-10">
+                <div class="relative text-center">
+                    <div class="bg-[#3E92CC] rounded-lg p-6 w-64">
+                        <h4 class="text-xl font-bold">External Reverence</h4>
+                        <p class="text-sm">Physical acts like <span class="font-semibold">Guru Puja</span> (worship) and <span class="font-semibold">Padapuja</span> (honoring feet) to cultivate humility.</p>
+                    </div>
+                    <div class="flow-arrow hidden md:block"></div>
+                </div>
+                <div class="relative text-center">
+                    <div class="bg-[#FF8811] rounded-lg p-6 w-64">
+                        <h4 class="text-xl font-bold">Vocal Attunement</h4>
+                        <p class="text-sm">Disciplines of sacred sound, like chanting mantras and hymns, to align the mind with the Guru's wisdom.</p>
+                    </div>
+                    <div class="flow-arrow hidden md:block"></div>
+                </div>
+                <div class="relative text-center">
+                    <div class="bg-[#E74C3C] rounded-lg p-6 w-64">
+                        <h4 class="text-xl font-bold">Internal Realization</h4>
+                        <p class="text-sm">Deep, silent practices like <span class="font-semibold">Mauna</span> (silence) and meditation to directly experience the "Guru within."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h3 class="text-3xl font-bold text-center mb-4 text-[#FFF275]">Modern Relevance: A World of Difference</h3>
+            <p class="text-lg text-gray-300 text-center max-w-3xl mx-auto mb-10">While many cultures honor educators, the ethos of Guru Purnima is distinct. This visualization highlights the fundamental difference in focus compared to most secular Teacher's Days.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20">
+                    <div class="donut-chart-container">
+                        <canvas id="ethosChart"></canvas>
+                    </div>
+                </div>
+                <div class="text-left">
+                    <div class="mb-6">
+                        <h4 class="text-2xl font-bold text-[#FF8811] mb-2">Spiritual & Holistic Focus</h4>
+                        <p class="text-gray-300">Guru Purnima honors the Guru for guiding a disciple's entire being toward enlightenment. The relationship is sacred, transformative, and lifelong, encompassing moral, intellectual, and spiritual dimensions.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-bold text-[#3E92CC] mb-2">Professional & Appreciative Focus</h4>
+                        <p class="text-gray-300">Most secular Teacher's Days (like those in the US & UK) focus on thanking educators for their professional role and societal contribution. The relationship is primarily academic and contractual.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+<!--
+        <footer class="text-center mt-20 border-t border-white/20 pt-8">
+            <p class="text-gray-400">In a world of fleeting information, Guru Purnima champions the enduring value of wisdom, reminding us to honor the guiding lights on our journey from darkness to understanding.</p>
+        </footer>
+-->
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const wrapLabel = (label) => {
+        const maxLength = 16;
+        if (label.length <= maxLength) return label;
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + word).length > maxLength) {
+                lines.push(currentLine.trim());
+                currentLine = '';
+            }
+            currentLine += word + ' ';
+        });
+        lines.push(currentLine.trim());
+        return lines;
+    };
+
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        return Array.isArray(label) ? label.join(' ') : label;
+    };
+    
+    const originsData = {
+        labels: [
+            'Hinduism (Yogic): Shiva as Adiyogi',
+            'Hinduism (Vedic): Veda Vyasa',
+            'Buddhism: Gautama Buddha',
+            'Jainism: Lord Mahavira'
+        ].map(wrapLabel),
+        datasets: [{
+            label: 'Thematic Emphasis',
+            data: [
+                { x: 10, y: 'Universal consciousness & inner experience'},
+                { x: 10, y: 'Preservation of scriptural wisdom'},
+                { x: 10, y: 'Establishment of the Dharma & Sangha'},
+                { x: 10, y: 'Formation of the monastic lineage'}
+            ],
+            backgroundColor: ['#3E92CC', '#FFF275', '#FF8811', '#E74C3C'],
+            borderColor: '#0A2463',
+            borderWidth: 2,
+            barThickness: 25,
+        }]
+    };
+
+    const originsCtx = document.getElementById('originsChart').getContext('2d');
+    new Chart(originsCtx, {
+        type: 'bar',
+        data: originsData,
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    display: false,
+                    grid: { display: false }
+                },
+                y: {
+                    ticks: { 
+                        color: '#FFFFFF',
+                        font: { size: 14, weight: '600' }
+                    },
+                    grid: { display: false, drawBorder: false }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback,
+                        label: function(context) {
+                            return context.raw.y || '';
+                        }
+                    },
+                    backgroundColor: '#FFF',
+                    titleColor: '#0A2463',
+                    bodyColor: '#0A2463',
+                    titleFont: { weight: 'bold', size: 14 },
+                    bodyFont: { size: 12 },
+                    padding: 10,
+                    cornerRadius: 5,
+                    displayColors: false
+                }
+            }
+        }
+    });
+
+    const ethosData = {
+        labels: ['Spiritual & Holistic (Guru Purnima)', 'Professional & Appreciative (Secular Days)'],
+        datasets: [{
+            data: [50, 50],
+            backgroundColor: ['#FF8811', '#3E92CC'],
+            borderColor: '#0A2463',
+            borderWidth: 4,
+            hoverOffset: 4
+        }]
+    };
+
+    const ethosCtx = document.getElementById('ethosChart').getContext('2d');
+    new Chart(ethosCtx, {
+        type: 'doughnut',
+        data: ethosData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#FFFFFF',
+                        font: { size: 12 },
+                        boxWidth: 15,
+                        padding: 20
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    backgroundColor: '#FFF',
+                    titleColor: '#0A2463',
+                    bodyColor: '#0A2463',
+                    padding: 10,
+                    cornerRadius: 5,
+                    displayColors: true
+                }
+            }
+        }
+    });
+});
+</script>
+
+</body>
+</html>

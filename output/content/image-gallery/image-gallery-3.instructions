@@ -1,0 +1,14 @@
+🪄 How to Add More
+
+Add new entries to the images array like:
+
+{
+  url: "https://storage.googleapis.com/imagesg/festivals/christmas/tree.jpg",
+  category: "christmas",
+  keywords: "tree lights celebration"
+}
+
+
+and add a matching button:
+
+<button onclick="filterImages('christmas')">Christmas</button>

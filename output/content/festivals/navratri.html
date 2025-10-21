@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navratri: An Interactive Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Sacred Accents -->
+    <!-- Application Structure Plan: A thematic, single-page application designed for non-linear exploration. The structure includes a sticky navigation bar for quick access to key themes: 'The Journey' (an interactive day-by-day guide to the Navadurga), 'The Myths' (a comparative view of the core legends), 'The Rituals' (an accordion-style deep dive into practices), and 'The Celebrations' (a visual, card-based exploration of regional diversity). This structure was chosen to break down the dense report into digestible, user-driven sections, prioritizing engagement and understanding over the linear format of the source document. The user can jump to any topic of interest, making the experience more personal and efficient. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: The 9 forms of Durga, their attributes, colors, and offerings. -> Goal: Inform/Organize. -> Viz/Method: Interactive card-based dashboard. A grid of buttons, one for each day, updates a central display area. -> Interaction: On-click updates of text, icons, and background color. -> Justification: More engaging and visually dynamic than a static table. Provides immediate feedback and focuses user attention. -> Library/Method: Vanilla JS DOM manipulation.
+        - Report Info: Regional celebrations (Garba, Durga Puja, etc.). -> Goal: Compare/Explore. -> Viz/Method: A responsive grid of cards and a Chart.js Donut chart. -> Interaction: Hover effects on cards, and the chart provides a high-level quantitative summary of celebration types. -> Justification: The cards allow for a quick visual comparison of diverse traditions, while the chart offers a unique data-driven perspective not explicitly presented in the report. -> Library/Method: Tailwind CSS, Chart.js.
+        - Report Info: Core rituals (Ghatasthapana, Vrat, Kanya Pujan). -> Goal: Inform/Organize. -> Viz/Method: HTML/JS Accordion. -> Interaction: Click to expand/collapse content. -> Justification: Manages content density effectively, allowing users to explore detailed information without cluttering the initial view. -> Library/Method: Vanilla JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDF8F2; /* Warm Neutral */
+            color: #4A2E2C;
+        }
+        .font-lora {
+            font-family: 'Lora', serif;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #D1643A; /* Accent Color */
+            border-bottom-color: #D1643A;
+        }
+        .day-selector {
+            transition: all 0.3s;
+        }
+        .day-selector.active {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .card-hover {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card-hover:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 400px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) { 
+            .chart-container { 
+                height: 400px; 
+            } 
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="text-center py-8 md:py-12 bg-amber-50">
+        <h1 class="font-lora text-4xl md:text-6xl font-bold text-[#A14A3B]">The Nine Nights of the Goddess</h1>
+        <p class="mt-4 text-lg md:text-xl text-[#4A2E2C] max-w-3xl mx-auto">An interactive exploration of Navratri's myths, rituals, and vibrant celebrations.</p>
+    </header>
+
+    <!-- Sticky Navigation -->
+    <nav id="navbar" class="sticky top-0 bg-[#FDF8F2]/80 backdrop-blur-md z-50 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center items-center h-16 space-x-4 md:space-x-8">
+                <a href="#journey" class="nav-link font-semibold text-sm md:text-base py-2">The Journey</a>
+                <a href="#myths" class="nav-link font-semibold text-sm md:text-base py-2">The Myths</a>
+                <a href="#rituals" class="nav-link font-semibold text-sm md:text-base py-2">The Rituals</a>
+                <a href="#celebrations" class="nav-link font-semibold text-sm md:text-base py-2">The Celebrations</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8 md:py-12">
+
+        <!-- Section 1: The Journey of the Goddess -->
+        <section id="journey" class="scroll-mt-24 mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-lora font-bold text-[#A14A3B]">The Journey of the Goddess</h2>
+                <p class="mt-3 text-lg text-[#4A2E2C] max-w-3xl mx-auto">Each of Navratri's nine nights is dedicated to a unique form of the Goddess Durga, representing a stage in her divine life. Click on a day below to explore the symbolism, color, and worship associated with each manifestation.</p>
+            </div>
+
+            <!-- Day Selectors -->
+            <div class="grid grid-cols-3 md:grid-cols-9 gap-2 md:gap-4 mb-8">
+                <!-- JS will populate day selectors here -->
+            </div>
+
+            <!-- Dynamic Content Display -->
+            <div id="day-display" class="p-6 md:p-8 rounded-2xl shadow-lg transition-colors duration-500 min-h-[300px] flex flex-col md:flex-row items-center gap-8" style="background-color: #FFFFFF;">
+                <div id="goddess-icon" class="w-32 h-32 md:w-48 md:h-48 rounded-full flex items-center justify-center text-6xl md:text-8xl transition-all duration-500 flex-shrink-0" style="background-color: #F3E9DD; color: #D1643A;">
+                    <span>🕉️</span>
+                </div>
+                <div id="day-details" class="text-left">
+                    <h3 id="goddess-name" class="text-2xl md:text-3xl font-bold font-lora text-[#A14A3B]">Select a Day to Begin</h3>
+                    <p id="goddess-desc" class="mt-2 text-base md:text-lg text-[#4A2E2C]">The details of the selected Goddess will appear here.</p>
+                    <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm md:text-base">
+                        <div id="goddess-bhog" class="p-3 bg-white/50 rounded-lg"><strong>Offering (Bhog):</strong> <span>-</span></div>
+                        <div id="goddess-mantra" class="p-3 bg-white/50 rounded-lg"><strong>Mantra:</strong> <span>-</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: The Myths -->
+        <section id="myths" class="scroll-mt-24 mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-lora font-bold text-[#A14A3B]">The Foundational Myths</h2>
+                <p class="mt-3 text-lg text-[#4A2E2C] max-w-3xl mx-auto">Navratri's significance is anchored in two powerful narratives of righteousness triumphing over evil. These stories provide the moral and theological framework for the festival.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white/50 p-6 rounded-2xl shadow-md">
+                    <h3 class="text-2xl font-bold font-lora text-[#D1643A]">The Slaying of Mahishasura</h3>
+                    <p class="mt-4 text-[#4A2E2C] leading-relaxed">The central myth tells of the demon king Mahishasura, who gained a boon of invincibility against any male. After he conquered the heavens, the gods pooled their energies to create the supreme warrior Goddess, Durga. Armed with divine weapons, she battled the shape-shifting demon for nine nights, finally slaying him on the tenth day. This story celebrates the ultimate power of the unified Divine Feminine to restore cosmic order when all other powers fail.</p>
+                </div>
+                <div class="bg-white/50 p-6 rounded-2xl shadow-md">
+                    <h3 class="text-2xl font-bold font-lora text-[#D1643A]">The Ramayana Connection</h3>
+                    <p class="mt-4 text-[#4A2E2C] leading-relaxed">A second narrative links the festival to the epic Ramayana. Before his final battle with the demon king Ravana, Lord Rama performed a special worship of Goddess Durga for nine days to gain her blessings and strength. His victory on the tenth day, known as Dussehra, is celebrated alongside Durga's triumph, seamlessly blending the Shakta and Vaishnava traditions and unifying them under the theme of good's victory.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: The Rituals -->
+        <section id="rituals" class="scroll-mt-24 mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-lora font-bold text-[#A14A3B]">The Ritual Landscape</h2>
+                <p class="mt-3 text-lg text-[#4A2E2C] max-w-3xl mx-auto">A set of core rituals guide devotees through nine days of spiritual discipline, purification, and devotion. Click on each ritual to learn more about its practice and significance.</p>
+            </div>
+            <div id="accordion-container" class="space-y-4 max-w-4xl mx-auto">
+                <!-- JS will populate accordion items here -->
+            </div>
+        </section>
+
+        <!-- Section 4: The Celebrations -->
+        <section id="celebrations" class="scroll-mt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-lora font-bold text-[#A14A3B]">A Tapestry of Celebration</h2>
+                <p class="mt-3 text-lg text-[#4A2E2C] max-w-3xl mx-auto">Navratri is celebrated with incredible diversity across India. While the core spirit remains, each region has unique traditions that highlight different paths to the divine, from ecstatic dance and grand artistry to epic theatre and philosophical displays.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
+                <div id="celebrations-cards" class="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- JS will populate celebration cards here -->
+                </div>
+                <div class="lg:col-span-2 flex flex-col items-center justify-center bg-white/50 p-6 rounded-2xl shadow-md">
+                    <h3 class="text-xl font-bold font-lora text-[#D1643A] mb-4 text-center">Forms of Celebration</h3>
+                     <p class="text-sm text-[#4A2E2C] text-center mb-4">The regional traditions of Navratri can be broadly categorized by their primary mode of expression, showcasing the festival's multifaceted nature.</p>
+                    <div class="chart-container">
+                        <canvas id="celebrationsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+<!--
+    <footer class="bg-amber-50 mt-16 py-8">
+        <div class="container mx-auto px-4 text-center text-[#4A2E2C]">
+            <h3 class="text-2xl font-bold font-lora text-[#A14A3B]">Vijayadashami: The Tenth Day of Triumph</h3>
+            <p class="mt-3 max-w-3xl mx-auto">The nine nights culminate in Vijayadashami, a day that synthesizes the victories of both Durga and Rama. It is a time for climactic rituals like idol immersion and the burning of effigies, symbolizing the ultimate triumph of righteousness. Beyond myth, it's a call for personal transformation—a reminder to conquer our inner demons and commit to a path of virtue.</p>
+        </div>
+    </footer>
+-->
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    const navratriData = {
+        days: [
+            { day: 1, name: 'Shailaputri', desc: 'The Daughter of the Mountain, she represents purity, determination, and the power of nature. She is the maiden form of the Goddess, beginning her journey.', color: 'White', bgColor: '#FFFFFF', icon: '⛰️', bhog: 'Ghee or Ghee-based sweets', mantra: 'Om Devi Shailputryai Swaha' },
+            { day: 2, name: 'Brahmacharini', desc: 'The Ascetic, she performs intense penance to win Shiva. This form symbolizes perseverance, spiritual knowledge, and devotion.', color: 'Red', bgColor: '#FECACA', icon: '🚶‍♀️', bhog: 'Sugar, Fruits', mantra: 'Om Devi Brahmcharinyai Namah' },
+            { day: 3, name: 'Chandraghanta', desc: 'The Bearer of the Bell-Shaped Moon, she is a fierce warrior riding a tiger, representing courage, grace, and the establishment of justice.', color: 'Royal Blue', bgColor: '#93C5FD', icon: '🔔', bhog: 'Kheer (milk pudding)', mantra: 'Om Devi Chandraghantayayi Namah' },
+            { day: 4, name: 'Kushmanda', desc: 'The Cosmic Egg, she is revered as the creator of the universe, which she brought into being with her gentle smile. She radiates life-giving energy.', color: 'Yellow', bgColor: '#FDE047', icon: '☀️', bhog: 'Malpua (sweet pancake)', mantra: 'Om Devi Kushmandayayi Namah' },
+            { day: 5, name: 'Skandamata', desc: 'The Mother of Skanda, she embodies the nurturing, protective, and wise aspect of the divine mother, holding her son in her lap.', color: 'Green', bgColor: '#A7F3D0', icon: '👩‍👦', bhog: 'Bananas', mantra: 'Om Devi Skandmatayayi Namah' },
+            { day: 6, name: 'Katyayani', desc: 'The Warrior, born to destroy Mahishasura. This is one of her fiercest forms, representing righteous anger and the power to overcome all evil.', color: 'Grey', bgColor: '#D1D5DB', icon: '⚔️', bhog: 'Honey', mantra: 'Om Devi Katyayanyayi Namah' },
+            { day: 7, name: 'Kalaratri', desc: 'The Dark Night, she is the most ferocious form, destroyer of darkness and ignorance. Her appearance is terrifying to evil but protective of devotees.', color: 'Orange', bgColor: '#FED7AA', icon: '🌑', bhog: 'Jaggery (Gur)', mantra: 'Om Devi Kalaratryayi Namah' },
+            { day: 8, name: 'Mahagauri', desc: 'The Great White One, she is serene and beautiful, representing purity, tranquility, and the cleansing of all sins after her fierce battles.', color: 'Peacock Green', bgColor: '#6EE7B7', icon: '🕊️', bhog: 'Coconut', mantra: 'Om Devi Mahagauryai Namah' },
+            { day: 9, name: 'Siddhidatri', desc: 'The Giver of Accomplishments, she bestows all spiritual powers. Seated on a lotus, she represents the culmination of the spiritual journey.', color: 'Pink', bgColor: '#FBCFE8', icon: '🌸', bhog: 'Sesame Seeds (Til)', mantra: 'Om Devi Siddhidatryayi Namah' }
+        ],
+        rituals: [
+            { title: 'Ghatasthapana: Invoking the Divine', content: 'The festival formally begins by invoking Goddess Durga into a sacred pot (kalash). This pot, filled with holy water and placed on a bed of sown barley, symbolizes the universe and the womb of creation. The sprouting barley signifies fertility and abundance, and this setup becomes the focal point for worship for all nine nights.' },
+            { title: 'Vrat: The Discipline of Fasting', content: 'Fasting is a core practice aimed at purifying the body and mind. Devotees abstain from non-vegetarian food, alcohol, onions, garlic, and regular grains. They consume a pure (satvik) diet of fruits, dairy, and specific alternative grains like buckwheat and amaranth. This discipline enhances self-control and focuses the mind on the divine.' },
+            { title: 'Kanya Pujan: Worshipping the Living Goddess', content: 'On the eighth or ninth day, nine young girls are worshipped as living embodiments of the Goddess. Their feet are washed, they are served a special meal, and given gifts. This powerful ritual asserts that the divine feminine is not just celestial but immanent within the purity and potential of the female child, elevating her to the status of a worshipped deity.' }
+        ],
+        celebrations: [
+            { region: 'West India (Gujarat)', style: 'The Dance of Devotion', desc: 'Famous for the energetic Garba and Dandiya Raas dances. Garba is a circular dance around a lamp, symbolizing the cycle of life, while Dandiya Raas re-enacts the battle between Durga and Mahishasura with decorated sticks.', type: 'Dance' },
+            { region: 'East India (Bengal)', style: 'The Artistic Grandeur', desc: 'Celebrated as Durga Puja. The centerpiece is the installation of elaborate clay idols (pratimas) in artistic temporary structures (pandals), depicting Durga\'s victory. It\'s a grand fusion of art, religion, and community.', type: 'Art' },
+            { region: 'North India', style: 'The Epic Theatre', desc: 'Strongly linked to the Ramayana, celebrations feature Ramlila, a series of dramatic folk plays enacting Rama\'s life. The festival culminates in Dussehra with the burning of giant effigies of the demon Ravana.', type: 'Theatre' },
+            { region: 'South India', style: 'The Cosmic Display', desc: 'Known for Golu, an elaborate, tiered display of dolls. The arrangement represents the cosmic hierarchy, from deities on top to scenes of human life at the bottom, symbolizing humanity\'s spiritual ascent.', type: 'Display' }
+        ]
+    };
+
+    const daySelectorsContainer = document.querySelector('.grid-cols-3.md\\:grid-cols-9');
+    const dayDisplay = document.getElementById('day-display');
+    const goddessIcon = document.getElementById('goddess-icon').querySelector('span');
+    const goddessName = document.getElementById('goddess-name');
+    const goddessDesc = document.getElementById('goddess-desc');
+    const goddessBhog = document.getElementById('goddess-bhog').querySelector('span');
+    const goddessMantra = document.getElementById('goddess-mantra').querySelector('span');
+    
+    let activeDaySelector = null;
+
+    navratriData.days.forEach(day => {
+        const selector = document.createElement('button');
+        selector.className = 'day-selector p-2 rounded-lg text-center cursor-pointer bg-white shadow-md';
+        selector.innerHTML = `<span class="font-bold text-sm md:text-base text-[#A14A3B]">Day ${day.day}</span><br><span class="text-xs md:text-sm text-[#4A2E2C]">${day.name}</span>`;
+        selector.dataset.day = day.day;
+        
+        selector.addEventListener('click', () => {
+            updateDayDisplay(day);
+            if(activeDaySelector) {
+                activeDaySelector.classList.remove('active');
+                activeDaySelector.style.backgroundColor = '#FFFFFF';
+            }
+            selector.classList.add('active');
+            selector.style.backgroundColor = day.bgColor;
+            activeDaySelector = selector;
+        });
+        
+        daySelectorsContainer.appendChild(selector);
+    });
+
+    function updateDayDisplay(dayData) {
+        dayDisplay.style.backgroundColor = dayData.bgColor;
+        document.getElementById('goddess-icon').style.backgroundColor = 'rgba(255,255,255,0.4)';
+        document.getElementById('goddess-icon').style.color = '#A14A3B';
+        goddessIcon.textContent = dayData.icon;
+        goddessName.textContent = `Day ${dayData.day}: Maa ${dayData.name}`;
+        goddessDesc.textContent = dayData.desc;
+        goddessBhog.textContent = dayData.bhog;
+        goddessMantra.textContent = dayData.mantra;
+    }
+
+    const accordionContainer = document.getElementById('accordion-container');
+    navratriData.rituals.forEach(ritual => {
+        const item = document.createElement('div');
+        item.className = 'bg-white/50 rounded-xl shadow-md overflow-hidden';
+        item.innerHTML = `
+            <button class="accordion-header w-full text-left p-4 md:p-5 flex justify-between items-center">
+                <h4 class="text-lg md:text-xl font-semibold font-lora text-[#A14A3B]">${ritual.title}</h4>
+                <span class="plus-icon text-2xl text-[#D1643A] font-light transition-transform duration-500">+</span>
+            </button>
+            <div class="accordion-content">
+                <p class="p-4 md:p-5 pt-0 text-[#4A2E2C] leading-relaxed">${ritual.content}</p>
+            </div>
+        `;
+        accordionContainer.appendChild(item);
+    });
+
+    document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const content = header.nextElementSibling;
+            const plusIcon = header.querySelector('.plus-icon');
+            
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                plusIcon.style.transform = 'rotate(0deg)';
+            } else {
+                document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+                document.querySelectorAll('.plus-icon').forEach(i => i.style.transform = 'rotate(0deg)');
+                content.style.maxHeight = content.scrollHeight + "px";
+                plusIcon.style.transform = 'rotate(45deg)';
+            }
+        });
+    });
+
+    const celebrationsCardsContainer = document.getElementById('celebrations-cards');
+    navratriData.celebrations.forEach(celeb => {
+        const card = document.createElement('div');
+        card.className = 'card-hover bg-white/50 p-6 rounded-2xl shadow-md flex flex-col';
+        card.innerHTML = `
+            <h4 class="text-xl font-bold font-lora text-[#D1643A]">${celeb.region}</h4>
+            <p class="text-md font-semibold text-[#4A2E2C] mt-1">${celeb.style}</p>
+            <p class="mt-3 text-[#4A2E2C] leading-relaxed flex-grow">${celeb.desc}</p>
+        `;
+        celebrationsCardsContainer.appendChild(card);
+    });
+
+    const celebrationTypes = navratriData.celebrations.reduce((acc, celeb) => {
+        acc[celeb.type] = (acc[celeb.type] || 0) + 1;
+        return acc;
+    }, {});
+    
+    const ctx = document.getElementById('celebrationsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(celebrationTypes),
+            datasets: [{
+                label: 'Types of Celebration',
+                data: Object.values(celebrationTypes),
+                backgroundColor: [
+                    '#FBBF24', // Yellow for Dance
+                    '#F87171', // Red for Art
+                    '#60A5FA', // Blue for Theatre
+                    '#34D399'  // Green for Display
+                ],
+                borderColor: '#FDF8F2',
+                borderWidth: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#4A2E2C',
+                        font: {
+                           family: "'Inter', sans-serif",
+                           size: 14
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 80) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').includes(current)) {
+                link.classList.add('active');
+            }
+        });
+    });
+
+});
+</script>
+</body>
+</html>

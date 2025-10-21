@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tax Research Assistant: An Interactive Strategic Blueprint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Professional (Background: #FEFBF6, Text: #2D3748, Primary Accent: #38A169, Secondary Accent: #DD6B20) -->
+    <!-- Application Structure Plan: The application is designed as a single-page interactive dashboard, diverging from the linear structure of the source report. This thematic structure allows stakeholders (investors, product managers) to non-linearly explore key strategic pillars. The user journey starts with a high-level "Opportunity" summary and then allows deep dives into four core areas: 1) The Core Challenge (fusing the problem of complex data with the technical RAG solution), 2) The Competitive Arena (for market context), 3) The Strategic Roadmap (combining product phases and final recommendations), and 4) Risk & Compliance (isolating the critical legal considerations). This structure is chosen for usability because it clusters related concepts, facilitating a more intuitive and rapid understanding of the business case, technology, and strategy, which is more effective than a page-by-page reading of the dense report. -->
+    <!-- Visualization & Content Choices:
+    - Report Info: Hierarchy of Legal Authority (Sec 1.1) -> Goal: Inform -> Viz: Interactive nested list/accordion (HTML/CSS/JS) -> Interaction: Click to expand/collapse -> Justification: Clearly shows the nested, hierarchical nature of legal sources in a compact, user-explorable format. -> Library: Vanilla JS.
+    - Report Info: RAG Pipeline (Sec 3.2) -> Goal: Organize/Inform -> Viz: Multi-step visual diagram (HTML/CSS Flexbox) -> Interaction: Hover/click to highlight and display details for each step -> Justification: Demystifies the complex RAG process, making the core technology understandable to a non-technical audience. -> Library: Vanilla JS.
+    - Report Info: Competitive Landscape (Sec 2.3) -> Goal: Compare -> Viz: Horizontal Bar Chart (Chart.js) -> Interaction: Tooltips on hover -> Justification: Provides a quick visual summary of the market bifurcation between incumbents (data-focused) and startups (workflow-focused). -> Library: Chart.js.
+    - Report Info: Competitor Analysis Table (Table 2.1) -> Goal: Compare/Organize -> Viz: Interactive HTML Table -> Interaction: Filter/search bar -> Justification: Makes the dense comparison table easily searchable and digestible. -> Library: Vanilla JS.
+    - Report Info: Phased Product Roadmap (Sec 5.1) -> Goal: Change/Process -> Viz: Interactive Timeline (HTML/CSS/JS) -> Interaction: Click on a phase (MVP, Expansion, Scale) to reveal its details -> Justification: Visualizes the strategic progression over time, making the go-to-market plan clear and memorable. -> Library: Vanilla JS.
+    - Report Info: UPL Risk Mitigation (Table 4.1) -> Goal: Inform/Organize -> Viz: Interactive Cards (HTML/CSS/JS) -> Interaction: Click to flip/reveal mitigation strategy -> Justification: Presents critical risk information in an engaging, less intimidating format, encouraging user interaction. -> Library: Vanilla JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FEFBF6;
+            color: #2D3748;
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active {
+            color: #DD6B20;
+            border-bottom-color: #DD6B20;
+        }
+        .nav-link:hover {
+            color: #DD6B20;
+        }
+        .section-title {
+            color: #2C5282;
+        }
+        .accent-color { color: #DD6B20; }
+        .bg-accent-color { background-color: #DD6B20; }
+        .bg-accent-light { background-color: #FEEBC8; }
+        .border-accent-color { border-color: #DD6B20; }
+        .primary-accent-color { color: #38A169; }
+        .bg-primary-accent-color { background-color: #38A169; }
+        .bg-primary-accent-light { background-color: #C6F6D5; }
+
+        .rag-step {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .rag-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+            padding-left: 2.5rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #A0AEC0;
+            border: 3px solid #FEFBF6;
+            z-index: 10;
+            transition: background-color 0.3s;
+        }
+         .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 9px;
+            top: 25px;
+            bottom: 0;
+            width: 2px;
+            background-color: #E2E8F0;
+        }
+        .timeline-item.active::before {
+            background-color: #38A169;
+        }
+        .timeline-content {
+            display: none;
+            transition: all 0.5s ease-in-out;
+        }
+        .timeline-item.active .timeline-content {
+            display: block;
+        }
+        
+        .authority-item > div {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .authority-item > div:hover {
+            background-color: #EDF2F7;
+        }
+        .authority-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-gray-800">AI Tax Research Blueprint</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#opportunity" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 border-b-2 border-transparent">The Opportunity</a>
+                        <a href="#challenge" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 border-b-2 border-transparent">Core Challenge</a>
+                        <a href="#arena" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 border-b-2 border-transparent">Competitive Arena</a>
+                        <a href="#roadmap" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 border-b-2 border-transparent">Strategic Roadmap</a>
+                        <a href="#risk" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 border-b-2 border-transparent">Risk & Compliance</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-gray-900 focus:outline-none">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#opportunity" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 border-b-2 border-transparent">The Opportunity</a>
+                <a href="#challenge" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 border-b-2 border-transparent">Core Challenge</a>
+                <a href="#arena" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 border-b-2 border-transparent">Competitive Arena</a>
+                <a href="#roadmap" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 border-b-2 border-transparent">Strategic Roadmap</a>
+                <a href="#risk" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 border-b-2 border-transparent">Risk & Compliance</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        <section id="opportunity" class="text-center min-h-screen flex flex-col justify-center items-center scroll-mt-16">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight section-title mb-4">Revolutionizing U.S. Tax Research with Generative AI</h2>
+                <p class="mt-4 text-lg md:text-xl text-gray-600 leading-relaxed">
+                    This interactive blueprint outlines a strategic path to develop a next-generation AI Tax Research Assistant. The analysis reveals a pivotal opportunity to transform a complex, high-stakes professional domain. Success hinges not on the AI model itself, but on creating a <strong class="accent-color">proprietary, verifiable knowledge corpus</strong> and navigating a critical <strong class="accent-color">legal and ethical landscape</strong>. Explore the sections below to understand the core technology, market dynamics, and go-to-market strategy.
+                </p>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="p-6 bg-white rounded-xl shadow-md">
+                        <h3 class="font-bold text-lg text-gray-800">Knowledge is the Moat</h3>
+                        <p class="mt-2 text-gray-600">The most defensible asset is a structured, annotated knowledge base of tax law, not the LLM.</p>
+                    </div>
+                    <div class="p-6 bg-white rounded-xl shadow-md">
+                        <h3 class="font-bold text-lg text-gray-800">Trust Through Verifiability</h3>
+                        <p class="mt-2 text-gray-600">Accuracy is paramount. The system must be grounded in real sources using Retrieval-Augmented Generation (RAG).</p>
+                    </div>
+                    <div class="p-6 bg-white rounded-xl shadow-md">
+                        <h3 class="font-bold text-lg text-gray-800">Solve Workflows, Not Search</h3>
+                        <p class="mt-2 text-gray-600">The biggest opportunity lies in deep integration with professional tools and automating tasks.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="challenge" class="py-16 scroll-mt-16">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold section-title">The Core Challenge: Knowledge & Trust</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">An AI tax assistant is only as good as its data. The primary challenge is twofold: first, structuring the vast, hierarchical universe of U.S. tax law into a machine-readable format, and second, engineering a system that professionals can trust to deliver accurate, verifiable answers.</p>
+            </div>
+
+            <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="font-bold text-xl text-gray-800 mb-4">The Hierarchy of Legal Authority</h3>
+                    <p class="text-gray-600 mb-6">U.S. tax law is not a flat database; it's a complex hierarchy of sources with different levels of authority. The AI must understand this structure to provide reliable analysis. Click each level to learn more.</p>
+                    <div id="authority-hierarchy" class="space-y-2"></div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="font-bold text-xl text-gray-800 mb-4">The Solution: Retrieval-Augmented Generation (RAG)</h3>
+                    <p class="text-gray-600 mb-6">To ensure accuracy and prevent AI "hallucinations," we use a RAG architecture. This "open-book" approach grounds every answer in verified legal documents, making the system transparent and auditable. Hover over each step to see details.</p>
+                    <div id="rag-pipeline" class="space-y-4">
+                        <p class="text-center text-gray-500 italic">Hover or tap on a step below</p>
+                    </div>
+                </div>
+            </div>
+             <div id="rag-details" class="mt-8 p-6 bg-blue-50 border-l-4 border-blue-400 rounded-r-lg text-gray-700 min-h-[100px] flex items-center justify-center transition-all duration-300">
+                Select a step in the RAG pipeline to see its description.
+            </div>
+        </section>
+
+        <section id="arena" class="py-16 scroll-mt-16">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold section-title">The Competitive Arena</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">The market is bifurcating between legacy giants layering AI onto massive proprietary databases and agile startups targeting specific, high-pain-point workflows. This creates a significant market opportunity for a tool that balances comprehensive research with modern workflow automation.</p>
+            </div>
+            <div class="mt-12 bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="font-bold text-xl text-gray-800 mb-4 text-center">Market Bifurcation: Data vs. Workflow</h3>
+                <div class="chart-container">
+                    <canvas id="competitorChart"></canvas>
+                </div>
+                <p class="text-center mt-4 text-gray-600 text-sm">This chart illustrates the strategic focus of incumbents versus AI-native challengers. Incumbents leverage deep data archives, while startups focus on integrating into and automating specific professional tasks.</p>
+            </div>
+            <div class="mt-12 bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="font-bold text-xl text-gray-800 mb-4">Comparative Platform Analysis</h3>
+                <input type="text" id="competitor-search" class="w-full p-2 border border-gray-300 rounded-md mb-4" placeholder="Search platforms or features...">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Platform</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Key Differentiator</th>
+                            </tr>
+                        </thead>
+                        <tbody id="competitor-table-body" class="bg-white divide-y divide-gray-200">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-16 scroll-mt-16">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold section-title">Strategic Roadmap & Key Imperatives</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">A disciplined, phased approach is crucial for success. We begin with a focused niche product to validate the core technology, expand into a professional's "copilot," and scale to an enterprise-grade platform, guided by five key principles.</p>
+            </div>
+
+            <div class="mt-12 grid grid-cols-1 lg:grid-cols-5 gap-12">
+                <div class="lg:col-span-2">
+                     <h3 class="font-bold text-xl text-gray-800 mb-6">Phased Go-to-Market Plan</h3>
+                     <div id="timeline-container" class="relative"></div>
+                </div>
+                <div class="lg:col-span-3">
+                    <h3 class="font-bold text-xl text-gray-800 mb-6">Five Strategic Imperatives</h3>
+                    <div id="imperatives-container" class="space-y-4"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="risk" class="py-16 scroll-mt-16">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold section-title">Risk & Compliance Gauntlet</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">Developing an AI tax assistant is fraught with legal and ethical risks. The single greatest threat is the <strong class="accent-color">Unauthorized Practice of Law (UPL)</strong>. A proactive compliance strategy, built into the product's design from day one, is non-negotiable.</p>
+            </div>
+            <div class="mt-12">
+                 <h3 class="font-bold text-xl text-gray-800 mb-6 text-center">Key Risk Mitigation Strategies</h3>
+                 <div id="risk-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            </div>
+            <div class="mt-12 bg-accent-light border-l-4 border-accent-color text-accent-color-dark p-6 rounded-lg shadow-md">
+                <h4 class="font-bold text-lg">An Ironclad Disclaimer is Essential</h4>
+                <p class="mt-2 text-gray-700">The application must clearly and consistently communicate that it provides <strong class="font-semibold">"information, not advice."</strong> All AI-generated content must be labeled as such and require user review. The user must be prompted to consult a qualified professional for decisions based on their specific circumstances. The design of the product must reinforce this, not contradict it.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p>&copy; 2025 AI Tax Research Blueprint. All rights reserved.</p>
+            <p class="mt-2 text-gray-400">This is an interactive visualization of a strategic report. The content is for informational purposes only and does not constitute professional tax, legal, or financial advice. All data is derived from the source report.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const DATA = {
+                authorityHierarchy: [
+                    { 
+                        level: 1, 
+                        title: 'Statutory Law: The Internal Revenue Code (IRC)',
+                        details: 'The foundation of all federal tax law (Title 26, U.S. Code). It is the most authoritative source. The AI must understand its structure and historical versions.'
+                    },
+                    {
+                        level: 2,
+                        title: 'Administrative Law: Treasury Regulations',
+                        details: 'Official interpretations of the IRC from the Treasury Dept. They carry the force of law and provide detailed guidance on how to apply the code.'
+                    },
+                    {
+                        level: 3,
+                        title: 'Judicial Precedent: Case Law',
+                        details: 'Decisions from federal courts (Tax Court, District Courts, etc.). The AI must understand binding precedent and the hierarchy of courts (e.g., the Golsen rule).'
+                    },
+                    {
+                        level: 4,
+                        title: 'Legislative History',
+                        details: 'Congressional committee reports and debates used to interpret ambiguous statutory language. Provides insight into congressional intent.'
+                    },
+                    {
+                        level: 4,
+                        title: 'IRS Guidance (Authoritative)',
+                        details: 'Published in the Internal Revenue Bulletin (IRB), such as Revenue Rulings and Procedures. These are official positions that can be relied upon by all taxpayers.'
+                    },
+                    {
+                        level: 5,
+                        title: 'IRS Guidance (Non-Precedential)',
+                        details: 'Not published in the IRB, such as Private Letter Rulings (PLRs). Directed only to a specific taxpayer and cannot be cited as precedent by others.'
+                    },
+                    {
+                        level: 6,
+                        title: 'IRS Publications',
+                        details: 'Plain-language documents to help taxpayers. Useful for context but are not primary legal authority and cannot be used to justify a tax position.'
+                    }
+                ],
+                ragPipeline: [
+                    { name: 'Data Ingestion & Processing', icon: '📥', description: 'Source documents (IRC, case law, etc.) are loaded, cleaned, and broken into smaller, semantically coherent "chunks." Quality chunking is paramount to preserve context.' },
+                    { name: 'Embedding & Indexing', icon: '🔗', description: 'Each text chunk is converted into a numerical vector (an "embedding") representing its meaning. These are stored in a specialized vector database for fast similarity searching.' },
+                    { name: 'Retrieval', icon: '🔍', description: 'When a user asks a question, it\'s also converted to a vector. The system finds the most conceptually similar text chunks from the database.' },
+                    { name: 'Augmentation & Generation', icon: '📝', description: 'The retrieved chunks are combined with the user\'s original query into an "augmented prompt" that is fed to the LLM with instructions to answer based *only* on the provided sources.' },
+                    { name: 'Verifiable Output', icon: '✅', description: 'The LLM generates a response based on the provided context. The final answer is presented to the user with clear citations linking back to the source documents, ensuring auditability and trust.' }
+                ],
+                competitors: [
+                    { platform: 'Checkpoint Edge with CoCounsel', company: 'Thomson Reuters', differentiator: 'Integration with vast proprietary annotated data and editorial analysis from RIA and WG&L.', type: 'Incumbent' },
+                    { platform: 'AI Assistant / Bloomberg Tax Answers', company: 'Bloomberg Tax', differentiator: 'Speed and integration with highly respected Bloomberg Tax Management Portfolios and workflow tools.', type: 'Incumbent' },
+                    { platform: 'Blue J', company: 'Blue J', differentiator: 'Focus on verifiable answers from a curated database with human oversight; intuitive, user-friendly design.', type: 'Challenger' },
+                    { platform: 'Filed.ai', company: 'Filed.ai', differentiator: 'Deep integration directly into existing tax software (CCH, UltraTax); automates the entire workflow.', type: 'Challenger' },
+                    { platform: 'Black Ore', company: 'Black Ore', differentiator: 'Focus on automating 1040 prep to reduce CPA burnout and free up time for advisory services.', type: 'Challenger' },
+                    { platform: 'Avi (in Avalara Tax Research)', company: 'Avalara', differentiator: 'Niche focus and deep expertise in indirect tax compliance (Sales & Use tax).', type: 'Incumbent' }
+                ],
+                timeline: [
+                    { phase: 'Phase 1: The Niche Tool (MVP)', goal: 'Validate core RAG technology and achieve product-market fit with a small, underserved user group.', strategy: 'Target a single, complex area of tax law (e.g., R&D credits, crypto compliance) to solve a specific pain point.' },
+                    { phase: 'Phase 2: The Professional\'s Copilot', goal: 'Broaden utility and become an indispensable tool for a wider segment of tax professionals.', strategy: 'Expand the knowledge base and introduce workflow automation features (e.g., memo drafting) and API integrations with common tax software.' },
+                    { phase: 'Phase 3: The Enterprise Platform', goal: 'Evolve to effectively compete with legacy platforms for contracts with large firms and corporations.', strategy: 'Develop enterprise-grade features like multi-user accounts, collaborative workspaces, and advanced security certifications (e.g., SOC-2).' }
+                ],
+                imperatives: [
+                    { title: 'Prioritize the Knowledge Graph', description: 'The defensible moat is the proprietary, structured, and annotated knowledge base, not the commodity LLM.', icon: '📚' },
+                    { title: 'Design for the "Supervised Intern"', description: 'The AI augments, not replaces, the professional. The UI/UX must position the human as the supervisor with final judgment.', icon: '🧑‍💼' },
+                    { title: 'Solve a Workflow, Not Just Search', description: 'The greatest value is in deep integration with existing tools, solving tangible, high-friction problems at the point of need.', icon: '⚙️' },
+                    { title: 'Adopt a Niche-First GTM Strategy', description: 'Capture an underserved niche with a focused MVP to validate the model, then expand from a position of strength.', icon: '🎯' },
+                    { title: 'Embrace Transparency as a Feature', description: 'Build trust with verifiable citations, confidence scoring, and clear communication of the AI\'s limitations.', icon: '🔍' }
+                ],
+                risks: [
+                    { factor: 'Providing Tailored Advice', mitigation: 'Frame all outputs as "information" or "analysis," never "advice." Use phrases like "Factors to consider include..." instead of "You should..."' },
+                    { factor: 'Generating Legal Documents', mitigation: 'Provide editable drafts with "DRAFT - REVIEW REQUIRED" watermarks, not finished documents. User must review and finalize.' },
+                    { factor: 'Misleading Marketing', mitigation: 'Market the tool as a research "assistant" or "copilot." Strictly avoid terms like "robot lawyer" or claims of replacing professionals.' },
+                    { factor: 'Lack of Transparency', mitigation: 'Be clear and conspicuous about the tool\'s limitations and its reliance on AI. Implement prominent disclaimers in the UI.' }
+                ]
+            };
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px' });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = e.target.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    if (mobileMenu.classList.contains('hidden') === false) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            function initAuthorityHierarchy() {
+                const container = document.getElementById('authority-hierarchy');
+                container.innerHTML = DATA.authorityHierarchy.map(item => `
+                    <div class="authority-item" style="padding-left: ${(item.level - 1) * 20}px;">
+                        <div class="p-3 rounded-md bg-gray-100 flex justify-between items-center">
+                            <span class="font-semibold text-sm">${item.title}</span>
+                            <span class="text-gray-400 text-xl transform transition-transform duration-300">›</span>
+                        </div>
+                        <div class="authority-details bg-white p-0">
+                            <p class="text-sm text-gray-600">${item.details}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+                container.querySelectorAll('.authority-item > div:first-child').forEach(header => {
+                    header.addEventListener('click', () => {
+                        const details = header.nextElementSibling;
+                        const icon = header.querySelector('span:last-child');
+                        const isOpen = details.style.maxHeight && details.style.maxHeight !== '0px';
+
+                        document.querySelectorAll('.authority-details').forEach(d => {
+                             d.style.maxHeight = '0px';
+                             d.style.padding = '0';
+                             d.previousElementSibling.querySelector('span:last-child').style.transform = 'rotate(0deg)';
+                        });
+                        
+                        if (!isOpen) {
+                            details.style.padding = '1rem';
+                            details.style.maxHeight = details.scrollHeight + "px";
+                            icon.style.transform = 'rotate(90deg)';
+                        }
+                    });
+                });
+            }
+
+            function initRagPipeline() {
+                const container = document.getElementById('rag-pipeline');
+                const detailsBox = document.getElementById('rag-details');
+                container.innerHTML = DATA.ragPipeline.map((step, index) => `
+                    <div class="rag-step bg-white p-4 rounded-lg shadow cursor-pointer border border-transparent hover:border-blue-400">
+                        <div class="flex items-center">
+                            <div class="text-2xl mr-4">${step.icon}</div>
+                            <div class="font-semibold text-gray-700">${index + 1}. ${step.name}</div>
+                        </div>
+                    </div>
+                `).join('<div class="text-center text-3xl text-gray-300">↓</div>'.repeat(4));
+
+                container.querySelectorAll('.rag-step').forEach((stepEl, index) => {
+                    stepEl.addEventListener('mouseenter', () => {
+                        const stepData = DATA.ragPipeline[index];
+                        detailsBox.innerHTML = `<strong>${stepData.name}:</strong> ${stepData.description}`;
+                        detailsBox.classList.remove('bg-blue-50', 'border-blue-400');
+                        detailsBox.classList.add('bg-primary-accent-light', 'border-primary-accent-color');
+                    });
+                     stepEl.addEventListener('mouseleave', () => {
+                        detailsBox.innerHTML = 'Select a step in the RAG pipeline to see its description.';
+                        detailsBox.classList.remove('bg-primary-accent-light', 'border-primary-accent-color');
+                        detailsBox.classList.add('bg-blue-50', 'border-blue-400');
+                    });
+                });
+            }
+
+            function initCompetitorChart() {
+                const ctx = document.getElementById('competitorChart').getContext('2d');
+                const incumbents = DATA.competitors.filter(c => c.type === 'Incumbent').length;
+                const challengers = DATA.competitors.filter(c => c.type === 'Challenger').length;
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Incumbents (Data Focus)', 'Challengers (Workflow Focus)'],
+                        datasets: [{
+                            label: '# of Platforms',
+                            data: [incumbents, challengers],
+                            backgroundColor: [
+                                'rgba(221, 107, 32, 0.6)',
+                                'rgba(56, 161, 105, 0.6)'
+                            ],
+                            borderColor: [
+                                'rgba(221, 107, 32, 1)',
+                                'rgba(56, 161, 105, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Strategic Focus of Market Players'
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function initCompetitorTable() {
+                const tableBody = document.getElementById('competitor-table-body');
+                const searchInput = document.getElementById('competitor-search');
+
+                function renderTable(data) {
+                    tableBody.innerHTML = data.map(c => `
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${c.platform}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${c.company}</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">${c.differentiator}</td>
+                        </tr>
+                    `).join('');
+                }
+                
+                renderTable(DATA.competitors);
+                
+                searchInput.addEventListener('input', (e) => {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const filteredData = DATA.competitors.filter(c => 
+                        c.platform.toLowerCase().includes(searchTerm) ||
+                        c.company.toLowerCase().includes(searchTerm) ||
+                        c.differentiator.toLowerCase().includes(searchTerm)
+                    );
+                    renderTable(filteredData);
+                });
+            }
+
+            function initRoadmap() {
+                const timelineContainer = document.getElementById('timeline-container');
+                timelineContainer.innerHTML = DATA.timeline.map((item, index) => `
+                    <div class="timeline-item ${index === 0 ? 'active' : ''}">
+                         <div class="font-bold text-lg cursor-pointer hover:text-primary-accent-color">${item.phase}</div>
+                         <div class="timeline-content mt-2 pl-2 border-l-2 border-gray-200">
+                             <p class="text-sm font-semibold text-gray-700">Goal:</p>
+                             <p class="text-sm text-gray-600 mb-2">${item.goal}</p>
+                             <p class="text-sm font-semibold text-gray-700">Strategy:</p>
+                             <p class="text-sm text-gray-600">${item.strategy}</p>
+                         </div>
+                    </div>
+                `).join('');
+                timelineContainer.querySelector('.timeline-item:last-child').classList.add('pb-0');
+                timelineContainer.querySelector('.timeline-item:last-child').style.borderLeft = 'none';
+
+                timelineContainer.querySelectorAll('.timeline-item > div:first-child').forEach(header => {
+                    header.addEventListener('click', () => {
+                        const parent = header.parentElement;
+                        if(parent.classList.contains('active')) return;
+                        
+                        timelineContainer.querySelectorAll('.timeline-item').forEach(item => item.classList.remove('active'));
+                        parent.classList.add('active');
+                    });
+                });
+
+                const imperativesContainer = document.getElementById('imperatives-container');
+                 imperativesContainer.innerHTML = DATA.imperatives.map(item => `
+                    <div class="flex items-start p-4 bg-white rounded-lg shadow-sm">
+                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-primary-accent-light flex items-center justify-center text-xl">${item.icon}</div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-gray-800">${item.title}</h4>
+                            <p class="text-sm text-gray-600 mt-1">${item.description}</p>
+                        </div>
+                    </div>
+                 `).join('');
+            }
+            
+            function initRiskCards() {
+                const container = document.getElementById('risk-cards-container');
+                container.innerHTML = DATA.risks.map(risk => `
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h4 class="font-bold text-lg text-accent-color">${risk.factor}</h4>
+                        <p class="mt-3 text-sm font-semibold text-gray-700">Mitigation Strategy:</p>
+                        <p class="mt-1 text-gray-600 text-sm">${risk.mitigation}</p>
+                    </div>
+                `).join('');
+            }
+
+
+            initAuthorityHierarchy();
+            initRagPipeline();
+            initCompetitorChart();
+            initCompetitorTable();
+            initRoadmap();
+            initRiskCards();
+        });
+    </script>
+</body>
+</html>

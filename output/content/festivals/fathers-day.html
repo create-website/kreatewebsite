@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Father's Day: A Celebration of Dads</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Modern & Warm (Blue, Gray, Orange) -->
+    <!-- Application Structure Plan: A narrative infographic that explains the history and modern celebration of Father's Day. The structure is: 1. Hero section. 2. "What is Father's Day?". 3. "The Origins of Father's Day". 4. "Symbols of Fatherhood". 5. "Ways to Celebrate Dad". 6. "Top Father's Day Gifts" chart. This flow guides the user through the appreciation of fatherhood. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The Origins -> Goal: Inform -> Viz: A two-column layout -> Justification: Clearly presents the historical background. -> Library/Method: HTML/CSS.
+        - Data Point: Key symbols/roles -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the different facets of fatherhood. -> Library/Method: HTML/CSS.
+        - Data Point: Popular gifts -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display popular gift ideas. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #F3F4F6; /* Light Gray */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-blue { color: #3B82F6; }
+        .palette-text-orange { color: #F97316; }
+        .palette-text-gray { color: #4B5563; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #3B82F6; /* Blue */
+            border: 3px solid #F97316; /* Orange */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-blue tracking-wider">Father's Day</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">A Day to Honor and Celebrate Dads</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Father's Day?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Father's Day is a holiday honoring fatherhood and paternal bonds, as well as the influence of fathers in society. It is a day to express gratitude and appreciation for the love, support, and guidance that fathers and father figures provide.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-blue mb-4">👨‍👧‍👦</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Celebrating Fatherhood</h3>
+                    <p class="mt-2 text-gray-600">The day celebrates not only biological fathers but also stepfathers, grandfathers, uncles, and other male figures who play a fatherly role.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-gray mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Festival Timing</h3>
+                    <p class="mt-2 text-gray-600">In many countries, including the United States, it is celebrated on the third Sunday in June. Dates vary in other parts of the world.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-orange mb-4">❤️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Day of Appreciation</h3>
+                    <p class="mt-2 text-gray-600">It's a time for families to come together and show their love and respect for the fathers in their lives through gifts, meals, and quality time.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Origins of Father's Day</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The modern concept of Father's Day began in the early 20th century in the United States. The driving force behind the holiday was a woman named Sonora Smart Dodd, who wanted to honor her own father.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">💡</div>
+                        <p class="text-xl font-bold mt-2 palette-text-blue">A Daughter's Tribute</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">Sonora Smart Dodd's father, William Jackson Smart, was a Civil War veteran and a single parent who raised six children on his own. After hearing a sermon about the newly recognized Mother's Day, Sonora felt strongly that fathers deserved similar recognition. She campaigned for a day to honor fathers, and the first city-wide Father's Day was celebrated in her home state of Washington on June 19, 1910. The holiday slowly gained popularity across the nation and was officially made a nationwide holiday in the U.S. by President Richard Nixon in 1972.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="symbols" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Symbols of Fatherhood</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Fatherhood is a multifaceted role, embodying strength, guidance, and love. Various symbols and roles are celebrated on this day.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🛡️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Protector</h3>
+                    <p class="mt-2 text-sm text-gray-600">Fathers are often seen as the protectors of the family, providing a sense of security and safety.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">📖</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Teacher</h3>
+                    <p class="mt-2 text-sm text-gray-600">From teaching how to ride a bike to offering life advice, fathers are lifelong teachers and guides.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">💪</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Provider</h3>
+                    <p class="mt-2 text-sm text-gray-600">Traditionally, fathers are seen as providers, working hard to support their family's needs and aspirations.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🤝</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Friend</h3>
+                    <p class="mt-2 text-sm text-gray-600">Beyond being a parent, a father is often a friend, a confidant, and a source of unwavering support.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Ways to Celebrate Dad</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Celebrations for Father's Day are personal and varied, but most focus on making fathers feel special and appreciated.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎁</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Giving Gifts</h3>
+                    <p class="mt-2 text-sm text-gray-600">A classic way to show appreciation, with gifts ranging from handmade cards and ties to gadgets and experiences.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🍳</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Special Meal</h3>
+                    <p class="mt-2 text-sm text-gray-600">Treating dad to his favorite meal, whether it's breakfast in bed, a backyard barbecue, or dinner at a nice restaurant.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">⚽</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Quality Time</h3>
+                    <p class="mt-2 text-sm text-gray-600">Spending the day together, enjoying a shared hobby like fishing, watching a game, or simply having a conversation.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">📞</div>
+                    <h3 class="text-2xl font-bold text-gray-900">A Simple Call</h3>
+                    <p class="mt-2 text-sm text-gray-600">For those who live far away, a heartfelt phone call or video chat is a meaningful way to connect and express love.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Top Father's Day Gifts</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    While the best gift is spending time together, certain categories of gifts are consistently popular for showing appreciation on Father's Day.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Popular Gift Categories</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Greeting Cards', 
+                'Special Outing (e.g., Dinner, Event)', 
+                'Clothing (e.g., Ties, Shirts)', 
+                'Electronics & Gadgets'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity as Gifts',
+                        data: [100, 95, 85, 80],
+                        backgroundColor: [
+                           '#3B82F6', // Blue
+                           '#F97316', // Orange
+                           '#4B5563', // Gray
+                           '#60A5FA'  // Light Blue
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Popularity & Commonality',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

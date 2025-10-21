@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holi: The Festival of Colors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Vibrant Festival Hues (Pink, Blue, Yellow, Green) -->
+    <!-- Application Structure Plan: A narrative infographic that introduces Holi by explaining its core meanings, legends, and key rituals. The structure is: 1. Hero section with a colorful title. 2. "What is Holi?" with key facts. 3. "The Legends of Color," explaining the stories of Prahlad and Radha-Krishna. 4. "The Two Days of Holi" timeline. 5. "Traditions of Joy" highlighting key activities in a grid. 6. "A Taste of Holi" chart for festive foods. This flow guides the user from the 'why' to the 'how' of the celebration. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts of Holi -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary of the festival's multifaceted meaning. -> Library/Method: HTML/CSS with Unicode.
+        - Data Point: The two main days of the festival -> Goal: Show Process/Change -> Viz: Vertical timeline -> Justification: Clearly illustrates the sequence from the bonfire to the color play. -> Library/Method: HTML/CSS.
+        - Data Point: Key traditions (colors, water guns, etc.) -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean, scannable format for presenting the main activities. -> Library/Method: HTML/CSS.
+        - Data Point: Key Holi foods/drinks -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple and clear way to display the primary culinary delights of the festival. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #FDF4F5; /* Very light pink */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-pink { color: #EC4899; }
+        .palette-text-blue { color: #3B82F6; }
+        .palette-text-green { color: #22C55E; }
+        .palette-text-yellow { color: #F59E0B; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #EC4899; /* Pink */
+            border: 3px solid: #3B82F6; /* Blue */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold tracking-wider">
+                <span class="palette-text-pink">H</span><span class="palette-text-blue">O</span><span class="palette-text-green">L</span><span class="palette-text-yellow">I</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">An Infographic on the Festival of Colors and Love</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Holi?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Holi is one of India's most vibrant and exuberant festivals, welcoming the arrival of spring and celebrating the triumph of good over evil. It's a day of joyous abandon, where people chase each other with colored powders and water, temporarily erasing social boundaries in a flurry of fun.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-pink mb-4">🔥</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Victory of Good</h3>
+                    <p class="mt-2 text-gray-600">The festival celebrates the victory of devotion and faith, symbolized by the legend of Prahlad's survival and the burning of the demoness Holika.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-blue mb-4">❤️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Festival of Love & Spring</h3>
+                    <p class="mt-2 text-gray-600">Holi marks the end of winter and the beginning of spring. It's also a celebration of the divine love between Radha and Krishna.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-green mb-4">🤝</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Unifying Celebration</h3>
+                    <p class="mt-2 text-gray-600">On this day, social barriers of age, caste, and gender are forgotten as everyone comes together to play, laugh, and share in the joy.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Legends of Color</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Holi is steeped in rich mythology that gives depth to its playful exterior. The festival's two primary legends speak of unwavering devotion and divine, playful love, forming the spiritual backbone of the celebration.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                 <div class="card rounded-lg shadow-lg p-8 h-full">
+                    <h3 class="text-3xl font-bold palette-text-pink mb-4 text-center">The Legend of Holika & Prahlad</h3>
+                    <p class="text-gray-700">The main legend celebrates the victory of Prince Prahlad, a devout follower of Lord Vishnu, over his arrogant father, King Hiranyakashipu. The king wanted everyone to worship him, but Prahlad refused. The king's evil sister, Holika, who was immune to fire, tricked Prahlad into sitting on a pyre with her. However, due to his unwavering devotion, Prahlad was unharmed while Holika burned. The bonfire on the eve of Holi symbolizes this victory of good over evil.</p>
+                </div>
+                 <div class="card rounded-lg shadow-lg p-8 h-full">
+                    <h3 class="text-3xl font-bold palette-text-blue mb-4 text-center">The Love of Radha & Krishna</h3>
+                    <p class="text-gray-700">In the Braj region of India, Holi is celebrated as a festival of divine love, commemorating the playful romance of Radha and Krishna. Legend says that the young, dark-skinned Krishna was envious of Radha's fair complexion. His mother Yashoda playfully suggested he apply color to Radha's face. Krishna did so, and their playful coloring of each other's faces became a tradition, celebrated today as the joyous and romantic aspect of Holi.</p>
+                 </div>
+            </div>
+        </section>
+
+        <section id="timeline" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Two Days of Holi</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Holi is primarily a two-day festival, each with its distinct character and set of rituals, transitioning from solemn purification to uninhibited joy.
+                </p>
+            </div>
+            <div class="mt-12 max-w-3xl mx-auto">
+                <div class="relative pl-8 border-l-4 border-yellow-200">
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-pink">Day 1: Holika Dahan (Choti Holi)</h3>
+                        <p class="text-gray-600">On the eve of Holi, communities gather to light large bonfires. This ritual, known as Holika Dahan, symbolizes the burning of evil spirits and the triumph of good. People sing and dance around the fire, celebrating the victory of faith.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="text-2xl font-bold palette-text-blue">Day 2: Rangwali Holi (Dhulandi)</h3>
+                        <p class="text-gray-600">This is the main event—the festival of colors! People take to the streets and joyfully douse each other with dry colored powders (gulal) and colored water. It's a day of pure fun, forgiveness, and mending broken relationships.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="celebrations" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Traditions of Joy</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The celebration of Holi is an explosion of happiness, expressed through several key traditions that make the festival a truly immersive and unforgettable experience.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎨</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Playing with Colors</h3>
+                    <p class="mt-2 text-sm text-gray-600">Using dry powders called 'gulal' is the most iconic tradition, covering everyone in a rainbow of vibrant hues.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">💧</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Water Fights</h3>
+                    <p class="mt-2 text-sm text-gray-600">Water guns (pichkaris) and water balloons are used to drench friends and family in colored water, adding to the fun.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎶</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Music & Dance</h3>
+                    <p class="mt-2 text-sm text-gray-600">Streets and homes are filled with the sound of Bollywood songs and traditional folk music, with people dancing freely.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🍲</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Festive Feasts</h3>
+                    <p class="mt-2 text-sm text-gray-600">After a morning of play, families gather to enjoy special Holi delicacies like gujiya, dahi vada, and thandai.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Holi</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The flavors of Holi are as vibrant as its colors. The festival features a unique spread of savory snacks, rich sweets, and refreshing drinks that provide energy for the day's festivities and are shared with all who visit.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">The Main Foods & Drinks of the Festival</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Gujiya (Sweet Dumplings)', 
+                'Thandai (Spiced Milk Drink)', 
+                'Dahi Vada (Lentil Fritters in Yogurt)', 
+                'Puran Poli (Sweet Flatbread)'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity during Holi',
+                        data: [100, 95, 85, 80],
+                        backgroundColor: [
+                           '#EC4899', // Pink
+                           '#3B82F6', // Blue
+                           '#F59E0B', // Yellow
+                           '#22C55E'  // Green
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Popularity & Importance',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

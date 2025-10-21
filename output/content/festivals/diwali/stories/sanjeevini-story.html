@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanuman Brings Sanjeevani: The Mountain Lifter</title>
+    <meta name="description" content="The epic Ramayana story of how Hanuman lifted the entire Dronagiri mountain to bring the life-saving Sanjeevani herb and save a mortally wounded Lakshmana.">
+    <meta name="keywords" content="Hanuman, Sanjeevani, Lakshmana, Ramayana, Dronagiri, mountain, Rama, Sushena, Hindu mythology">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4B5563; 
+        }
+        .font-sanskrit {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+        }
+        .tab-active {
+            border-color: #D97706;
+            background-color: #FFFBEB;
+            color: #D97706;
+        }
+        .step-item-active {
+            background-color: #D97706;
+            color: #FFFFFF;
+            transform: scale(1.1);
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: This page narrates a desperate race against time and is structured to build tension and highlight Hanuman's power. 1) A Mortal Wound establishes the dire crisis with Lakshmana's fall. 2) The Only Cure introduces the near-impossible solution, creating a ticking clock. 3) The Race Against Time is the core interactive section, detailing Hanuman's perilous journey and the obstacles he overcomes. 4) A Mountain in Hand focuses on the story's climax, using tabs to explain his dilemma and the audacious solution. 5) The Hero's Return provides the triumphant resolution. This chronological structure effectively conveys the urgency and immense scale of Hanuman's feat. -->
+    <!-- Visualization & Content Choices: Report Info: The journey and its obstacles -> Goal: Show a perilous sequence -> Viz/Method: Interactive step-based diagram -> Interaction: Click steps for The Vow, The Deception, and The Confusion -> Justification: This breaks the long journey into key narrative challenges, building suspense before the final act. | Report Info: Hanuman's decision-making on the mountain -> Goal: Explain a critical choice -> Viz/Method: Tabbed content -> Interaction: Tabs for "The Dilemma" (can't find the herb) and "The Divine Solution" (lift the mountain) -> Justification: This isolates the pivotal moment of the story, clearly presenting the problem and Hanuman's incredible, out-of-the-box solution, thereby emphasizing his power and devotion. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-amber-100/30 sticky top-0 z-50 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="font-sanskrit text-2xl font-bold text-amber-800">संजीवनी</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#wound" class="text-stone-600 hover:text-amber-700 transition">The Wound</a>
+                    <a href="#cure" class="text-stone-600 hover:text-amber-700 transition">The Cure</a>
+                    <a href="#journey" class="text-stone-600 hover:text-amber-700 transition">The Journey</a>
+                    <a href="#return" class="text-stone-600 hover:text-amber-700 transition">The Return</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="wound" class="text-center my-12 md:my-20">
+            <h1 class="font-sanskrit text-5xl md:text-7xl font-bold text-amber-900 leading-tight">The Life-Giving Mountain</h1>
+            <p class="mt-4 text-xl md:text-2xl text-stone-600">Hanuman's Ultimate Act of Devotion</p>
+            <p class="mt-6 max-w-3xl mx-auto text-stone-500">
+                During the ferocious battle with Indrajit, Lakshmana, while defending Rama, was struck by the prince's most powerful weapon, the Shakti. The divine missile pierced his chest, and he fell to the ground, unconscious and on the verge of death. A wave of despair washed over the Vanara army, and for the first time, Lord Rama wept with grief, his heart breaking at the sight of his beloved brother.
+            </p>
+        </section>
+
+        <section id="cure" class="my-16 md:my-24 py-12 bg-amber-50/50 rounded-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Only Cure</h2>
+            <p class="text-center text-stone-600 mb-8 max-w-3xl mx-auto">The Vanara's royal physician, Sushena, examined Lakshmana and declared that there was only one hope. In the high Himalayas, on the Dronagiri mountain, grew four divine herbs. Of these, the Sanjeevani was the only one that could restore life. But it had to be brought before the next sunrise, or all would be lost.</p>
+            <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-stone-200/80 text-center">
+                <div class="text-6xl my-4">🌿✨</div>
+                <h3 class="font-sanskrit text-3xl font-bold text-amber-700">द्रोणगिरि</h3>
+                <p class="text-stone-500 mt-2">The mountain was hundreds of leagues away, an impossible distance to cover in a single night for anyone but one hero: Hanuman.</p>
+            </div>
+        </section>
+        
+        <section id="journey" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">A Race Against Time</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Without a moment's hesitation, Hanuman bowed to Rama and took a mighty leap towards the north. But Ravana, learning of this mission from his spies, was determined to stop him.</p>
+            
+            <div>
+                <div class="flex flex-col md:flex-row justify-center items-center md:space-x-4 mb-6">
+                    <button class="step-item step-item-active w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 mb-2 md:mb-0" data-step="1">1. The Vow</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white mb-2 md:mb-0" data-step="2">2. The Deception</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white" data-step="3">3. The Confusion</button>
+                </div>
+
+                <div id="step-details" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md min-h-[150px]">
+                    <h4 id="step-title" class="font-bold text-xl text-amber-700 mb-2">Step 1: The Vow of Devotion</h4>
+                    <p id="step-description" class="text-stone-600">Expanding his form to the size of a mountain, Hanuman took flight, his mind focused solely on his lord's sorrow. He flew with the speed of thought, crossing the entire length of the land in his desperate mission.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">A Mountain in Hand</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">With time running out and no way to identify the correct herb, Hanuman faced a critical dilemma. His solution was an act of devotion and power so immense it became legendary.</p>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="flex border-b border-stone-300 mb-6">
+                    <button class="tab-button tab-active flex-1 text-center font-semibold p-3 border-b-2 transition" data-tab="dilemma">The Dilemma</button>
+                    <button class="tab-button flex-1 text-center font-semibold p-3 border-b-2 border-transparent text-stone-500 transition" data-tab="solution">The Divine Solution</button>
+                </div>
+                <div id="tab-content">
+                    <div id="dilemma-content" class="tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">A Confusing Glow</h3>
+                        <p class="text-stone-600">As he stood on the Dronagiri peak, he saw that the entire mountain was covered in thousands of glowing, magical herbs. In his haste, and with the herbs concealing their true forms, he could not distinguish the Sanjeevani from the others. He could not afford to make a mistake.</p>
+                    </div>
+                    <div id="solution-content" class="hidden tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">Lifting Dronagiri</h3>
+                        <p class="text-stone-600">"If I cannot find the herb," he reasoned, "I will simply bring the source." He once again expanded his body to a cosmic size, wrapped his powerful arms around the base of the mountain peak, and with a mighty heave, lifted the entire Dronagiri mountain into the air. </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="return" class="my-16 md:my-24 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-800">The Hero's Return</h2>
+            <p class="mt-4 text-lg max-w-3xl mx-auto text-stone-600">
+                Flying back with the mountain in one hand, Hanuman was a sight that awed the heavens. Just as the first rays of dawn were breaking, he arrived back at the battlefield. Sushena quickly found the Sanjeevani herb, crushed it, and administered it to Lakshmana. Instantly, Lakshmana's wounds healed, and he rose as if from a deep sleep, strong and whole once more. A roar of triumph and joy erupted from the Vanara army. Rama embraced Hanuman, his eyes filled with tears of gratitude, declaring his debt to his devoted servant to be eternal.
+            </p>
+             <div class="text-6xl my-4">🙏❤️</div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-100 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-stone-500">
+            <p>An interactive retelling of Hanuman's legendary feat to save Lakshmana's life.</p>
+            <p class="text-sm mt-2">Inspired by the epic Ramayana.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stepData = {
+                1: { title: 'Step 1: The Vow of Devotion', description: 'Expanding his form to the size of a mountain, Hanuman took flight, his mind focused solely on his lord\'s sorrow. He flew with the speed of thought, crossing the entire length of the land in his desperate mission.' },
+                2: { title: 'Step 2: The Deception', description: 'Ravana dispatched the demon Kalanemi, disguised as a sage, to intercept him. Kalanemi created a magical hermitage and invited the tired Hanuman to rest. But Hanuman saw through the deception, dispatched the demon, and continued his journey without delay.' },
+                3: { title: 'Step 3: The Confusion', description: 'He finally reached the Dronagiri mountain. As foretold, it was aglow with the light of countless medicinal herbs. However, the herbs, aware of his purpose, magically hid their specific forms from him, making it impossible to identify the life-saving Sanjeevani.' }
+            };
+
+            const stepItems = document.querySelectorAll('.step-item');
+            const stepTitle = document.getElementById('step-title');
+            const stepDescription = document.getElementById('step-description');
+
+            stepItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    stepItems.forEach(i => i.classList.remove('step-item-active', 'bg-white'));
+                    stepItems.forEach(i => {
+                        if (i !== item) i.classList.add('bg-white');
+                    });
+                    item.classList.add('step-item-active');
+                    item.classList.remove('bg-white');
+
+                    const step = item.dataset.step;
+                    stepTitle.textContent = stepData[step].title;
+                    stepDescription.textContent = stepData[step].description;
+                });
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+                    button.classList.add('tab-active');
+
+                    const tab = button.dataset.tab;
+                    tabPanes.forEach(pane => {
+                        if (pane.id === `${tab}-content`) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+

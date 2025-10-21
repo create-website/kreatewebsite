@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Diwali: The Festival of Lights</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Prevents scrollbars from interfering with slider */
+        }
+        .slider-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 1s ease-in-out;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 2rem;
+        }
+        .slide.active {
+            opacity: 1;
+        }
+        .slide-content {
+            text-align: center;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 2rem 3rem;
+            border-radius: 1rem;
+            max-width: 800px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeIn 1.5s ease-out;
+        }
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+        @media (max-width: 768px) {
+            .slide-title {
+                font-size: 2.5rem;
+            }
+            .slide-content {
+                padding: 1.5rem 2rem;
+            }
+        }
+        .slide-text {
+            font-size: 1.125rem;
+            line-height: 1.75;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+        }
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transition: background-color 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-button:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        .prev {
+            left: 2rem;
+        }
+        .next {
+            right: 2rem;
+        }
+        .dots-container {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.75rem;
+            z-index: 10;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .dot.active {
+            background-color: white;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Wishes section specific styling */
+        .wishes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+        .wish-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .copy-btn {
+            background-color: #fbbf24; /* Amber 400 */
+            color: #422006; /* Amber 950 */
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: bold;
+            margin-top: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-btn:hover {
+            background-color: #f59e0b; /* Amber 500 */
+        }
+        .copy-btn.copied {
+            background-color: #22c55e; /* Green 500 */
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- This is the main container that holds all the slides -->
+    <div class="slider-container">
+        
+        <!-- Slide 1: Introduction to Diwali -->
+        <div class="slide active" style="background-image: url('https://storage.googleapis.com/kreatewebsite/banner/Diwali.jpg');">
+            <div class="slide-content">
+                <h1 class="slide-title">Happy Diwali!</h1>
+                <p class="slide-text">
+                    Welcome to the celebration of Diwali, the magnificent Festival of Lights. It is a vibrant, joyous festival celebrated by millions around the world, symbolizing the spiritual victory of light over darkness, good over evil, and knowledge over ignorance.
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Traditions and Celebrations -->
+        <div class="slide" style="background-image: url('https://storage.googleapis.com/kreatewebsite/banner/Diwali1.jpg');">
+            <div class="slide-content">
+                <h1 class="slide-title">Customs & Traditions</h1>
+                <p class="slide-text">
+                    Diwali is celebrated over five days, with each day having its own significance. Homes are cleaned and decorated with intricate 'rangoli' designs on floors, and rows of 'diyas' (oil lamps) and fairy lights illuminate the night. Families gather to share feasts of sweets and savory dishes, exchange gifts, and light fireworks.
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Laxmi Puja -->
+        <div class="slide" style="background-image: url('https://storage.googleapis.com/kreatewebsite/banner/Laxmi-Puja.jpg');">
+            <div class="slide-content">
+                <h1 class="slide-title">The Spirit of Laxmi Puja</h1>
+                <p class="slide-text">
+                    The third day is the most significant, marked by 'Laxmi Puja'. Families worship Goddess Lakshmi, the deity of wealth and prosperity. It is believed that on this day, she bestows her blessings for a prosperous year ahead upon those who welcome her into their clean and brightly lit homes.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Slide 4: Diwali Wishes -->
+        <div class="slide" style="background-image: url('https://storage.googleapis.com/kreatewebsite/banner/Diwali.jpg');">
+             <div class="slide-content" style="max-width: 900px;">
+                <h1 class="slide-title">Share the Joy</h1>
+                <p class="slide-text">Send your warmest wishes to friends and family!</p>
+                <div class="wishes-grid">
+                    <div class="wish-card">
+                        <p id="wish1">May the divine light of Diwali spread into your life and bring peace, prosperity, happiness, and good health. Happy Diwali!</p>
+                        <button class="copy-btn" onclick="copyWish('wish1', this)">Copy</button>
+                    </div>
+                    <div class="wish-card">
+                        <p id="wish2">Wishing you a festival full of sweet memories, a sky full of fireworks, and a heart full of joy. Have a safe and happy Diwali!</p>
+                        <button class="copy-btn" onclick="copyWish('wish2', this)">Copy</button>
+                    </div>
+                    <div class="wish-card">
+                        <p id="wish3">May the gleam of diyas and the echo of the chants bring happiness and contentment to your life. Wishing you a very happy and prosperous Diwali.</p>
+                        <button class="copy-btn" onclick="copyWish('wish3', this)">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <button class="nav-button prev" onclick="changeSlide(-1)">&#10094;</button>
+        <button class="nav-button next" onclick="changeSlide(1)">&#10095;</button>
+
+        <!-- Navigation Dots -->
+        <div class="dots-container"></div>
+
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dotsContainer = document.querySelector('.dots-container');
+        const totalSlides = slides.length;
+
+        // Create navigation dots dynamically
+        slides.forEach((_, index) => {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            dot.addEventListener('click', () => showSlide(index));
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+        
+        // Function to display a specific slide
+        function showSlide(n) {
+            // Handle wrapping around
+            if (n >= totalSlides) {
+                currentSlide = 0;
+            } else if (n < 0) {
+                currentSlide = totalSlides - 1;
+            } else {
+                currentSlide = n;
+            }
+
+            // Hide all slides and remove active class from dots
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            // Show the current slide and highlight the active dot
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        // Function to change slide
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Initialize the slider
+        showSlide(currentSlide);
+        
+        // Auto-play functionality (optional)
+        // setInterval(() => {
+        //     changeSlide(1);
+        // }, 7000); // Change slide every 7 seconds
+
+        // Function to copy wishes to clipboard
+        function copyWish(wishId, buttonElement) {
+            const textToCopy = document.getElementById(wishId).innerText;
+            // A fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = textToCopy;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                buttonElement.innerText = 'Copied!';
+                buttonElement.classList.add('copied');
+                
+                // Reset button text after 2 seconds
+                setTimeout(() => {
+                    buttonElement.innerText = 'Copy';
+                    buttonElement.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+    </script>
+
+</body>
+</html>

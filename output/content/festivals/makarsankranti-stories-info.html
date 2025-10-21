@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Stories of Makar Sankranti Info </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Narrative & Structure Plan: The infographic tells a linear story, starting with the macro (cosmic event), moving to the mythological core (the legends), synthesizing the abstract themes (the radar chart), and finally exploring the cultural diffusion (regional variations). This top-down approach makes the complex information highly digestible for a general audience. Sections are clearly delineated with strong headings and background color changes to guide the user's scroll. -->
+    <!-- Visualization & Content Choices: Data Point: The four core legends. -> Goal: Organize & Inform. -> Chosen Visualization: Content cards in a 2x2 grid. -> Justification: This breaks down dense narratives into parallel, easy-to-compare blocks, enhancing readability. Method: HTML/CSS with Unicode icons. | Data Point: Core philosophical themes. -> Goal: Compare. -> Chosen Visualization: Radar Chart. -> Justification: A radar chart visually compares multiple abstract concepts (themes) against a central axis, perfectly illustrating the festival's multifaceted spiritual significance in a single, engaging graphic. Method: Chart.js/Canvas. | Data Point: Regional variations. -> Goal: Show Relationships. -> Chosen Visualization: A central-hub-and-spoke diagram. -> Justification: This visually represents the core concept of a single astronomical event branching into diverse cultural festivals, which is more intuitive than a simple list or table. Method: HTML/CSS using Flexbox. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFEDD5;
+            color: #0A2463;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight text-orange-700 uppercase">Makar Sankranti</h1>
+            <p class="mt-4 text-xl md:text-2xl font-semibold text-orange-600">The Festival of the Sun's Celestial Journey</p>
+        </header>
+
+        <section class="bg-white text-[#0A2463] rounded-2xl shadow-2xl p-8 mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-8">
+                <div class="md:col-span-1 text-center">
+                    <div class="text-7xl md:text-8xl font-black text-[#D8315B]">6</div>
+                    <div class="text-2xl font-bold">Months of Light</div>
+                    <p class="mt-2 text-lg">The start of <span class="font-bold">Uttarayana</span>, the auspicious northward journey of the sun.</p>
+                </div>
+                <div class="md:col-span-2">
+                    <h2 class="text-3xl font-bold mb-4">A Cosmic Shift from Darkness to Light</h2>
+                    <p class="text-lg leading-relaxed">
+                        Makar Sankranti is a unique Hindu festival tied to the solar calendar. It marks the precise moment the Sun transitions into the zodiac sign of Capricorn (Makara). This celestial event begins Uttarayana, a sacred six-month period known as the "day of the gods." It symbolizes the end of winter's harshness and the return of longer, brighter days, representing a universal victory of light over darkness and life over inertia.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-[#0A2463]">The Four Pillars: Core Legends of the Festival</h2>
+                <p class="mt-2 text-lg text-orange-800 max-w-3xl mx-auto">These foundational stories from Hindu epics and Puranas give Makar Sankranti its profound spiritual meaning, translating a cosmic event into timeless human values.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-xl p-6 flex flex-col">
+                    <div class="text-5xl mb-4 text-[#D8315B]">⌛</div>
+                    <h3 class="text-2xl font-bold text-[#0A2463]">Bhishma's Vigil: The Path to Liberation</h3>
+                    <p class="mt-2 text-gray-700 flex-grow">The great Mahabharata warrior Bhishma lay on a bed of arrows, using his boon of self-willed death to wait for the start of Uttarayana. He chose this auspicious moment to depart, ensuring his soul achieved ultimate salvation (*moksha*), forever consecrating the festival as a gateway to the divine.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-xl p-6 flex flex-col">
+                    <div class="text-5xl mb-4 text-[#3E92CC]">🌊</div>
+                    <h3 class="text-2xl font-bold text-[#0A2463]">Ganga's Descent: The River of Purification</h3>
+                    <p class="mt-2 text-gray-700 flex-grow">Through immense penance, King Bhagirath brought the celestial river Ganga to Earth to purify the ashes of his 60,000 ancestors. It is believed she reached them on Makar Sankranti, granting them liberation. This legend establishes the sanctity of taking a holy bath on this day.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-xl p-6 flex flex-col">
+                    <div class="text-5xl mb-4 text-[#FFC43D]">☀️</div>
+                    <h3 class="text-2xl font-bold text-[#0A2463]">Surya & Shani: A Cosmic Reconciliation</h3>
+                    <p class="mt-2 text-gray-700 flex-grow">On this day, the Sun God, Surya, visits the home of his estranged son, Shani (Saturn). This celestial meeting symbolizes familial harmony and the mending of differences, inspiring the tradition of exchanging sesame (for Shani) and jaggery (for Surya) sweets to "speak sweet words."</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-xl p-6 flex flex-col">
+                    <div class="text-5xl mb-4 text-[#D8315B]">⚔️</div>
+                    <h3 class="text-2xl font-bold text-[#0A2463]">Goddess Sankranti: The Triumph of Good</h3>
+                    <p class="mt-2 text-gray-700 flex-grow">Folk legends tell of the goddess Sankranti, who manifested to defeat the demon Sankarasur. Her victory on this day personifies the festival's essence: an active, divine intervention that purges negativity and ushers in an era of righteousness and peace.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white text-[#0A2463] rounded-2xl shadow-2xl p-8 mb-20">
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-bold">A Synthesis of Spiritual Themes</h2>
+                <p class="mt-2 text-lg max-w-3xl mx-auto">The legends of Makar Sankranti are woven together by powerful, universal themes. This visualization shows the prominence of each core concept, revealing the festival's deep and multifaceted spiritual significance.</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="themesRadarChart"></canvas>
+            </div>
+        </section>
+
+        <section>
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-[#0A2463]">One Sun, Many Celebrations</h2>
+                <p class="mt-2 text-lg text-orange-800 max-w-3xl mx-auto">The single astronomical event of Makar Sankranti inspires a vibrant spectrum of unique regional festivals across India, each with its own local legends and rituals.</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="bg-white text-[#0A2463] rounded-full py-4 px-8 font-bold text-2xl shadow-lg mb-8">MAKAR SANKRANTI</div>
+                <div class="w-full flex flex-col md:flex-row justify-center items-stretch gap-8">
+                    <div class="flex-1 bg-[#F4E285] text-[#0A2463] rounded-lg p-6 shadow-lg text-center">
+                        <h3 class="font-bold text-xl">Lohri <span class="text-sm font-normal">(Punjab)</span></h3>
+                        <p class="mt-2">A community bonfire celebrates the folk hero Dulla Bhatti, who rescued girls from slavery, symbolizing social justice.</p>
+                    </div>
+                    <div class="flex-1 bg-[#D8315B] text-white rounded-lg p-6 shadow-lg text-center">
+                        <h3 class="font-bold text-xl">Pongal <span class="text-sm font-normal">(Tamil Nadu)</span></h3>
+                        <p class="mt-2">A four-day harvest festival honoring cattle and the Sun God, with legends of Krishna and Shiva's bull, Nandi.</p>
+                    </div>
+                    <div class="flex-1 bg-[#FFC43D] text-[#0A2463] rounded-lg p-6 shadow-lg text-center">
+                        <h3 class="font-bold text-xl">Uttarayan <span class="text-sm font-normal">(Gujarat)</span></h3>
+                        <p class="mt-2">A massive kite festival where flying kites symbolizes reaching for the divine, accompanied by community feasts.</p>
+                    </div>
+                     <div class="flex-1 bg-white text-[#0A2463] rounded-lg p-6 shadow-lg text-center">
+                        <h3 class="font-bold text-xl">Magh Bihu <span class="text-sm font-normal">(Assam)</span></h3>
+                        <p class="mt-2">A festival of feasting to mark the end of the harvest, celebrated with community meals and bonfires in thatch huts.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+<!--   
+    <footer class="text-center py-8 mt-12 border-t border-orange-200">
+        <p class="text-orange-800">Infographic created to visualize the rich heritage of Makar Sankranti.</p>
+    </footer>
+-->
+
+    <script>
+        const processLabel = (label) => {
+            if (label.length <= 16) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > 16) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine);
+            }
+            return lines;
+        };
+
+        const chartLabels = [
+            "Spiritual Liberation",
+            "Ancestral Purification",
+            "Familial Reconciliation",
+            "Triumph of Good",
+            "Harvest Gratitude"
+        ].map(processLabel);
+
+        const ctx = document.getElementById('themesRadarChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Thematic Importance',
+                    data: [95, 90, 85, 80, 92],
+                    backgroundColor: 'rgba(234, 88, 12, 0.2)',
+                    borderColor: '#EA580C',
+                    pointBackgroundColor: '#EA580C',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#EA580C'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: {
+                            color: 'rgba(234, 88, 12, 0.3)'
+                        },
+                        grid: {
+                            color: 'rgba(234, 88, 12, 0.3)'
+                        },
+                        pointLabels: {
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            color: '#0A2463'
+                        },
+                        ticks: {
+                            backdropColor: 'rgba(255, 255, 255, 0.75)',
+                            color: '#0A2463',
+                            stepSize: 20
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Festival of Bhai Dooj: An Interactive Guide</title>
+    
+    <!-- Meta Description and Keywords for SEO -->
+    <meta name="description" content="Explore the history, sacred rituals, famous legends (Yama & Yamuna, Krishna & Subhadra), and regional variations of the Hindu festival Bhai Dooj in this interactive guide.">
+    <meta name="keywords" content="Bhai Dooj, Bhai Tika, Bhau Beej, Yama Dwitiya, Hindu festival, sibling bond, Hindu rituals, Diwali, legends">
+
+    <!-- Open Graph (OG) / Social Media Tags -->
+    <meta property="og:title" content="Bhai Dooj: An Interactive Guide to the Sibling Festival">
+    <meta property="og:description" content="Explore the history, sacred rituals, famous legends, and regional variations of the cherished Hindu festival Bhai Dooj.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://example.com/bhai-dooj-guide">
+    <meta property="og:image" content="https://placehold.co/1200x630/FDD835/795548?text=Bhai+Dooj+Guide">
+    <meta property="og:site_name" content="Cultural Festival Explorer">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "The Festival of Bhai Dooj: An Interactive Guide",
+      "description": "An interactive exploration of the history, rituals, legends, and regional variations of the Hindu festival Bhai Dooj, celebrating the bond between brothers and sisters.",
+      "image": "https://placehold.co/1200x630/FDD835/795548?text=Bhai+Dooj+Guide",
+      "author": {
+        "@type": "Organization",
+        "name": "Cultural Festival Explorer"
+      },
+      "datePublished": "2025-10-20",
+      "mainEntityOfPage": "https://example.com/bhai-dooj-guide"
+    }
+    </script>
+    
+    <!-- Chosen Palette: Warm Saffron & Marigold -->
+    <!-- Application Structure Plan: A thematic, single-page application with a sticky top navigation for easy access to different facets of the festival. The structure is designed for exploration rather than a linear read. It begins with the core 'Significance' (now featuring visual cards), moves to the 'Rituals' presented as interactive steps, then to the 'Legends' using a tabbed interface for story-switching, concludes with 'Regional Variations' in a card layout and a visual summary chart, and ends with a list of 'Wishes'. This non-linear, thematic approach allows users to dive into the aspect that interests them most, enhancing usability and engagement with the cultural information. -->
+    <!-- Visualization & Content Choices: 
+        - Significance: Inform -> Text block & Two Image Cards (Placeholders) -> Static -> Justification: Provides contextual history alongside visual representation of key elements (tilak, protection) using new cards. Method: HTML/Tailwind.
+        - Rituals: Organize/Inform -> Step-by-step card flow -> Scroll/Click -> Justification: Breaks down a process into digestible, interactive steps. Method: HTML/Tailwind.
+        - Legends: Compare/Inform -> Tabbed content viewer -> Click to switch stories -> Justification: Allows easy comparison of narratives without cluttering the page. Method: Vanilla JS.
+        - Regional Variations: Organize/Compare -> Grid of cards -> Static display -> Justification: Presents diverse information in a structured, easily scannable format. Method: HTML/Tailwind.
+        - Core Elements: Inform/Compare -> Horizontal Bar Chart -> Interactive Tooltips -> Justification: Visually represents the conceptual importance of festival components. Library: Chart.js/Canvas.
+        - Wishes: Inform -> Grid of Text Cards -> Static -> Justification: Provides ready-to-use emotional content as a concluding, shareable resource. Method: HTML/Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8F0; 
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active {
+            color: #D97706; 
+            border-bottom-color: #D97706;
+        }
+        .story-btn.active {
+            background-color: #FB923C; 
+            color: #FFFFFF;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-2xl font-bold text-amber-600">Bhai Dooj</h1>
+                <div class="hidden sm:flex sm:space-x-8" id="nav-links">
+                    <a href="#significance" class="nav-link text-gray-600 hover:text-amber-600 border-b-2 border-transparent pb-1">Significance</a>
+                    <a href="#rituals" class="nav-link text-gray-600 hover:text-amber-600 border-b-2 border-transparent pb-1">The Rituals</a>
+                    <a href="#legends" class="nav-link text-gray-600 hover:text-amber-600 border-b-2 border-transparent pb-1">Legends</a>
+                    <a href="#variations" class="nav-link text-gray-600 hover:text-amber-600 border-b-2 border-transparent pb-1">Variations</a>
+                    <a href="#elements" class="nav-link text-gray-600 hover:text-amber-600 border-b-2 border-transparent pb-1">Core Elements</a>
+                    <a href="#wishes" class="nav-link text-gray-600 hover:text-amber-600 border-b-2 border-transparent pb-1">Wishes</a>
+                </div>
+                <div class="sm:hidden">
+                    <select id="mobile-nav" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                        <option value="#significance">Significance</option>
+                        <option value="#rituals">The Rituals</option>
+                        <option value="#legends">Legends</option>
+                        <option value="#variations">Variations</option>
+                        <option value="#elements">Core Elements</option>
+                        <option value="#wishes">Wishes</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+
+        <section id="hero" class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-amber-700 tracking-tight">Celebrating the Sibling Bond</h1>
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-stone-600">An interactive exploration of Bhai Dooj, a cherished Hindu festival dedicated to the unique and enduring love between brothers and sisters.</p>
+        </section>
+
+        <section id="significance" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-amber-800">The Heart of the Festival</h2>
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                <!-- Text Content -->
+                <div class="md:col-span-2 bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-semibold text-amber-700 mb-4">Meaning and History</h3>
+                    <p class="text-lg text-stone-700 leading-relaxed">
+                        This section introduces the core meaning of Bhai Dooj. The festival, celebrated on the second lunar day of the Shukla Paksha (bright fortnight) in the Hindu month of Kartika, is a beautiful affirmation of the protective and loving relationship between siblings. Sisters pray for their brothers' long life, health, and prosperity by performing a 'Tilak' ceremony, while brothers vow to protect their sisters and shower them with gifts. It transcends biological ties, often celebrating cherished cousin relationships as well. The timing, falling two days after Diwali, marks the conclusion of the five-day festival period.
+                    </p>
+                </div>
+                <!-- Image Cards (Placeholders) -->
+                <div class="md:col-span-1 space-y-4">
+                    <div class="rounded-xl overflow-hidden shadow-xl border border-amber-200 bg-amber-50">
+                        <img src="https://storage.googleapis.com/kreatewebsite/festival/bhai-dooj/thumbnails_300/bhaiya-dooj.jpg" width="400" height "250" alt="Placeholder image depicting Bhai Dooj rituals." class="w-full h-auto object-cover">
+                        <p class="p-3 text-sm text-center font-medium text-amber-800">The Ceremonial Tilak & Pooja</p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-xl border border-amber-200 bg-amber-50">
+                        <img src="https://storage.googleapis.com/kreatewebsite/festival/bhai-dooj/thumbnails_300/bhai-dooj.jpg" width="400" height "250"  alt="Placeholder image depicting the joyful spirit of Bhai Dooj." class="w-full h-auto object-cover">
+                         <p class="p-3 text-sm text-center font-medium text-amber-800">A Promise of Lifelong Protection</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rituals" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-amber-800">The Sacred Ceremony</h2>
+             <p class="text-center max-w-3xl mx-auto mb-10 text-stone-600">
+                Explore the step-by-step rituals that form the heart of the Bhai Dooj celebration. Each step is imbued with symbolic meaning, reinforcing the prayers and promises that define this special day. Click or scroll through to see how the ceremony unfolds.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-amber-100 transition-transform transform hover:scale-105">
+                    <h3 class="text-xl font-semibold text-amber-700 mb-3"><span class="font-mono text-3xl text-amber-400 mr-2">1.</span> The Tilak</h3>
+                    <p class="text-stone-600">The sister prepares a ceremonial platter (puja thali) containing vermilion (kumkum), rice, sandalwood paste, sweets, and a lamp (diya). She applies a 'tilak' on her brother's forehead, a mark of protection and blessing.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-amber-100 transition-transform transform hover:scale-105">
+                    <h3 class="text-xl font-semibold text-amber-700 mb-3"><span class="font-mono text-3xl text-amber-400 mr-2">2.</span> The Aarti</h3>
+                    <p class="text-stone-600">Following the tilak, the sister performs the aarti, circling the holy flame before her brother. This ritual is meant to ward off evil spirits and negative energy, enveloping him in a circle of divine protection.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-amber-100 transition-transform transform hover:scale-105">
+                    <h3 class="text-xl font-semibold text-amber-700 mb-3"><span class="font-mono text-3xl text-amber-400 mr-2">3.</span> The Feast</h3>
+                    <p class="text-stone-600">The sister often cooks her brother's favorite dishes. The family gathers for a grand feast, celebrating the occasion with joy, laughter, and delicious food, strengthening family bonds.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-amber-100 transition-transform transform hover:scale-105">
+                    <h3 class="text-xl font-semibold text-amber-700 mb-3"><span class="font-mono text-3xl text-amber-400 mr-2">4.</span> Exchange of Gifts</h3>
+                    <p class="text-stone-600">The brother, in turn, presents his sister with gifts as a token of his love and appreciation, and renews his vow to protect and support her throughout her life. It's a gesture of gratitude for her prayers.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="legends" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-amber-800">Stories Behind the Tradition</h2>
+            <p class="text-center max-w-3xl mx-auto mb-10 text-stone-600">
+                The traditions of Bhai Dooj are rooted in ancient legends that highlight the profound bond between siblings. This section allows you to explore these foundational stories. Click on the buttons below to switch between the famous tales that have shaped this festival through the ages.
+            </p>
+            <div class="max-w-4xl mx-auto">
+                <div class="flex justify-center space-x-4 mb-6" id="story-buttons">
+                    <button class="story-btn active px-6 py-2 rounded-full bg-amber-200 text-amber-800 font-semibold transition" data-story="yama">Yama & Yamuna</button>
+                    <button class="story-btn px-6 py-2 rounded-full bg-amber-100 text-amber-700 font-semibold transition" data-story="krishna">Krishna & Subhadra</button>
+                </div>
+                <div id="story-content" class="bg-white p-8 rounded-xl shadow-lg min-h-[250px]">
+                    <div id="yama-story" class="story text-stone-700 leading-relaxed">
+                        <h3 class="text-2xl font-bold text-amber-700 mb-4">The Lord of Death and His Sister</h3>
+                        <p>The most famous legend concerns Yama, the God of Death, and his twin sister, Yamuna, the river goddess. After a long separation, Yama visited Yamuna, who welcomed him with an elaborate ceremony, applying a tilak on his forehead. Moved by her love and affection, Yama declared that any brother who receives a tilak from his sister on this day would be granted a long life and protection from untimely death. This is why the festival is also known as 'Yamadwitheya'.</p>
+                    </div>
+                    <div id="krishna-story" class="story hidden text-stone-700 leading-relaxed">
+                        <h3 class="text-2xl font-bold text-amber-700 mb-4">Lord Krishna's Visit</h3>
+                        <p>Another popular tale involves Lord Krishna and his sister, Subhadra. After defeating the demon Narakasura, Lord Krishna visited Subhadra, who gave him a warm welcome with sweets and flowers. She applied the ceremonial tilak on his forehead as a mark of love and respect. This affectionate gesture is believed to have cemented the tradition of Bhai Dooj, symbolizing a sister's joy and relief at her brother's victory and safe return.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="variations" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-amber-800">A Festival of Many Names</h2>
+             <p class="text-center max-w-3xl mx-auto mb-10 text-stone-600">
+                While the sentiment remains the same, Bhai Dooj is celebrated under different names and with unique local customs across India and Nepal. This section highlights the beautiful diversity of this single festival, showcasing how different cultures celebrate the enduring bond of siblings.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-orange-400">
+                    <h3 class="text-xl font-bold text-orange-700">Bhai Phonta (Bengal)</h3>
+                    <p class="text-stone-600 mt-2">Sisters keep a fast until they apply a 'phonta' of sandalwood paste, kajal, and yogurt on their brother's forehead, chanting prayers for his well-being.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-red-400">
+                    <h3 class="text-xl font-bold text-red-700">Bhai Tika (Nepal)</h3>
+                    <p class="text-stone-600 mt-2">A vibrant, long ceremony where sisters apply a seven-coloured 'tika' on their brother's forehead and offer him special food and garlands.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-yellow-400">
+                    <h3 class="text-xl font-bold text-yellow-700">Bhau Beej (Maharashtra & Goa)</h3>
+                    <p class="text-stone-600 mt-2">Sisters draw a square on the floor where the brother sits for the ceremony. The name translates to 'brother's second day' of the lunar fortnight.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-green-400">
+                    <h3 class="text-xl font-bold text-green-700">Bhai Jiuntia (Odisha)</h3>
+                    <p class="text-stone-600 mt-2">Part of the Jiuntia festival where sisters pray for their brothers' long lives. It's a community celebration of the sibling bond.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-blue-400">
+                    <h3 class="text-xl font-bold text-blue-700">Yamadwitheya (South India)</h3>
+                    <p class="text-stone-600 mt-2">Known by its more classical name, directly referencing the legend of Yama and Yamuna. The customs are popular in Karnataka and Telangana.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-purple-400">
+                    <h3 class="text-xl font-bold text-purple-700">Bhatru Dviteeya</h3>
+                    <p class="text-stone-600 mt-2">Another name for the festival, where 'Bhatru' means brother and 'Dviteeya' means the second day, highlighting the day's significance in the lunar calendar.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="elements" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-amber-800">Visualizing the Core Elements</h2>
+            <p class="text-center max-w-3xl mx-auto mb-10 text-stone-600">
+                This chart provides a conceptual visualization of the central elements of the Bhai Dooj celebration. While all parts are essential, this representation highlights the perceived importance and symbolic weight of each ritual, from the sacred Tilak to the joyous feast. Hover over the bars to see their role in the festival.
+            </p>
+            <div class="bg-white p-4 sm:p-8 rounded-xl shadow-lg">
+                <div class="chart-container">
+                    <canvas id="elementsChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section id="wishes" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8 text-amber-800">20 Heartfelt Bhai Dooj Wishes</h2>
+            <p class="text-center max-w-3xl mx-auto mb-10 text-stone-600">
+                Share the joy! Here are 20 messages you can send to your brother or sister to celebrate the love, bond, and blessings of this special occasion.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">Happy Bhai Dooj! May our bond grow stronger every year.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">Wishing you long life and success. Love you, Bhai/Behan!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">May this special day bring you immense joy and good fortune.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">Thank you for being my constant support. Happy Bhai Dooj!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">On this auspicious day, I pray for your happiness.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">To the best brother/sister in the world, Happy Bhai Dooj!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">May our journey together be blessed with endless laughter.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">Sending you my love and blessings on Yamadwitheya.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">May your life be filled with success and prosperity.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">Here's to the beautiful bond we share. Happy Bhau Beej!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">I wish you good health and prosperity this Bhai Dooj.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">May the light of Diwali continue to shine in our lives.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">Dear sibling, you are my first and best friend. Happy festival!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">The bond we share is irreplaceable. Wishing you well.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">May your path be free of obstacles. Happy Bhai Tika!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">Thinking of you and sending all my love this Bhai Phonta.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">Your happiness means the world to me. Happy Bhai Dooj!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">May we always be there for each other, through thick and thin.</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">Thank you for the wonderful memories. Let's make more!</div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-2 border-amber-500 text-stone-700">Sending heartfelt prayers for your glorious future. Happy Bhai Dooj!</div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-stone-100 mt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-stone-500">
+            <p>&copy; 2025 Bhai Dooj Interactive Guide. A celebration of sibling love.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const storyButtons = document.querySelectorAll('.story-btn');
+            const stories = document.querySelectorAll('.story');
+            const storyButtonContainer = document.getElementById('story-buttons');
+
+            storyButtonContainer.addEventListener('click', (e) => {
+                const clicked = e.target.closest('.story-btn');
+                if (!clicked) return;
+
+                const storyToShow = clicked.dataset.story;
+
+                storyButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                clicked.classList.add('active');
+
+                stories.forEach(story => {
+                    story.classList.add('hidden');
+                    if (story.id === `${storyToShow}-story`) {
+                        story.classList.remove('hidden');
+                    }
+                });
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            const activateNav = (id) => {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                });
+                if (mobileNav.value !== `#${id}`) {
+                    mobileNav.value = `#${id}`;
+                }
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        activateNav(entry.target.id);
+                    }
+                });
+            }, { rootMargin: '-30% 0px -70% 0px' });
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            mobileNav.addEventListener('change', (e) => {
+                window.location.href = e.target.value;
+            });
+            
+            const ctx = document.getElementById('elementsChart').getContext('2d');
+            const elementsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['The Tilak Ceremony', 'Aarti (Holy Flame)', 'The Family Feast', 'Exchange of Gifts'],
+                    datasets: [{
+                        label: 'Conceptual Importance',
+                        data: [100, 95, 80, 75],
+                        backgroundColor: [
+                            'rgba(251, 146, 60, 0.7)',
+                            'rgba(249, 115, 22, 0.7)',
+                            'rgba(234, 88, 12, 0.7)',
+                            'rgba(194, 65, 12, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(251, 146, 60, 1)',
+                            'rgba(249, 115, 22, 1)',
+                            'rgba(234, 88, 12, 1)',
+                            'rgba(194, 65, 12, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    let value = context.raw;
+                                    let text = '';
+                                    if (context.label === 'The Tilak Ceremony') text = 'The core blessing and prayer for protection.';
+                                    else if (context.label === 'Aarti (Holy Flame)') text = 'Warding off negative energy.';
+                                    else if (context.label === 'The Family Feast') text = 'Strengthening family bonds with shared joy.';
+                                    else if (context.label === 'Exchange of Gifts') text = 'Symbol of the brother\'s vow of protection.';
+                                    return text;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                             ticks: {
+                                display: false
+                            },
+                            grid: {
+                                display: false
+                            },
+                            border: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                font: {
+                                    size: 14,
+                                    family: "'Inter', sans-serif"
+                                }
+                            },
+                             grid: {
+                                display: false
+                            },
+                             border: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+
+</body>
+</html>

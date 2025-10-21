@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Corporate AI Agent Risk Framework</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a linear narrative structure designed for easy scrolling and comprehension. It begins with a hook defining the "Agentic Shift" to establish context. It then dedicates major sections to the "Taxonomy of Corporate Risk," the "Legal Minefield," and culminates in the "Blueprint for Responsible Deployment." This structure mirrors the report's logic, guiding the user from problem identification to actionable solutions. -->
+    <!-- Visualization & Content Choices: 
+        - Agent Types (Sec 1.1): Report Info -> Difference between Bots, Assistants, Agents. Goal -> Compare. Viz -> Styled HTML cards with Unicode icons. Justification -> Clear, immediate visual comparison of autonomy levels. NO SVG.
+        - Operational Risks (Sec 2.1): Report Info -> Stats on integration challenges and costs. Goal -> Inform. Viz -> "Single Big Number" cards. Justification -> Makes key statistics stand out for maximum impact. NO SVG.
+        - Cybersecurity Threats (Table from 2.2): Report Info -> Threat vectors, impacts, mitigations. Goal -> Organize. Viz -> Responsive HTML table. Justification -> The most direct and effective way to present structured tabular data from the report. NO SVG.
+        - Cascading Failure (End of 2.4): Report Info -> Chain reaction of risks. Goal -> Show a process. Viz -> HTML/CSS flowchart using Tailwind grid and borders. Justification -> Visually demonstrates the interconnectedness of risks without using forbidden graphics libraries. NO SVG/Mermaid.
+        - Maturity Model (Table from 4.1): Report Info -> 5 levels of AI governance. Goal -> Show change/progression. Viz -> Bar Chart (Chart.js/Canvas). Justification -> A bar chart provides a strong visual metaphor for increasing maturity and progress through the five levels. NO SVG.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .chart-container { position: relative; width: 100%; max-width: 900px; margin-left: auto; margin-right: auto; height: 450px; max-height: 60vh; }
+        .flow-node { border: 2px solid #5BC0EB; background-color: #ffffff; }
+        .flow-arrow::after { content: '►'; position: absolute; font-size: 1.5rem; color: #5BC0EB; top: 50%; right: -1.2rem; transform: translateY(-50%); }
+        .flow-arrow-down::after { content: '▼'; position: absolute; font-size: 1.5rem; color: #5BC0EB; bottom: -1.5rem; left: 50%; transform: translateX(-50%); }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <header class="bg-slate-900 text-white text-center py-12 px-4">
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">The Agentic Shift</h1>
+        <p class="mt-4 text-lg text-slate-300 max-w-3xl mx-auto">Autonomous AI agents are no longer just tools; they are the new corporate actors. Understanding their risks isn't just an IT issue—it's a core business imperative.</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="distinction" class="py-16">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-4">From Automation to Autonomy</h2>
+            <p class="max-w-3xl mx-auto text-slate-600 mb-12 text-center">The evolution from simple bots to proactive agents represents a fundamental change in the human-computer relationship, moving from operating tools to managing delegates.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-slate-200">
+                    <div class="text-5xl mb-4">🤖</div>
+                    <h3 class="text-2xl font-bold text-slate-900">Bots</h3>
+                    <p class="text-slate-600 mt-2">Follow predefined scripts to automate simple, repetitive tasks. They have minimal autonomy and do not learn.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border-2 border-[#5BC0EB]">
+                    <div class="text-5xl mb-4">🧠</div>
+                    <h3 class="text-2xl font-bold text-slate-900">AI Agents</h3>
+                    <p class="text-slate-600 mt-2">Proactively set goals, create plans, and execute complex workflows with a high degree of independence.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-slate-200">
+                    <div class="text-5xl mb-4">👨‍💼</div>
+                    <h3 class="text-2xl font-bold text-slate-900">AI Assistants</h3>
+                    <p class="text-slate-600 mt-2">Reactive systems that respond to direct user commands. They can assist but require user confirmation to act.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="risks" class="py-16 bg-white rounded-2xl shadow-inner-lg p-8">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-4">A Taxonomy of Corporate Risk</h2>
+            <p class="max-w-3xl mx-auto text-slate-600 mb-12 text-center">Deploying autonomous systems exposes the enterprise to significant operational, financial, and legal damage. The risks are interconnected and demand a holistic governance approach.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <div class="bg-slate-100 p-6 rounded-lg text-center border border-slate-200">
+                    <p class="text-6xl font-extrabold text-[#FF3E41]">67%</p>
+                    <p class="mt-2 text-lg font-semibold text-slate-700">of executives cite legacy technology as the top barrier to digital transformation, a challenge AI agents exacerbate.</p>
+                </div>
+                <div class="bg-slate-100 p-6 rounded-lg text-center border border-slate-200">
+                    <p class="text-6xl font-extrabold text-[#FF3E41]">1000%</p>
+                    <p class="mt-2 text-lg font-semibold text-slate-700">How much CIOs can miscalculate AI costs, with PoCs alone reaching nearly $3 million.</p>
+                </div>
+                <div class="bg-slate-100 p-6 rounded-lg text-center border border-slate-200">
+                    <p class="text-6xl font-extrabold text-[#FF3E41]">68%</p>
+                    <p class="mt-2 text-lg font-semibold text-slate-700">of data breaches involved an internal actor, a risk AI data overexposure can unintentionally escalate.</p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-slate-800 text-center mb-8">Key Cybersecurity Threat Vectors</h3>
+            <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-800 text-white">
+                        <tr>
+                            <th class="p-4 font-semibold">Threat Vector</th>
+                            <th class="p-4 font-semibold">Description</th>
+                            <th class="p-4 font-semibold">Business Impact</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        <tr class="hover:bg-slate-50">
+                            <td class="p-4 font-semibold text-[#FF3E41]">Indirect Prompt Injection</td>
+                            <td class="p-4 text-slate-600">Malicious instructions hidden in external data cause the agent to perform unauthorized actions.</td>
+                            <td class="p-4 text-slate-600">Data exfiltration, unauthorized transactions, system compromise.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50">
+                            <td class="p-4 font-semibold text-[#FF3E41]">Tool Misuse</td>
+                            <td class="p-4 text-slate-600">Attacker manipulates the agent to abuse its integrated tools (e.g., email APIs, file systems).</td>
+                            <td class="p-4 text-slate-600">Sending phishing emails from internal accounts, data destruction.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50">
+                            <td class="p-4 font-semibold text-[#FF3E41]">Data Overexposure</td>
+                            <td class="p-4 text-slate-600">Agent accesses and shares sensitive data the human user is not authorized to see.</td>
+                            <td class="p-4 text-slate-600">Internal data breaches, regulatory fines (GDPR), erosion of security controls.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="cascading-failure" class="py-16">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-4">How Risks Create a Cascading Failure</h2>
+             <p class="max-w-3xl mx-auto text-slate-600 mb-12 text-center">Risks are not isolated. A single weakness, like poor data quality, can trigger a devastating chain reaction across legal, ethical, and security domains.</p>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16 md:gap-y-8 text-center">
+                <div class="relative flow-node p-6 rounded-lg shadow-md">
+                    <h4 class="font-bold text-xl text-[#5BC0EB]">1. Data Quality Failure</h4>
+                    <p class="text-sm text-slate-600 mt-2">Agent is trained on historically biased and poorly governed data.</p>
+                    <div class="md:hidden flow-arrow-down mt-4"></div>
+                    <div class="hidden md:block flow-arrow"></div>
+                </div>
+                <div class="relative flow-node p-6 rounded-lg shadow-md">
+                    <h4 class="font-bold text-xl text-[#5BC0EB]">2. Ethical & Legal Failure</h4>
+                    <p class="text-sm text-slate-600 mt-2">Agent makes discriminatory decisions, violating anti-discrimination laws.</p>
+                    <div class="md:hidden flow-arrow-down mt-4"></div>
+                    <div class="hidden md:block flow-arrow"></div>
+                </div>
+                <div class="relative flow-node p-6 rounded-lg shadow-md">
+                    <h4 class="font-bold text-xl text-[#5BC0EB]">3. Security & Reputational Crisis</h4>
+                    <p class="text-sm text-slate-600 mt-2">An attacker uses prompt injection to exfiltrate sensitive data, causing a massive breach and regulatory fines.</p>
+                </div>
+             </div>
+        </section>
+
+        <section id="blueprint" class="py-16 bg-slate-900 text-white rounded-2xl p-8">
+            <h2 class="text-3xl font-bold text-center mb-4">A Blueprint for Responsible Deployment</h2>
+             <p class="max-w-3xl mx-auto text-slate-300 mb-12 text-center">A proactive governance framework is essential. The maturity model below provides a structured roadmap for building this capability across the enterprise.</p>
+             <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg">
+                <div class="chart-container">
+                    <canvas id="maturityChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section id="solutions" class="py-16">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-4">Core Recommendations for Leadership</h2>
+            <p class="max-w-3xl mx-auto text-slate-600 mb-12 text-center">To navigate this transformation successfully, the C-suite must embrace a new paradigm of governance that blends robust technical controls with human-centric oversight.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                    <div class="text-3xl mb-3">🛡️</div>
+                    <h3 class="font-bold text-lg text-slate-900">Embrace Proactive Governance</h3>
+                    <p class="text-slate-600 mt-2 text-sm">Don't wait for regulations. Establish a cross-functional AI Governance Board to set policy, define risk appetite, and ensure accountability.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                    <div class="text-3xl mb-3">🔑</div>
+                    <h3 class="font-bold text-lg text-slate-900">Treat Agents as Identities</h3>
+                    <p class="text-slate-600 mt-2 text-sm">Subject agents to the most stringent Identity and Access Management (IAM) controls, including the principle of least privilege.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                    <div class="text-3xl mb-3">🧑‍💻</div>
+                    <h3 class="font-bold text-lg text-slate-900">Mandate Human-in-the-Loop</h3>
+                    <p class="text-slate-600 mt-2 text-sm">Codify human oversight into policy for all high-risk functions. Clear escalation paths are a non-negotiable risk control.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 mt-8 py-6 text-center">
+        <p class="text-slate-400">Infographic based on the report: "Autonomous Agents in the Enterprise: A Framework for Navigating Risk and Ensuring Responsible Innovation."</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const createMaturityChart = () => {
+                const ctx = document.getElementById('maturityChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Level 1: Ad-Hoc', 'Level 2: Developing', 'Level 3: Defined', 'Level 4: Managed', 'Level 5: Optimized'],
+                        datasets: [{
+                            label: 'Governance Maturity',
+                            data: [1, 2, 3, 4, 5],
+                            backgroundColor: [
+                                'rgba(255, 62, 65, 0.7)',
+                                'rgba(255, 184, 48, 0.7)',
+                                'rgba(253, 231, 76, 0.7)',
+                                'rgba(155, 197, 61, 0.7)',
+                                'rgba(91, 192, 235, 0.7)'
+                            ],
+                            borderColor: [
+                                '#FF3E41',
+                                '#FFB830',
+                                '#FDE74C',
+                                '#9BC53D',
+                                '#5BC0EB'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                display: false,
+                                max: 5.5
+                            },
+                            y: {
+                                grid: { display: false },
+                                ticks: { 
+                                    color: '#1e293b', 
+                                    font: { size: 14, weight: '600' }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                enabled: false
+                            }
+                        }
+                    }
+                });
+            };
+            
+            createMaturityChart();
+        });
+    </script>
+</body>
+</html>

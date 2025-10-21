@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Story of Ganesh Chaturthi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Harmony -->
+    <!-- Application Structure Plan: The application is designed as a thematic, single-page journey with a sticky navigation bar for easy access to key sections: 'The Legend', 'The Celebration', 'Global Reach', and 'The Modern Festival'. This non-linear structure allows users to explore topics based on interest rather than following the report's linear format. The flow is designed to be visually driven, starting with Ganesha's symbolic form, moving to the rituals, then expanding to a global perspective, and concluding with the festival's contemporary challenges. This thematic grouping enhances usability by organizing complex information into digestible, interactive modules, fostering exploration over passive reading. -->
+    <!-- Visualization & Content Choices: 
+        1. Ganesha's Symbolism: Report Info -> Iconography of Ganesha. Goal -> Inform/Organize. Viz -> Interactive diagram (HTML/CSS). Interaction -> Click on parts of the body to reveal tooltips with symbolic meanings. Justification -> More engaging and memorable than a static list. Method -> Vanilla JS.
+        2. Domestic vs. Public Celebrations: Report Info -> Comparison table. Goal -> Compare. Viz -> Two-button toggle with dynamic content cards. Interaction -> Clicking buttons switches the displayed content. Justification -> Provides a direct, side-by-side comparison in the same UI space, highlighting contrasts effectively. Method -> Vanilla JS.
+        3. Environmental Impact: Report Info -> Environmental problems table. Goal -> Compare/Inform. Viz -> Bar Chart. Interaction -> Buttons to filter data between 'Pollution Impact' and 'Toxicity'. Justification -> Visualizes the severity of the environmental problem, making the data more impactful than a text-based table. Library -> Chart.js.
+        4. Regional Variations: Report Info -> Celebrations across India. Goal -> Organize/Inform. Viz -> Interactive map-like layout. Interaction -> Clicking on a region updates a display panel with local traditions. Justification -> An intuitive, geographical way to explore cultural diversity. Method -> Vanilla JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDF6E3;
+            color: #333333;
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #E8795A;
+            border-bottom-color: #E8795A;
+        }
+        .btn-primary {
+            background-color: #E8795A;
+            color: #FFFFFF;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #D46A4B;
+        }
+        .btn-secondary {
+            background-color: #587D71;
+            color: #FFFFFF;
+            transition: background-color 0.3s;
+        }
+        .btn-secondary:hover {
+            background-color: #4A6B60;
+        }
+        .card {
+            background-color: #FFFBF2;
+            border: 1px solid #F3EADF;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .interactive-ganesha-point {
+            position: absolute;
+            width: 2rem;
+            height: 2rem;
+            background-color: rgba(232, 121, 90, 0.7);
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .interactive-ganesha-point:hover {
+            transform: scale(1.2);
+            background-color: rgba(212, 106, 75, 1);
+        }
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .interactive-ganesha-point:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-[#FFFBF2] shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-[#E8795A]">Ganesh Chaturthi</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#legend" class="nav-link border-b-2 border-transparent pb-1">The Legend</a>
+                <a href="#celebration" class="nav-link border-b-2 border-transparent pb-1">The Celebration</a>
+                <a href="#global" class="nav-link border-b-2 border-transparent pb-1">Global Reach</a>
+                <a href="#modern" class="nav-link border-b-2 border-transparent pb-1">The Modern Festival</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                <span class="text-3xl">☰</span>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#legend" class="block py-2 px-6 text-sm hover:bg-[#FDF6E3]">The Legend</a>
+            <a href="#celebration" class="block py-2 px-6 text-sm hover:bg-[#FDF6E3]">The Celebration</a>
+            <a href="#global" class="block py-2 px-6 text-sm hover:bg-[#FDF6E3]">Global Reach</a>
+            <a href="#modern" class="block py-2 px-6 text-sm hover:bg-[#FDF6E3]">The Modern Festival</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="text-center py-16 md:py-24 px-6 bg-cover bg-center" style="background-image: linear-gradient(rgba(253, 246, 227, 0.8), rgba(253, 246, 227, 1)), url('https://placehold.co/1200x600/FDF6E3/E8795A?text=Ganpati+Bappa+Morya');">
+            <div class="container mx-auto">
+                <h2 class="text-4xl md:text-6xl font-bold text-[#333333] mb-4">An Interactive Journey</h2>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-700">Explore the mythology, rituals, and global significance of Ganesh Chaturthi, the vibrant festival celebrating the beloved elephant-headed god of new beginnings.</p>
+            </div>
+        </section>
+
+        <section id="legend" class="py-16 md:py-24 px-6">
+            <div class="container mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">The Legend of Ganesha</h2>
+                <p class="text-center max-w-3xl mx-auto mb-12 text-gray-600">This section delves into the rich origins and profound symbolism of Lord Ganesha. Discover the dramatic story of his birth and interact with his iconic form to understand the deep philosophical meanings embedded in every feature, establishing his role as the Remover of Obstacles.</p>
+                
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="relative w-full max-w-md mx-auto">
+                        <img src="https://placehold.co/600x800/FFFBF2/E8795A?text=Explore+Ganesha's+Form" alt="Illustration of Lord Ganesha" class="rounded-lg w-full h-auto">
+                        <div id="symbol-head" class="interactive-ganesha-point" style="top: 10%; left: 50%; transform: translateX(-50%);">1
+                            <div class="tooltip absolute bottom-full mb-2 w-64 bg-gray-800 text-white text-xs rounded py-2 px-3 text-center z-10">
+                                <h4 class="font-bold mb-1">Elephant Head</h4>
+                                <p>Symbolizes wisdom, intelligence, and foresight. The large ears signify the importance of listening more to gain knowledge.</p>
+                            </div>
+                        </div>
+                        <div id="symbol-tusk" class="interactive-ganesha-point" style="top: 45%; left: 25%;">2
+                             <div class="tooltip absolute bottom-full mb-2 w-64 bg-gray-800 text-white text-xs rounded py-2 px-3 text-center z-10">
+                                <h4 class="font-bold mb-1">Single Tusk (Ekadanta)</h4>
+                                <p>Represents the ability to overcome dualism and the sacrifices needed on the spiritual path. It signifies retaining the good while discarding the bad.</p>
+                            </div>
+                        </div>
+                        <div id="symbol-belly" class="interactive-ganesha-point" style="top: 60%; left: 50%; transform: translateX(-50%);">3
+                            <div class="tooltip absolute top-full mt-2 w-64 bg-gray-800 text-white text-xs rounded py-2 px-3 text-center z-10">
+                                <h4 class="font-bold mb-1">Potbelly (Lambodara)</h4>
+                                <p>Signifies the capacity to peacefully digest all of life's experiences, both good and bad. It is said to contain entire universes.</p>
+                            </div>
+                        </div>
+                        <div id="symbol-hand" class="interactive-ganesha-point" style="top: 55%; left: 80%;">4
+                             <div class="tooltip absolute bottom-full mb-2 w-64 bg-gray-800 text-white text-xs rounded py-2 px-3 text-center z-10">
+                                <h4 class="font-bold mb-1">Four Arms & Objects</h4>
+                                <p>They hold tools for a fulfilling life: a noose (pasha) to restrain attachments, a goad (ankusha) to cut illusions, and a modak as the sweet reward of spiritual seeking.</p>
+                            </div>
+                        </div>
+                         <div id="symbol-mouse" class="interactive-ganesha-point" style="bottom: 5%; left: 60%;">5
+                             <div class="tooltip absolute top-full mt-2 w-64 bg-gray-800 text-white text-xs rounded py-2 px-3 text-center z-10">
+                                <h4 class="font-bold mb-1">Mouse (Mushaka)</h4>
+                                <p>The vehicle symbolizes desire and the restless ego. Ganesha riding the mouse demonstrates wisdom's mastery over base instincts.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-left">
+                        <h3 class="text-2xl font-bold mb-4 text-[#587D71]">The Divine Birth</h3>
+                        <div class="space-y-4 text-gray-700">
+                            <p>The most popular legend tells of Goddess Parvati creating a son from turmeric paste to be her loyal guardian. When her husband, Lord Shiva, returned, the boy Ganesha denied him entry, unaware of his identity.</p>
+                            <p>Enraged, Shiva severed the boy's head in a fierce battle. A grief-stricken Parvati threatened to destroy creation, prompting Shiva to promise a revival. He instructed his attendants to bring the head of the first creature found sleeping with its head facing north.</p>
+                            <p>They returned with an elephant's head, which Shiva attached to the body, resurrecting Ganesha. He also bestowed a boon, declaring Ganesha 'Vighnaharta' (Remover of Obstacles) and 'Pratham Pujya' (First to be Worshipped), ensuring his veneration before any new venture for its success.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="celebration" class="py-16 md:py-24 px-6 bg-[#FFFBF2]">
+            <div class="container mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">The Ten Days of Devotion</h2>
+                <p class="text-center max-w-3xl mx-auto mb-12 text-gray-600">This section explores the vibrant rituals and traditions that define the festival. Discover the structured process of worship, from invoking the deity into an idol to its final immersion, and compare the intimate family celebrations with grand public spectacles.</p>
+                
+                <div class="text-center mb-12">
+                    <div class="inline-flex rounded-md shadow-sm">
+                        <button id="domestic-btn" class="px-6 py-3 text-lg font-semibold rounded-l-lg border border-[#E8795A] focus:outline-none">Domestic</button>
+                        <button id="public-btn" class="px-6 py-3 text-lg font-semibold rounded-r-lg border border-[#E8795A] focus:outline-none">Public</button>
+                    </div>
+                </div>
+
+                <div id="celebration-content" class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                </div>
+            </div>
+        </section>
+
+        <section id="global" class="py-16 md:py-24 px-6">
+            <div class="container mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">A Mosaic of Faith</h2>
+                <p class="text-center max-w-3xl mx-auto mb-12 text-gray-600">While its heartland is in Maharashtra, Ganesh Chaturthi is celebrated with unique local flavors across India and by the Hindu diaspora worldwide. This section provides a glimpse into these diverse traditions, showing how a shared faith is expressed through distinct cultural practices.</p>
+
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="md:w-1/3">
+                        <h3 class="text-2xl font-bold mb-4 text-[#587D71]">Celebrations in India</h3>
+                        <div id="india-locations" class="space-y-2">
+                            <button data-location="maharashtra" class="w-full text-left p-3 rounded-lg hover:bg-[#FFFBF2] focus:outline-none location-btn active-location">Maharashtra</button>
+                            <button data-location="tamilnadu" class="w-full text-left p-3 rounded-lg hover:bg-[#FFFBF2] focus:outline-none location-btn">Tamil Nadu</button>
+                            <button data-location="goa" class="w-full text-left p-3 rounded-lg hover:bg-[#FFFBF2] focus:outline-none location-btn">Goa</button>
+                            <button data-location="andhra" class="w-full text-left p-3 rounded-lg hover:bg-[#FFFBF2] focus:outline-none location-btn">Andhra & Telangana</button>
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 card p-8">
+                        <div id="location-display">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="modern" class="py-16 md:py-24 px-6 bg-[#FFFBF2]">
+            <div class="container mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">The Modern Festival: Tradition in Transition</h2>
+                <p class="text-center max-w-3xl mx-auto mb-12 text-gray-600">Today, the festival navigates the relationship between ancient customs and modern environmental ethics. This section highlights the ecological impact of traditional practices and explores the growing movement towards sustainable, eco-friendly celebrations that preserve both faith and nature.</p>
+                
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-[#587D71]">Environmental Impact</h3>
+                        <p class="mb-6 text-gray-700">The widespread use of non-biodegradable Plaster of Paris (PoP) idols and toxic chemical paints has led to significant water pollution, harming aquatic ecosystems and human health. The chart below illustrates the stark contrast in impact between traditional PoP idols and eco-friendly alternatives.</p>
+                        <div class="chart-container">
+                            <canvas id="environmentalChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-[#587D71]">The Rise of the "Green Ganesha"</h3>
+                        <p class="mb-6 text-gray-700">In response, a powerful movement promotes eco-friendly practices to harmonize devotion with environmental stewardship. Key solutions include:</p>
+                        <div class="space-y-4">
+                            <div class="card p-4">
+                                <h4 class="font-bold">Sustainable Idols</h4>
+                                <p class="text-sm text-gray-600">Using idols made from natural clay (Shadu Mati), turmeric, or other biodegradable materials that dissolve harmlessly in water.</p>
+                            </div>
+                            <div class="card p-4">
+                                <h4 class="font-bold">Natural Decorations</h4>
+                                <p class="text-sm text-gray-600">Decorating with flowers, leaves, and cloth instead of plastic and thermocol, and using natural, vegetable-based dyes for color.</p>
+                            </div>
+                            <div class="card p-4">
+                                <h4 class="font-bold">Symbolic Immersion</h4>
+                                <p class="text-sm text-gray-600">Immersing a small clay idol in a bucket at home and using the water for gardens, or using permanent metal/stone idols year after year.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+<!--
+    <footer class="bg-[#587D71] text-white py-8 px-6">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2025 Interactive Festival Guide. All information is based on the provided analytical report.</p>
+            <p class="text-sm mt-2">Designed to bring cultural understanding through interactive exploration.</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link, #mobile-menu a');
+            const sections = document.querySelectorAll('section');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 60) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+            
+            navLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    if(mobileMenu.classList.contains('hidden') === false){
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            const celebrationData = {
+                domestic: [
+                    { icon: '🏠', title: 'Scale & Venue', text: 'Small-scale, celebrated within the family home, creating an intimate and spiritual atmosphere.' },
+                    { icon: '🌿', title: 'Idol (Murti)', text: 'Typically small, often made of natural clay or turmeric. Some families use permanent metal or stone idols.' },
+                    { icon: '⏳', title: 'Duration', text: 'Flexible, based on family tradition. Visarjan can be after 1.5, 3, 5, or 7 days.' },
+                    { icon: '🙏', title: 'Focus', text: 'Centered on personal devotion, prayer, and reinforcing family bonds through rituals performed by family members.' }
+                ],
+                public: [
+                    { icon: '🏛️', title: 'Scale & Venue', text: 'Large-scale, in elaborate public pavilions (pandals), creating a festive and spectacular community event.' },
+                    { icon: '🎨', title: 'Idol (Murti)', text: 'Often massive, professionally crafted from clay or PoP with intricate, thematic designs.' },
+                    { icon: '🗓️', title: 'Duration', text: 'Fixed for the full 10-day period, culminating on Anant Chaturdashi.' },
+                    { icon: '🎉', title: 'Focus', text: 'Fosters social and cultural unity. Includes cultural programs, music, dance, and social service camps.' }
+                ]
+            };
+
+            const domesticBtn = document.getElementById('domestic-btn');
+            const publicBtn = document.getElementById('public-btn');
+            const celebrationContent = document.getElementById('celebration-content');
+
+            function updateCelebrationContent(type) {
+                celebrationContent.innerHTML = '';
+                celebrationData[type].forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'card p-6 text-center';
+                    card.innerHTML = `
+                        <div class="text-5xl mb-4">${item.icon}</div>
+                        <h4 class="text-xl font-bold mb-2">${item.title}</h4>
+                        <p class="text-gray-600">${item.text}</p>
+                    `;
+                    celebrationContent.appendChild(card);
+                });
+                if (type === 'domestic') {
+                    domesticBtn.classList.add('btn-primary');
+                    domesticBtn.classList.remove('bg-transparent', 'text-[#E8795A]');
+                    publicBtn.classList.remove('btn-primary');
+                    publicBtn.classList.add('bg-transparent', 'text-[#E8795A]');
+                } else {
+                    publicBtn.classList.add('btn-primary');
+                    publicBtn.classList.remove('bg-transparent', 'text-[#E8795A]');
+                    domesticBtn.classList.remove('btn-primary');
+                    domesticBtn.classList.add('bg-transparent', 'text-[#E8795A]');
+                }
+            }
+
+            domesticBtn.addEventListener('click', () => updateCelebrationContent('domestic'));
+            publicBtn.addEventListener('click', () => updateCelebrationContent('public'));
+            updateCelebrationContent('domestic');
+
+            const locationData = {
+                maharashtra: {
+                    title: 'Maharashtra: The Epicenter',
+                    text: "The heartland of the festival, with the grandest celebrations. Cities like Mumbai and Pune host iconic pandals like Lalbaugcha Raja, attracting millions. The final day's visarjan processions are legendary spectacles of music, dance, and devotion.",
+                    image: 'https://placehold.co/600x400/FDF6E3/333333?text=Maharashtra'
+                },
+                tamilnadu: {
+                    title: 'Tamil Nadu: Vinayaka Chaturthi',
+                    text: 'Known as Vinayaka Chaturthi, celebrations are marked by spiritual fervor. Devotees offer kozhukattai (a local modak) and use clay idols. Community pandals often feature themes with social or environmental messages.',
+                    image: 'https://placehold.co/600x400/FDF6E3/333333?text=Tamil+Nadu'
+                },
+                goa: {
+                    title: 'Goa: Chavath Traditions',
+                    text: 'Called Chavath, the festival emphasizes eco-friendly traditions. A unique feature is the Matoli, a wooden canopy over the idol adorned with local seasonal fruits and vegetables, symbolizing nature\'s abundance.',
+                    image: 'https://placehold.co/600x400/FDF6E3/333333?text=Goa'
+                },
+                andhra: {
+                    title: 'Andhra & Telangana: Grand Processions',
+                    text: 'Celebrated with enormous pandals and intricately designed idols. The immersion day, Vinayaka Nimajjanam, is a massive public event, with Hyderabad\'s procession being one of the largest in the country.',
+                    image: 'https://placehold.co/600x400/FDF6E3/333333?text=Telangana'
+                }
+            };
+
+            const locationBtns = document.querySelectorAll('.location-btn');
+            const locationDisplay = document.getElementById('location-display');
+
+            function updateLocationDisplay(location) {
+                const data = locationData[location];
+                locationDisplay.innerHTML = `
+                    <img src="${data.image}" alt="${data.title}" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h4 class="text-2xl font-bold mb-2">${data.title}</h4>
+                    <p class="text-gray-700">${data.text}</p>
+                `;
+                locationBtns.forEach(btn => {
+                    btn.classList.remove('active-location', 'bg-[#FFFBF2]');
+                    if (btn.dataset.location === location) {
+                        btn.classList.add('active-location', 'bg-[#FFFBF2]');
+                    }
+                });
+            }
+
+            locationBtns.forEach(btn => {
+                btn.addEventListener('click', () => updateLocationDisplay(btn.dataset.location));
+            });
+            updateLocationDisplay('maharashtra');
+
+            const ctx = document.getElementById('environmentalChart').getContext('2d');
+            const environmentalChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Dissolved Oxygen Reduction', 'Heavy Metal Contamination', 'Non-Biodegradable Solids'],
+                    datasets: [{
+                        label: 'Plaster of Paris (PoP) Idol Impact',
+                        data: [85, 90, 95],
+                        backgroundColor: 'rgba(232, 121, 90, 0.6)',
+                        borderColor: 'rgba(232, 121, 90, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Eco-Friendly Idol Impact',
+                        data: [10, 5, 2],
+                        backgroundColor: 'rgba(88, 125, 113, 0.6)',
+                        borderColor: 'rgba(88, 125, 113, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Environmental Impact Comparison (Illustrative %)',
+                            font: { size: 16, family: 'Lora' }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + '% Impact';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + "%"
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Agentic Enterprise: Solving Trillion-Dollar Problems</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Subtle Accents -->
+    <!-- Application Structure Plan: A single-page, multi-section dashboard layout. The structure is designed for non-linear exploration. It starts with a high-level summary (Hero), moves to foundational concepts ('What is Agentic AI?'), then presents the core data via an interactive, filterable 'Industry Deep Dive' section for the 26 agents, and concludes with strategic analysis ('Strategic Imperatives'). This thematic structure, rather than a linear report format, allows users to jump to sections of interest, compare agents across industries, and digest the information in manageable chunks, enhancing usability and comprehension. -->
+    <!-- Visualization & Content Choices: Report Info -> Key stats (market growth, failure rates). Goal -> Inform & Compare. Viz -> Bar and Doughnut charts (Chart.js/Canvas). Interaction -> Tooltips on hover. Justification -> Charts provide a quick, visual summary of key quantitative data, making it more impactful than text alone. Report Info -> 26 Agent Examples. Goal -> Organize & Compare. Presentation -> Interactive card grid. Interaction -> Filtering by industry. Justification -> A filterable grid allows users to easily navigate the large number of examples and compare applications within or across sectors, which is more dynamic than a static table. Report Info -> Agentic AI operational cycle. Goal -> Explain a process. Presentation -> Styled HTML/CSS diagram. Interaction -> Subtle hover effects. Justification -> A visual diagram makes the abstract four-stage cycle (Perceive, Reason, Act, Learn) easier to understand than a purely textual description. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8; /* Warm Neutral */
+            color: #383838;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #A0522D; /* Subtle Accent */
+            border-bottom-color: #A0522D;
+        }
+        .filter-btn {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .filter-btn.active {
+            background-color: #A0522D;
+            color: #FFFFFF;
+        }
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            will-change: transform;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-[#A0522D]">The Agentic Enterprise</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#introduction" class="nav-link">Introduction</a>
+                <a href="#deep-dive" class="nav-link">Industry Deep Dive</a>
+                <a href="#imperatives" class="nav-link">Strategic Imperatives</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#introduction" class="block py-2 px-6 text-sm hover:bg-gray-100">Introduction</a>
+            <a href="#deep-dive" class="block py-2 px-6 text-sm hover:bg-gray-100">Industry Deep Dive</a>
+            <a href="#imperatives" class="block py-2 px-6 text-sm hover:bg-gray-100">Strategic Imperatives</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="hero" class="text-center mb-20 section-fade-in">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">How Autonomous AI is Solving Trillion-Dollar Problems</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-8">A new class of AI is moving beyond generating content to autonomously executing complex business processes. This interactive report explores how "Agentic AI" is reshaping industries by tackling their most profound and costly inefficiencies.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-3xl font-bold text-[#A0522D]">15%</h3>
+                    <p class="text-gray-600">of enterprise decisions predicted to be made by Agentic AI by 2028.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-3xl font-bold text-[#A0522D]">$8 Trillion</h3>
+                    <p class="text-gray-600">in estimated global waste from industrial and manufacturing inefficiencies.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-3xl font-bold text-[#A0522D]">&gt;40%</h3>
+                    <p class="text-gray-600">of agentic AI projects forecasted to be canceled by 2027 due to high costs and risk.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="introduction" class="mb-20 section-fade-in">
+            <h3 class="text-3xl font-bold text-center mb-10">What is Agentic AI?</h3>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h4 class="text-2xl font-semibold mb-4">From Reactive Tool to Proactive Collaborator</h4>
+                    <p class="text-gray-700 mb-4">Agentic AI represents a paradigm shift. Unlike traditional AI that responds to commands, an agentic system can perceive its environment, reason through information, make independent decisions, and execute multi-step tasks to achieve a high-level goal with minimal human intervention. It doesn't just perform a task; it takes ownership of an entire workflow.</p>
+                    <p class="text-gray-700">The core of an agent is its "reasoning engine," typically a Large Language Model (LLM), which gives it the ability to understand intent and plan. This "brain" is connected to a framework that provides the "body"—the ability to interact with external tools, APIs, and software to take real-world action.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold text-center mb-4">The Operational Cycle</h4>
+                    <p class="text-center text-gray-600 mb-6">Agentic systems function through a continuous four-stage loop that enables intelligent interaction with their environment.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 bg-[#A0522D] text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">1</div>
+                            <div>
+                                <h5 class="font-semibold">Perceive</h5>
+                                <p class="text-sm text-gray-600">Collects real-time data from databases, APIs, sensors, and user interactions.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 bg-[#D2B48C] text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">2</div>
+                            <div>
+                                <h5 class="font-semibold">Reason</h5>
+                                <p class="text-sm text-gray-600">Processes information, develops a plan, and adapts it to meet goals.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 bg-[#BC8F8F] text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">3</div>
+                            <div>
+                                <h5 class="font-semibold">Act</h5>
+                                <p class="text-sm text-gray-600">Executes the plan by interacting with external systems and software.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 bg-[#8B4513] text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">4</div>
+                            <div>
+                                <h5 class="font-semibold">Learn</h5>
+                                <p class="text-sm text-gray-600">Evaluates outcomes and refines its strategies for future tasks.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="deep-dive" class="mb-20 section-fade-in">
+            <h3 class="text-3xl font-bold text-center mb-4">Industry Deep Dive</h3>
+            <p class="text-center text-lg text-gray-600 mb-10">Explore 26 examples of how agentic AI is being applied to solve specific, high-value problems across six key sectors. Use the filters below to navigate the applications.</p>
+            
+            <div id="filters" class="flex flex-wrap justify-center gap-2 mb-10">
+                <button class="filter-btn active px-4 py-2 rounded-full bg-gray-200 text-gray-700" data-filter="all">All Industries</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700" data-filter="TMT">Tech, Media & Telecom</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700" data-filter="Finance">Financial Services</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700" data-filter="Industrial">Auto/Industrial</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700" data-filter="Public">Public Sector</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700" data-filter="Healthcare">Healthcare</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700" data-filter="Retail">Retail/CPG</button>
+            </div>
+
+            <div id="agent-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+        <section id="imperatives" class="section-fade-in">
+            <h3 class="text-3xl font-bold text-center mb-10">Strategic Imperatives & Risks</h3>
+            <p class="text-center text-lg text-gray-600 mb-10">The path to an agentic enterprise is promising but filled with challenges. Success requires navigating implementation hurdles, managing risks, and understanding the technology's future trajectory.</p>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h4 class="text-2xl font-semibold mb-4">Key Challenges</h4>
+                    <ul class="space-y-4 text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-[#A0522D] font-bold mr-3 mt-1">&#10003;</span>
+                            <div><strong>Pilot-to-Production Gap:</strong> Over 40% of projects are canceled due to escalating costs and a failure to show clear ROI.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-[#A0522D] font-bold mr-3 mt-1">&#10003;</span>
+                            <div><strong>Legacy System Friction:</strong> Outdated, siloed systems lack the modern APIs needed for agents to function, causing many pilots to fail in real-world environments.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-[#A0522D] font-bold mr-3 mt-1">&#10003;</span>
+                            <div><strong>Governance Paradox:</strong> Greater autonomy requires exponentially more sophisticated governance, monitoring, and risk control to prevent costly errors.</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex flex-col space-y-8">
+                    <div class="chart-container">
+                        <canvas id="riskChart"></canvas>
+                    </div>
+                     <div class="chart-container">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+<!--
+
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2025 Agentic AI Report. This is an interactive summary based on publicly available analysis.</p>
+        </div>
+    </footer>
+
+-->
+
+    <script>
+        const agentData = [
+            { id: 1, name: "Marketing/personalization agent", industry: "TMT", problem: "Inefficient marketing spend and customer churn.", func: "Analyzes user behavior to autonomously generate and deploy hyper-personalized content and ad campaigns." },
+            { id: 2, name: "Rights compliance agent", industry: "TMT", problem: "Revenue loss and legal risk from unauthorized IP use.", func: "Monitors digital platforms for content usage, detects copyright violations, and automates legal reporting." },
+            { id: 3, name: "Network operations agent", industry: "TMT", problem: "High cost and complexity of network downtime.", func: "Proactively detects and resolves network outages by analyzing telemetry data and automating remediation." },
+            { id: 4, name: "Narrative design agent", industry: "TMT", problem: "High cost of creating complex, interactive narratives.", func: "Uses generative AI to create branching storylines and dialogue, accelerating creative development." },
+            { id: 5, name: "Dynamic pricing agent", industry: "TMT", problem: "Lost revenue from static pricing models.", func: "Autonomously adjusts pricing based on real-time demand, competitor actions, and inventory levels." },
+            { id: 6, name: "Claims adjudication agent", industry: "Finance", problem: "Slow, costly, and error-prone manual claims processing.", func: "Automates the end-to-end claims workflow, from validation to fraud checks and payment authorization." },
+            { id: 7, name: "KYC verification agent", industry: "Finance", problem: "High cost and customer drop-off in KYC/AML compliance.", func: "Automates identity verification by analyzing documents, performing biometric checks, and screening against watchlists." },
+            { id: 8, name: "Reporting/compliance agent", industry: "Finance", problem: "Immense manual burden and risk in regulatory reporting.", func: "Automates the collection, validation, and generation of regulatory reports, ensuring accuracy and timeliness." },
+            { id: 9, name: "Wealth advisor agent", industry: "Finance", problem: "High cost and lack of scalability in financial advice.", func: "Functions as a 'robo-advisor' to create and automatically rebalance personalized investment portfolios." },
+            { id: 10, name: "Loans underwriter agent", industry: "Finance", problem: "Slow, subjective, and potentially biased loan underwriting.", func: "Automates credit risk assessment by analyzing diverse data sources to generate more accurate risk scores." },
+            { id: 11, name: "Predictive maintenance agent", industry: "Industrial", problem: "High cost of unplanned equipment downtime.", func: "Predicts equipment failures by analyzing IIoT sensor data and automatically schedules maintenance tasks." },
+            { id: 12, name: "Safety compliance agent", industry: "Industrial", problem: "High cost of workplace accidents and injuries.", func: "Uses computer vision to monitor for safety violations like PPE non-compliance in real-time." },
+            { id: 13, name: "Logistics optimization agent", industry: "Industrial", problem: "High fuel costs from inefficient routing.", func: "Optimizes truck loads and delivery routes by analyzing real-time traffic, weather, and capacity data." },
+            { id: 14, name: "Inventory allocation agent", industry: "Industrial", problem: "Lost revenue from stockouts and overstocking.", func: "Forecasts demand and automatically rebalances stock across locations to match supply with demand." },
+            { id: 15, name: "B2B sales agent", industry: "Industrial", problem: "Inefficient B2B lead generation and qualification.", func: "Automates lead sourcing, qualification, and initial outreach using propensity-to-buy models." },
+            { id: 16, name: "Benefits processing agent", industry: "Public", problem: "Slow, error-prone manual verification for public benefits.", func: "Automates eligibility verification by extracting data from applications and comparing against policy rules." },
+            { id: 17, name: "Permitting & licensing agent", industry: "Public", problem: "Long delays in government permitting, obstructing economic activity.", func: "Automatically reviews building plans and applications for compliance with zoning and building codes." },
+            { id: 18, name: "Legislative analysis agent", industry: "Public", problem: "Overwhelming volume of legislation makes manual tracking impossible.", func: "Uses NLP to monitor, summarize, and analyze new legislation and regulations in real-time." },
+            { id: 19, name: "Fraud detection agent", industry: "Public", problem: "Massive financial losses from fraud in government programs.", func: "Analyzes vast datasets of transactions and claims to detect patterns of fraudulent activity." },
+            { id: 20, name: "Communications agent", industry: "Public", problem: "Difficulty in delivering timely and accessible public communications.", func: "Uses generative AI to draft, tailor, and disseminate public messages across multiple channels." },
+            { id: 21, name: "Care coordination agent", industry: "Healthcare", problem: "Fragmented patient journeys leading to poor outcomes.", func: "Integrates patient data from all sources to orchestrate care among specialist teams." },
+            { id: 22, name: "Rev. cycle mgmt. agent", industry: "Healthcare", problem: "High administrative costs in medical billing.", func: "Automates the entire revenue cycle, including medical coding, claims submission, and denial management." },
+            { id: 23, name: "Medical diagnostics agent", industry: "Healthcare", problem: "Radiologist burnout from overwhelming volumes of medical images.", func: "Uses computer vision to analyze medical images to detect abnormalities and triage urgent cases." },
+            { id: 24, name: "Drug discovery R&D agent", industry: "Healthcare", problem: "Extremely long and costly process of developing new medicines.", func: "Accelerates preclinical research by using AI to identify novel drug targets and design new molecules." },
+            { id: 25, name: "Clinical trial ops agent", industry: "Healthcare", problem: "Slow and expensive clinical trials due to patient recruitment bottlenecks.", func: "Streamlines trial operations by using AI to identify eligible patients from EHR data." },
+            { id: 26, name: "Customer serv./ returns agent", industry: "Retail", problem: "High cost of support centers and complex product returns.", func: "Combines a conversational AI for support with a computer vision system to automate returns assessment." }
+        ];
+
+        const industryMap = {
+            "TMT": "Tech, Media & Telecom",
+            "Finance": "Financial Services",
+            "Industrial": "Auto/Industrial",
+            "Public": "Public Sector",
+            "Healthcare": "Healthcare",
+            "Retail": "Retail/CPG"
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const agentGrid = document.getElementById('agent-grid');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+
+            function displayAgents(filter) {
+                agentGrid.innerHTML = '';
+                const filteredAgents = filter === 'all' ? agentData : agentData.filter(agent => agent.industry === filter);
+                
+                filteredAgents.forEach(agent => {
+                    const card = document.createElement('div');
+                    card.className = 'card bg-white p-6 rounded-lg shadow-md flex flex-col';
+                    card.innerHTML = `
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-xl font-bold text-gray-800">${agent.name}</h4>
+                                <span class="text-xs font-semibold text-white bg-[#A0522D] px-2 py-1 rounded-full">${industryMap[agent.industry]}</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-3"><strong class="text-gray-600">Problem:</strong> ${agent.problem}</p>
+                            <p class="text-gray-700"><strong class="text-gray-800">Function:</strong> ${agent.func}</p>
+                        </div>
+                    `;
+                    agentGrid.appendChild(card);
+                });
+            }
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const filter = button.getAttribute('data-filter');
+                    displayAgents(filter);
+                });
+            });
+
+            displayAgents('all');
+
+            const riskCtx = document.getElementById('riskChart').getContext('2d');
+            new Chart(riskCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Projects Canceled', 'Projects Proceeding'],
+                    datasets: [{
+                        data: [40, 60],
+                        backgroundColor: ['#BC8F8F', '#D2B48C'],
+                        borderColor: '#FDFBF8',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Forecasted Agentic AI Project Outcomes by 2027',
+                            font: { size: 14 }
+                        }
+                    }
+                }
+            });
+
+            const marketCtx = document.getElementById('marketChart').getContext('2d');
+            new Chart(marketCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Today', '2028 (Forecast)'],
+                    datasets: [{
+                        label: '% of Enterprise Decisions Made by AI',
+                        data: [0, 15],
+                        backgroundColor: ['#D2B48C', '#A0522D'],
+                        borderColor: ['#BC8F8F', '#8B4513'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 20,
+                            title: {
+                                display: true,
+                                text: 'Percentage (%)'
+                            }
+                        }
+                    },
+                    plugins: {
+                         legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Growth in AI-Driven Decision Making',
+                            font: { size: 14 }
+                        }
+                    }
+                }
+            });
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    if (mobileMenu.offsetParent !== null) {
+                       mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            const sections = document.querySelectorAll('.section-fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>

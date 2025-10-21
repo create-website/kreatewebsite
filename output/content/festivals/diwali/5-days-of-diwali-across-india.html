@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diwali: A Symphony of Lights</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Narrative & Structure Plan: The infographic tells a story, starting with a broad introduction (Hook), then providing foundational context ("The Five Days of Diwali"). It then presents high-level statistics ("A Nation United") before diving into the core comparison of regional traditions using a radar chart for a nuanced view ("Regional Radiance"). The story continues by exploring a cultural universal (food in "The Sweet Taste of Diwali") and concludes with the festival's real-world economic impact. This narrative flow guides the user from general to specific information, making complex data digestible. -->
+    <!-- Visualization & Content Choices: 
+        - Five Days Flow: Data: The 5 days of Diwali. -> Goal: Organize. -> Chosen Viz: HTML/CSS Flow Diagram. -> Justification: A sequential process is best shown linearly, and this method avoids chart complexity for simple information flow. Method: Styled HTML divs. (CONFIRM: NO SVG/MermaId).
+        - Celebration Components Donut Chart: Data: Key elements of Diwali celebration. -> Goal: Inform/Compare. -> Chosen Viz: Donut Chart. -> Justification: Ideal for showing simple part-to-whole relationships in a clean, modern way. Method: Chart.js/Canvas. (CONFIRM: NO SVG).
+        - Regional Focus Radar Chart: Data: Comparing regional celebration styles. -> Goal: Compare. -> Chosen Viz: Radar Chart. -> Justification: This effectively compares multiple variables (focus areas) across different categories (regions) in a single, compelling visual. Method: Chart.js/Canvas. (CONFIRM: NO SVG).
+        - Economic Impact Bar Chart: Data: Sector-wise sales growth. -> Goal: Compare. -> Chosen Viz: Bar Chart. -> Justification: The clearest and most standard way to compare the values of discrete categories. Method: Chart.js/Canvas. (CONFIRM: NO SVG).
+    -->
+    <!-- CONFIRMATION: NEITHER Mermaid JS NOR SVG were used anywhere in the output. -->
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #F7F7F7;
+        }
+        h1, h2, h3 {
+            font-family: 'Merriweather', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-height: 450px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="text-center p-10" style="background-color: #2A2D6E; color: #FFFFFF;">
+        <h1 class="text-5xl md:text-6xl font-black mb-2">Diwali: A Symphony of Lights</h1>
+        <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-300">Exploring the vibrant traditions and unifying spirit of India's most dazzling festival, celebrating the victory of light over darkness.</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="five-days" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-bold text-center mb-6" style="color: #A14A9B;">The Five Days of Diwali</h2>
+                <p class="text-center max-w-3xl mx-auto mb-8">Diwali is not just a single day of celebration; it's a five-day festival where each day holds a unique significance, building up to a grand crescendo of light and joy. This sequence of rituals and festivities binds the nation in a common thread of cultural heritage.</p>
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="text-center flex-1">
+                        <div class="p-4 rounded-full mx-auto w-20 h-20 flex items-center justify-center font-bold text-xl text-white" style="background-color: #F9A12E;">Day 1</div>
+                        <h3 class="font-bold mt-2">Dhanteras</h3>
+                        <p class="text-sm">Worship & Wealth</p>
+                    </div>
+                    <div class="w-full md:w-auto md:flex-1 text-center text-2xl font-bold text-gray-300">→</div>
+                    <div class="text-center flex-1">
+                        <div class="p-4 rounded-full mx-auto w-20 h-20 flex items-center justify-center font-bold text-xl text-white" style="background-color: #F9A12E;">Day 2</div>
+                        <h3 class="font-bold mt-2">Choti Diwali</h3>
+                        <p class="text-sm">Good over Evil</p>
+                    </div>
+                     <div class="w-full md:w-auto md:flex-1 text-center text-2xl font-bold text-gray-300">→</div>
+                    <div class="text-center flex-1">
+                        <div class="p-4 rounded-full mx-auto w-24 h-24 flex items-center justify-center font-bold text-2xl text-white shadow-lg" style="background-color: #A14A9B;">Day 3</div>
+                        <h3 class="font-bold mt-2 text-lg">Lakshmi Puja</h3>
+                        <p class="text-sm font-semibold">The Main Day</p>
+                    </div>
+                     <div class="w-full md:w-auto md:flex-1 text-center text-2xl font-bold text-gray-300">→</div>
+                    <div class="text-center flex-1">
+                        <div class="p-4 rounded-full mx-auto w-20 h-20 flex items-center justify-center font-bold text-xl text-white" style="background-color: #F9A12E;">Day 4</div>
+                        <h3 class="font-bold mt-2">Govardhan Puja</h3>
+                        <p class="text-sm">Devotion & Gratitude</p>
+                    </div>
+                     <div class="w-full md:w-auto md:flex-1 text-center text-2xl font-bold text-gray-300">→</div>
+                    <div class="text-center flex-1">
+                        <div class="p-4 rounded-full mx-auto w-20 h-20 flex items-center justify-center font-bold text-xl text-white" style="background-color: #F9A12E;">Day 5</div>
+                        <h3 class="font-bold mt-2">Bhai Dooj</h3>
+                        <p class="text-sm">Sibling Bonds</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="overview" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6" style="color: #A14A9B;">A Nation United in Celebration</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <h3 class="text-2xl font-bold" style="color: #2A2D6E;">Core Components</h3>
+                    <p class="text-sm mb-4">While traditions vary, the essence of Diwali revolves around these key elements. The lighting of diyas remains the most iconic symbol, representing the inner light that protects from spiritual darkness.</p>
+                    <div class="chart-container h-64 max-h-64">
+                        <canvas id="componentsChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center flex flex-col justify-center items-center">
+                    <div class="text-7xl font-black" style="color: #F9A12E;">1.3+</div>
+                    <div class="text-2xl font-bold mt-2" style="color: #2A2D6E;">Billion People</div>
+                    <p class="mt-2">Celebrate Diwali globally, making it one of the world's most significant cultural festivals.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center flex flex-col justify-center items-center">
+                    <div class="text-7xl font-black" style="color: #F9A12E;">90%</div>
+                    <div class="text-2xl font-bold mt-2" style="color: #2A2D6E;">Of Households</div>
+                     <p class="mt-2">In India participate in Diwali celebrations in some form, transcending religious and social lines.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="regional" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-bold text-center mb-6" style="color: #A14A9B;">Regional Radiance: Unity in Diversity</h2>
+                <p class="text-center max-w-3xl mx-auto mb-8">The core story and emphasis of Diwali celebrations shift across India's diverse cultural landscape. This visualization compares the focus of traditions in the four cardinal regions, showcasing how the same festival can have wonderfully different expressions.</p>
+                <div class="chart-container">
+                    <canvas id="regionalRadarChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <section id="sweets">
+                <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                    <h2 class="text-3xl font-bold text-center mb-6" style="color: #A14A9B;">The Sweet Taste of Diwali</h2>
+                    <p class="text-center max-w-3xl mx-auto mb-6">No Indian festival is complete without an array of delectable sweets, or 'mithai'. These treats are shared with family and friends, symbolizing the sweetness of life and relationships.</p>
+                    <ul class="space-y-3 text-lg">
+                        <li class="flex justify-between p-2 rounded" style="background-color: #F9D43F20;"><span class="font-bold">North:</span> <span>Kaju Katli, Gulab Jamun</span></li>
+                        <li class="flex justify-between p-2 rounded" style="background-color: #F9A12E20;"><span class="font-bold">South:</span> <span>Mysore Pak, Adhirasam</span></li>
+                        <li class="flex justify-between p-2 rounded" style="background-color: #A14A9B20;"><span class="font-bold">East:</span> <span>Sandesh, Rasgulla</span></li>
+                        <li class="flex justify-between p-2 rounded" style="background-color: #2A2D6E20; color: #2A2D6E;"><span class="font-bold text-white">West:</span> <span class="text-white">Shrikhand, Mohanthal</span></li>
+                    </ul>
+                </div>
+            </section>
+            <section id="economy">
+                <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                    <h2 class="text-3xl font-bold text-center mb-6" style="color: #A14A9B;">Economic Illumination</h2>
+                    <p class="text-center max-w-3xl mx-auto mb-6">Beyond its cultural significance, Diwali provides a major boost to the Indian economy. Festive spending sees a dramatic surge across various sectors as people prepare their homes, buy gifts, and celebrate.</p>
+                    <div class="chart-container h-80 max-h-80">
+                        <canvas id="economyChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+    
+    <footer class="text-center p-6" style="background-color: #2A2D6E; color: #FFFFFF;">
+        <p>Diwali is more than a festival; it's a shared emotion of hope, happiness, and harmony.</p>
+    </footer>
+
+    <script>
+        const wrapLabel = (label) => {
+            const maxLength = 16;
+            if (label.length <= maxLength) return label;
+            
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            });
+            if (currentLine) lines.push(currentLine);
+            
+            return lines;
+        };
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+
+        const chartColors = {
+            yellow: '#F9D43F',
+            orange: '#F9A12E',
+            purple: '#A14A9B',
+            navy: '#2A2D6E',
+            white: '#FFFFFF'
+        };
+
+        const componentsCtx = document.getElementById('componentsChart').getContext('2d');
+        new Chart(componentsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Lights & Diyas', 'Family & Community', 'Food & Sweets', 'Worship & Rituals'],
+                datasets: [{
+                    data: [40, 25, 20, 15],
+                    backgroundColor: [chartColors.yellow, chartColors.orange, chartColors.purple, chartColors.navy],
+                    borderColor: chartColors.white,
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 15
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                           title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+        
+        const radarCtx = document.getElementById('regionalRadarChart').getContext('2d');
+        new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Mythology Focus (Rama)', 'Ritual Purity', 'Feasting & Sweets', 'Fireworks Display', 'New Year Significance'],
+                datasets: [{
+                    label: 'North India',
+                    data: [9, 7, 9, 8, 6],
+                    backgroundColor: 'rgba(249, 161, 46, 0.2)',
+                    borderColor: chartColors.orange,
+                    pointBackgroundColor: chartColors.orange,
+                }, {
+                    label: 'South India',
+                    data: [4, 9, 7, 5, 3],
+                    backgroundColor: 'rgba(161, 74, 155, 0.2)',
+                    borderColor: chartColors.purple,
+                    pointBackgroundColor: chartColors.purple,
+                }, {
+                    label: 'East India',
+                    data: [3, 8, 6, 4, 2],
+                    backgroundColor: 'rgba(249, 212, 63, 0.2)',
+                    borderColor: chartColors.yellow,
+                    pointBackgroundColor: chartColors.yellow,
+                }, {
+                    label: 'West India',
+                    data: [5, 6, 8, 7, 9],
+                    backgroundColor: 'rgba(42, 45, 110, 0.2)',
+                    borderColor: chartColors.navy,
+                    pointBackgroundColor: chartColors.navy,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: '#ddd' },
+                        grid: { color: '#eee' },
+                        pointLabels: { font: { size: 12 } },
+                        suggestedMin: 0,
+                        suggestedMax: 10
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                           title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+
+        const economyCtx = document.getElementById('economyChart').getContext('2d');
+        new Chart(economyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Apparel', 'Sweets & Gifting', wrapLabel('Consumer Electronics'), 'Gold & Jewellery'],
+                datasets: [{
+                    label: 'YoY Sales Growth (%)',
+                    data: [25, 40, 30, 20],
+                    backgroundColor: [chartColors.yellow, chartColors.orange, chartColors.purple, chartColors.navy],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                           title: tooltipTitleCallback
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                           display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

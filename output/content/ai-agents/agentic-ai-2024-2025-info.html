@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI: The 2025 Outlook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Narrative Structure Plan: This infographic is structured as an executive briefing, starting with high-level key metrics to immediately grab attention. It then breaks down the 'Anatomy of an AI Agent' using a static diagram to explain the core technology. The narrative progresses to show 'Growth Trajectory' with a line chart, analyzes 'Sector Deployment Potential' with a radar chart for multi-faceted comparison, and concludes with a 'Risk vs. Reward' matrix for strategic consideration. This flow guides the user from impact to technology to application and finally to strategic implications. -->
+    <!-- Visualization Choices:
+    - Key 2025 Projections: Data -> Goal: Inform -> Viz: Single Big Numbers -> Justification: Delivers critical KPIs with maximum impact and clarity. Method: Styled HTML. (NO SVG)
+    - Anatomy of an AI Agent: Data -> Goal: Organize/Relationships -> Viz: HTML/CSS Diagram -> Justification: Visually represents the interconnected components of an agent in a clear, structured way without complex libraries. Method: Tailwind CSS Flexbox. (NO SVG/Mermaid JS)
+    - Growth Trajectory: Data -> Goal: Show Change -> Viz: Line Chart -> Justification: Effectively visualizes the acceleration and trend of enterprise adoption over the 2024-2025 period. Method: Chart.js/Canvas. (NO SVG)
+    - Sector Deployment Potential: Data -> Goal: Compare -> Viz: Radar Chart -> Justification: Allows for a nuanced comparison of multiple sectors across multiple suitability criteria (e.g., ROI, Complexity), offering deeper insights than a simple bar chart. Method: Chart.js/Canvas. (NO SVG)
+    - Risk vs. Reward Matrix: Data -> Goal: Organize/Compare -> Viz: HTML/CSS 2x2 Matrix -> Justification: A classic strategic tool that concisely plots different agentic use-cases for quick evaluation. Method: Tailwind CSS Grid. (NO SVG) -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+         @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#CAF0F8]">
+
+    <div class="max-w-5xl mx-auto bg-white shadow-2xl">
+        <header class="bg-[#004E89] text-white p-8 md:p-12 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold">Agentic AI: The 2025 Outlook</h1>
+            <p class="mt-4 text-lg text-[#90E0EF]">From Automated Tasks to Autonomous Goals</p>
+        </header>
+
+        <main class="p-6 md:p-10">
+
+            <section class="mb-12">
+                <h2 class="text-3xl font-bold text-center text-[#0077B6] mb-8">Key 2025 Projections</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border-t-4 border-[#48CAE4]">
+                        <p class="text-5xl font-bold text-[#004E89]">45%</p>
+                        <p class="mt-2 text-gray-600">Of enterprises will pilot multi-agent systems for complex workflow automation.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border-t-4 border-[#48CAE4]">
+                        <p class="text-5xl font-bold text-[#004E89]">$100B</p>
+                        <p class="mt-2 text-gray-600">Projected market size for AI-powered automation tools and platforms.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border-t-4 border-[#48CAE4]">
+                        <p class="text-5xl font-bold text-[#004E89]">5X</p>
+                        <p class="mt-2 text-gray-600">Increase in autonomous task completion success rates compared to early 2024 models.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <hr class="my-12 border-gray-200">
+            
+            <section class="mb-12">
+                <h2 class="text-3xl font-bold text-center text-[#0077B6] mb-8">Anatomy of an AI Agent</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-8">An AI agent is more than a simple chatbot. It's a sophisticated system with distinct components that enable it to perceive, reason, and act to achieve goals. This diagram illustrates the core functional loop that drives autonomous behavior.</p>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 text-center p-6 bg-slate-50 rounded-lg shadow-inner">
+                    <div class="p-4 bg-white rounded-lg shadow w-full md:w-auto">
+                        <p class="text-2xl">🎯</p>
+                        <h3 class="font-bold text-[#004E89]">Goal</h3>
+                        <p class="text-sm text-gray-500">User-defined objective</p>
+                    </div>
+                    <div class="text-2xl font-bold text-[#48CAE4]">→</div>
+                    <div class="p-4 bg-white rounded-lg shadow w-full md:w-auto">
+                        <p class="text-2xl">🧠</p>
+                        <h3 class="font-bold text-[#004E89]">Planning Engine</h3>
+                        <p class="text-sm text-gray-500">Deconstructs goal into steps</p>
+                    </div>
+                    <div class="text-2xl font-bold text-[#48CAE4]">→</div>
+                    <div class="p-4 bg-white rounded-lg shadow w-full md:w-auto">
+                         <p class="text-2xl">🛠️</p>
+                        <h3 class="font-bold text-[#004E89]">Tool Use</h3>
+                        <p class="text-sm text-gray-500">Executes actions via APIs/web</p>
+                    </div>
+                     <div class="text-2xl font-bold text-[#48CAE4]">→</div>
+                    <div class="p-4 bg-white rounded-lg shadow w-full md:w-auto">
+                         <p class="text-2xl">📚</p>
+                        <h3 class="font-bold text-[#004E89]">Memory</h3>
+                        <p class="text-sm text-gray-500">Learns from outcomes</p>
+                    </div>
+                </div>
+            </section>
+            
+            <hr class="my-12 border-gray-200">
+            
+            <section class="mb-12">
+                 <h2 class="text-3xl font-bold text-center text-[#0077B6] mb-4">Enterprise Adoption Trajectory</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-8">The transition from proof-of-concept to production is accelerating. This chart tracks the projected growth in the percentage of large enterprises actively deploying at least one agentic AI system for a core business process, showing a significant ramp-up into 2025.</p>
+                <div class="bg-slate-50 p-6 rounded-lg shadow-md">
+                    <div class="chart-container h-[300px] md:h-[400px]">
+                        <canvas id="adoptionChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <hr class="my-12 border-gray-200">
+
+            <section class="mb-12">
+                <h2 class="text-3xl font-bold text-center text-[#0077B6] mb-4">Sector Deployment Potential</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-8">The viability of agentic AI varies by industry. This radar chart assesses key sectors based on their readiness and potential for high-impact agent deployment, considering factors like task complexity, data availability, and expected return on investment.</p>
+                <div class="bg-slate-50 p-6 rounded-lg shadow-md">
+                    <div class="chart-container">
+                        <canvas id="sectorRadarChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <hr class="my-12 border-gray-200">
+            
+            <section>
+                <h2 class="text-3xl font-bold text-center text-[#0077B6] mb-8">Risk vs. Reward Matrix</h2>
+                 <p class="text-center text-gray-600 max-w-3xl mx-auto mb-8">Strategic deployment requires a clear understanding of the potential upsides and inherent risks. This matrix categorizes common agentic use-cases to help guide decision-making on where to invest first for maximum strategic advantage.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-300 border border-gray-300 rounded-lg shadow-lg overflow-hidden">
+                    <div class="bg-white p-4">
+                        <h3 class="font-bold text-lg text-red-600">High Risk / Low Reward</h3>
+                        <ul class="list-disc list-inside text-sm text-gray-600 mt-2">
+                            <li>Fully autonomous financial trading</li>
+                            <li>Public-facing legal advice</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4">
+                        <h3 class="font-bold text-lg text-green-600">High Risk / High Reward</h3>
+                        <ul class="list-disc list-inside text-sm text-gray-600 mt-2">
+                            <li>Autonomous scientific research</li>
+                            <li>Critical infrastructure management</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4">
+                         <h3 class="font-bold text-lg text-yellow-600">Low Risk / Low Reward</h3>
+                        <ul class="list-disc list-inside text-sm text-gray-600 mt-2">
+                            <li>Automated meeting scheduling</li>
+                            <li>Personalized news summaries</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4">
+                        <h3 class="font-bold text-lg text-blue-600">Low Risk / High Reward</h3>
+                        <ul class="list-disc list-inside text-sm text-gray-600 mt-2">
+                            <li>Internal code generation & review</li>
+                            <li>Customer support ticket routing</li>
+                            <li>Marketing campaign optimization</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const createChart = (ctx, type, data, options) => new Chart(ctx, { type, data, options });
+            
+            const tooltipCallback = {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                    return label.join(' ');
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            };
+            
+            const processLabels = (labels) => {
+                return labels.map(label => {
+                    if (typeof label === 'string' && label.length > 16) {
+                        const words = label.split(' ');
+                        const newLabel = [];
+                        let currentLine = '';
+                        words.forEach(word => {
+                            if ((currentLine + ' ' + word).length > 16) {
+                                newLabel.push(currentLine.trim());
+                                currentLine = word;
+                            } else {
+                                currentLine += ' ' + word;
+                            }
+                        });
+                        newLabel.push(currentLine.trim());
+                        return newLabel;
+                    }
+                    return label;
+                });
+            };
+
+            const adoptionCtx = document.getElementById('adoptionChart').getContext('2d');
+            const adoptionChartData = {
+                labels: ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025 (P)', 'Q2 2025 (P)'],
+                datasets: [{
+                    label: 'Enterprise Deployment Rate (%)',
+                    data: [5, 8, 12, 18, 28, 45],
+                    fill: true,
+                    borderColor: '#0077B6',
+                    backgroundColor: 'rgba(72, 202, 228, 0.2)',
+                    tension: 0.3
+                }]
+            };
+            createChart(adoptionCtx, 'line', adoptionChartData, {
+                responsive: true,
+                maintainAspectRatio: false,
+                ...tooltipCallback,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Adoption Rate (%)' }
+                    }
+                }
+            });
+            
+            const sectorRadarCtx = document.getElementById('sectorRadarChart').getContext('2d');
+            const sectorRadarData = {
+                labels: ['Task Complexity', 'Data Availability', 'ROI Potential', 'Integration Ease', 'Scalability'],
+                datasets: [
+                {
+                    label: 'Software Engineering',
+                    data: [9, 7, 9, 6, 8],
+                    borderColor: '#004E89',
+                    backgroundColor: 'rgba(0, 78, 137, 0.2)',
+                }, 
+                {
+                    label: 'Healthcare Admin',
+                    data: [6, 8, 7, 5, 7],
+                    borderColor: '#48CAE4',
+                    backgroundColor: 'rgba(72, 202, 228, 0.2)',
+                },
+                {
+                    label: 'Marketing & Sales',
+                    data: [7, 9, 8, 8, 9],
+                    borderColor: '#0077B6',
+                    backgroundColor: 'rgba(0, 119, 182, 0.2)',
+                }
+                ]
+            };
+            createChart(sectorRadarCtx, 'radar', sectorRadarData, {
+                responsive: true,
+                maintainAspectRatio: false,
+                ...tooltipCallback,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0,0,0,0.1)' },
+                        grid: { color: 'rgba(0,0,0,0.1)' },
+                        pointLabels: { font: { size: 12 } },
+                        suggestedMin: 0,
+                        suggestedMax: 10
+                    }
+                },
+                plugins: {
+                    tooltip: tooltipCallback.plugins.tooltip
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

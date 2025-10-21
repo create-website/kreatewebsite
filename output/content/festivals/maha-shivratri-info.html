@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maha-Shivratri Info</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: A top-down narrative infographic that guides the user from the festival's core identity to its foundational myths, key rituals, and finally its philosophical meaning. The structure is designed for linear consumption, telling a story. It starts with a high-level "What is it?" using large stats, delves into the "Four Core Legends" using a card layout for easy comparison, visualizes the "Path of Devotion" and the "Night's Vigil" with charts for data-driven clarity, and concludes with the deeper spiritual significance. This flow makes the complex information highly accessible. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Core festival concepts -> Goal: Inform -> Viz/Method: "Single Big Number" (HTML/CSS) -> Justification: Immediately grabs attention and conveys key facts.
+        - Report Info: Four Puranic Legends -> Goal: Organize -> Viz/Method: 4-column card layout (HTML/CSS) with Unicode icons -> Justification: Allows for quick scanning and comparison of the foundational myths.
+        - Report Info: Table of Puja offerings' symbolic meanings -> Goal: Compare -> Viz/Method: Donut Chart (Chart.js/Canvas) -> Justification: More visually engaging than a table for showing the composition of worship.
+        - Report Info: Table of the Four Prahars -> Goal: Show Change/Process -> Viz/Method: Horizontal Bar Chart (Chart.js/Canvas) -> Justification: Effectively visualizes the progression of time through the night's vigil.
+        - Report Info: Key Celebration Locations -> Goal: Organize -> Viz/Method: Styled List (HTML/CSS) -> Justification: A clean and simple way to present geographical information without needing a map graphic.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A1828;
+            color: #BFA181;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center my-12">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-[#178582] tracking-tight">MAHA SHIVRATRI</h1>
+            <p class="text-xl md:text-2xl font-semibold text-white mt-2">The Great Night of Shiva</p>
+            <p class="max-w-3xl mx-auto mt-4 text-lg">An annual Hindu festival dedicated to overcoming darkness and ignorance. It is a night of introspection, fasting, and an all-night vigil to honor Lord Shiva.</p>
+        </header>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center my-16">
+            <div class="bg-[#178582] p-8 rounded-lg shadow-2xl">
+                <p class="text-6xl font-extrabold text-[#0A1828]">1</p>
+                <p class="text-xl font-bold text-white mt-2">Great Night</p>
+                <p class="text-[#BFA181] text-sm mt-1">The most spiritually potent night of the year, harnessing a natural upsurge of energy.</p>
+            </div>
+            <div class="bg-[#178582] p-8 rounded-lg shadow-2xl">
+                <p class="text-6xl font-extrabold text-[#0A1828]">12</p>
+                <p class="text-xl font-bold text-white mt-2">Monthly Shivratris</p>
+                <p class="text-[#BFA181] text-sm mt-1">While each month has a Shivratri, this "Maha" night is the most significant of all.</p>
+            </div>
+            <div class="bg-[#178582] p-8 rounded-lg shadow-2xl">
+                <p class="text-6xl font-extrabold text-[#0A1828]">14th</p>
+                <p class="text-xl font-bold text-white mt-2">Day of Waning Moon</p>
+                <p class="text-[#BFA181] text-sm mt-1">Observed on the darkest night of the lunar month, symbolizing the conquest of inner darkness.</p>
+            </div>
+        </section>
+
+        <section class="my-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">The Four Core Legends</h2>
+                <p class="max-w-2xl mx-auto mt-2 text-lg">The festival's significance is rooted in four major Puranic stories, each revealing a different aspect of Shiva's divine nature.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-[#0A1828] border-2 border-[#178582] p-6 rounded-lg shadow-lg">
+                    <p class="text-4xl mb-4">⚭</p>
+                    <h3 class="text-xl font-bold text-white mb-2">The Divine Marriage</h3>
+                    <p>Commemorates the celestial wedding of Shiva and Parvati, symbolizing the union of consciousness and energy that creates the universe.</p>
+                </div>
+                <div class="bg-[#0A1828] border-2 border-[#178582] p-6 rounded-lg shadow-lg">
+                    <p class="text-4xl mb-4">💃</p>
+                    <h3 class="text-xl font-bold text-white mb-2">The Cosmic Dance</h3>
+                    <p>The night Shiva performs the Tandava, a dance governing the universal cycles of creation, preservation, and destruction.</p>
+                </div>
+                <div class="bg-[#0A1828] border-2 border-[#178582] p-6 rounded-lg shadow-lg">
+                    <p class="text-4xl mb-4">🐍</p>
+                    <h3 class="text-xl font-bold text-white mb-2">The Savior's Sacrifice</h3>
+                    <p>Honors Shiva drinking the Halahala poison during the churning of the ocean to save all of creation, earning him the name Neelkanth.</p>
+                </div>
+                <div class="bg-[#0A1828] border-2 border-[#178582] p-6 rounded-lg shadow-lg">
+                    <p class="text-4xl mb-4">🔥</p>
+                    <h3 class="text-xl font-bold text-white mb-2">The Infinite Pillar</h3>
+                    <p>The night Shiva manifested as an endless pillar of light (Jyotirlinga), proving his nature as the supreme, formless reality.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="text-center md:text-left">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">The Path of Devotion</h2>
+                    <p class="mt-4 text-lg">Worship on Maha Shivratri involves specific offerings, each with a deep symbolic meaning representing the purification of the soul and the surrender of the ego.</p>
+                    <p class="mt-2 text-sm text-[#BFA181]">This chart visualizes the key components of the Puja (worship). Each segment represents a sacred offering made to the Shiva Lingam, symbolizing a step on the devotee's spiritual journey.</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="offeringsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">The All-Night Vigil: A Journey in Four Stages</h2>
+                <p class="max-w-3xl mx-auto mt-2 text-lg">The night-long vigil (*jagran*) is divided into four 3-hour periods called Prahars. This timeline shows the progression of worship, which intensifies as the night deepens, moving the devotee from external focus to deep inner realization.</p>
+            </div>
+            <div class="bg-[#0A1828] border-2 border-[#178582] p-6 rounded-lg shadow-lg">
+                <div class="chart-container h-[400px] md:h-[500px]">
+                    <canvas id="praharsChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section class="my-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                 <div class="bg-[#0A1828] border-2 border-[#178582] p-8 rounded-lg shadow-lg">
+                    <h2 class="text-3xl font-bold text-white mb-4">Global Celebrations</h2>
+                    <p class="mb-6 text-lg">From ancient temples in India to community centers worldwide, the festival is a major spiritual event.</p>
+                    <ul class="space-y-4 text-white">
+                        <li class="flex items-start"><span class="text-[#178582] mr-3 text-2xl">📍</span><div><strong class="font-semibold">Varanasi:</strong> Grand wedding processions and Ganga Aarti.</div></li>
+                        <li class="flex items-start"><span class="text-[#178582] mr-3 text-2xl">📍</span><div><strong class="font-semibold">Ujjain:</strong> Famous for the pre-dawn Bhasma (sacred ash) Aarti.</div></li>
+                        <li class="flex items-start"><span class="text-[#178582] mr-3 text-2xl">📍</span><div><strong class="font-semibold">Somnath:</strong> The first Jyotirlinga, magnificently decorated by the sea.</div></li>
+                        <li class="flex items-start"><span class="text-[#178582] mr-3 text-2xl">📍</span><div><strong class="font-semibold">Seattle, USA:</strong> Diaspora communities hold all-night vigils, preserving traditions with precise local timings.</div></li>
+                    </ul>
+                </div>
+                <div class="bg-[#0A1828] border-2 border-[#178582] p-8 rounded-lg shadow-lg">
+                    <h2 class="text-3xl font-bold text-white mb-4">The Deeper Meaning</h2>
+                    <p class="mb-6 text-lg">Beyond rituals, the festival is a profound opportunity for inner transformation.</p>
+                    <ul class="space-y-4 text-white">
+                        <li class="flex items-start"><span class="text-[#BFA181] mr-3 text-2xl">💡</span><div><strong class="font-semibold">Darkness to Light:</strong> A journey to overcome ignorance and ego, realizing the inner Self.</div></li>
+                        <li class="flex items-start"><span class="text-[#BFA181] mr-3 text-2xl">☯️</span><div><strong class="font-semibold">Shiva-Shakti Union:</strong> Harmonizing the forces of consciousness (Shiva) and energy (Shakti) within oneself.</div></li>
+                        <li class="flex items-start"><span class="text-[#BFA181] mr-3 text-2xl">🧘</span><div><strong class="font-semibold">Yogic Ascent:</strong> A night of natural energy upsurge, ideal for meditation and elevating consciousness.</div></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const processLabel = (label, maxLength) => {
+            if (label.length <= maxLength) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines.filter(line => line);
+        };
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const offeringsData = {
+            labels: [
+                'Ritual Bathing (Purification)', 
+                'Sandalwood Paste (Virtue)', 
+                'Offering Fruits (Longevity)', 
+                'Burning Incense (Surrender)', 
+                'Lighting Lamp (Knowledge)', 
+                'Offering Bilva Leaves (Transcendence)'
+            ],
+            datasets: [{
+                label: 'Puja Offerings',
+                data: [1, 1, 1, 1, 1, 1],
+                backgroundColor: ['#178582', '#BFA181', '#0A1828', '#FFFFFF', '#178582', '#BFA181'],
+                borderColor: '#0A1828',
+                borderWidth: 4,
+                hoverOffset: 10
+            }]
+        };
+
+        const offeringsCtx = document.getElementById('offeringsChart').getContext('2d');
+        new Chart(offeringsCtx, {
+            type: 'doughnut',
+            data: offeringsData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#BFA181',
+                            font: { size: 12 }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+
+        const praharsData = {
+            labels: [
+                processLabel('First Prahar (6 PM - 9 PM): Building Focus', 16),
+                processLabel('Second Prahar (9 PM - 12 AM): Self-Inspection', 16),
+                processLabel('Third Prahar (12 AM - 3 AM): Deep Meditation', 16),
+                processLabel('Fourth Prahar (3 AM - 6 AM): Dawn of Enlightenment', 16)
+            ],
+            datasets: [{
+                label: 'Duration (Hours)',
+                data: [3, 3, 3, 3],
+                backgroundColor: ['#178582', '#BFA181', '#178582', '#BFA181'],
+                borderColor: '#FFFFFF',
+                borderWidth: 2,
+                borderRadius: 5
+            }]
+        };
+
+        const praharsCtx = document.getElementById('praharsChart').getContext('2d');
+        new Chart(praharsCtx, {
+            type: 'bar',
+            data: praharsData,
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback,
+                            label: function(context) {
+                                const tooltips = [
+                                    'Abhishek with milk. Detaching from material concerns.',
+                                    'Abhishek with yogurt. Overcoming ego and introspection.',
+                                    'Abhishek with ghee. Most powerful period for spiritual energy.',
+                                    'Abhishek with honey. Integrating divine grace and liberation.'
+                                ];
+                                return tooltips[context.dataIndex];
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        display: false,
+                        max: 3.5
+                    },
+                    y: {
+                        ticks: {
+                            color: '#FFFFFF',
+                            font: {
+                                size: 14,
+                                weight: '600'
+                            }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goverdhan Puja Interactive Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Earthy Harmony -->
+    <!-- Application Structure Plan: A tab-based SPA structure was chosen for optimal user navigation and content segmentation. Users can easily switch between distinct themes: 'Significance' (the 'why'), 'Puja Vidhi' (the 'how'), and 'For Businesses' (the 'application'). This thematic approach is more intuitive than a linear document, allowing users to directly access information relevant to their interests. The flow encourages exploration, starting with foundational knowledge and moving to practical, interactive guides. This structure avoids overwhelming the user and makes complex information digestible. -->
+    <!-- Visualization & Content Choices: 
+        1. Significance: Report Info -> Core tenets of the festival. Goal -> Inform. Viz/Presentation -> Interactive HTML cards. Interaction -> Click to expand and read more. Justification -> Breaks down abstract concepts into manageable, engaging pieces. Method -> HTML/CSS/JS.
+        2. Puja Vidhi: Report Info -> Step-by-step ritual. Goal -> Organize/Guide. Viz/Presentation -> Interactive step-by-step process list. Interaction -> Click a step to see detailed instructions and required items. Justification -> A process is best learned sequentially; this provides a clear, interactive checklist. Method -> HTML/CSS/JS.
+        3. For Businesses: Report Info -> Applying festival principles to a business context. Goal -> Compare/Inform. Viz/Presentation -> Donut Chart (Chart.js) linked to a filterable list. Interaction -> Clicking a chart segment filters a list of relevant business activities. Justification -> The chart gives a high-level strategic overview, while the interactive list provides tactical details. Method -> Chart.js/Canvas, JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF5;
+            color: #4A3F35;
+        }
+        .tab-active {
+            border-color: #D4A373;
+            color: #D4A373;
+            font-weight: 600;
+        }
+        .tab-inactive {
+            border-color: transparent;
+            color: #8C7D6B;
+        }
+        .card {
+            background-color: #FEF8EC;
+            border: 1px solid #EAE0D1;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        .step-item.active {
+            background-color: #E9DDCF;
+            border-left-color: #D4A373;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chart-container {
+            position: relative; 
+            width: 100%; 
+            max-width: 400px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 300px; 
+            max-height: 400px;
+        }
+        @media (min-width: 640px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#6B5B4D]">Goverdhan Puja</h1>
+            <p class="text-lg text-[#8C7D6B] mt-2">An Interactive Guide to a Festival of Gratitude</p>
+        </header>
+
+        <nav class="mb-8 border-b border-[#EAE0D1]">
+            <ul class="flex justify-center space-x-2 sm:space-x-8 -mb-px">
+                <li><button class="tab text-sm sm:text-base py-4 px-3 sm:px-6 border-b-2 font-medium tab-active" data-tab="significance">Significance</button></li>
+                <li><button class="tab text-sm sm:text-base py-4 px-3 sm:px-6 border-b-2 font-medium tab-inactive" data-tab="vidhi">Puja Vidhi</button></li>
+                <li><button class="tab text-sm sm:text-base py-4 px-3 sm:px-6 border-b-2 font-medium tab-inactive" data-tab="business">For Businesses</button></li>
+            </ul>
+        </nav>
+
+        <main id="content-container">
+            <section id="significance" class="content-section fade-in">
+                 <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-[#6B5B4D] mb-2">The Heart of Goverdhan Puja</h2>
+                    <p class="text-[#8C7D6B] max-w-3xl mx-auto">This section explores the profound stories and values behind Goverdhan Puja. Click on each card to uncover the layers of meaning, from honoring nature to celebrating community and divine protection. It's the 'why' behind the rituals.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="card rounded-lg p-6 cursor-pointer" data-content-id="content-nature">
+                        <h3 class="text-xl font-bold mb-2 text-[#4A3F35]">Gratitude for Nature</h3>
+                        <p class="text-[#8C7D6B] text-sm">A celebration of natural resources that sustain life.</p>
+                        <div id="content-nature" class="hidden mt-4 text-sm text-[#6B5B4D]">The puja marks a shift from worshipping celestial gods for nature's bounty to directly honoring nature itself. The Goverdhan hill symbolizes all-natural resources—mountains, rivers, and land—that provide for communities. It teaches deep respect and gratitude for the environment.</div>
+                    </div>
+                    <div class="card rounded-lg p-6 cursor-pointer" data-content-id="content-krishna">
+                        <h3 class="text-xl font-bold mb-2 text-[#4A3F35]">Lord Krishna's Leela</h3>
+                        <p class="text-[#8C7D6B] text-sm">The divine act of protecting Vrindavan's villagers.</p>
+                        <div id="content-krishna" class="hidden mt-4 text-sm text-[#6B5B4D]">The festival commemorates the incident where Lord Krishna lifted the entire Goverdhan Hill on his little finger for seven days to shelter his village from the torrential rains of an angered Lord Indra. This act demonstrated that true divinity lies in protection and compassion, not in demanding appeasement.</div>
+                    </div>
+                    <div class="card rounded-lg p-6 cursor-pointer" data-content-id="content-community">
+                        <h3 class="text-xl font-bold mb-2 text-[#4A3F35]">Community & Humility</h3>
+                        <p class="text-[#8C7D6B] text-sm">The victory of faith and collective effort over pride.</p>
+                        <div id="content-community" class="hidden mt-4 text-sm text-[#6B5B4D]">Krishna's act humbled the pride of Indra, teaching that a simple, heartfelt offering from a community holds more value than extravagant rituals born of ego. The preparation of 'Annakut' (a mountain of food) is a collective effort, strengthening community bonds and emphasizing sharing and togetherness.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="vidhi" class="content-section hidden fade-in">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-[#6B5B4D] mb-2">Step-by-Step Puja Vidhi</h2>
+                    <p class="text-[#8C7D6B] max-w-3xl mx-auto">Follow this interactive guide to perform the Goverdhan Puja. This is the 'how-to' section, breaking down the entire ritual into clear, manageable steps. Click on any step to see detailed instructions and the list of items ('Samagri') you will need.</p>
+                </div>
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="md:w-1/3">
+                        <ul id="steps-list" class="space-y-2">
+                        </ul>
+                    </div>
+                    <div id="step-details" class="md:w-2/3 p-6 bg-[#FEF8EC] rounded-lg border border-[#EAE0D1]">
+                    </div>
+                </div>
+            </section>
+
+            <section id="business" class="content-section hidden fade-in">
+                 <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-[#6B5B4D] mb-2">Embracing the Spirit in Business</h2>
+                    <p class="text-[#8C7D6B] max-w-3xl mx-auto">Discover how the principles of Goverdhan Puja can be applied in a modern business context. The chart below visualizes key areas of focus. Click on a segment to explore actionable ideas for fostering gratitude, community, and prosperity in your organization.</p>
+                </div>
+                <div class="flex flex-col lg:flex-row items-center gap-8">
+                    <div class="w-full lg:w-2/5">
+                        <div class="chart-container">
+                            <canvas id="businessChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-3/5">
+                        <h3 id="ideas-title" class="text-xl font-bold text-[#4A3F35] mb-4">Click a chart segment to see ideas</h3>
+                        <ul id="business-ideas-list" class="space-y-3">
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab');
+            const contentSections = document.querySelectorAll('.content-section');
+            const significanceCards = document.querySelectorAll('#significance .card');
+
+            const pujaStepsData = [
+                {
+                    title: "1. Create Goverdhan Hill",
+                    details: "The centerpiece of the puja is a symbolic representation of the Goverdhan hill. This is traditionally made at the center of a home's courtyard or a clean space.",
+                    samagri: ["Cow dung (or clay/mud)", "Flowers (marigolds, roses)", "Peacock feather", "Small earthen lamps (diyas)"]
+                },
+                {
+                    title: "2. Prepare Annakut",
+                    details: "'Annakut' means 'a mountain of food'. A wide variety of vegetarian dishes are prepared as an offering. The number can range from a few to the traditional 'Chappan Bhog' (56 dishes).",
+                    samagri: ["Grains, lentils, vegetables", "Milk, yogurt, ghee, sweets", "Seasonal fruits and snacks"]
+                },
+                {
+                    title: "3. Worship the Hill & Krishna",
+                    details: "Decorate the hill with flowers and the peacock feather. Place an idol or image of Lord Krishna near it. Light incense and diyas. Offer prayers and chant mantras.",
+                    samagri: ["Idol/image of Lord Krishna", "Incense sticks, camphor", "Sandalwood paste, vermilion (kumkum)"]
+                },
+                {
+                    title: "4. Offer Bhog (Annakut)",
+                    details: "Arrange the prepared food offerings beautifully around the hill. Offer the food to Lord Krishna and the Goverdhan hill with devotion, expressing gratitude for the year's provisions.",
+                    samagri: ["The prepared Annakut dishes", "Holy basil (Tulsi) leaves", "Water in a small pot (kalash)"]
+                },
+                {
+                    title: "5. Perform Parikrama",
+                    details: "Circumambulate the Goverdhan hill replica while singing hymns (bhajans). This signifies reverence and respect. Family members do this together.",
+                    samagri: ["Devotional spirit", "Family and friends"]
+                },
+                {
+                    title: "6. Gau Puja (Cow Worship)",
+                    details: "Cows are central to the story and livelihood. Bathe and decorate cows and bulls. Offer them special food and perform their aarti.",
+                    samagri: ["Garlands for cows", "Special fodder, jaggery, bananas", "Aarti plate"]
+                },
+                {
+                    title: "7. Distribute Prasad",
+                    details: "After the puja, the Annakut bhog becomes prasad (blessed food). Distribute it among family, friends, and the wider community. This act of sharing is a key part of the festival.",
+                    samagri: ["Serving utensils", "Community spirit"]
+                }
+            ];
+            
+            const businessIdeasData = {
+                'Employee Engagement': [
+                    "Organize an office 'Annakut' potluck where teams bring different dishes.",
+                    "Conduct a session on the importance of gratitude and teamwork in the workplace.",
+                    "Decorate the office space collectively with eco-friendly materials."
+                ],
+                'Customer & Partner Relations': [
+                    "Send festive greetings to clients and partners, sharing the message of gratitude.",
+                    "Offer special discounts or festive hampers to loyal customers.",
+                    "Organize a small get-together for key partners to strengthen relationships."
+                ],
+                'Community & CSR': [
+                    "Sponsor a meal for a local charity or an underprivileged community.",
+                    "Organize a tree-planting drive, directly honoring the festival's connection to nature.",
+                    "Donate to local animal shelters, reflecting the spirit of Gau Puja."
+                ],
+                'Gratitude for Resources': [
+                    "Perform a small puja for office equipment and tools of the trade, showing respect for what enables your business.",
+                    "Acknowledge and reward high-performing teams and individuals.",
+                    "Share a 'State of the Business' report with employees, expressing gratitude for their collective effort."
+                ]
+            };
+
+
+            function switchTab(tabId) {
+                tabs.forEach(tab => {
+                    const isTargetTab = tab.dataset.tab === tabId;
+                    tab.classList.toggle('tab-active', isTargetTab);
+                    tab.classList.toggle('tab-inactive', !isTargetTab);
+                });
+                contentSections.forEach(section => {
+                    section.classList.toggle('hidden', section.id !== tabId);
+                });
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchTab(tab.dataset.tab);
+                });
+            });
+
+            significanceCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const content = document.getElementById(card.dataset.contentId);
+                    content.classList.toggle('hidden');
+                });
+            });
+
+            const stepsList = document.getElementById('steps-list');
+            const stepDetailsContainer = document.getElementById('step-details');
+
+            function displayStepDetails(index) {
+                const step = pujaStepsData[index];
+                stepDetailsContainer.innerHTML = `
+                    <h3 class="text-2xl font-bold text-[#4A3F35] mb-4">${step.title}</h3>
+                    <p class="text-[#6B5B4D] mb-6">${step.details}</p>
+                    <h4 class="text-lg font-semibold text-[#4A3F35] mb-3">Items Needed (Samagri):</h4>
+                    <ul class="list-disc list-inside text-[#6B5B4D] space-y-2">
+                        ${step.samagri.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                `;
+                stepDetailsContainer.classList.add('fade-in');
+                setTimeout(() => stepDetailsContainer.classList.remove('fade-in'), 500);
+
+                document.querySelectorAll('#steps-list .step-item').forEach((item, i) => {
+                    item.classList.toggle('active', i === index);
+                });
+            }
+
+            pujaStepsData.forEach((step, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<button class="step-item w-full text-left p-4 rounded-lg border-l-4 transition-colors duration-300 border-transparent hover:bg-[#E9DDCF]">${step.title}</button>`;
+                li.querySelector('button').addEventListener('click', () => displayStepDetails(index));
+                stepsList.appendChild(li);
+            });
+            displayStepDetails(0);
+
+            const ctx = document.getElementById('businessChart').getContext('2d');
+            const businessChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(businessIdeasData),
+                    datasets: [{
+                        label: 'Business Focus Areas',
+                        data: [25, 25, 25, 25], 
+                        backgroundColor: [
+                            'rgba(212, 163, 115, 0.8)',
+                            'rgba(140, 125, 107, 0.8)',
+                            'rgba(189, 172, 150, 0.8)',
+                            'rgba(107, 91, 77, 0.8)'
+                        ],
+                        borderColor: '#FDFBF5',
+                        borderWidth: 4,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#4A3F35',
+                                padding: 15,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#4A3F35',
+                            titleColor: '#FDFBF5',
+                            bodyColor: '#FEF8EC',
+                            padding: 10
+                        }
+                    }
+                }
+            });
+
+            const ideasTitle = document.getElementById('ideas-title');
+            const ideasList = document.getElementById('business-ideas-list');
+
+            function displayBusinessIdeas(category) {
+                const ideas = businessIdeasData[category];
+                ideasTitle.textContent = category;
+                ideasList.innerHTML = ideas.map(idea => `
+                    <li class="p-4 bg-[#FEF8EC] rounded-lg border border-[#EAE0D1] text-[#6B5B4D] flex items-start fade-in">
+                        <span class="mr-3 mt-1 text-[#D4A373]">◆</span>
+                        <span>${idea}</span>
+                    </li>
+                `).join('');
+            }
+            
+            document.getElementById('businessChart').onclick = (evt) => {
+                const activePoints = businessChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+                if (activePoints.length) {
+                    const firstPoint = activePoints[0];
+                    const label = businessChart.data.labels[firstPoint.index];
+                    displayBusinessIdeas(label);
+                }
+            };
+
+        });
+    </script>
+
+</body>
+</html>

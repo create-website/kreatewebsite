@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navaratri: A Nine-Night Celebration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Festive Vibrance -->
+    <!-- Narrative & Structure Plan: The infographic tells the story of Navaratri in a logical, top-down narrative. It starts with a high-impact hook (What is Navaratri?), explains its mythological origin (The Legend), details the core of the festival (The Nine Nights), explores its cultural diversity (How India Celebrates), breaks down the components of observance (Elements of the Festival), and concludes with its culminating message (The Final Victory). This structure guides the user from general understanding to specific details in an intuitive and engaging flow. -->
+    <!-- Visualization & Content Choices:
+        1.  Introductory Stat: Data Point -> 9 Nights of Celebration. Goal -> Inform. Viz -> Single Big Number (Styled HTML). Justification -> A powerful, simple hook to grab attention. Method -> HTML/CSS.
+        2.  Legend of Durga: Data Point -> Story of Durga vs. Mahishasura. Goal -> Organize. Viz -> Flow Chart. Justification -> Visually simplifies a narrative sequence into key stages. Method -> Structured HTML/CSS with Tailwind (NO SVG/Mermaid).
+        3.  Nine Forms of Durga: Data Point -> Daily goddesses and colors. Goal -> Organize. Viz -> Grid of Cards. Justification -> Best for presenting distinct but related pieces of information in a scannable, visually appealing manner. Method -> HTML/CSS.
+        4.  Celebration Styles: Data Point -> Regional celebration types. Goal -> Compare. Viz -> Bar Chart. Justification -> Effectively compares the prominence and characteristics of different categorical items. Method -> Chart.js/Canvas (NO SVG).
+        5.  Festival Elements: Data Point -> Key activities of Navaratri. Goal -> Compare (Composition). Viz -> Donut Chart. Justification -> Clearly shows the proportional breakdown of core festival components. Method -> Chart.js/Canvas (NO SVG).
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #FFF8F0;
+            font-family: 'Poppins', sans-serif;
+            color: #4A4A4A;
+        }
+        .font-header {
+            font-family: 'Teko', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #FF6B6B, #FFD166);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flow-line::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 2rem;
+            height: 2px;
+            background-color: #FFD166;
+            transform: translateY(-50%);
+        }
+        .flow-line-down::after {
+             content: '↓';
+             position: absolute;
+             bottom: -2rem;
+             left: 50%;
+             font-size: 1.5rem;
+             color: #FFD166;
+             transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 py-8 md:py-12 max-w-6xl">
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="font-header text-5xl md:text-7xl tracking-wide uppercase text-[#118AB2]">Navaratri</h1>
+            <p class="text-xl md:text-2xl font-header mt-2 text-[#FF6B6B] tracking-wider">A NINE-NIGHT CELEBRATION OF DIVINE FEMININE POWER</p>
+        </header>
+
+        <section class="mb-12 md:mb-20">
+            <div class="card p-8 text-center">
+                <p class="text-lg text-gray-600 mb-4">Navaratri, meaning "nine nights," is one of the most significant and vibrant festivals in Hinduism. It honors the divine feminine, or Shakti, in her nine different forms. The festival culminates on the tenth day with Vijayadashami, celebrating the ultimate victory of good over evil.</p>
+                <div class="flex justify-center items-baseline space-x-4">
+                    <div class="font-header text-9xl md:text-[10rem] gradient-text">9</div>
+                    <div class="font-header text-5xl md:text-6xl text-[#4A4A4A]">Nights of<br>Devotion</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 md:mb-20">
+            <h2 class="font-header text-4xl md:text-5xl text-center mb-8 text-[#118AB2]">The Legend: Victory of Good Over Evil</h2>
+            <div class="text-center mb-4 max-w-3xl mx-auto">
+                <p>The festival's core story is the epic battle between Goddess Durga and the shape-shifting demon king Mahishasura. This flowchart illustrates the divine sequence of events that led to his defeat and the restoration of cosmic order.</p>
+            </div>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-x-8 gap-y-12 md:gap-y-0 relative">
+                <div class="card p-4 w-60 text-center relative md:flow-line">
+                    <h3 class="font-semibold text-lg text-[#06D6A0]">The Problem</h3>
+                    <p class="text-sm">The demon Mahishasura gains a boon of invincibility, making him immune to any man or god.</p>
+                </div>
+                <div class="card p-4 w-60 text-center relative md:flow-line">
+                    <h3 class="font-semibold text-lg text-[#FFD166]">The Solution</h3>
+                    <p class="text-sm">The male gods combine their divine energies to create the ultimate female power, Goddess Durga.</p>
+                </div>
+                <div class="card p-4 w-60 text-center relative">
+                    <h3 class="font-semibold text-lg text-[#FF6B6B]">The Battle</h3>
+                    <p class="text-sm">A fierce, nine-day battle ensues between Durga, armed with divine weapons, and Mahishasura.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 md:mb-20">
+            <h2 class="font-header text-4xl md:text-5xl text-center mb-8 text-[#118AB2]">The Nine Nights of Devi</h2>
+             <div class="text-center mb-8 max-w-3xl mx-auto">
+                <p>Each night of Navaratri is dedicated to one of the nine distinct forms of Goddess Durga, known as the Navadurga. Devotees often wear clothes matching the color associated with that day's goddess, adding a beautiful visual element to the celebrations.</p>
+            </div>
+            <div id="navadurga-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+        <section class="mb-12 md:mb-20">
+            <h2 class="font-header text-4xl md:text-5xl text-center mb-8 text-[#118AB2]">How India Celebrates</h2>
+            <div class="text-center mb-8 max-w-3xl mx-auto">
+                <p>While the essence of Navaratri is consistent, its expression varies beautifully across India. This chart highlights some of the most famous regional traditions, showcasing the festival's rich cultural diversity.</p>
+            </div>
+            <div class="card p-6">
+                <div class="chart-container">
+                    <canvas id="celebrationsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 md:mb-20">
+             <h2 class="font-header text-4xl md:text-5xl text-center mb-8 text-[#118AB2]">Elements of the Festival</h2>
+            <div class="text-center mb-8 max-w-3xl mx-auto">
+                <p>Navaratri is a holistic experience blending spiritual discipline with joyful celebration. The festival's observance is composed of several key elements, each playing a vital role in the nine-day spiritual journey.</p>
+            </div>
+            <div class="card p-6">
+                <div class="chart-container" style="max-width: 400px; height: 350px;">
+                    <canvas id="elementsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center card p-8 bg-white">
+            <h2 class="font-header text-4xl md:text-5xl text-[#118AB2]">The Final Victory: Vijayadashami</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-gray-600">The tenth day, known as Vijayadashami or Dussehra, marks the triumphant conclusion. It symbolizes the victory of Dharma (righteousness) over Adharma (unrighteousness). Effigies of the demon king Ravana are burned, and people exchange greetings, celebrating a new beginning filled with hope and positivity.</p>
+        </footer>
+    </div>
+
+<script>
+const navadurgaData = [
+    { day: 1, name: 'Shailaputri', color: 'Royal Blue', colorHex: '#118AB2', desc: 'Daughter of the Mountains, she represents purity and strength.' },
+    { day: 2, name: 'Brahmacharini', color: 'Yellow', colorHex: '#FFD166', desc: 'The ascetic, she embodies penance, devotion, and wisdom.' },
+    { day: 3, name: 'Chandraghanta', color: 'Green', colorHex: '#06D6A0', desc: 'Wielding a crescent moon, she brings peace and wards off evil.' },
+    { day: 4, name: 'Kushmanda', color: 'Grey', colorHex: '#A9A9A9', desc: 'The creator of the universe, she is the source of cosmic energy.' },
+    { day: 5, name: 'Skandamata', color: 'Orange', colorHex: '#F79256', desc: 'The mother of Skanda, she represents motherly love and compassion.' },
+    { day: 6, name: 'Katyayani', color: 'White', colorHex: '#F0F0F0', desc: 'Born to a sage, she is a fierce warrior who embodies divine anger.' },
+    { day: 7, name: 'Kalaratri', color: 'Red', colorHex: '#FF6B6B', desc: 'The darkest night, she is the destroyer of ignorance and fear.' },
+    { day: 8, name: 'Mahagauri', color: 'Peacock Green', colorHex: '#00A896', desc: 'Radiantly beautiful, she absolves sins and purifies the soul.' },
+    { day: 9, name: 'Siddhidatri', color: 'Pink', colorHex: '#F2B5D4', desc: 'The giver of supernatural powers (siddhis), she is the fulfiller of all desires.' }
+];
+
+const grid = document.getElementById('navadurga-grid');
+navadurgaData.forEach(goddess => {
+    const card = document.createElement('div');
+    card.className = 'card overflow-hidden';
+    card.innerHTML = `
+        <div class="p-5">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-bold text-xl">${goddess.name}</h3>
+                <div class="text-sm font-semibold rounded-full px-3 py-1 text-white" style="background-color: ${goddess.colorHex}; color: ${['Yellow', 'White'].includes(goddess.color) ? '#333' : '#fff'};">Day ${goddess.day}</div>
+            </div>
+            <p class="text-gray-600 text-sm mb-3">${goddess.desc}</p>
+            <div class="text-xs font-bold uppercase tracking-wider text-gray-500">Color: ${goddess.color}</div>
+        </div>
+    `;
+    grid.appendChild(card);
+});
+
+const tooltipTitleCallback = (tooltipItems) => {
+    const item = tooltipItems[0];
+    let label = item.chart.data.labels[item.dataIndex];
+    if (Array.isArray(label)) {
+        return label.join(' ');
+    }
+    return label;
+};
+
+const celebrationsCtx = document.getElementById('celebrationsChart').getContext('2d');
+new Chart(celebrationsCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Garba/Dandiya', 'Durga Puja', 'Golu Displays', 'Ramlila'],
+        datasets: [{
+            label: 'Cultural Significance & Participation',
+            data: [95, 90, 70, 80],
+            backgroundColor: ['#FF6B6B', '#FFD166', '#06D6A0', '#118AB2'],
+            borderRadius: 5
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: 'y',
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                callbacks: {
+                    title: tooltipTitleCallback
+                }
+            }
+        },
+        scales: {
+            x: {
+                beginAtZero: true,
+                grid: {
+                    display: false,
+                    drawBorder: false
+                }
+            },
+            y: {
+                grid: {
+                    display: false,
+                    drawBorder: false
+                }
+            }
+        }
+    }
+});
+
+const elementsCtx = document.getElementById('elementsChart').getContext('2d');
+new Chart(elementsCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Worship (Puja)', 'Fasting (Vrat)', 'Feasting (Bhog)', 'Dancing & Music'],
+        datasets: [{
+            data: [35, 20, 20, 25],
+            backgroundColor: ['#118AB2', '#06D6A0', '#FFD166', '#FF6B6B'],
+            borderColor: '#FFF8F0',
+            borderWidth: 5,
+            hoverOffset: 15
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '60%',
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    padding: 20
+                }
+            },
+            tooltip: {
+                 callbacks: {
+                    title: tooltipTitleCallback
+                }
+            }
+        }
+    }
+});
+
+</script>
+</body>
+</html>

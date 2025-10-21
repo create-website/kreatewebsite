@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akshaya Tritiya: The Festival of Imperishable Fortune</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful (Adapted) -->
+    <!-- Application Structure Plan: The infographic follows a top-down narrative, starting with the core concept of 'Akshaya' (the hook), then comparing its spiritual vs. material interpretations. It flows into the theological roots (Hindu vs. Jain) and regional traditions to build context. The climax is the data-heavy "Modern Impact" section, visualizing the festival's massive economic footprint. This structure guides the user from the 'why' to the 'what' and finally to the 'wow' of the commercial data, making a complex topic digestible and engaging. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Overall Economic Scale -> Goal: Inform -> Viz: Single Big Numbers (e.g., ₹16,000 Crore) -> Justification: High-impact way to convey the festival's massive scale immediately. Method: HTML/CSS.
+        - Data Point: Spiritual vs. Material interpretations -> Goal: Compare -> Viz: Side-by-side styled cards with Unicode icons -> Justification: Simple, clear visual contrast for a core philosophical concept. Method: HTML/CSS.
+        - Data Point: Gold Sales Value vs. Volume Change -> Goal: Compare/Change -> Viz: Grouped Bar Chart -> Justification: Best visualization to show the opposing trends of rising value and falling volume, telling a nuanced economic story. Library: Chart.js.
+        - Data Point: Old Gold Exchange Proportion -> Goal: Inform -> Viz: Donut Chart -> Justification: A simple, visually appealing way to represent a key component of the sales strategy (up to 50%). Library: Chart.js.
+        - Data Point: Regional Traditions -> Goal: Organize -> Viz: Styled HTML/CSS grid representing a map -> Justification: An interactive way to present categorical geographic data without using prohibited SVG or map libraries. Method: HTML/CSS/JS.
+        - Data Point: Cross-Sector Sales Comparison -> Goal: Compare -> Viz: Horizontal Bar Chart -> Justification: Effectively ranks the financial impact across Real Estate and Automotive sectors for easy comparison. Library: Chart.js.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Lora', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .stat-card {
+            background-color: #FFC300;
+            color: #581845;
+        }
+        .flow-arrow {
+            font-size: 2rem;
+            color: #FF5733;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center my-12">
+            <h1 class="text-4xl md:text-6xl font-bold text-[#581845] mb-4">Akshaya Tritiya</h1>
+            <p class="text-xl md:text-2xl text-gray-600">The Festival of Imperishable Fortune & A Modern Economic Powerhouse</p>
+        </header>
+
+        <section class="mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-[#900C3F]">The Core Principle: 'Akshaya'</h2>
+                <p class="max-w-3xl mx-auto mt-2 text-gray-600">The festival's power comes from the Sanskrit word 'Akshaya', meaning "imperishable" or "never-diminishing." This single concept has evolved into two powerful interpretations that shape the entire celebration.</p>
+            </div>
+            <div class="grid md:grid-cols-3 items-center gap-8 max-w-5xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-5xl mb-3">🙏</div>
+                    <h3 class="text-xl font-semibold text-[#581845]">Spiritual Merit</h3>
+                    <p class="text-gray-600 mt-2">The original belief that acts of charity (*Daana*) and piety on this day yield spiritual rewards (*punya*) that last for eternity.</p>
+                </div>
+                <div class="text-center flow-arrow font-bold hidden md:block">→</div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-5xl mb-3">💰</div>
+                    <h3 class="text-xl font-semibold text-[#581845]">Material Wealth</h3>
+                    <p class="text-gray-600 mt-2">The modern interpretation where purchasing "imperishable" assets like gold is believed to secure a fortune that will never decrease.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-[#900C3F]">A Tale of Two Faiths</h2>
+                <p class="max-w-3xl mx-auto mt-2 text-gray-600">While celebrated on the same day, the festival holds distinct meanings in Hinduism and Jainism, reflecting different paths to spiritual fulfillment.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-4 text-[#FF5733]">Hinduism: Cosmic Creation</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start"><span class="text-[#FF5733] font-bold mr-2">●</span><span>Marks the start of a new cosmic age (*Treta Yuga*).</span></li>
+                        <li class="flex items-start"><span class="text-[#FF5733] font-bold mr-2">●</span><span>Celebrates the birth of Lord Parashurama (an avatar of Vishnu).</span></li>
+                        <li class="flex items-start"><span class="text-[#FF5733] font-bold mr-2">●</span><span>Commemorates the descent of the holy river Ganges to Earth.</span></li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-4 text-[#581845]">Jainism: Ascetic Compassion</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start"><span class="text-[#581845] font-bold mr-2">●</span><span>Honors the day the first Tirthankara, Rishabhanatha, ended his year-long fast.</span></li>
+                        <li class="flex items-start"><span class="text-[#581845] font-bold mr-2">●</span><span>Focuses on spiritual gain through righteous actions and charity (*Ahara Daan*).</span></li>
+                        <li class="flex items-start"><span class="text-[#581845] font-bold mr-2">●</span><span>Observances are quiet, devotional, and centered on fasting and prayer.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-[#900C3F]">The 2025 Economic Impact: A Modern Gold Rush</h2>
+                <p class="max-w-3xl mx-auto mt-2 text-gray-600">The festival has transformed into a major economic event, driving billions in sales across key sectors in a single day. Here's a snapshot of the commercial activity in 2025.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-12">
+                <div class="stat-card p-6 rounded-lg shadow-md">
+                    <p class="text-lg font-semibold">Total Gold Sales (Value)</p>
+                    <p class="text-4xl font-bold">₹16,000 Crore</p>
+                </div>
+                <div class="stat-card p-6 rounded-lg shadow-md">
+                    <p class="text-lg font-semibold">Real Estate Bookings (Nashik)</p>
+                    <p class="text-4xl font-bold">₹250 Crore</p>
+                </div>
+                <div class="stat-card p-6 rounded-lg shadow-md">
+                    <p class="text-lg font-semibold">Auto Sales (Nashik)</p>
+                    <p class="text-4xl font-bold">₹255 Crore</p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-center mb-4">Gold: The Value vs. Volume Paradox</h3>
+                    <p class="text-center text-sm text-gray-500 mb-4">Record-high prices in 2025 pushed the total sales value up, but the actual amount of gold purchased declined, revealing a shift in consumer behavior.</p>
+                    <div class="chart-container">
+                        <canvas id="goldSalesChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-center mb-4">Consumer Strategy: The Rise of Exchange</h3>
+                    <p class="text-center text-sm text-gray-500 mb-4">To combat high prices, a huge portion of new purchases were financed by trading in old jewellery, a key trend in 2025.</p>
+                    <div class="chart-container">
+                        <canvas id="exchangeChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg lg:col-span-2">
+                    <h3 class="text-xl font-semibold text-center mb-4">Beyond Gold: High-Value Asset Boom (Nashik 2025)</h3>
+                     <p class="text-center text-sm text-gray-500 mb-4">The auspiciousness of the day drives significant investment in other major assets, making it a banner day for the real estate and automotive industries.</p>
+                    <div class="chart-container">
+                        <canvas id="assetSalesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+<!--
+        <footer class="text-center mt-16 py-6 border-t border-gray-300">
+            <p class="text-gray-600">This infographic visualizes data from the report "Akshaya Tritiya: An Ethnographic and Theological Analysis."</p>
+            <p class="text-sm text-gray-500">Created to make complex cultural and economic data accessible and understandable.</p>
+        </footer>
+-->
+
+    </div>
+
+    <script>
+        function wrapLabels(label, maxWidth) {
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + ' ' + words[i]).length > maxWidth) {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                } else {
+                    currentLine += ' ' + words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+        
+        const tooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const goldSalesCtx = document.getElementById('goldSalesChart').getContext('2d');
+            new Chart(goldSalesCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Year-on-Year Value', 'Year-on-Year Volume'],
+                    datasets: [{
+                        label: 'Change (%)',
+                        data: [25, -19],
+                        backgroundColor: (context) => {
+                            const value = context.raw;
+                            return value >= 0 ? '#FFC300' : '#C70039';
+                        },
+                        borderColor: (context) => {
+                            const value = context.raw;
+                            return value >= 0 ? '#FFC300' : '#C70039';
+                        },
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) { return value + '%'; }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    }
+                }
+            });
+
+            const exchangeCtx = document.getElementById('exchangeChart').getContext('2d');
+            new Chart(exchangeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Financed by Exchange', 'New Purchase'],
+                    datasets: [{
+                        data: [50, 50],
+                        backgroundColor: ['#FF5733', '#581845'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    }
+                }
+            });
+
+            const assetSalesCtx = document.getElementById('assetSalesChart').getContext('2d');
+            new Chart(assetSalesCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Real Estate', 'Four-Wheelers', 'Two-Wheelers'],
+                    datasets: [{
+                        label: 'Sales in Crore (₹)',
+                        data: [250, 225, 30],
+                        backgroundColor: ['#FFC300', '#FF5733', '#900C3F'],
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Sales Value (₹ Crore)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

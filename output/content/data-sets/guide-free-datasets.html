@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide to Free Public Datasets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The application is designed with a tab-based navigation system to separate data sources into three logical, user-friendly categories: Global, USA, and India. This thematic structure was chosen over a single, long list to allow users to quickly find relevant information without excessive scrolling. The default view is 'Global' as it has the broadest appeal. Each section uses a card-based layout to present information about each data source in a clear, digestible format. An interactive bar chart complements this structure by providing a high-level summary of the types of data available, which dynamically updates when the user switches between tabs. This enhances understanding by giving a quick visual overview of the data landscape for each region. -->
+    <!-- Visualization & Content Choices: 
+    - Report Info: A list of websites providing free datasets. -> Goal: Inform & Organize. -> Viz/Presentation Method: Interactive cards with descriptions and links. -> Interaction: User clicks a link to visit the external data source. -> Justification: Cards are a standard, easily scannable UI pattern for presenting distinct items. They neatly contain information (name, description, link) for each source. -> Library/Method: HTML/Tailwind CSS.
+    - Report Info: Thematic categories of data offered by these sources (e.g., Economic, Health). -> Goal: Compare & Summarize. -> Viz/Presentation Method: A vertical bar chart. -> Interaction: The chart's data dynamically updates when the user clicks a regional navigation tab (Global, USA, India), showing the distribution of data types for that region's sources. -> Justification: A bar chart provides an immediate, easy-to-understand comparison of data category prevalence. The dynamic update adds a layer of interactivity and tailored insight. -> Library/Method: Chart.js with Canvas.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; /* Light warm gray */
+        }
+        .nav-btn {
+            transition: all 0.3s ease;
+        }
+        .nav-btn.active {
+            background-color: #4f46e5; /* Indigo-600 */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: grid;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <header class="text-center mb-10 md:mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">Your Guide to Free Public Datasets</h1>
+            <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Explore a curated list of reliable sources for open data. Select a region below to discover datasets for your next project, research, or analysis.</p>
+        </header>
+
+        <nav class="flex justify-center space-x-2 sm:space-x-4 mb-10 md:mb-12">
+            <button id="btn-global" class="nav-btn active text-sm sm:text-base font-medium py-2 px-4 sm:py-3 sm:px-6 rounded-full bg-white text-gray-700 shadow-sm hover:bg-gray-100">Global</button>
+            <button id="btn-usa" class="nav-btn text-sm sm:text-base font-medium py-2 px-4 sm:py-3 sm:px-6 rounded-full bg-white text-gray-700 shadow-sm hover:bg-gray-100">USA</button>
+            <button id="btn-india" class="nav-btn text-sm sm:text-base font-medium py-2 px-4 sm:py-3 sm:px-6 rounded-full bg-white text-gray-700 shadow-sm hover:bg-gray-100">India</button>
+        </nav>
+
+        <main>
+            <section id="content-global" class="content-section active grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">World Bank Open Data</h3>
+                    <p class="text-gray-600 mb-4 flex-grow">Comprehensive collection of global development data, including indicators on finance, health, environment, and poverty.</p>
+                    <span class="text-sm font-medium text-indigo-600 mb-4">Key Data: Economic, Social, Environmental</span>
+                    <a href="https://data.worldbank.org/" target="_blank" rel="noopener noreferrer" class="mt-auto inline-block text-center font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 rounded-lg py-2 px-4 transition-colors">Visit Source →</a>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">United Nations (UNdata)</h3>
+                    <p class="text-gray-600 mb-4 flex-grow">A vast repository of statistics from various UN agencies covering economic, social, financial, and industrial topics for countries worldwide.</p>
+                    <span class="text-sm font-medium text-indigo-600 mb-4">Key Data: Demographics, Social, Economic</span>
+                    <a href="http://data.un.org/" target="_blank" rel="noopener noreferrer" class="mt-auto inline-block text-center font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 rounded-lg py-2 px-4 transition-colors">Visit Source →</a>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">IMF Data</h3>
+                    <p class="text-gray-600 mb-4 flex-grow">The International Monetary Fund provides data on international finance, debt, exchange rates, and other economic and financial indicators.</p>
+                     <span class="text-sm font-medium text-indigo-600 mb-4">Key Data: Finance, Economic, Trade</span>
+                    <a href="https://data.imf.org/" target="_blank" rel="noopener noreferrer" class="mt-auto inline-block text-center font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 rounded-lg py-2 px-4 transition-colors">Visit Source →</a>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">Kaggle Datasets</h3>
+                    <p class="text-gray-600 mb-4 flex-grow">A platform for data scientists with a huge collection of user-contributed datasets on a wide variety of topics, from finance to pop culture.</p>
+                    <span class="text-sm font-medium text-indigo-600 mb-4">Key Data: Technology, General, Social</span>
+                    <a href="https://www.kaggle.com/datasets" target="_blank" rel="noopener noreferrer" class="mt-auto inline-block text-center font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 rounded-lg py-2 px-4 transition-colors">Visit Source →</a>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">Google Dataset Search</h3>
+                    <p class="text-gray-600 mb-4 flex-grow">A search engine from Google that helps researchers locate online data that is freely available for use across thousands of repositories.</p>
+                     <span class="text-sm font-medium text-indigo-600 mb-4">Key Data: General, Academic, Scientific</span>
+                    <a href="https://datasetsearch.research.google.com/" target="_blank" rel="noopener noreferrer" class="mt-auto inline-block text-center font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 rounded-lg py-2 px-4 transition-colors">Visit Source →</a>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">OECD Data</h3>
+                    <p class="text-gray-600 mb-4 flex-grow">The Organisation for Economic Co-operation and Development provides comparable statistics on a wide range of subjects for its member countries.</p>
+                    <span class="text-sm font-medium text-indigo-600 mb-4">Key Data: Economic, Development, Trade</span>
+                    <a href="https://data.oecd.org/" target="_blank" rel="noopener noreferrer" class="mt-auto inline-block text-center font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 rounded-lg py-2 px-4 transition-colors">Visit Source →</a>
+                </div>
+            </section>
+
+            <section id="content-usa" class="content-section grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">Data.gov</h3>
+                    <p class="text-gray-600 mb-4 flex-grow">The home of the U.S. Government's open data. You can find data, tools, and resources from federal, state, and local government agencies.</p>
+                     <span class="text-sm font-medium text-indigo-600 mb-4">Key Data: Government, Social, Economic</span>
+                    <a href="https://www.data.gov/" target="_blank" rel="noopener noreferrer" class="mt-auto inline-block text-center font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 rounded-lg py-2 px-4 transition-colors">Visit Source →</a>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">U.S. Census Bureau</h3>
+                    <p class="text-gray-600 mb-4 flex-grow">The primary source for quality data about the nation's people and economy. Offers detailed demographic and economic data.</p>
+                     <span class="text-sm font-medium text-indigo-600 mb-4">Key Data: Demographics, Social, Economic</span>
+                    <a href="https://data.census.gov/" target="_blank" rel="noopener noreferrer" class="mt-auto inline-block text-center font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 rounded-lg py-2 px-4 transition-colors">Visit Source →</a>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">Bureau of Labor Statistics</h3>
+                    <p class="text-gray-600 mb-4 flex-grow">The principal federal agency responsible for measuring labor market activity, working conditions, and price changes in the economy.</p>
+                    <span class="text-sm font-medium text-indigo-600 mb-4">Key Data: Economic, Employment, Labor</span>
+                    <a href="https://www.bls.gov/data/" target="_blank" rel="noopener noreferrer" class="mt-auto inline-block text-center font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 rounded-lg py-2 px-4 transition-colors">Visit Source →</a>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">CDC WONDER</h3>
+                    <p class="text-gray-600 mb-4 flex-grow">The Centers for Disease Control and Prevention's Wide-ranging Online Data for Epidemiologic Research provides access to public health data.</p>
+                    <span class="text-sm font-medium text-indigo-600 mb-4">Key Data: Health, Demographics, Public Health</span>
+                    <a href="https://wonder.cdc.gov/" target="_blank" rel="noopener noreferrer" class="mt-auto inline-block text-center font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 rounded-lg py-2 px-4 transition-colors">Visit Source →</a>
+                </div>
+            </section>
+            
+            <section id="content-india" class="content-section grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                 <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">Data.gov.in</h3>
+                    <p class="text-gray-600 mb-4 flex-grow">India's open government data portal. It provides a single point of access to datasets published by various ministries and departments of the Indian government.</p>
+                    <span class="text-sm font-medium text-indigo-600 mb-4">Key Data: Government, Social, Economic</span>
+                    <a href="https://data.gov.in/" target="_blank" rel="noopener noreferrer" class="mt-auto inline-block text-center font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 rounded-lg py-2 px-4 transition-colors">Visit Source →</a>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">Reserve Bank of India (DBIE)</h3>
+                    <p class="text-gray-600 mb-4 flex-grow">The Database on Indian Economy is the central bank's primary data warehouse, offering time-series data on finance, banking, and the broader economy.</p>
+                     <span class="text-sm font-medium text-indigo-600 mb-4">Key Data: Finance, Economic, Banking</span>
+                    <a href="https://dbie.rbi.org.in/" target="_blank" rel="noopener noreferrer" class="mt-auto inline-block text-center font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 rounded-lg py-2 px-4 transition-colors">Visit Source →</a>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">National Data & Analytics Platform</h3>
+                    <p class="text-gray-600 mb-4 flex-grow">An initiative by NITI Aayog, NDAP provides standardized datasets from various government sources, focusing on usability and accessibility.</p>
+                    <span class="text-sm font-medium text-indigo-600 mb-4">Key Data: Government, Social, Development</span>
+                    <a href="https://ndap.niti.gov.in/" target="_blank" rel="noopener noreferrer" class="mt-auto inline-block text-center font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 rounded-lg py-2 px-4 transition-colors">Visit Source →</a>
+                </div>
+            </section>
+        </main>
+        
+        <section class="mt-16 md:mt-24">
+             <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Data Categories at a Glance</h2>
+                <p class="mt-2 text-md text-gray-600 max-w-2xl mx-auto">This chart shows the primary focus of the data sources listed for the selected region. Switch regions to see how it changes.</p>
+            </div>
+            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md border border-gray-200">
+                <div class="chart-container">
+                    <canvas id="dataTypesChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const contentSections = document.querySelectorAll('.content-section');
+            const chartCanvas = document.getElementById('dataTypesChart');
+
+            const chartData = {
+                global: {
+                    labels: ['Economic', 'Social', 'Finance', 'Environmental', 'General'],
+                    data: [4, 3, 2, 1, 2]
+                },
+                usa: {
+                    labels: ['Government', 'Demographics', 'Economic', 'Health', 'Social'],
+                    data: [1, 2, 2, 1, 2]
+                },
+                india: {
+                    labels: ['Government', 'Economic', 'Finance', 'Social', 'Development'],
+                    data: [2, 2, 1, 2, 1]
+                }
+            };
+
+            let myChart;
+
+            function updateView(targetId) {
+                navButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.id === `btn-${targetId}`);
+                });
+
+                contentSections.forEach(section => {
+                    section.classList.toggle('active', section.id === `content-${targetId}`);
+                });
+
+                updateChart(targetId);
+            }
+
+            function updateChart(region) {
+                const data = chartData[region];
+                if (!myChart) {
+                    const ctx = chartCanvas.getContext('2d');
+                    myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Number of Data Sources',
+                                data: data.data,
+                                backgroundColor: 'rgba(79, 70, 229, 0.7)',
+                                borderColor: 'rgba(79, 70, 229, 1)',
+                                borderWidth: 1,
+                                borderRadius: 5
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1
+                                    },
+                                    grid: {
+                                        color: '#e5e7eb'
+                                    }
+                                },
+                                x: {
+                                     grid: {
+                                        display: false
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    backgroundColor: '#1f2937',
+                                    titleFont: { size: 14 },
+                                    bodyFont: { size: 12 },
+                                    padding: 10,
+                                    cornerRadius: 4,
+                                    displayColors: false
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    myChart.data.labels = data.labels;
+                    myChart.data.datasets[0].data = data.data;
+                    myChart.update();
+                }
+            }
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.id.split('-')[1];
+                    updateView(targetId);
+                });
+            });
+
+            updateView('global');
+        });
+    </script>
+
+</body>
+</html>

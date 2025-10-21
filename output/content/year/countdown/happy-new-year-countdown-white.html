@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Live New Year's countdown timer. See how much time is left until the New Year in your local timezone with a festive, animated celebration page.">
+    <meta name="keywords" content="new year countdown, new year 2026, countdown timer, timezone countdown, happy new year, new year celebration">
+    <title>New Year Countdown</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden; /* Hide scrollbars caused by stars */
+        }
+        .font-great-vibes {
+            font-family: 'Great Vibes', cursive;
+        }
+        .text-gold {
+            color: #DAA520; /* A darker gold for better contrast on white */
+        }
+        .text-shadow-gold {
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- Star Animation --- */
+        .star-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #ffd700;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+
+    <div class="star-container">
+        <!-- Star elements will be generated here by JS -->
+    </div>
+
+    <div class="min-h-screen flex flex-col items-center justify-center p-4">
+        <div class="card p-6 md:p-10 rounded-2xl shadow-2xl text-center max-w-4xl w-full">
+            
+            <!-- Main Title -->
+            <h1 class="font-great-vibes text-gold text-5xl md:text-7xl mb-2 text-shadow-gold">New Year Countdown</h1>
+            <p class="text-gray-600 mb-6 md:mb-8">Time left until the ball drops!</p>
+
+            <!-- Countdown Timer -->
+            <div id="countdown" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+                <div class="bg-gray-100/50 p-4 rounded-lg">
+                    <div id="days" class="text-4xl md:text-6xl font-bold text-gray-800">0</div>
+                    <div class="text-sm text-gray-500">Days</div>
+                </div>
+                <div class="bg-gray-100/50 p-4 rounded-lg">
+                    <div id="hours" class="text-4xl md:text-6xl font-bold text-gray-800">0</div>
+                    <div class="text-sm text-gray-500">Hours</div>
+                </div>
+                <div class="bg-gray-100/50 p-4 rounded-lg">
+                    <div id="minutes" class="text-4xl md:text-6xl font-bold text-gray-800">0</div>
+                    <div class="text-sm text-gray-500">Minutes</div>
+                </div>
+                <div class="bg-gray-100/50 p-4 rounded-lg">
+                    <div id="seconds" class="text-4xl md:text-6xl font-bold text-gray-800">0</div>
+                    <div class="text-sm text-gray-500">Seconds</div>
+                </div>
+            </div>
+
+            <div id="new-year-message" class="hidden text-5xl font-bold text-gold text-shadow-gold font-great-vibes animate-pulse">
+                Happy New Year!
+            </div>
+
+            <!-- Current Time and Timezone Information -->
+            <div class="mt-8 border-t border-gray-200 pt-6 text-gray-500 text-sm">
+                <p id="current-time">Loading current time...</p>
+                <p id="timezone" class="mt-2">Detecting your timezone...</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const currentTimeEl = document.getElementById('current-time');
+        const timezoneEl = document.getElementById('timezone');
+        const countdownContainer = document.getElementById('countdown');
+        const newYearMessage = document.getElementById('new-year-message');
+        const starContainer = document.querySelector('.star-container');
+
+        // Get user's timezone
+        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        timezoneEl.textContent = `Your Timezone: ${userTimezone.replace('_', ' ')}`;
+
+        function updateCountdown() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const newYearDate = new Date(`January 1, ${currentYear + 1} 00:00:00`);
+
+            // Update current time display
+            currentTimeEl.textContent = `Current Time: ${now.toLocaleString()}`;
+
+            const totalSeconds = (newYearDate - now) / 1000;
+
+            if (totalSeconds < 0) {
+                // Happy New Year!
+                countdownContainer.classList.add('hidden');
+                newYearMessage.classList.remove('hidden');
+                clearInterval(countdownInterval);
+                return;
+            }
+
+            const days = Math.floor(totalSeconds / 3600 / 24);
+            const hours = Math.floor(totalSeconds / 3600) % 24;
+            const minutes = Math.floor(totalSeconds / 60) % 60;
+            const seconds = Math.floor(totalSeconds) % 60;
+            
+            // Update UI
+            daysEl.textContent = formatTime(days);
+            hoursEl.textContent = formatTime(hours);
+            minutesEl.textContent = formatTime(minutes);
+            secondsEl.textContent = formatTime(seconds);
+        }
+
+        function formatTime(time) {
+            return time < 10 ? `0${time}` : time;
+        }
+        
+        // --- Generate colorful stars ---
+        function createStars() {
+            const colors = ['#FFD700', '#FF4136', '#0074D9', '#2ECC40', '#B10DC9', '#FF851B', '#F012BE'];
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.animationDuration = `${Math.random() * 3 + 5}s`; // 5 to 8 seconds
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                star.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                const size = `${Math.random() * 10 + 8}px`; // 8px to 18px
+                star.style.width = size;
+                star.style.height = size;
+                star.style.opacity = Math.random() * 0.5 + 0.5; // 0.5 to 1.0 opacity
+                starContainer.appendChild(star);
+            }
+        }
+
+        // Initial call to display immediately
+        updateCountdown();
+        createStars();
+
+        // Update every second
+        const countdownInterval = setInterval(updateCountdown, 1000);
+
+    </script>
+</body>
+</html>
+

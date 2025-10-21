@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dharma's Tapestry: An Interactive Exploration of the Ramayana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Ancient Manuscript -->
+    <!-- Application Structure Plan: The SPA is designed with a thematic, non-linear structure to prioritize user exploration over the report's linear format. It uses a sticky navigation bar for easy access to four main sections: 1) An interactive timeline for the 'Narrative Arc', allowing users to click events to reveal details. 2) A 'Character Explorer' grid for the 'Unsung Pillars', where clicking a character opens a modal with their story. This is more engaging than a static table. 3) A 'Comparative View' for Valmiki vs. Tulsidas, using interactive tabs to display side-by-side comparisons of key themes. This structure was chosen to transform a dense textual report into a dynamic and digestible experience, allowing users to discover content based on interest rather than sequential reading. -->
+    <!-- Visualization & Content Choices: The application visualizes qualitative information through interactive structures. Report Info: Narrative Arc -> Goal: Show Change/Organize -> Viz: Interactive HTML/CSS Timeline -> Interaction: Click to reveal event details -> Justification: Breaks down the long narrative into manageable, explorable segments. Report Info: Unsung Characters Table -> Goal: Inform/Organize -> Viz: Character Card Grid -> Interaction: Click to open detailed modal -> Justification: Encourages discovery and focuses on individual stories. Report Info: Valmiki vs. Tulsidas Table -> Goal: Compare -> Viz: Side-by-side tabbed content panels -> Interaction: Click tabs to switch topics -> Justification: Provides a direct, clear comparison of differing interpretations. All interactions are powered by Vanilla JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FDFBF5;
+            color: #4F4A45;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Lora', serif;
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active {
+            color: #C08261;
+            border-bottom-color: #C08261;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #E4C59E;
+            border: 4px solid #FDFBF5;
+            z-index: 1;
+        }
+        .modal-overlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-content {
+            transition: transform 0.3s ease-in-out;
+        }
+        .comparison-btn.active {
+            background-color: #C08261;
+            color: #FDFBF5;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-semibold text-[#6C5F5B]">Dharma's Tapestry</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#journey" class="nav-link text-gray-600 hover:text-[#C08261] border-b-2 border-transparent pb-1">The Epic Journey</a>
+                <a href="#characters" class="nav-link text-gray-600 hover:text-[#C08261] border-b-2 border-transparent pb-1">Unsung Pillars</a>
+                <a href="#comparison" class="nav-link text-gray-600 hover:text-[#C08261] border-b-2 border-transparent pb-1">Two Visions</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="py-20 md:py-32 bg-[#FDFBF5]">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl md:text-6xl font-bold text-[#6C5F5B] leading-tight">An Interactive Exploration of the Ramayana</h2>
+                <p class="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-gray-600">Journey through the pivotal events, meet the unsung heroes, and discover the varied interpretations of this timeless epic. This application transforms a detailed analysis into an engaging, explorable story of dharma, sacrifice, and devotion.</p>
+            </div>
+        </section>
+
+        <section id="journey" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#6C5F5B]">The Epic Journey</h2>
+                    <p class="mt-4 text-lg max-w-2xl mx-auto text-gray-600">Follow the narrative arc of the Ramayana, from a prince's exile to a divine king's reign. Click on each event to uncover its story and significance in the grand tapestry of dharma.</p>
+                </div>
+                <div class="relative w-full max-w-3xl mx-auto">
+                    <div class="absolute left-0 h-full border-l-2 border-dashed border-[#E4C59E]" style="left: -22px;"></div>
+                    <div id="timeline-container" class="space-y-12"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="characters" class="py-20 bg-[#FDFBF5]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#6C5F5B]">The Unsung Pillars</h2>
+                    <p class="mt-4 text-lg max-w-2xl mx-auto text-gray-600">Beyond the celebrated protagonists lie figures whose quiet sacrifices are the bedrock of the epic. Click on a character to explore their profound contributions to the story of dharma.</p>
+                </div>
+                <div id="character-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8"></div>
+            </div>
+        </section>
+
+        <section id="comparison" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#6C5F5B]">Two Visions: Valmiki vs. Tulsidas</h2>
+                    <p class="mt-4 text-lg max-w-3xl mx-auto text-gray-600">The Ramayana is a living tradition, retold and reinterpreted through centuries. Explore the key differences between Valmiki's ancient Sanskrit epic and Tulsidas's 16th-century devotional retelling. Select a theme to see how the narrative transforms.</p>
+                </div>
+                <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-10" id="comparison-buttons"></div>
+                <div id="comparison-content-area" class="max-w-5xl mx-auto"></div>
+            </div>
+        </section>
+        
+        <section id="conclusion" class="py-20 bg-[#FDFBF5]">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#6C5F5B]">The Living Legacy</h2>
+                <p class="mt-6 text-lg max-w-3xl mx-auto text-gray-600">The Ramayana is more than an ancient story; it is a dynamic tradition that continues to shape culture, ethics, and spirituality. Its power lies in its complex exploration of dharma, not as a rigid code, but as a path of right action navigated through profound moral crises. By embracing both its celebrated heroes and its unsung pillars, we uncover a timeless source of guidance and inspiration.</p>
+            </div>
+        </section>
+    </main>
+
+<!--
+
+    <footer class="bg-white border-t border-gray-200">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-500">
+            <p>&copy; 2025 Dharma's Tapestry. An interactive visualization.</p>
+        </div>
+    </footer>
+-->
+
+    <div id="character-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 opacity-0 pointer-events-none z-50">
+        <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform scale-95">
+            <div class="sticky top-0 bg-white p-4 border-b flex justify-between items-center">
+                <h3 id="modal-title" class="text-2xl font-bold text-[#6C5F5B]"></h3>
+                <button id="modal-close" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+            </div>
+            <div id="modal-body" class="p-6">
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const timelineData = [
+        { 
+            title: "A Prince's Exile", 
+            content: "The epic's central conflict is set in motion by a palace intrigue. Queen Kaikeyi, manipulated by her maid Manthara, demands that her son Bharata be crowned king and that Rama be exiled for fourteen years. Bound by his father's sacred word, Rama accepts the decree with serene composure. His wife, Sita, and loyal brother, Lakshmana, choose to accompany him. This foundational event strips the protagonists of their royal identities, forcing them to rely solely on their internal commitment to dharma." 
+        },
+        { 
+            title: "The Abduction of Sita", 
+            content: "During their exile, the demoness Surpanakha, sister of Ravana, attempts to seduce the brothers. When rejected, she attacks Sita, leading Lakshmana to mutilate her. In revenge, Ravana enlists the shapeshifting demon Maricha to lure Rama away as a golden deer. With Rama and then Lakshmana gone, Ravana, disguised as a holy man, tricks Sita and abducts her, carrying her away to his kingdom of Lanka. This event, born from desire and vengeance, becomes the axis of the entire epic." 
+        },
+        { 
+            title: "The Quest and Alliances", 
+            content: "A grief-stricken Rama and Lakshmana begin their search for Sita. Their quest is aided by a series of crucial allies. The dying vulture king Jatayu provides the first clue. The tribal ascetic Shabari offers her devotion and directs them onward. Finally, they form a strategic alliance with the Vanara (monkey) king Sugriva, who pledges his army to the search after Rama helps him reclaim his throne. This collaborative journey highlights that even an avatar needs allies to uphold dharma." 
+        },
+        { 
+            title: "The War for Dharma", 
+            content: "Rama's army, joined by Ravana's righteous brother Vibhishana, crosses the ocean to Lanka via a miraculous floating bridge. The ensuing war is a series of ferocious battles. Lakshmana is mortally wounded by Ravana's son, Meghanada, but is saved by Hanuman, who brings an entire mountain of healing herbs. The war culminates in a final duel where Rama, armed with the knowledge of Ravana's single vulnerability, defeats the demon king, securing the triumph of good over evil." 
+        },
+        { 
+            title: "Coronation, Doubt, and Sacrifice", 
+            content: "After fourteen years, Rama, Sita, and Lakshmana return to Ayodhya to jubilant celebrations. Rama is crowned king, and his reign, 'Rama Rajya,' begins as a golden age of justice. However, public gossip about Sita's chastity forces Rama into a moral crisis. Choosing his royal duty over his personal love, he banishes a pregnant Sita to the forest. This tragic act serves as the epic's most unsettling exploration of the complexities and personal costs of upholding public dharma." 
+        }
+    ];
+
+    const characterData = {
+        urmila: { 
+            name: "Urmila", 
+            role: "Wife of Lakshmana",
+            icon: "🧘‍♀️",
+            content: "Urmila endures one of the epic's most profound sacrifices. When Lakshmana leaves for exile, she agrees to stay behind to care for the family. Later traditions elaborate on this through the concept of 'Urmila Nidra' (Urmila's Sleep). She willingly accepts Lakshmana's share of sleep for all fourteen years, falling into a deep slumber. This yogic act enables Lakshmana's sleepless vigilance and is crucial for his victory over the demon Meghanada, who could only be killed by a man who had conquered sleep. Her sacrifice is one of personal consciousness for the sake of another's duty." 
+        },
+        mandavi_shrutakirti: { 
+            name: "Mandavi & Shrutakirti", 
+            role: "Wives of Bharata & Shatrughna",
+            icon: "👑",
+            content: "The wives of Rama's other brothers also perform sacrifices of quiet endurance. When Bharata rules as a regent from an ascetic's hut, Mandavi supports him by forgoing a normal marital life for fourteen years. Shrutakirti lives a similar life of celibacy in solidarity with her husband Shatrughna. Their stories represent a form of 'domestic asceticism,' demonstrating that upholding dharma within the palace walls is as vital and arduous as battling demons in the forest." 
+        },
+        shabari: { 
+            name: "Shabari", 
+            role: "Elderly Ascetic",
+            icon: "🍓",
+            content: "An elderly woman from a tribal community, Shabari is the archetype of pure, unconditional devotion (bhakti). For years, she waits patiently for Rama's arrival, based on her guru's prophecy. When he finally comes, she offers him berries she has tasted herself to ensure their sweetness. Rama accepts this offering, which violates ritual purity, recognizing that her sincere love transcends any rule. He honors her by delivering a discourse on the nine forms of devotion, elevating this humble woman to a revered spiritual teacher." 
+        },
+        guha: { 
+            name: "Guha", 
+            role: "Nishada King",
+            icon: "🛶",
+            content: "Guha, the king of a tribe of boatmen, embodies loyalty that transcends the rigid caste hierarchy. As Rama's first ally, he offers his full hospitality and ferries the exiles across the Ganga river. He keeps a sleepless vigil to guard them and later bonds with Bharata over their shared love for Rama. By treating Guha as a friend and brother, Rama demonstrates that his vision of a righteous kingdom (Rama Rajya) is built on universal compassion and love, not on social status." 
+        },
+        jatayu: { 
+            name: "Jatayu", 
+            role: "Vulture King",
+            icon: "🦅",
+            content: "The aged vulture king Jatayu, a friend of Rama's father, represents the path of direct, heroic action. Witnessing Ravana abducting Sita, he confronts the demon king without hesitation. Though he fights valiantly, he is mortally wounded. His final act is one of service: he clings to life just long enough to tell Rama who abducted Sita and in which direction they fled, providing the first crucial clue in the search. For his ultimate sacrifice, Rama grants him liberation (moksha)." 
+        },
+        sampati: { 
+            name: "Sampati", 
+            role: "Jatayu's Brother",
+            icon: "🕊️",
+            content: "Sampati, Jatayu's elder brother, follows a path of redemptive knowledge. Crippled and wingless after flying too close to the sun to protect his brother, he lives for millennia in despair. His redemption comes when he overhears Hanuman's search party mourning his brother's noble death. Moved to help, he uses his supernatural far-sight to see across the ocean and pinpoint Sita's location in Lanka. This vital intelligence gives the quest renewed hope, and for his selfless service, his wings miraculously regrow." 
+        },
+        ahalya: { 
+            name: "Ahalya", 
+            role: "Sage's Wife",
+            icon: "💎",
+            content: "Ahalya's story is a complex prologue to the epic's themes of transgression and redemption. Cursed by her husband, the sage Gautama, after being tricked into an affair by the god Indra, she is turned to stone (or made invisible in some versions). She endures this curse for thousands of years until Rama arrives. The touch of his foot liberates her, restoring her to her human form. Rama's act of pure, non-judgmental compassion establishes his divine role as a redeemer, making his later, harsher treatment of his own wife Sita all the more tragic and complex." 
+        }
+    };
+
+    const comparisonData = {
+        rama: {
+            title: "Portrayal of Rama",
+            valmiki: "<strong>Ideal Man (Maryada Purushottam):</strong> Valmiki's Rama is primarily human, though an incarnation of Vishnu. He experiences genuine grief, anger, and uncertainty. His adherence to dharma is presented as a monumental human achievement, a model for mortals to emulate.",
+            tulsidas: "<strong>Supreme Being:</strong> Tulsidas's Rama is fully divine and omniscient. His actions are 'leela' (divine play). He foresees events like Sita's abduction and his apparent suffering is a performance to teach and inspire devotion (bhakti)."
+        },
+        sita: {
+            title: "Portrayal of Sita",
+            valmiki: "<strong>Strong & Outspoken:</strong> Valmiki's Sita is a figure of great strength and agency. She is intelligent, argues her points with Rama, and her resilience in Lanka is a testament to her powerful inner fortitude.",
+            tulsidas: "<strong>Pious & Submissive Ideal:</strong> Reflecting 16th-century norms, Tulsidas's Sita is softer, more reticent, and the ideal pious consort. Her defining characteristic is her unwavering devotion rather than her outspoken agency."
+        },
+        abduction: {
+            title: "Sita's Abduction",
+            valmiki: "<strong>The Real Sita:</strong> The actual Sita is forcibly abducted by Ravana and suffers genuine captivity in Lanka. Her purity and resilience are tested through this real ordeal.",
+            tulsidas: "<strong>Maya Sita (Illusory Clone):</strong> To protect the divine goddess from impurity, Tulsidas introduces 'Maya Sita'. Rama entrusts the real Sita to the fire god Agni and an illusory clone is abducted. This preserves the divine consort's purity."
+        },
+        agni_pariksha: {
+            title: "The Ordeal by Fire",
+            valmiki: "<strong>A Genuine Trial:</strong> The Agni Pariksha is a genuine and painful trial that Sita must undergo to prove her purity to a doubting world after her captivity.",
+            tulsidas: "<strong>A Ritualistic Exchange:</strong> The 'trial' is merely a pre-ordained ritual. It serves to dismiss the illusory Maya Sita and welcome back the real Sita from the protection of the fire god Agni."
+        },
+        ahalya: {
+            title: "Portrayal of Ahalya",
+            valmiki: "<strong>Morally Ambiguous:</strong> Valmiki's version suggests Ahalya may have been a willing, if curious, participant in the affair with Indra, making her a complex figure.",
+            tulsidas: "<strong>Innocent Victim:</strong> Tulsidas portrays Ahalya as a wholly innocent victim of Indra's trickery who is turned to stone, absolving her of agency to better fit a devotional narrative of divine grace."
+        }
+    };
+
+    const timelineContainer = document.getElementById('timeline-container');
+    timelineData.forEach(event => {
+        const eventEl = document.createElement('div');
+        eventEl.className = 'relative pl-8';
+        eventEl.innerHTML = `
+            <div class="timeline-item">
+                <h3 class="text-xl font-semibold text-[#C08261] cursor-pointer">${event.title}</h3>
+                <div class="timeline-content overflow-hidden transition-all duration-500 ease-in-out max-h-0">
+                    <p class="mt-2 text-gray-600 pr-4">${event.content}</p>
+                </div>
+            </div>
+        `;
+        timelineContainer.appendChild(eventEl);
+    });
+
+    timelineContainer.addEventListener('click', (e) => {
+        if (e.target.tagName === 'H3') {
+            const content = e.target.nextElementSibling;
+            const allContents = timelineContainer.querySelectorAll('.timeline-content');
+            
+            allContents.forEach(c => {
+                if (c !== content) {
+                    c.style.maxHeight = '0px';
+                    c.previousElementSibling.classList.remove('text-black');
+                    c.previousElementSibling.classList.add('text-[#C08261]');
+                }
+            });
+
+            if (content.style.maxHeight === '0px' || !content.style.maxHeight) {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                e.target.classList.remove('text-[#C08261]');
+                e.target.classList.add('text-black');
+            } else {
+                content.style.maxHeight = '0px';
+                e.target.classList.remove('text-black');
+                e.target.classList.add('text-[#C08261]');
+            }
+        }
+    });
+
+    const characterGrid = document.getElementById('character-grid');
+    Object.entries(characterData).forEach(([key, char]) => {
+        const charEl = document.createElement('div');
+        charEl.className = 'character-card bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer text-center';
+        charEl.dataset.charKey = key;
+        charEl.innerHTML = `
+            <div class="text-5xl mb-4">${char.icon}</div>
+            <h4 class="text-lg font-semibold text-[#6C5F5B]">${char.name}</h4>
+            <p class="text-sm text-gray-500">${char.role}</p>
+        `;
+        characterGrid.appendChild(charEl);
+    });
+
+    const modal = document.getElementById('character-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    const modalClose = document.getElementById('modal-close');
+
+    characterGrid.addEventListener('click', (e) => {
+        const card = e.target.closest('.character-card');
+        if (card) {
+            const charKey = card.dataset.charKey;
+            const char = characterData[charKey];
+            modalTitle.textContent = char.name;
+            modalBody.innerHTML = `<p class="text-lg text-gray-700 leading-relaxed">${char.content}</p>`;
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.querySelector('.modal-content').classList.remove('scale-95');
+        }
+    });
+
+    const closeModal = () => {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modal.querySelector('.modal-content').classList.add('scale-95');
+    };
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    const comparisonButtonsContainer = document.getElementById('comparison-buttons');
+    const comparisonContentArea = document.getElementById('comparison-content-area');
+
+    Object.entries(comparisonData).forEach(([key, data], index) => {
+        const button = document.createElement('button');
+        button.className = 'comparison-btn px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-300 bg-gray-200 text-gray-700 hover:bg-[#E4C59E]';
+        button.textContent = data.title;
+        button.dataset.comparisonKey = key;
+        comparisonButtonsContainer.appendChild(button);
+
+        const contentEl = document.createElement('div');
+        contentEl.id = `comparison-${key}`;
+        contentEl.className = 'comparison-content hidden';
+        contentEl.innerHTML = `
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-[#FDFBF5] p-6 rounded-lg border border-gray-200">
+                    <h4 class="text-xl font-bold text-center mb-4 text-[#6C5F5B]">Valmiki's Ramayana</h4>
+                    <p class="text-gray-600">${data.valmiki}</p>
+                </div>
+                <div class="bg-[#FDFBF5] p-6 rounded-lg border border-gray-200">
+                    <h4 class="text-xl font-bold text-center mb-4 text-[#6C5F5B]">Tulsidas's Ramcharitmanas</h4>
+                    <p class="text-gray-600">${data.tulsidas}</p>
+                </div>
+            </div>
+        `;
+        comparisonContentArea.appendChild(contentEl);
+        
+        if (index === 0) {
+            button.classList.add('active');
+            contentEl.classList.remove('hidden');
+        }
+    });
+
+    comparisonButtonsContainer.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            const key = e.target.dataset.comparisonKey;
+            
+            document.querySelectorAll('.comparison-btn').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            document.querySelectorAll('.comparison-content').forEach(content => content.classList.add('hidden'));
+            document.getElementById(`comparison-${key}`).classList.remove('hidden');
+        }
+    });
+
+    const sections = document.querySelectorAll('main section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                });
+            }
+        });
+    }, { rootMargin: "-50% 0px -50% 0px" });
+
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanuman's Leap to Lanka: A Divine Journey</title>
+    <meta name="description" content="Explore the epic story of Hanuman's monumental leap across the ocean to Lanka in search of Sita. An interactive narrative from the Ramayana detailing his courage, power, and devotion.">
+    <meta name="keywords" content="Hanuman, Lanka, Ramayana, Sita, Rama, leap, ocean, Jambavan, Surasa, Hindu mythology, divine journey">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4B5563; 
+        }
+        .font-sanskrit {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+        }
+        .tab-active {
+            border-color: #D97706;
+            background-color: #FFFBEB;
+            color: #D97706;
+        }
+        .step-item-active {
+            background-color: #D97706;
+            color: #FFFFFF;
+            transform: scale(1.1);
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: This page is structured as a classic hero's journey to narrate Hanuman's epic leap. The flow builds suspense and awe: 1) The Challenge sets the scene of despair with the impossible ocean crossing. 2) The Realization provides the turning point where Hanuman remembers his power, an interactive moment of self-discovery. 3) The Leap is the core of the story, presented as an interactive step-by-step journey detailing his flight and the obstacles he overcomes. 4) The Arrival concludes the journey and sets the stage for the next part of the epic. This narrative structure makes the grand scale of the event digestible and engaging for the user. -->
+    <!-- Visualization & Content Choices: Report Info: Hanuman's forgotten powers -> Goal: Inform/Show Transformation -> Viz/Method: Interactive HTML card -> Interaction: Button click to "Awaken Powers", revealing his mighty form and the story behind it -> Justification: This visually represents the pivotal internal transformation that makes the leap possible. | Report Info: The stages of the leap -> Goal: Show Process/Journey -> Viz/Method: Interactive step-based diagram -> Interaction: Click each step (Takeoff, Mid-Flight Trials, Arrival) to learn about that phase -> Justification: Breaks the monumental journey into key, understandable segments. | Report Info: Obstacles during the flight -> Goal: Organize/Detail -> Viz/Method: Tabbed content within the "Mid-Flight Trials" step -> Interaction: Tabs for Mainaka, Surasa, and Simhika -> Justification: Allows the user to explore each of the three major challenges Hanuman faced without cluttering the main narrative flow. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-amber-100/30 sticky top-0 z-50 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="font-sanskrit text-2xl font-bold text-amber-800">हनुमत्-लङ्का-लङ्घनम्</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#challenge" class="text-stone-600 hover:text-amber-700 transition">The Challenge</a>
+                    <a href="#realization" class="text-stone-600 hover:text-amber-700 transition">The Realization</a>
+                    <a href="#leap" class="text-stone-600 hover:text-amber-700 transition">The Leap</a>
+                    <a href="#arrival" class="text-stone-600 hover:text-amber-700 transition">The Arrival</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section class="text-center my-12 md:my-20">
+            <h1 class="font-sanskrit text-5xl md:text-7xl font-bold text-amber-900 leading-tight">The Mighty Leap</h1>
+            <p class="mt-4 text-xl md:text-2xl text-stone-600">Crossing the Boundless Ocean</p>
+            <p class="mt-6 max-w-3xl mx-auto text-stone-500">
+                With Sita's location confirmed to be across the southern sea in Lanka, the Vanara army stood at the shore, their hearts filled with despair. The vast, turbulent ocean seemed an insurmountable barrier. But for one hero, forgotten powers were about to awaken, turning an impossible task into a legendary feat of devotion.
+            </p>
+        </section>
+
+        <section id="challenge" class="my-16 md:my-24 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-800">A Sea of Despair</h2>
+            <p class="mt-4 text-lg max-w-3xl mx-auto text-stone-600">
+                The mighty Vanara warriors, Angada, Nila, and others, could leap great distances, but none could cross the hundred-yojana expanse of the ocean. A shadow of failure fell over the army. The mission to find Sita, so close to success, now seemed doomed. It was in this moment of hopelessness that the wise old bear-king, Jambavan, turned his eyes to a silent, contemplative figure: Hanuman.
+            </p>
+        </section>
+
+        <section id="realization" class="my-16 md:my-24 py-12 bg-amber-50/50 rounded-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Forgotten Power</h2>
+            <p class="text-center text-stone-600 mb-8 max-w-3xl mx-auto">Jambavan reminded Hanuman of his divine birth and the immense powers he possessed but had forgotten due to a childhood curse. His words were the spark that reignited a divine fire.</p>
+            <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-stone-200/80">
+                <div id="contemplative-form" class="text-center">
+                    <div class="text-6xl my-4">🐒</div>
+                    <p class="text-stone-500 mt-2">Hanuman, unaware of the true extent of his powers.</p>
+                    <p id="reminder-text" class="hidden mt-4 text-stone-600">"O Hanuman, son of the Wind God! Why do you sit in silence? You are the equal of your father in might. A curse made you forget, but the time has come to remember. Arise, O hero, and cross this ocean for the sake of Rama!" - Jambavan's words of inspiration.</p>
+                </div>
+                <div id="mighty-form" class="hidden text-center">
+                    <div class="text-6xl my-4">💥</div>
+                    <p class="text-stone-500 mt-2">Hanuman, remembering his divine strength and preparing for his mission.</p>
+                </div>
+                <button id="transform-button" class="w-full mt-4 bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Awaken Powers</button>
+            </div>
+        </section>
+        
+        <section id="leap" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Flight to Lanka</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Filled with purpose and divine energy, Hanuman grew to a mountain-like size. With a mighty roar, he launched himself into the air from the peak of Mount Mahendra, embarking on a journey fraught with celestial challenges.</p>
+            
+            <div>
+                <div class="flex flex-col md:flex-row justify-center items-center md:space-x-4 mb-6">
+                    <button class="step-item step-item-active w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 mb-2 md:mb-0" data-step="1">1. The Takeoff</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white mb-2 md:mb-0" data-step="2">2. Mid-Flight Trials</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white" data-step="3">3. The Landing</button>
+                </div>
+
+                <div id="step-details" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md min-h-[150px]">
+                    <h4 id="step-title" class="font-bold text-xl text-amber-700 mb-2">Step 1: The Takeoff</h4>
+                    <p id="step-description" class="text-stone-600">Hanuman expanded his body to an immense size. Placing his powerful feet on Mount Mahendra, he pushed off with such force that the mountain shook, trees were uprooted, and animals fled in terror. He shot into the sky like a golden arrow, his body blazing against the blue.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="arrival" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">Arrival in the Demon City</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">After overcoming all obstacles through his might and intelligence, Hanuman finally saw the shores of Lanka. He landed atop Mount Trikuta, the city of his enemy gleaming before him.</p>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="flex border-b border-stone-300 mb-6">
+                    <button class="tab-button tab-active flex-1 text-center font-semibold p-3 border-b-2 transition" data-tab="lankini">Guardian of Lanka</button>
+                    <button class="tab-button flex-1 text-center font-semibold p-3 border-b-2 border-transparent text-stone-500 transition" data-tab="search">The Search Begins</button>
+                </div>
+                <div id="tab-content">
+                    <div id="lankini-content" class="tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">Confronting Lankini</h3>
+                        <p class="text-stone-600">As he prepared to enter the city, he was stopped by Lankini, the fierce guardian goddess of Lanka. A battle ensued, but Hanuman subdued her with a single blow from his left fist. Defeated, Lankini recognized that Lanka's doom was near, as prophesied, and allowed him to pass, heralding the beginning of the end for Ravana's kingdom.</p>
+                    </div>
+                    <div id="search-content" class="hidden tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">A Needle in a Haystack</h3>
+                        <p class="text-stone-600">Shrinking his form to the size of a cat, Hanuman slipped into the heavily fortified city under the cover of night. He marvelled at its golden architecture and immense wealth but remained focused on his mission. He began his systematic and perilous search through palaces, gardens, and military encampments, looking for any sign of the captive princess, Sita.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-100 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-stone-500">
+            <p>An interactive retelling of Hanuman's legendary journey across the southern ocean.</p>
+            <p class="text-sm mt-2">Inspired by the epic Ramayana.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const transformButton = document.getElementById('transform-button');
+            const contemplativeForm = document.getElementById('contemplative-form');
+            const mightyForm = document.getElementById('mighty-form');
+            const reminderText = document.getElementById('reminder-text');
+            let isMighty = false;
+
+            transformButton.addEventListener('click', () => {
+                isMighty = !isMighty;
+                contemplativeForm.classList.toggle('hidden');
+                mightyForm.classList.toggle('hidden');
+                
+                if (isMighty) {
+                    transformButton.textContent = 'Return to Humble Form';
+                } else {
+                    transformButton.textContent = 'Awaken Powers';
+                }
+
+                // Show reminder text on first click
+                if (!reminderText.classList.contains('shown')) {
+                     reminderText.classList.remove('hidden');
+                     reminderText.classList.add('shown');
+                }
+            });
+
+            const stepData = {
+                1: { title: 'Step 1: The Takeoff', description: 'Hanuman expanded his body to an immense size. Placing his powerful feet on Mount Mahendra, he pushed off with such force that the mountain shook. He shot into the sky like a golden arrow, his body blazing against the blue.' },
+                2: { title: 'Step 2: Mid-Flight Trials', description: 'During his flight, he faced three major tests. First, the mountain Mainaka rose from the sea to offer rest, which he politely declined. Next, the serpent-mother Surasa tried to swallow him; he outwitted her by expanding and then shrinking his form. Finally, the demoness Simhika tried to pull him down by his shadow, but he entered her mouth and destroyed her from within.' },
+                3: { title: 'Step 3: The Landing', description: 'Having proven his strength, devotion, and intelligence, Hanuman finally crossed the vast ocean. He landed softly on the northern shore of Lanka, on the peak of Mount Trikuta, and gazed upon the golden, fortified city of his adversary, Ravana.' }
+            };
+
+            const stepItems = document.querySelectorAll('.step-item');
+            const stepTitle = document.getElementById('step-title');
+            const stepDescription = document.getElementById('step-description');
+
+            stepItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    stepItems.forEach(i => i.classList.remove('step-item-active', 'bg-white'));
+                    stepItems.forEach(i => {
+                        if (i !== item) i.classList.add('bg-white');
+                    });
+                    item.classList.add('step-item-active');
+                    item.classList.remove('bg-white');
+
+                    const step = item.dataset.step;
+                    stepTitle.textContent = stepData[step].title;
+                    stepDescription.textContent = stepData[step].description;
+                });
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+                    button.classList.add('tab-active');
+
+                    const tab = button.dataset.tab;
+                    tabPanes.forEach(pane => {
+                        if (pane.id === `${tab}-content`) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+

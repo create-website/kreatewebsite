@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Grandeur of Jagannath Ratha Yatra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Saffron & Earth -->
+    <!-- Application Structure Plan: The application is designed as a thematic, single-page journey to guide users from the core concepts to the festival's broader impact. It starts with a hero section to set the tone. The 'Divine Trinity' section uses interactive cards for focused learning. 'The Grand Chariots' section employs a dashboard-style layout with a central chart and dynamic detail cards, allowing for easy comparison of complex data. 'The Sacred Journey' transforms the linear report text into an interactive, horizontal timeline, making the sequence of events digestible. Finally, the 'Global Impact' section uses summary cards to present key takeaways. This structure was chosen over a simple report mirror to enhance user engagement, facilitate non-linear exploration, and make dense information accessible through interactive discovery. -->
+    <!-- Visualization & Content Choices: 1. Deities: Report info on iconography -> Goal: Inform -> Method: Interactive HTML/CSS cards -> Interaction: Click-to-reveal details -> Justification: Breaks down complex theology into focused, user-initiated learning segments. 2. Chariots: Report data table -> Goal: Compare -> Method: Chart.js Bar Chart & dynamic text blocks -> Interaction: Buttons filter chart data and update a detailed view -> Justification: Transforms a static table into an engaging tool for direct comparison and analysis. 3. Rituals: Chronological text -> Goal: Show Change/Process -> Method: Interactive HTML/Tailwind timeline -> Interaction: Click on event to show details -> Justification: Visualizes the festival's flow, making the sequence of events intuitive and easy to follow. 4. Impact: Thematic paragraphs -> Goal: Inform -> Method: HTML/Tailwind summary cards -> Interaction: Static display -> Justification: Provides clear, concise summaries of the festival's key significance. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8F0; /* Creamy Off-White */
+            color: #4A2E2A; /* Dark Earth Brown */
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .bg-saffron { background-color: #FF9933; }
+        .text-saffron { color: #FF9933; }
+        .border-saffron { border-color: #FF9933; }
+        .bg-earth-light { background-color: #D2B48C; } /* Tan */
+        .bg-earth-dark { background-color: #8B4513; } /* Saddle Brown */
+        .text-earth-dark { color: #8B4513; }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #FF9933;
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .deity-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .deity-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 3rem;
+            padding-bottom: 2rem;
+            border-left: 2px solid #D2B48C;
+        }
+        .timeline-item:last-child {
+            border-left: 2px solid transparent;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -11px;
+            top: 0;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background-color: #FF9933;
+            border: 3px solid #FFF8F0;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-earth-dark">Ratha Yatra</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#trinity" class="nav-link text-lg font-semibold text-gray-700 hover:text-saffron">The Trinity</a>
+                <a href="#chariots" class="nav-link text-lg font-semibold text-gray-700 hover:text-saffron">The Chariots</a>
+                <a href="#journey" class="nav-link text-lg font-semibold text-gray-700 hover:text-saffron">The Journey</a>
+                <a href="#impact" class="nav-link text-lg font-semibold text-gray-700 hover:text-saffron">Global Impact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                <canvas id="menu-icon" width="24" height="24"></canvas>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2">
+            <a href="#trinity" class="block nav-link text-gray-700 hover:text-saffron">The Trinity</a>
+            <a href="#chariots" class="block nav-link text-gray-700 hover:text-saffron">The Chariots</a>
+            <a href="#journey" class="block nav-link text-gray-700 hover:text-saffron">The Journey</a>
+            <a href="#impact" class="block nav-link text-gray-700 hover:text-saffron">Global Impact</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="relative text-white min-h-[60vh] flex items-center">
+            <div class="absolute inset-0 bg-earth-light">
+                <div class="absolute inset-0 bg-gradient-to-r from-saffron/80 to-earth-dark/80"></div>
+            </div>
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <h1 class="text-4xl md:text-7xl font-bold mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">The Grandeur of Jagannath Ratha Yatra</h1>
+                <p class="text-lg md:text-2xl max-w-3xl mx-auto" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">An interactive exploration of the ancient Chariot Festival of the Lord of the Universe.</p>
+            </div>
+        </section>
+
+        <section id="trinity" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-earth-dark">The Divine Trinity</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">At the heart of the festival are three unique deities, each with profound symbolism. Their abstract forms are not incomplete, but a sophisticated visual theology representing divine ecstasy and the formless nature of the Absolute. Click on each deity to learn more about their unique iconography.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="deity-card bg-gray-900 text-white p-8 rounded-xl shadow-lg text-center cursor-pointer" onclick="showDeityDetails('jagannath')">
+                        <div class="w-32 h-32 mx-auto rounded-full bg-black border-4 border-yellow-400 flex items-center justify-center mb-4">
+                            <div class="w-10 h-10 bg-white rounded-full"></div>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Lord Jagannath</h3>
+                        <p class="text-gray-300">The Lord of the Universe</p>
+                    </div>
+                    <div class="deity-card bg-gray-100 text-earth-dark p-8 rounded-xl shadow-lg text-center cursor-pointer" onclick="showDeityDetails('balabhadra')">
+                         <div class="w-32 h-32 mx-auto rounded-full bg-white border-4 border-blue-500 flex items-center justify-center mb-4">
+                            <div class="w-10 h-3 bg-gray-800 rounded-full transform -rotate-12"></div>
+                             <div class="w-10 h-3 bg-gray-800 rounded-full transform rotate-12 -ml-2"></div>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Lord Balabhadra</h3>
+                        <p>The Elder Brother</p>
+                    </div>
+                    <div class="deity-card bg-yellow-400 text-earth-dark p-8 rounded-xl shadow-lg text-center cursor-pointer" onclick="showDeityDetails('subhadra')">
+                        <div class="w-32 h-32 mx-auto rounded-full bg-yellow-500 border-4 border-red-500 flex items-center justify-center mb-4">
+                             <div class="w-8 h-8 bg-gray-800 rounded-full opacity-75"></div>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Goddess Subhadra</h3>
+                        <p>The Sister</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="chariots" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-earth-dark">The Grand Chariots</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">More than just vehicles, the three chariots are mobile temples, meticulously constructed each year. They are distinct in size, color, and symbolism, reflecting the identity of the deity each carries. Use the buttons to compare their features and explore the details of each magnificent structure.</p>
+                </div>
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-2xl">
+                    <div class="flex justify-center mb-6 space-x-2 md:space-x-4">
+                        <button class="chariot-btn active bg-saffron text-white px-4 py-2 rounded-lg" onclick="updateChart('all')">All Chariots</button>
+                        <button class="chariot-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg" onclick="updateChart('height')">By Height</button>
+                        <button class="chariot-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg" onclick="updateChart('wheels')">By Wheels</button>
+                        <button class="chariot-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg" onclick="updateChart('wood')">By Wood Pieces</button>
+                    </div>
+                    <div class="chart-container mb-8">
+                        <canvas id="chariotChart"></canvas>
+                    </div>
+                    <div id="chariot-details" class="grid md:grid-cols-3 gap-6 text-center">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="journey" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-earth-dark">The Sacred Journey</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">The Ratha Yatra is not a single day's event, but a multi-week divine drama with a precise sequence of rituals. It tells a story of divine rejuvenation, a journey to a beloved birthplace, and a triumphant homecoming. Explore the key events in this sacred timeline.</p>
+                </div>
+                <div class="relative">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3 class="text-xl font-bold text-saffron mb-1">Snana Yatra (Bathing Festival)</h3>
+                        <p class="text-gray-600">Two weeks before the main event, the deities are brought out for a ceremonial public bath with 108 pitchers of sacred water. Afterwards, they are said to fall ill and enter a 15-day period of seclusion and convalescence called Anavasara.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3 class="text-xl font-bold text-saffron mb-1">Gundicha Yatra (The Main Procession)</h3>
+                        <p class="text-gray-600">On the main festival day, the rejuvenated deities are brought onto the Grand Avenue (Bada Danda) and placed on their chariots. After a ritual sweeping by the King of Puri (Chhera Panhara), thousands of devotees begin pulling the chariots on their 3km journey to the Gundicha Temple.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3 class="text-xl font-bold text-saffron mb-1">Hera Panchami</h3>
+                        <p class="text-gray-600">On the fifth day, Goddess Lakshmi, consort of Jagannath, visits the Gundicha Temple, angry at being left behind. In a symbolic act of jealousy, she has a piece of Jagannath's chariot broken before returning secretly to the main temple.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3 class="text-xl font-bold text-saffron mb-1">Bahuda Yatra (The Return Journey)</h3>
+                        <p class="text-gray-600">After a seven-day stay, the deities begin their return journey to the main temple. The procession mirrors the grandeur of the initial journey, with a stop at the Mausi Maa Temple for a special offering of Poda Pitha (baked cake).</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3 class="text-xl font-bold text-saffron mb-1">Suna Besha (Golden Attire)</h3>
+                        <p class="text-gray-600">Upon reaching the main temple, the deities remain on their chariots. The next day, they are adorned with massive, solid gold ornaments, including golden hands, feet, and crowns. This opulent vision is one of the most anticipated events.</p>
+                    </div>
+                     <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3 class="text-xl font-bold text-saffron mb-1">Niladri Bije (Return to Sanctum)</h3>
+                        <p class="text-gray-600">The festival concludes as the deities are ceremonially brought back into the temple's inner sanctum. Lord Jagannath is initially barred entry by a displeased Lakshmi and must offer her sweets (rasagullas) to be allowed back in, restoring divine order.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-earth-dark">Global Impact & Significance</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Beyond the grand spectacle, the Ratha Yatra carries a deep theological message and has left a lasting mark on global culture and language. It is a powerful force for social cohesion, spiritual expression, and cultural diplomacy.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-earth-dark mb-3">Radical Inclusivity</h3>
+                        <p class="text-gray-600">The festival's core principle is the divine leaving the temple to meet everyone, regardless of caste or creed. The communal act of pulling the ropes and the king's symbolic sweeping ritual demonstrate that all are equal before the Lord of the Universe.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-earth-dark mb-3">The "Juggernaut"</h3>
+                        <p class="text-gray-600">The overwhelming scale of the procession so impressed early European observers that the word "Juggernaut," an anglicization of Jagannath, entered the English language to mean a "huge, powerful, and overwhelming force."</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-earth-dark mb-3">A Global Festival</h3>
+                        <p class="text-gray-600">Thanks to the efforts of A.C. Bhaktivedanta Swami Prabhupada and ISKCON, the Ratha Yatra is now celebrated in over 100 cities worldwide, from New York to London, becoming a vibrant showcase of Hindu culture and spirituality on a global stage.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+<!--
+    <footer class="bg-earth-dark text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Interactive Guide to Ratha Yatra. All information synthesized from the source report.</p>
+        </div>
+    </footer>
+-->
+
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden">
+        <div id="modal-content" class="bg-white rounded-lg p-8 max-w-2xl w-full relative">
+             <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+             <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        const menuIconCanvas = document.getElementById('menu-icon');
+        const ctx = menuIconCanvas.getContext('2d');
+        ctx.strokeStyle = '#8B4513';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(2, 4);
+        ctx.lineTo(22, 4);
+        ctx.moveTo(2, 12);
+        ctx.lineTo(22, 12);
+        ctx.moveTo(2, 20);
+        ctx.lineTo(22, 20);
+        ctx.stroke();
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        const deityData = {
+            jagannath: {
+                title: "Lord Jagannath: The Lord of the Universe",
+                description: "Identified by his black color and large, circular eyes, Lord Jagannath is the central figure. His form represents the formless Absolute (Param Brahman) and a state of supreme divine ecstasy (Mahabhava). His large, lidless eyes symbolize his eternal vigilance and boundless compassion for all beings. He is a syncretic deity, revered as a form of Vishnu/Krishna, but also identified with Shiva and the divine feminine, embodying a universal appeal.",
+                color: "bg-gray-900",
+            },
+            balabhadra: {
+                title: "Lord Balabhadra: The Elder Brother",
+                description: "Lord Balabhadra is distinguished by his white color and almond-shaped eyes. As the elder brother, he represents strength, support, and righteousness. His chariot, Taladhwaja, is the second largest and is characterized by its red and green canopy. His associated weapons are the plough (Hala) and mace (Musala), symbolizing his connection to agriculture and power.",
+                color: "bg-gray-100",
+            },
+            subhadra: {
+                title: "Goddess Subhadra: The Sister",
+                description: "Goddess Subhadra, the sister of Jagannath and Balabhadra, is identified by her yellow color and oval eyes. Her presence between the two powerful male deities is significant, representing divine feminine energy (Shakti). Her chariot, Darpadalana, is the smallest of the three and features a red and black canopy, colors associated with the Mother Goddess.",
+                color: "bg-yellow-400",
+            }
+        };
+
+        const modal = document.getElementById('modal');
+        const modalBody = document.getElementById('modal-body');
+
+        function showDeityDetails(deity) {
+            const data = deityData[deity];
+            modalBody.innerHTML = `
+                <h2 class="text-3xl font-bold text-earth-dark mb-4">${data.title}</h2>
+                <p class="text-gray-700 text-lg">${data.description}</p>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        const chariotData = {
+            names: ["Nandighosa (Jagannath)", "Taladhwaja (Balabhadra)", "Darpadalana (Subhadra)"],
+            height: [45.5, 45, 44.5],
+            wheels: [16, 14, 12],
+            wood: [832, 763, 593],
+            details: [
+                { name: "Nandighosa", deity: "Lord Jagannath", height: "45 ft 6 in", wheels: 16, wood: 832, canopy: "Red & Yellow", horses: "4 White Horses", guardian: "Garuda" },
+                { name: "Taladhwaja", deity: "Lord Balabhadra", height: "45 ft", wheels: 14, wood: 763, canopy: "Red & Green", horses: "4 Black Horses", guardian: "Vasudev" },
+                { name: "Darpadalana", deity: "Goddess Subhadra", height: "44 ft 6 in", wheels: 12, wood: 593, canopy: "Red & Black", horses: "4 Red Horses", guardian: "Jayadurga" }
+            ]
+        };
+
+        const chariotDetailsContainer = document.getElementById('chariot-details');
+        chariotData.details.forEach(chariot => {
+            const detailCard = document.createElement('div');
+            detailCard.className = 'border border-gray-200 p-4 rounded-lg';
+            detailCard.innerHTML = `
+                <h4 class="text-xl font-bold text-saffron">${chariot.name}</h4>
+                <p class="font-semibold text-earth-dark">${chariot.deity}</p>
+                <p class="text-gray-600">Height: ${chariot.height}</p>
+                <p class="text-gray-600">Wheels: ${chariot.wheels}</p>
+                <p class="text-gray-600">Wood Pieces: ${chariot.wood}</p>
+                <p class="text-gray-600">Canopy: ${chariot.canopy}</p>
+                <p class="text-gray-600">Horses: ${chariot.horses}</p>
+            `;
+            chariotDetailsContainer.appendChild(detailCard);
+        });
+
+        const ctxChart = document.getElementById('chariotChart').getContext('2d');
+        let chariotChart;
+
+        function createChart(label, data) {
+            if (chariotChart) {
+                chariotChart.destroy();
+            }
+            chariotChart = new Chart(ctxChart, {
+                type: 'bar',
+                data: {
+                    labels: chariotData.names,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        backgroundColor: ['#FF9933', '#8B4513', '#D2B48C'],
+                        borderColor: ['#FF9933', '#8B4513', '#D2B48C'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y;
+                                        if(context.dataset.label === 'Height (ft)') label += ' ft';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: label
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    const label = this.getLabelForValue(value);
+                                    return label.length > 15 ? label.substring(0, 15) + '...' : label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChart(metric) {
+            document.querySelectorAll('.chariot-btn').forEach(btn => btn.classList.remove('active', 'bg-saffron', 'text-white'));
+            event.target.classList.add('active', 'bg-saffron', 'text-white');
+
+            if (metric === 'all') {
+                if (chariotChart) chariotChart.destroy();
+                chariotChart = new Chart(ctxChart, {
+                    type: 'bar',
+                    data: {
+                        labels: chariotData.names,
+                        datasets: [
+                            { label: 'Height (ft)', data: chariotData.height, backgroundColor: '#FF9933' },
+                            { label: 'Wheels', data: chariotData.wheels, backgroundColor: '#8B4513' },
+                            { label: 'Wood Pieces (x100)', data: chariotData.wood.map(w => w / 100), backgroundColor: '#D2B48C' }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'top' } },
+                        scales: { y: { beginAtZero: true, title: { display: true, text: 'Comparative Values' } } }
+                    }
+                });
+            } else if (metric === 'height') {
+                createChart('Height (ft)', chariotData.height);
+            } else if (metric === 'wheels') {
+                createChart('Number of Wheels', chariotData.wheels);
+            } else if (metric === 'wood') {
+                createChart('Number of Wood Pieces', chariotData.wood);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            updateChart('all');
+        });
+
+    </script>
+</body>
+</html>

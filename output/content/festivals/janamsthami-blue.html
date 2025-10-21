@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Janmashtami: Celebrating the Birth of Lord Krishna</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Divine Krishna Hues (Peacock Blue, Saffron, Gold) -->
+    <!-- Application Structure Plan: A narrative infographic that explains Janmashtami from its core meaning to its celebratory rituals. The structure is: 1. Hero section. 2. "What is Janmashtami?". 3. "The Divine Birth of Krishna". 4. "The Playful & Divine Incarnation". 5. "Traditions of Joy & Devotion". 6. "A Taste of the Feast". This flow is designed to guide the user through the story and spirit of the festival. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: Key traditions -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the main activities like Dahi Handi. -> Library/Method: HTML/CSS.
+        - Data Point: Key festive foods -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display popular festive dishes. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #E0F2FE; /* Light Sky Blue */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-blue { color: #0284C7; }
+        .palette-text-yellow { color: #F59E0B; }
+        .palette-text-saffron { color: #F97316; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #0284C7; /* Blue */
+            border: 3px solid #F59E0B; /* Yellow */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-blue tracking-wider">Janmashtami</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">Celebrating the Birth of Lord Krishna</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Janmashtami?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Krishna Janmashtami is an annual Hindu festival that celebrates the birth of Lord Krishna, the eighth avatar of the god Vishnu. It is a day of deep spiritual significance, fasting, and joyous festivities, honoring the deity who is revered as a teacher, friend, lover, and divine hero.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-blue mb-4">👶</div>
+                    <h3 class="text-3xl font-bold text-gray-900">The Divine Birth</h3>
+                    <p class="mt-2 text-gray-600">The festival marks Krishna's birth at midnight in a prison cell, a story symbolizing the appearance of hope and divinity in the darkest of times.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-yellow mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Festival Timing</h3>
+                    <p class="mt-2 text-gray-600">It is celebrated on the eighth day (Ashtami) of the dark fortnight (Krishna Paksha) in the Hindu month of Bhadrapada.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-saffron mb-4">❤️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Festival of Joy</h3>
+                    <p class="mt-2 text-gray-600">Unlike the solemnity of some festivals, Janmashtami is filled with playful re-enactments of Krishna's childhood antics, music, and dance.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Divine Birth of Krishna</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The story of Krishna's birth is a dramatic tale of prophecy, peril, and divine intervention. It was foretold that the eighth son of Devaki and her husband Vasudeva would be the downfall of the tyrannical king Kansa, Devaki's own brother.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">🌃</div>
+                        <p class="text-xl font-bold mt-2 palette-text-blue">A Savior Born at Midnight</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">Fearing for his life, Kansa imprisoned Devaki and Vasudeva, killing their first six children. When the eighth child, Krishna, was born at midnight, a miracle occurred. The prison guards fell asleep, the cell doors opened, and Vasudeva was guided to carry the infant across the raging Yamuna river to the safety of Gokul. There, he swapped his son with the newborn daughter of Nanda and Yashoda. This miraculous birth and escape signify that divine power will always find a way to overcome tyranny and restore righteousness.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="virtues" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Playful & Divine Incarnation</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Lord Krishna is worshipped in many forms, from a mischievous child to a divine philosopher. His life demonstrates a complete spectrum of human and divine experience.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🧈</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Makhan Chor</h3>
+                    <p class="mt-2 text-sm text-gray-600">As a child, he was known as the "Butter Thief" for his playful antics of stealing butter, symbolizing the divine stealing the hearts of devotees.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🦚</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Divine Flutist</h3>
+                    <p class="mt-2 text-sm text-gray-600">His flute music was enchanting, drawing all beings—from gopis to animals—towards him in a state of divine bliss.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">📖</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Great Teacher</h3>
+                    <p class="mt-2 text-sm text-gray-600">On the battlefield of Kurukshetra, he imparted the sacred wisdom of the Bhagavad Gita to Arjuna, teaching the path of dharma and selfless action.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">❤️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Symbol of Love</h3>
+                    <p class="mt-2 text-sm text-gray-600">His relationship with Radha represents the highest form of divine love, the yearning of the individual soul to merge with the universal spirit.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Traditions of Joy & Devotion</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Janmashtami is celebrated with a unique mix of solemn prayer and boisterous fun, reflecting the multifaceted personality of Lord Krishna himself.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4"> fasting</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Fasting until Midnight</h3>
+                    <p class="mt-2 text-sm text-gray-600">Devotees fast throughout the day, breaking their fast only after the midnight hour, which is considered the moment of Krishna's birth.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎶</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Night-long Vigil</h3>
+                    <p class="mt-2 text-sm text-gray-600">Temples are decorated beautifully, and devotees hold vigils, singing bhajans and kirtans that narrate the stories of Krishna's life.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">💃</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Rasa Lila</h3>
+                    <p class="mt-2 text-sm text-gray-600">Theatrical enactments of Krishna's childhood and his divine dance with the gopis of Vrindavan are performed.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🏺</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Dahi Handi</h3>
+                    <p class="mt-2 text-sm text-gray-600">A playful tradition where teams of young men form human pyramids to break a high-hanging pot of curd, mimicking Krishna's love for butter.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of the Feast</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    After a day of fasting, a grand feast is prepared. The offerings, known as 'Chappan Bhog' (56 items), include a variety of milk-based sweets and savory dishes that were believed to be Krishna's favorites.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Popular Janmashtami Offerings</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Makhan Mishri (Butter & Sugar)', 
+                'Panjiri (Dry Fruit Powder)', 
+                'Gopalkala (Poha & Curd)', 
+                'Various Milk Sweets'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity during Janmashtami',
+                        data: [100, 90, 85, 95],
+                        backgroundColor: [
+                           '#0284C7', // Blue
+                           '#F59E0B', // Yellow
+                           '#F97316', // Saffron
+                           '#60A5FA'  // Light Blue
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Popularity & Importance',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

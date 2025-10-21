@@ -1,0 +1,6 @@
+.festival-footer-wrap{border-top:1px solid rgba(0,0,0,.1); padding-top:10px; margin-top:10px}
+@media (prefers-color-scheme:dark){
+  .festival-footer-wrap{border-color:rgba(255,255,255,.15)}
+}
+.festival-footer-nav a{ text-decoration:none; border-bottom:1px dotted currentColor; }
+.festival-footer-nav a:hover{ border-bottom-style:solid }

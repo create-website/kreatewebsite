@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ram Navami: Celebrating the Birth of Lord Rama</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Divine Blues & Saffron Gold -->
+    <!-- Application Structure Plan: A narrative infographic that explains Ram Navami, focusing on its spiritual significance. The structure is: 1. Hero section. 2. "What is Ram Navami?". 3. "The Divine Birth of Lord Rama". 4. "The Virtues of Maryada Purushottam". 5. "Core Traditions of Devotion". 6. "A Taste of Devotion" chart. This flow is designed to guide the user through the story and values of the festival. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: Key traditions -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase devotional practices. -> Library/Method: HTML/CSS.
+        - Data Point: Key festive foods -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display popular festive dishes. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #F0F8FF; /* Alice Blue */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-blue { color: #2563EB; }
+        .palette-text-saffron { color: #F97316; }
+        .palette-text-gold { color: #F59E0B; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #2563EB; /* Blue */
+            border: 3px solid #F97316; /* Saffron */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-blue tracking-wider">Ram Navami</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">Celebrating the Birth of the Ideal Man</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Ram Navami?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Ram Navami is a Hindu festival that celebrates the birth of Lord Rama, the seventh avatar of the god Vishnu. It is a day of immense spiritual significance, marking the descent of the divine in human form to establish dharma (righteousness) and destroy evil.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-blue mb-4">🙏</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Day of Devotion</h3>
+                    <p class="mt-2 text-gray-600">The festival is celebrated with prayers, fasting, and the recitation of the epic Ramayana, focusing on Rama's virtuous life and teachings.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-gold mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Festival Timing</h3>
+                    <p class="mt-2 text-gray-600">Ram Navami falls on the ninth day (Navami) of the bright fortnight (Shukla Paksha) in the Hindu month of Chaitra, marking the end of the Chaitra Navaratri.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-saffron mb-4">👑</div>
+                    <h3 class="text-3xl font-bold text-gray-900">The Ideal King</h3>
+                    <p class="mt-2 text-gray-600">Lord Rama is revered as *Maryada Purushottam*, the "Perfect Man" or "Lord of Self-Control," who embodies compassion, duty, and righteousness.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Divine Birth of Lord Rama</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The story of Rama's birth is a central event in the epic Ramayana. It tells of King Dasharatha of Ayodhya, who was childless and performed a great fire sacrifice (*yagna*) to pray for an heir. His devotion was answered, leading to the birth of a divine prince destined to restore balance to the world.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">🏹</div>
+                        <p class="text-xl font-bold mt-2 palette-text-blue">The Prince of Ayodhya</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">From the sacrificial fire, a divine being emerged and gave King Dasharatha a vessel of sacred pudding (*payasam*) to distribute among his three wives: Kausalya, Kaikeyi, and Sumitra. In due course, Kausalya gave birth to Rama, Kaikeyi to Bharata, and Sumitra to the twins Lakshmana and Shatrughna. Rama, the eldest, was born on the ninth day of Chaitra, at noon. His birth was celebrated by gods and mortals alike, as he was the incarnation of Vishnu, born to vanquish the demon king Ravana and re-establish dharma on Earth.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="virtues" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Virtues of Maryada Purushottam</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Lord Rama is worshipped not just as a god, but as the embodiment of perfect human conduct. His life serves as a moral compass, demonstrating ideal qualities that devotees strive to emulate.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🛡️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Dharma (Duty)</h3>
+                    <p class="mt-2 text-sm text-gray-600">Rama never wavered from his duty as a son, brother, husband, and king, even at great personal cost.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">❤️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Karuna (Compassion)</h3>
+                    <p class="mt-2 text-sm text-gray-600">He showed compassion to all beings, from his loyal subjects to the animals of the forest.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🤝</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Satya (Truth)</h3>
+                    <p class="mt-2 text-sm text-gray-600">His adherence to truth was absolute, forming the bedrock of his character and his reign.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">👑</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Ideal Governance</h3>
+                    <p class="mt-2 text-sm text-gray-600">His rule, known as *Ram Rajya*, is considered the benchmark for a just, prosperous, and happy kingdom.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Core Traditions of Devotion</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Ram Navami is observed with deep reverence and piety. The celebrations are less about public spectacle and more about personal and communal acts of worship that connect devotees to the life of Lord Rama.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4"> fasting</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Fasting (Vrat)</h3>
+                    <p class="mt-2 text-sm text-gray-600">Many devotees observe a strict fast on Ram Navami, breaking it only at night after offering prayers.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">📖</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Ramayana Path</h3>
+                    <p class="mt-2 text-sm text-gray-600">Continuous chanting and reading of the Ramayana, especially the *Akhand Path* (unbroken reading), is a common practice.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎶</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Bhajans & Kirtan</h3>
+                    <p class="mt-2 text-sm text-gray-600">Temples and homes resonate with devotional songs praising Lord Rama, Sita, Lakshmana, and Hanuman.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">👶</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Cradle Ceremony</h3>
+                    <p class="mt-2 text-sm text-gray-600">An image or idol of infant Rama is placed in a cradle and rocked at noon, the time of his birth, in a beautiful ceremony.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Devotion</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The food prepared on Ram Navami is simple, sattvic (pure), and vegetarian, often made without onion or garlic. The offerings reflect the purity and simplicity associated with the festival.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">The Main Foods of the Festival</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Panakam (Jaggery Drink)', 
+                'Neer Mor (Spiced Buttermilk)', 
+                'Sooji Halwa (Semolina Pudding)', 
+                'Kala Chana Sundal'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity during Ram Navami',
+                        data: [100, 90, 95, 85],
+                        backgroundColor: [
+                           '#F97316', // Saffron
+                           '#CA8A04', // Dark Yellow
+                           '#F59E0B', // Gold
+                           '#2563EB'  // Blue
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Popularity & Importance',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

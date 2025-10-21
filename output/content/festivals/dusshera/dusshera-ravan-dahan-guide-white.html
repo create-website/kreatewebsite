@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Ultimate Ravan Dahan Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Teko:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- 
+    Narrative & Structure Plan:
+    This infographic tells the story of Ravan Dahan in a logical sequence. 
+    1. Introduction: A powerful hook with the central theme.
+    2. The Legend by Numbers: Uses large, impactful stats to convey the core story elements.
+    3. Anatomy of the Effigy: A data-driven breakdown of the effigy's composition to make it tangible.
+    4. Countdown to Victory: A clear timeline to visualize the preparation process.
+    5. Celebration Across India: A comparative chart to show the scale and regional variations of the event.
+    6. Safety Mantra: A dedicated, easy-to-read section for critical safety information.
+    This structure guides the user from the 'why' (legend) to the 'what' (effigy), 'how' (timeline), 'where' (scale), and finally the essential 'must-dos' (safety).
+    -->
+    <!-- 
+    Visualization & Content Choices:
+    1. Data: Core symbolic numbers -> Goal: Inform -> Viz: Single Big Number -> Justification: High-impact, instant communication of key facts -> Method: Styled HTML/CSS. (No SVG).
+    2. Data: Effigy material composition -> Goal: Compare/Show Composition -> Viz: Donut Chart -> Justification: Ideal for showing parts-of-a-whole in a visually engaging way -> Library: Chart.js (Canvas). (No SVG).
+    3. Data: Preparation milestones -> Goal: Organize/Show Change -> Viz: Timeline Diagram -> Justification: More intuitive for process flow than a list -> Method: Structured HTML/CSS. (No SVG/Mermaid).
+    4. Data: Effigy heights by city -> Goal: Compare/Rank -> Viz: Horizontal Bar Chart -> Justification: Perfect for ranking categories by a single metric -> Library: Chart.js (Canvas). (No SVG).
+    5. Data: Safety rules -> Goal: Organize/Inform -> Viz: Icon-based List -> Justification: Icons improve scannability and retention of critical info -> Method: HTML/CSS with Unicode. (No SVG).
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF; /* White */
+        }
+        .font-teko {
+            font-family: 'Teko', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+         .h-chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 500px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+            .h-chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        
+        <section id="intro" class="text-center my-12">
+            <h1 class="font-teko text-6xl md:text-8xl font-bold text-cyan-500 tracking-wider">RAVAN DAHAN</h1>
+            <p class="mt-2 max-w-3xl mx-auto text-xl text-gray-600 font-light">
+                An infographic on the epic tradition symbolizing the ultimate victory of light over darkness.
+            </p>
+        </section>
+
+        <section id="legend-numbers" class="my-20">
+             <div class="text-center mb-12">
+                <h2 class="font-teko text-5xl font-semibold text-gray-900">The Legend by Numbers</h2>
+                <p class="max-w-2xl mx-auto text-gray-500">The ancient story of Dussehra is one of epic proportions. These numbers represent the core of the legend, highlighting the cosmic battle between good and evil that is celebrated to this day.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+                    <p class="font-teko text-8xl font-bold text-cyan-500">10</p>
+                    <p class="text-2xl font-semibold text-gray-900 mt-2">Heads of Ravana</p>
+                    <p class="text-gray-500 mt-1">Symbolizing his ten negative human vices.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+                    <p class="font-teko text-8xl font-bold text-pink-500">01</p>
+                    <p class="text-2xl font-semibold text-gray-900 mt-2">Righteous Victor</p>
+                    <p class="text-gray-500 mt-1">Lord Rama, the embodiment of dharma and virtue.</p>
+                </div>
+                 <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+                    <p class="font-teko text-8xl font-bold text-yellow-500">∞</p>
+                    <p class="text-2xl font-semibold text-gray-900 mt-2">Countless Celebrations</p>
+                    <p class="text-gray-500 mt-1">A tradition echoing through millennia across India.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="effigy-anatomy" class="my-20">
+            <div class="text-center mb-12">
+                <h2 class="font-teko text-5xl font-semibold text-gray-900">Anatomy of an Effigy</h2>
+                <p class="max-w-2xl mx-auto text-gray-500">The colossal effigy of Ravana is a marvel of temporary architecture, built from simple materials. This chart shows a typical breakdown of its composition, revealing the craft behind the spectacle.</p>
+            </div>
+             <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                <div class="chart-container">
+                    <canvas id="materialsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline" class="my-20">
+            <div class="text-center mb-12">
+                <h2 class="font-teko text-5xl font-semibold text-gray-900">Countdown to Victory</h2>
+                <p class="max-w-2xl mx-auto text-gray-500">The creation of the effigy and the organization of the event is a meticulous process. This timeline highlights the key phases, from initial planning to the final, fiery conclusion.</p>
+            </div>
+            <div class="max-w-3xl mx-auto">
+                <div class="relative">
+                    <div class="absolute w-0.5 h-full bg-cyan-400/50 left-5 transform"></div>
+                    <div class="space-y-12">
+                        <div class="relative pl-12">
+                            <div class="absolute w-10 h-10 bg-cyan-400 rounded-full left-0 top-0 flex items-center justify-center font-bold text-gray-900">4-6w</div>
+                            <h3 class="text-xl font-bold text-cyan-500">Foundation & Planning</h3>
+                            <p class="text-gray-500 mt-1">Form a team, secure permissions, and finalize the budget. This is the crucial first step.</p>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute w-10 h-10 bg-cyan-400 rounded-full left-0 top-0 flex items-center justify-center font-bold text-gray-900">2-3w</div>
+                            <h3 class="text-xl font-bold text-cyan-500">Material Sourcing & Frame</h3>
+                            <p class="text-gray-500 mt-1">Gather bamboo, paper, and ropes. Begin constructing the main skeletal frame of the effigy.</p>
+                        </div>
+                        <div class="relative pl-12">
+                             <div class="absolute w-10 h-10 bg-pink-500 rounded-full left-0 top-0 flex items-center justify-center font-bold text-white">1w</div>
+                            <h3 class="text-xl font-bold text-pink-500">Skin, Paint & Details</h3>
+                            <p class="text-gray-500 mt-1">Apply paper skin, craft the ten heads, and begin painting the effigy with vibrant colors.</p>
+                        </div>
+                         <div class="relative pl-12">
+                             <div class="absolute w-10 h-10 bg-yellow-400 rounded-full left-0 top-0 flex items-center justify-center font-bold text-gray-900">Day</div>
+                            <h3 class="text-xl font-bold text-yellow-500">The Grand Finale</h3>
+                            <p class="text-gray-500 mt-1">Transport the effigy, install fireworks under expert supervision, and prepare for the evening's Dahan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="celebration-scale" class="my-20">
+            <div class="text-center mb-12">
+                <h2 class="font-teko text-5xl font-semibold text-gray-900">A Nationwide Spectacle</h2>
+                <p class="max-w-2xl mx-auto text-gray-500">Ravan Dahan is celebrated with immense fervor across India, with cities competing to build the tallest effigy. This chart compares the estimated heights of Ravana effigies in various prominent locations.</p>
+            </div>
+             <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                <div class="h-chart-container">
+                    <canvas id="cityHeightsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="safety" class="my-20">
+            <div class="text-center mb-12">
+                <h2 class="font-teko text-5xl font-semibold text-gray-900">The Guardian Mantra</h2>
+                <p class="max-w-2xl mx-auto text-gray-500">With great fire comes great responsibility. Safety is paramount. These non-negotiable rules ensure the celebration remains a joyous and incident-free occasion for everyone.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-lg text-center shadow-lg border border-gray-200">
+                    <p class="text-4xl mb-3">📍</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Safe Distance</h3>
+                    <p class="text-gray-500">Establish and enforce a clear, barricaded perimeter for spectators, well away from the effigy.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg text-center shadow-lg border border-gray-200">
+                    <p class="text-4xl mb-3">👨‍🚒</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Expert Handling</h3>
+                    <p class="text-gray-500">Only experienced and sober adults should ever handle or install fireworks and pyrotechnics.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg text-center shadow-lg border border-gray-200">
+                    <p class="text-4xl mb-3">🧯</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Emergency Ready</h3>
+                    <p class="text-gray-500">Keep fire extinguishers, sand buckets, and a water source immediately accessible on-site.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg text-center shadow-lg border border-gray-200">
+                    <p class="text-4xl mb-3">💨</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Mind the Wind</h3>
+                    <p class="text-gray-500">Always check wind direction to ensure embers and smoke blow away from crowds and buildings.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-16 border-t border-gray-200 pt-8">
+            <p class="text-lg text-cyan-500 font-semibold">Happy Dussehra!</p>
+            <p class="text-gray-500">May the divine light of victory illuminate your life.</p>
+        </footer>
+    </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    Chart.defaults.color = '#4B5563'; // gray-600
+    Chart.defaults.font.family = "'Inter', sans-serif";
+
+    const materialsData = {
+        labels: ['Bamboo & Wood', 'Paper & Cardboard', 'Fireworks & Crackers', ['Adhesives &', 'Ropes'], 'Paints & Decor'],
+        datasets: [{
+            label: 'Material Composition %',
+            data: [45, 25, 15, 10, 5],
+            backgroundColor: [ '#06B6D4', '#EC4899', '#F59E0B', '#8B5CF6', '#3B82F6' ],
+            borderColor: '#FFFFFF',
+            borderWidth: 4,
+            hoverOffset: 8
+        }]
+    };
+    new Chart(document.getElementById('materialsChart'), {
+        type: 'doughnut',
+        data: materialsData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' },
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            return Array.isArray(label) ? label.join(' ') : label;
+                        },
+                         label: function(context) {
+                            return ` ${context.parsed}%`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const cityHeightsData = {
+        labels: ['Panchkula', 'Delhi', 'Amritsar', 'Vadodara', 'Mysuru', 'Kolkata'],
+        datasets: [{
+            label: 'Estimated Effigy Height (feet)',
+            data: [221, 100, 100, 75, 50, 40],
+            backgroundColor: 'rgba(236, 72, 153, 0.7)',
+            borderColor: 'rgba(236, 72, 153, 1)',
+            borderWidth: 2,
+            borderRadius: 5
+        }]
+    };
+    new Chart(document.getElementById('cityHeightsChart'), {
+        type: 'bar',
+        data: cityHeightsData,
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                    title: { display: true, text: 'Height in Feet', color: '#4B5563'}
+                },
+                y: {
+                    grid: { display: false }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            return Array.isArray(label) ? label.join(' ') : label;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+});
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Global Garba: An Interactive Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Saffron Accent -->
+    <!-- Application Structure Plan: A thematic, single-page scrolling application is chosen over a direct report structure to create a narrative user flow. The structure guides the user from the core meaning ('The Heart'), to its roots ('Homeland'), its global spread ('Global Circle'), and its modern evolution ('Modern Beat'). This thematic journey is more intuitive and engaging for a web experience. Key interactions include clickable cards for exploring regional styles and a dynamic radar chart for comparing diaspora models, allowing users to actively discover and compare information rather than passively reading. This design prioritizes synthesis and exploration, making complex comparisons easily digestible. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Core Symbolism -> Goal: Inform/Engage -> Viz: Interactive diagram (HTML/CSS) -> Interaction: Click to reveal text -> Justification: Makes abstract concepts tangible and interactive.
+        - Report Info: Regional Garba Styles -> Goal: Organize/Compare -> Viz: Interactive Cards -> Interaction: Click to expand -> Justification: More scannable and less overwhelming than a data table.
+        - Report Info: Diaspora Models Comparison -> Goal: Analyze/Compare -> Viz: Radar Chart (Chart.js) -> Interaction: Buttons update chart and text -> Justification: Provides an immediate, powerful visual comparison of qualitative data across multiple dimensions.
+        - Report Info: Music Evolution -> Goal: Show Change -> Viz: Timeline (HTML/CSS) -> Interaction: Static visual flow -> Justification: Intuitively represents chronological progression.
+        - Library/Method: Chart.js for canvas-based, responsive charts. All other visuals are built with Tailwind CSS and vanilla JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link.active {
+            color: #DD6B20;
+            border-bottom-color: #DD6B20;
+        }
+        .nav-link:not(.active) {
+            border-bottom-color: transparent;
+        }
+        .card-flip {
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+        .card-flip.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-[#FDFBF8] text-gray-800">
+
+    <header class="bg-[#FDFBF8]/80 backdrop-blur-md sticky top-0 z-50 border-b border-orange-100">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-orange-800">The Global Garba</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#symbolism" class="nav-link text-gray-600 hover:text-orange-700 border-b-2 pb-1">The Heart</a>
+                <a href="#homeland" class="nav-link text-gray-600 hover:text-orange-700 border-b-2 pb-1">The Homeland</a>
+                <a href="#diaspora" class="nav-link text-gray-600 hover:text-orange-700 border-b-2 pb-1">The Global Circle</a>
+                <a href="#evolution" class="nav-link text-gray-600 hover:text-orange-700 border-b-2 pb-1">The Modern Beat</a>
+            </div>
+            <div class="md:hidden">
+                 <select id="mobile-nav" class="bg-white border border-orange-200 rounded-md p-2 text-gray-700">
+                    <option value="#symbolism">The Heart</option>
+                    <option value="#homeland">The Homeland</option>
+                    <option value="#diaspora">The Global Circle</option>
+                    <option value="#evolution">The Modern Beat</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-16">
+
+        <section id="hero" class="text-center mb-20 md:mb-32">
+            <h1 class="text-4xl md:text-6xl font-bold text-orange-900 leading-tight mb-4">The Sacred Circle in a Global Sphere</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">From a devotional ritual in Gujarat to a global cultural phenomenon, explore the journey of Garba. This interactive report analyzes its deep symbolism, traditional roots, and dynamic evolution across the world, celebrating its recent inscription as a UNESCO Intangible Cultural Heritage.</p>
+        </section>
+
+        <section id="symbolism" class="mb-20 md:mb-32">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-orange-800">The Heart of Garba: Symbolism in Motion</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Garba is more than just a dance; it's a moving cosmology. Every element, from the central lamp to the circular steps, holds deep spiritual meaning. This section unpacks the foundational symbolism that gives Garba its profound cultural power. Click on the elements below to learn more.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="symbol-card bg-white p-6 rounded-xl shadow-lg border border-orange-100 cursor-pointer hover:shadow-xl transition-shadow" data-symbol="garbha_deep">
+                    <div class="text-4xl mb-4">🪔</div>
+                    <h3 class="text-xl font-semibold mb-2 text-orange-700">The Garbha Deep</h3>
+                    <p class="text-gray-600">The "womb lamp" at the center, symbolizing life, creation, and the divine energy within all beings.</p>
+                </div>
+                <div class="symbol-card bg-white p-6 rounded-xl shadow-lg border border-orange-100 cursor-pointer hover:shadow-xl transition-shadow" data-symbol="circle">
+                    <div class="text-4xl mb-4">🔄</div>
+                    <h3 class="text-xl font-semibold mb-2 text-orange-700">The Circular Dance</h3>
+                    <p class="text-gray-600">Represents the cyclical nature of time—birth, life, death, and rebirth—in Hindu philosophy.</p>
+                </div>
+                <div class="symbol-card bg-white p-6 rounded-xl shadow-lg border border-orange-100 cursor-pointer hover:shadow-xl transition-shadow" data-symbol="barefoot">
+                    <div class="text-4xl mb-4">👣</div>
+                    <h3 class="text-xl font-semibold mb-2 text-orange-700">Dancing Barefoot</h3>
+                    <p class="text-gray-600">A sign of respect for the sacred earth, creating a physical connection to nature's generative power.</p>
+                </div>
+            </div>
+        </section>
+        
+        <div id="symbol-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+            <div class="bg-white rounded-lg p-8 max-w-lg w-full relative">
+                <button id="close-modal" class="absolute top-4 right-4 text-2xl font-bold text-gray-500 hover:text-gray-800">&times;</button>
+                <h3 id="modal-title" class="text-2xl font-bold mb-4 text-orange-800"></h3>
+                <p id="modal-text" class="text-gray-700"></p>
+            </div>
+        </div>
+
+        <section id="homeland" class="mb-20 md:mb-32">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-orange-800">The Homeland: A Tapestry of Styles in Gujarat</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">In its heartland of Gujarat, Garba is not a single dance but a rich collection of regional traditions. Each style reflects the history and lifestyle of its community. Explore some of the most distinct forms of Garba by clicking on the cards below to flip them and reveal their unique characteristics.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="style-card h-64 perspective-1000">
+                    <div class="relative w-full h-full card-flip">
+                        <div class="card-front absolute w-full h-full flex flex-col justify-center items-center bg-orange-100 text-orange-900 rounded-lg shadow-md p-4 text-center">
+                            <h3 class="text-2xl font-bold">Betha Garba</h3>
+                            <p class="mt-2">A seated, meditative form of worship.</p>
+                        </div>
+                        <div class="card-back absolute w-full h-full bg-white text-gray-700 rounded-lg shadow-lg p-4 text-sm flex flex-col justify-center">
+                            <p><strong>Community:</strong> Nagar Brahmin</p>
+                            <p><strong>Region:</strong> Saurashtra</p>
+                            <p><strong>Tempo:</strong> Slow, meditative</p>
+                            <p><strong>Key Feature:</strong> Performed while seated, emphasizing devotional singing (*Stuti*) over dance. A solemn, private form of worship.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="style-card h-64 perspective-1000">
+                    <div class="relative w-full h-full card-flip">
+                        <div class="card-front absolute w-full h-full flex flex-col justify-center items-center bg-teal-100 text-teal-900 rounded-lg shadow-md p-4 text-center">
+                            <h3 class="text-2xl font-bold">Koli Garba</h3>
+                            <p class="mt-2">An energetic dance from the fishing community.</p>
+                        </div>
+                        <div class="card-back absolute w-full h-full bg-white text-gray-700 rounded-lg shadow-lg p-4 text-sm flex flex-col justify-center">
+                            <p><strong>Community:</strong> Koli (Fishing)</p>
+                            <p><strong>Region:</strong> Saurashtra</p>
+                            <p><strong>Tempo:</strong> Very fast, energetic</p>
+                            <p><strong>Key Feature:</strong> Incorporates movements mimicking work on fishing boats, with swift footwork and high-pitched singing.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="style-card h-64 perspective-1000">
+                    <div class="relative w-full h-full card-flip">
+                        <div class="card-front absolute w-full h-full flex flex-col justify-center items-center bg-red-100 text-red-900 rounded-lg shadow-md p-4 text-center">
+                            <h3 class="text-2xl font-bold">Rabari Garba</h3>
+                            <p class="mt-2">A graceful, balanced dance of pastoralists.</p>
+                        </div>
+                        <div class="card-back absolute w-full h-full bg-white text-gray-700 rounded-lg shadow-lg p-4 text-sm flex flex-col justify-center">
+                            <p><strong>Community:</strong> Rabari (Pastoral)</p>
+                            <p><strong>Region:</strong> North Gujarat</p>
+                            <p><strong>Tempo:</strong> Slow, graceful</p>
+                            <p><strong>Key Feature:</strong> Women dance while balancing a pot (*bedu*) on their heads, creating a controlled, elegant pace.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="style-card h-64 perspective-1000">
+                    <div class="relative w-full h-full card-flip">
+                        <div class="card-front absolute w-full h-full flex flex-col justify-center items-center bg-yellow-100 text-yellow-900 rounded-lg shadow-md p-4 text-center">
+                            <h3 class="text-2xl font-bold">Dandiya Raas</h3>
+                            <p class="mt-2">The "Sword Dance" with decorated sticks.</p>
+                        </div>
+                        <div class="card-back absolute w-full h-full bg-white text-gray-700 rounded-lg shadow-lg p-4 text-sm flex flex-col justify-center">
+                            <p><strong>Community:</strong> Agricultural</p>
+                            <p><strong>Region:</strong> Saurashtra & Kutch</p>
+                            <p><strong>Tempo:</strong> Varies, slow to fast</p>
+                            <p><strong>Key Feature:</strong> Performed with sticks (*dandiyas*) symbolizing Durga's swords in her battle against Mahishasura.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="diaspora" class="mb-20 md:mb-32">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-orange-800">The Global Circle: Diaspora and Adaptation</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">As the Gujarati community spread across the globe, Garba transformed. Each new home reshaped the dance to serve different social and cultural needs. Select a country to see how its Garba model compares, reflecting a unique balance of commercialization, community focus, tradition, and innovation.</p>
+            <div class="flex flex-col lg:flex-row gap-8 items-center">
+                <div class="w-full lg:w-1/2">
+                    <div class="chart-container">
+                        <canvas id="diasporaChart"></canvas>
+                    </div>
+                </div>
+                <div class="w-full lg:w-1/2">
+                    <div class="flex flex-wrap justify-center gap-2 mb-6">
+                        <button class="diaspora-btn bg-orange-500 text-white px-4 py-2 rounded-full" data-country="usa">USA</button>
+                        <button class="diaspora-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full" data-country="uk">UK</button>
+                        <button class="diaspora-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full" data-country="canada">Canada</button>
+                        <button class="diaspora-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full" data-country="australia">Australia</button>
+                    </div>
+                    <div id="diaspora-content" class="bg-white p-6 rounded-lg shadow-md border border-orange-100">
+                        <h3 id="diaspora-title" class="text-2xl font-bold mb-2 text-orange-700"></h3>
+                        <p id="diaspora-text" class="text-gray-600"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="evolution" class="text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-orange-800">The Modern Beat: Transformation and Commercialization</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Garba's journey into the 21st century has been marked by powerful forces of change. The music has evolved from folk to fusion, a robust economic ecosystem has sprung up around the festival, and Bollywood has reshaped its global image. This has sparked debates on authenticity versus accessibility.</p>
+            
+            <div class="relative border-l-2 border-orange-200 ml-4 md:ml-0 md:border-l-0 md:border-t-2 md:pt-4">
+                <div class="flex flex-col md:flex-row justify-between text-left">
+                    <div class="mb-8 md:mb-0 md:w-1/3">
+                        <div class="absolute -left-2.5 top-0 md:top-auto md:-top-2.5 md:left-1/4 h-4 w-4 rounded-full bg-orange-500"></div>
+                        <h3 class="font-semibold text-lg text-orange-700 mb-1">Traditional Sound</h3>
+                        <p class="text-gray-600">Devotional songs with percussion like the *dhol* and *dholak*, creating an earthy, spiritual rhythm.</p>
+                    </div>
+                    <div class="mb-8 md:mb-0 md:w-1/3 md:text-center">
+                        <div class="absolute -left-2.5 top-1/2 transform -translate-y-1/2 md:top-auto md:-top-2.5 md:left-1/2 md:-translate-x-1/2 h-4 w-4 rounded-full bg-orange-500"></div>
+                        <h3 class="font-semibold text-lg text-orange-700 mb-1">"Disco Dandiya" Rise</h3>
+                        <p class="text-gray-600">The introduction of synthesizers and Bollywood beats, shifting the focus to high-energy entertainment.</p>
+                    </div>
+                    <div class="md:w-1/3 md:text-right">
+                        <div class="absolute -left-2.5 bottom-0 md:bottom-auto md:-top-2.5 md:left-3/4 h-4 w-4 rounded-full bg-orange-500"></div>
+                        <h3 class="font-semibold text-lg text-orange-700 mb-1">Contemporary Fusion</h3>
+                        <p class="text-gray-600">A hybrid soundscape dominated by DJs, electronic music, and global pop influences, creating a massive spectacle.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+<!--    
+    <footer class="bg-orange-50 border-t border-orange-100 mt-16">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-600">
+            <p>&copy; 2024 The Global Garba Interactive Report. All rights reserved.</p>
+            <p class="text-sm mt-2">An interactive visualization based on the analytical report "The Sacred Circle in a Global Sphere."</p>
+        </div>
+    </footer>
+-->
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const symbolData = {
+                garbha_deep: {
+                    title: "The Garbha Deep (Womb Lamp)",
+                    text: "This perforated earthenware pot with a lamp inside is the symbolic heart of Garba. It represents the womb, fertility, and the divine spark of life (Shakti) that resides within every person. The pot is the body, and the light is the soul. Dancing around it is an act of honoring the divinity within oneself and the universe."
+                },
+                circle: {
+                    title: "The Circular Dance (Kāla)",
+                    text: "The counter-clockwise circular motion embodies the Hindu concept of time (Kāla) as cyclical. The dancers represent the endless cycle of birth, life, death, and rebirth (samsara). The unmoving center, where the Garbha Deep is placed, symbolizes the constant, unchanging divine principle amidst the chaos of the material world."
+                },
+                barefoot: {
+                    title: "Dancing Barefoot",
+                    text: "This practice is a gesture of reverence for the earth, considered a sacred, life-giving mother. The feet act as conduits, drawing vital energy from the ground and creating a direct physical connection between the dancer and the divine feminine principle immanent in nature."
+                }
+            };
+
+            const symbolCards = document.querySelectorAll('.symbol-card');
+            const modal = document.getElementById('symbol-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalText = document.getElementById('modal-text');
+
+            symbolCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const symbol = card.dataset.symbol;
+                    modalTitle.textContent = symbolData[symbol].title;
+                    modalText.textContent = symbolData[symbol].text;
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                });
+            });
+
+            const closeModal = () => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            };
+
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            const styleCards = document.querySelectorAll('.style-card .card-flip');
+            styleCards.forEach(card => {
+                card.parentElement.addEventListener('click', () => {
+                    card.classList.toggle('is-flipped');
+                });
+            });
+
+            const diasporaData = {
+                usa: {
+                    title: "USA: Duality of Community & Competition",
+                    text: "The US model is unique, featuring both large, inclusive community events and a highly competitive inter-collegiate circuit. This has transformed Garba from a purely participatory ritual into a presentational performance art, blending tradition with American-style competition.",
+                    scores: [3, 4, 3, 5]
+                },
+                uk: {
+                    title: "UK: The Commercial Concert Model",
+                    text: "In the UK, Garba is dominated by large-scale, commercial events headlined by famous artists from India. This artist-centric, professionalized model turns the celebration into a high-production-value concert experience for established diaspora communities.",
+                    scores: [5, 3, 2, 2]
+                },
+                canada: {
+                    title: "Canada: Multicultural Integration",
+                    text: "Canadian Garba events are community-driven and often receive municipal support, reflecting the country's multicultural policy. The focus is on inclusivity, family-friendly atmospheres, and educational workshops to build cultural bridges.",
+                    scores: [2, 5, 4, 3]
+                },
+                australia: {
+                    title: "Australia: Heritage Preservation",
+                    text: "Similar to Canada, Australian celebrations are organized by community associations focused on preserving Gujarati heritage. Events aim to transmit traditions to the next generation, fostering cultural continuity 'down under'.",
+                    scores: [2, 4, 5, 2]
+                }
+            };
+
+            const diasporaBtns = document.querySelectorAll('.diaspora-btn');
+            const diasporaTitle = document.getElementById('diaspora-title');
+            const diasporaText = document.getElementById('diaspora-text');
+            let currentCountry = 'usa';
+
+            const ctx = document.getElementById('diasporaChart').getContext('2d');
+            const diasporaChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Commercialization', 'Community Focus', 'Tradition', 'Innovation'],
+                    datasets: [{
+                        label: 'USA',
+                        data: diasporaData.usa.scores,
+                        backgroundColor: 'rgba(221, 107, 32, 0.2)',
+                        borderColor: 'rgba(221, 107, 32, 1)',
+                        pointBackgroundColor: 'rgba(221, 107, 32, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(221, 107, 32, 1)'
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: '#F3E9DD'
+                            },
+                            grid: {
+                                color: '#F3E9DD'
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 12,
+                                    family: "'Inter', sans-serif"
+                                },
+                                color: '#8C5A3A'
+                            },
+                            ticks: {
+                                backdropColor: '#FDFBF8',
+                                color: '#B08968',
+                                stepSize: 1,
+                                max: 5,
+                                min: 0
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            function updateDiasporaContent(country) {
+                const data = diasporaData[country];
+                diasporaTitle.textContent = data.title;
+                diasporaText.textContent = data.text;
+
+                diasporaChart.data.datasets[0].data = data.scores;
+                diasporaChart.data.datasets[0].label = country.toUpperCase();
+                diasporaChart.update();
+
+                diasporaBtns.forEach(btn => {
+                    if (btn.dataset.country === country) {
+                        btn.classList.remove('bg-gray-200', 'text-gray-700');
+                        btn.classList.add('bg-orange-500', 'text-white');
+                    } else {
+                        btn.classList.add('bg-gray-200', 'text-gray-700');
+                        btn.classList.remove('bg-orange-500', 'text-white');
+                    }
+                });
+            }
+
+            diasporaBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentCountry = btn.dataset.country;
+                    updateDiasporaContent(currentCountry);
+                });
+            });
+
+            updateDiasporaContent('usa');
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 100) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+            
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', (e) => {
+                const targetId = e.target.value;
+                document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

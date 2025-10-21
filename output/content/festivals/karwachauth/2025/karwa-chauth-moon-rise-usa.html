@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karwa Chauth Moonrise Timings 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Vollkorn:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Subtle Accent -->
+    <!-- Application Structure Plan: A top-down narrative structure that first educates the user on the astronomical reasons for the late moonrise, then provides a practical, interactive tool to find specific city timings. This flow answers "why" before providing the "what/when," enhancing user understanding. The structure includes: a hero section for introduction, a multi-column layout to explain the reasons, an interactive dashboard for city-specific times, a data visualization to reinforce the concept of the daily lunar delay, and a concluding section on cultural significance. This is more engaging and useful than a static text page. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Reasons for late moon (lunar cycle, daily delay, location). Goal: Inform. Method: Three-column card layout with icons (unicode) and text. Interaction: None. Justification: Easily digestible, parallel presentation of key facts.
+        - Report Info: Moonrise times vary by city. Goal: Inform/Provide Utility. Method: Interactive dropdown selector with a dynamic display panel. Interaction: User selects a city, and JS updates the displayed time. Justification: Provides specific, personalized information that is the primary practical need of the user.
+        - Report Info: Moon rises ~50 mins later each day. Goal: Compare/Show Change. Viz Method: Bar chart. Interaction: Hover tooltips. Justification: A chart visually demonstrates the cumulative delay far more effectively than text alone. Library: Chart.js (Canvas).
+        - Report Info: Cultural symbolism of the wait. Goal: Inform. Method: Styled text block. Interaction: None. Justification: Provides context and completes the narrative. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Vollkorn', serif;
+        }
+        .hindi-title {
+            font-family: 'Tiro Devanagari Hindi', serif;
+        }
+    </style>
+</head>
+<body class="bg-rose-50 text-stone-800">
+
+    <header class="text-center py-8 md:py-12 bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(255, 241, 242, 0.8), rgba(255, 241, 242, 1)), url('https://storage.googleapis.com/kreatewebsite/sites/karwa-chauth.happydiwali.org/Banner/Celebrate-Karwa-Chauth.jpg');">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl md:text-6xl font-bold text-rose-900 hindi-title">करवा चौथ</h1>
+            <h2 class="text-3xl md:text-5xl font-bold text-rose-800 mt-2">Karwa Chauth 2025</h2>
+            <p class="mt-4 text-lg md:text-xl text-stone-700 max-w-3xl mx-auto">An interactive guide to understanding the moon's timing on this auspicious day, celebrated on Friday, October 10, 2025.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 md:py-12">
+
+        <section id="why" class="mb-12">
+            <h3 class="text-3xl font-bold text-center text-rose-800 mb-8">Why the Wait for the Moon?</h3>
+            <p class="text-center max-w-3xl mx-auto mb-10 text-stone-600">The eagerly awaited moon on Karwa Chauth often rises late in the evening. This isn't a coincidence but a result of a beautiful cosmic rhythm. The delay is due to the moon's natural orbital cycle, its position in the sky, and our location on Earth.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white/60 p-6 rounded-xl shadow-md border border-rose-100">
+                    <h4 class="text-2xl font-bold text-rose-900 mb-3 flex items-center"><span class="text-3xl mr-3">📅</span>Lunar Calendar</h4>
+                    <p class="text-stone-700">Karwa Chauth falls on the fourth day (Chaturthi) of the waning phase of the moon (Krishna Paksha). Being only four days past the full moon, its rise time is naturally later in the evening.</p>
+                </div>
+                <div class="bg-white/60 p-6 rounded-xl shadow-md border border-rose-100">
+                    <h4 class="text-2xl font-bold text-rose-900 mb-3 flex items-center"><span class="text-3xl mr-3">⏰</span>Daily Delay</h4>
+                    <p class="text-stone-700">The moon rises approximately 50 minutes later each day. By the fourth day of the waning cycle, this adds up, pushing the moonrise significantly later than on the night of the full moon.</p>
+                </div>
+                <div class="bg-white/60 p-6 rounded-xl shadow-md border border-rose-100">
+                    <h4 class="text-2xl font-bold text-rose-900 mb-3 flex items-center"><span class="text-3xl mr-3">🌍</span>Geographical Location</h4>
+                    <p class="text-stone-700">Your specific location on Earth—your latitude and longitude—determines the exact time the moon will appear over the horizon. This is why timings differ from city to city.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="timings" class="mb-12 bg-white p-8 rounded-2xl shadow-lg border border-rose-200">
+            <h3 class="text-3xl font-bold text-center text-rose-800 mb-2">Moonrise Timings for Your City</h3>
+            <p class="text-center max-w-3xl mx-auto mb-8 text-stone-600">Select your city to find the anticipated moonrise time for Karwa Chauth on Friday, October 10, 2025. The general fasting time (Puja Muhurat) and the duration of the fourth lunar day (Chaturthi Tithi) are also provided for your convenience.</p>
+            
+            <div class="max-w-md mx-auto">
+                <label for="city-select" class="block text-lg font-semibold text-stone-700 mb-2">Select a City:</label>
+                <select id="city-select" class="w-full p-3 border border-rose-300 rounded-lg text-lg bg-white focus:ring-2 focus:ring-rose-500 focus:border-rose-500">
+                    <option value="New York">New York, NY</option>
+                    <option value="San Francisco">San Francisco, CA</option>
+                    <option value="Chicago">Chicago, IL</option>
+                    <option value="Houston">Houston, TX</option>
+                    <option value="Los Angeles">Los Angeles, CA</option>
+                    <option value="Seattle">Seattle, WA</option>
+                    <option value="Boston">Boston, MA</option>
+                    <option value="Atlanta">Atlanta, GA</option>
+                </select>
+            </div>
+
+            <div class="mt-8 text-center bg-rose-50/50 p-6 rounded-xl border-2 border-dashed border-rose-200">
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div>
+                        <p class="text-sm text-stone-500 uppercase tracking-wider">Puja Muhurat (Local Time)</p>
+                        <p id="puja-time" class="text-2xl font-bold text-rose-900">06:00 PM - 07:15 PM</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-stone-500 uppercase tracking-wider">Moonrise Time</p>
+                        <p id="moonrise-time" class="text-4xl font-bold text-rose-700">08:15 PM</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-stone-500 uppercase tracking-wider">Chaturthi Tithi (Local Time)</p>
+                        <p id="tithi-time" class="text-lg font-semibold text-rose-900">Oct 09, evening - Oct 10, evening</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="visualization" class="mb-12">
+            <h3 class="text-3xl font-bold text-center text-rose-800 mb-2">Visualizing the Daily Delay</h3>
+            <p class="text-center max-w-3xl mx-auto mb-8 text-stone-600">This chart illustrates how the moon's rise time shifts later each evening following the full moon. Karwa Chauth, on the fourth day, naturally falls at a point in the cycle where the moon appears late.</p>
+            <div class="chart-container bg-white p-4 rounded-xl shadow-md border border-rose-100" style="position: relative; height:40vh; max-height: 400px; width:100%; max-width:800px; margin:auto;">
+                <canvas id="moonriseDelayChart"></canvas>
+            </div>
+        </section>
+
+        <section id="culture" class="text-center max-w-3xl mx-auto">
+             <h3 class="text-3xl font-bold text-center text-rose-800 mb-4">The Symbolism of the Wait</h3>
+             <p class="text-lg text-stone-700 leading-relaxed"><span class="text-4xl text-rose-300 float-left mr-3">🌸</span>The wait for the moon is more than just a ritual; it's a profound symbol of patience, love, sacrifice, and the deep dedication inherent in the marital bond. This period of anticipation becomes the emotional heart of the festival, beautifully culminating in the moment the fast is broken upon the moon's arrival.</p>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-6 mt-12 bg-white/50 border-t border-rose-100">
+        <p class="text-stone-600">Designed with ❤️ for a blessed Karwa Chauth.</p>
+    </footer>
+
+    <script>
+        const cityData = {
+            'New York': { moonrise: '08:15 PM' },
+            'San Francisco': { moonrise: '08:55 PM' },
+            'Chicago': { moonrise: '08:30 PM' },
+            'Houston': { moonrise: '08:40 PM' },
+            'Los Angeles': { moonrise: '08:45 PM' },
+            'Seattle': { moonrise: '09:05 PM' },
+            'Boston': { moonrise: '08:05 PM' },
+            'Atlanta': { moonrise: '08:35 PM' },
+        };
+
+        const citySelect = document.getElementById('city-select');
+        const moonriseTimeEl = document.getElementById('moonrise-time');
+
+        function updateTimings() {
+            const selectedCity = citySelect.value;
+            const data = cityData[selectedCity];
+            if (data) {
+                moonriseTimeEl.textContent = data.moonrise;
+                moonriseTimeEl.classList.add('animate-fade');
+                setTimeout(() => moonriseTimeEl.classList.remove('animate-fade'), 500);
+            }
+        }
+        
+        citySelect.addEventListener('change', updateTimings);
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTimings();
+            
+            const ctx = document.getElementById('moonriseDelayChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Full Moon', 'Day 1 After', 'Day 2 After', 'Day 3 After', 'Karwa Chauth (Day 4)'],
+                    datasets: [{
+                        label: 'Approx. Rise Time Delay (Minutes Past Sunset)',
+                        data: [10, 60, 110, 160, 210],
+                        backgroundColor: [
+                            '#fecdd3',
+                            '#fca5a5',
+                            '#f87171',
+                            '#ef4444',
+                            '#be123c'
+                        ],
+                        borderColor: '#9f1239',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += `${context.parsed.y} mins (approximate)`;
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Cumulative Moonrise Delay After Full Moon',
+                            font: {
+                                size: 16
+                            },
+                            color: '#44403c'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Approximate Minutes Later'
+                            }
+                        },
+                        x: {
+                           ticks: {
+                                callback: function(value, index, ticks) {
+                                    const label = this.getLabelForValue(value);
+                                    return label.length > 15 ? label.substring(0, 15) + '...' : label;
+                                }
+                           }
+                        }
+                    }
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>

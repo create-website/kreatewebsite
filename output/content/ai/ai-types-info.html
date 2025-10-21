@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 5 Pillars of AI: An Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a linear narrative structure designed for scrolling. It begins with a high-impact hook (Projected AI Market Growth) to establish significance. It then introduces the five core pillars of AI as a foundational section. Each subsequent section is dedicated to one pillar, presenting key data and concepts from the report using the most effective visualization for that information (e.g., line charts for trends, bar charts for comparisons, diagrams for processes). The narrative concludes by synthesizing all pillars into a single "Convergence" case study, reinforcing the report's central thesis in a final, compelling visual. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Projected AI Market Growth -> Goal: Inform -> Chosen Visualization: Single Big Number -> Justification/Library/Method: High-impact, attention-grabbing hook to convey the scale of the AI industry. (HTML/CSS)
+        - Data Point: The 5 Pillars of AI -> Goal: Organize -> Chosen Visualization: Styled HTML/CSS Cards -> Justification/Library/Method: Introduces the core concepts clearly and visually without complex charts, setting the stage for the deep dive. (HTML/CSS)
+        - Data Point: ML vs. DL Performance Scaling -> Goal: Change -> Chosen Visualization: Line Chart -> Justification/Library/Method: Perfectly illustrates the trend of performance improvement against data volume, a key concept from the report. (Chart.js)
+        - Data Point: Machine Translation Evolution -> Goal: Change -> Chosen Visualization: HTML/CSS Timeline -> Justification/Library/Method: Intuitively shows the chronological progression from RBMT to NMT, highlighting technological advancement over time. (HTML/CSS)
+        - Data Point: Computer Vision Industry Applications -> Goal: Compare -> Chosen Visualization: Bar Chart -> Justification/Library/Method: Allows for a clear, direct comparison of the adoption and impact of CV across different major industries. (Chart.js)
+        - Data Point: Automation vs. Autonomy -> Goal: Compare -> Chosen Visualization: Styled HTML/CSS Comparison Table -> Justification/Library/Method: A direct, side-by-side textual and iconic comparison is the clearest way to explain the nuanced differences between these two critical concepts in robotics. (HTML/CSS)
+        - Data Point: The 3 Pillars of Ethical AI -> Goal: Relationships -> Chosen Visualization: Radar Chart -> Justification/Library/Method: Effectively visualizes the balance and interdependence of the three core principles (Fairness, Accountability, Transparency), showing they are interconnected parts of a whole framework. (Chart.js)
+        - Data Point: AI Convergence Case Study -> Goal: Organize -> Chosen Visualization: HTML/CSS Flow Diagram -> Justification/Library/Method: Synthesizes the entire report by visually demonstrating how each of the five pillars combines to create a complex, real-world application, reinforcing the central thesis. (HTML/CSS)
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F5F1;
+            color: #004369;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4" style="color: #004369;">The AI Revolution</h1>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl mb-8" style="color: #01949A;">An infographic distilling the core domains, key technologies, and ethical frameworks shaping modern Artificial Intelligence, based on the comprehensive analytical report.</p>
+            <img src="https://storage.googleapis.com/5108_gdrive/slides.kreatewebsites.com/input/content/metrics/images/Slide1200/Slide1.png" alt="Diagram showing AI as the outer circle, Machine Learning as a subset, and Deep Learning as a core subset within Machine Learning" class="mx-auto max-w-lg w-full rounded-lg shadow-xl">
+        </header>
+
+        <section class="mb-20 text-center">
+            <div class="bg-white rounded-lg shadow-xl p-8 max-w-2xl mx-auto">
+                <h2 class="text-2xl font-bold uppercase tracking-wider mb-2" style="color: #01949A;">Projected Global AI Market Size by 2030</h2>
+                <p class="text-7xl md:text-8xl font-extrabold" style="color: #DB1F48;">$1.8 Trillion</p>
+                <p class="mt-4 text-base text-gray-600">The rapid integration of AI technologies across all industries is fueling unprecedented economic growth and transformation.</p>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10">The Five Foundational Pillars of AI</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 text-center">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-5xl mb-3">🧠</div>
+                    <h3 class="text-lg font-bold">Machine Learning</h3>
+                    <p class="text-sm text-gray-600">The learning core that enables systems to improve from data and experience.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-5xl mb-3">💬</div>
+                    <h3 class="text-lg font-bold">Natural Language Processing</h3>
+                    <p class="text-sm text-gray-600">The language interface bridging human communication and machine understanding.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-5xl mb-3">👁️</div>
+                    <h3 class="text-lg font-bold">Computer Vision</h3>
+                    <p class="text-sm text-gray-600">The artificial visual cortex empowering machines to see and interpret the world.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-5xl mb-3">🤖</div>
+                    <h3 class="text-lg font-bold">Robotics</h3>
+                    <p class="text-sm text-gray-600">The physical embodiment that allows AI to act upon and interact with the environment.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-5xl mb-3">⚖️</div>
+                    <h3 class="text-lg font-bold">Ethical AI</h3>
+                    <p class="text-sm text-gray-600">The essential guiding framework for responsible and trustworthy innovation.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+
+            <div class="bg-white p-8 rounded-lg shadow-xl">
+                <h3 class="text-2xl font-bold mb-1 text-center">The Deep Learning Advantage</h3>
+                <p class="text-center text-gray-600 mb-6">Deep Learning models significantly outperform traditional Machine Learning as data volume increases, a key driver of the current AI explosion.</p>
+                <div class="chart-container">
+                    <canvas id="deepLearningChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-lg shadow-xl">
+                <h3 class="text-2xl font-bold mb-1 text-center">Evolution of Machine Translation</h3>
+                <p class="text-center text-gray-600 mb-8">The journey from rigid, rule-based systems to context-aware neural networks mirrors the advancement of AI itself.</p>
+                <div class="relative">
+                    <div class="border-l-4 absolute h-full top-0 left-4" style="border-color: #E5DDC8;"></div>
+                    <div class="flex items-center mb-8">
+                        <div class="bg-red-500 rounded-full h-8 w-8 z-10 flex items-center justify-center font-bold text-white" style="background-color: #DB1F48;">1</div>
+                        <div class="ml-6">
+                            <h4 class="font-bold">Rule-Based (RBMT)</h4>
+                            <p class="text-sm text-gray-600">Relied on handcrafted grammatical rules and dictionaries. Laborious and inflexible.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center mb-8">
+                        <div class="bg-yellow-500 rounded-full h-8 w-8 z-10 flex items-center justify-center font-bold text-white" style="background-color: #01949A;">2</div>
+                        <div class="ml-6">
+                            <h4 class="font-bold">Statistical (SMT)</h4>
+                            <p class="text-sm text-gray-600">Used statistical models learned from large volumes of human-translated text.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="bg-green-500 rounded-full h-8 w-8 z-10 flex items-center justify-center font-bold text-white" style="background-color: #004369;">3</div>
+                        <div class="ml-6">
+                            <h4 class="font-bold">Neural (NMT)</h4>
+                            <p class="text-sm text-gray-600">Current state-of-the-art using deep neural networks to capture full sentence context.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-lg shadow-xl">
+                <h3 class="text-2xl font-bold mb-1 text-center">Computer Vision Across Industries</h3>
+                <p class="text-center text-gray-600 mb-6">Computer Vision is revolutionizing operations, safety, and diagnostics in nearly every major economic sector.</p>
+                <div class="chart-container">
+                    <canvas id="computerVisionChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-lg shadow-xl">
+                <h3 class="text-2xl font-bold mb-6 text-center">Automation vs. Autonomy</h3>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div>
+                        <div class="text-6xl">🔩</div>
+                        <h4 class="font-bold mt-2 text-lg">Automation</h4>
+                        <p class="text-sm text-gray-600 mt-1">Follows a **pre-programmed script**. Excels in stable, predictable environments. It's a tool executing instructions.</p>
+                    </div>
+                    <div>
+                        <div class="text-6xl">💡</div>
+                        <h4 class="font-bold mt-2 text-lg">Autonomy</h4>
+                        <p class="text-sm text-gray-600 mt-1">Makes **independent decisions**. Adapts to dynamic, unpredictable environments. It's an agent achieving goals.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-8 rounded-lg shadow-xl">
+                <h3 class="text-2xl font-bold mb-1 text-center">The Pillars of Trustworthy AI</h3>
+                <p class="text-center text-gray-600 mb-6">Ethical AI is not optional. A balanced approach to Fairness, Accountability, and Transparency is essential for building systems that are safe and beneficial.</p>
+                <div class="chart-container h-80 md:h-96">
+                    <canvas id="ethicalAiChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-lg shadow-xl flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-bold mb-4 text-center">The Convergence of AI</h3>
+                <p class="text-center text-gray-600 mb-6">The most powerful AI applications, like an autonomous delivery robot, are not products of a single domain but are integrated systems where all five pillars work in synergy.</p>
+                <div class="w-full text-center">
+                    <div class="flex justify-around mb-4">
+                        <span class="p-2 rounded-lg text-xs font-bold text-white" style="background-color: #01949A;">👁️ Vision</span>
+                        <span class="p-2 rounded-lg text-xs font-bold text-white" style="background-color: #01949A;">💬 NLP</span>
+                    </div>
+                    <div class="text-2xl font-bold my-2">↓</div>
+                    <div class="p-3 rounded-lg text-lg font-bold text-white inline-block" style="background-color: #DB1F48;">🧠 Machine Learning (Core)</div>
+                    <div class="text-2xl font-bold my-2">↓</div>
+                    <div class="p-3 rounded-lg text-lg font-bold text-white inline-block" style="background-color: #004369;">🤖 Robotics (Action)</div>
+                    <div class="mt-4 border-2 rounded-lg p-2 inline-block" style="border-color: #004369;">
+                        <span class="font-bold">⚖️ Governed by Ethical AI</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const FONT_COLOR = '#004369';
+            const GRID_COLOR = '#E5DDC8';
+            const PALETTE = {
+                darkBlue: '#004369',
+                teal: '#01949A',
+                redPink: '#DB1F48',
+                beige: '#E5DDC8',
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            const wrapLabel = (label) => {
+                if (label.length <= 16) return label;
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > 16) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            new Chart(document.getElementById('deepLearningChart'), {
+                type: 'line',
+                data: {
+                    labels: ['Small Data', 'Medium Data', 'Large Data', 'Big Data'],
+                    datasets: [{
+                        label: 'Traditional ML Performance',
+                        data: [75, 85, 88, 89],
+                        borderColor: PALETTE.teal,
+                        backgroundColor: PALETTE.teal + '33',
+                        tension: 0.3,
+                        fill: true,
+                    }, {
+                        label: 'Deep Learning Performance',
+                        data: [50, 70, 90, 98],
+                        borderColor: PALETTE.redPink,
+                        backgroundColor: PALETTE.redPink + '33',
+                        tension: 0.3,
+                        fill: true,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { color: FONT_COLOR },
+                            grid: { color: GRID_COLOR },
+                            title: { display: true, text: 'Model Accuracy (%)', color: FONT_COLOR }
+                        },
+                        x: {
+                            ticks: { color: FONT_COLOR },
+                            grid: { color: GRID_COLOR },
+                            title: { display: true, text: 'Volume of Data', color: FONT_COLOR }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: FONT_COLOR } },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('computerVisionChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Autonomous Vehicles', 'Medical Imaging', 'Industrial Automation', 'Retail & E-commerce'].map(wrapLabel),
+                    datasets: [{
+                        label: 'Industry Impact Score',
+                        data: [95, 92, 85, 78],
+                        backgroundColor: [PALETTE.darkBlue, PALETTE.teal, PALETTE.redPink, PALETTE.beige],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { color: FONT_COLOR },
+                            grid: { color: GRID_COLOR }
+                        },
+                        y: {
+                            ticks: { color: FONT_COLOR },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('ethicalAiChart'), {
+                type: 'radar',
+                data: {
+                    labels: ['Fairness', 'Accountability', 'Transparency'],
+                    datasets: [{
+                        label: 'Ideal Ethical Framework Score',
+                        data: [90, 85, 88],
+                        fill: true,
+                        backgroundColor: PALETTE.teal + '80',
+                        borderColor: PALETTE.teal,
+                        pointBackgroundColor: PALETTE.teal,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: PALETTE.teal
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: GRID_COLOR },
+                            grid: { color: GRID_COLOR },
+                            pointLabels: { color: FONT_COLOR, font: { size: 14 } },
+                            ticks: {
+                                backdropColor: 'rgba(0,0,0,0)',
+                                color: FONT_COLOR
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

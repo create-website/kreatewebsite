@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahavir Jayanti: Celebrating the Birth of Lord Mahavir</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Jain Principles (Saffron, White, Green) -->
+    <!-- Application Structure Plan: A narrative infographic that explains Mahavir Jayanti, focusing on its spiritual and philosophical significance. The structure is: 1. Hero section. 2. "What is Mahavir Jayanti?". 3. "The Life of Lord Mahavir". 4. "The Five Great Vows (Panchmahavrat)". 5. "Traditions of Serenity & Service". 6. "A Taste of Simplicity". This flow guides the user through the core tenets of Jainism as embodied by Mahavir. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The Five Vows -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the foundational principles of Jain ethics. -> Library/Method: HTML/CSS.
+        - Data Point: Key traditions -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clear way to present the devotional and charitable practices. -> Library/Method: HTML/CSS.
+        - Data Point: Simple Jain food -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display common foods, reflecting the Jain diet. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #F9FAFB; /* Very Light Gray */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-saffron { color: #F97316; }
+        .palette-text-green { color: #16A34A; }
+        .palette-text-gray { color: #4B5563; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #F97316; /* Saffron */
+            border: 3px solid #16A34A; /* Green */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-saffron tracking-wider">Mahavir Jayanti</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">Celebrating the Birth of the 24th Tirthankara</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Mahavir Jayanti?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Mahavir Jayanti is the most important religious festival for Jains, celebrating the birth of Lord Mahavir. He was the 24th and last Tirthankara (a great spiritual teacher) of the current cosmic age, who revived and reorganized the Jain faith. The day is marked by prayer, serenity, and acts of charity.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-saffron mb-4">🙏</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Birth of a Tirthankara</h3>
+                    <p class="mt-2 text-gray-600">The festival commemorates the birth of Prince Vardhamana, who later renounced worldly pleasures to become Mahavir, the "Great Hero."</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-green mb-4">🗓️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Festival Timing</h3>
+                    <p class="mt-2 text-gray-600">It is celebrated on the 13th day of the bright fortnight (Shukla Paksha) in the Hindu month of Chaitra, typically falling in March or April.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-gray mb-4">☮️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Message of Peace</h3>
+                    <p class="mt-2 text-gray-600">The core of the celebration is reflecting on Mahavir's teachings, especially the principle of Ahimsa (non-violence) towards all living beings.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Life of Lord Mahavir</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Born as Prince Vardhamana in the 6th century BCE to King Siddhartha and Queen Trishala in modern-day Bihar, his life was one of extraordinary renunciation. Despite being born into royalty, he was deeply troubled by the suffering in the world.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">🧘</div>
+                        <p class="text-xl font-bold mt-2 palette-text-saffron">From Prince to Ascetic</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">At the age of 30, Vardhamana left his palace and family, renouncing all worldly possessions to seek spiritual awakening. He spent the next twelve and a half years in intense meditation and severe penance, practicing extreme self-control and non-violence. He endured immense hardship with perfect equanimity. Finally, he attained Kevala Jnana (omniscience), becoming a Jina (a conqueror of inner enemies like attachment and desire) and a Tirthankara. For the next 30 years, he traveled across India, teaching the path to liberation (moksha) before attaining nirvana at the age of 72.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="virtues" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Five Great Vows (Panchmahavrat)</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Lord Mahavir's teachings are encapsulated in five core vows that form the foundation of Jain ethics for both ascetics and householders.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🕊️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Ahimsa</h3>
+                    <p class="mt-2 text-sm text-gray-600">Non-violence in thought, word, and deed towards all living beings. This is the highest principle.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🗣️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Satya</h3>
+                    <p class="mt-2 text-sm text-gray-600">Truthfulness; to always speak the truth and avoid falsehood that could cause harm.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🚫</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Asteya</h3>
+                    <p class="mt-2 text-sm text-gray-600">Non-stealing; not taking anything that is not willingly given.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🧘‍♂️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Brahmacharya</h3>
+                    <p class="mt-2 text-sm text-gray-600">Chastity and control over the senses to avoid sensual pleasures.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🤲</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Aparigraha</h3>
+                    <p class="mt-2 text-sm text-gray-600">Non-possession; detaching from people, places, and material things.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Traditions of Serenity & Service</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Mahavir Jayanti is celebrated not with loud festivities, but with quiet dignity, prayer, and acts of service that reflect the core teachings of Jainism.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🏛️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Temple Visits</h3>
+                    <p class="mt-2 text-sm text-gray-600">Devotees visit Jain temples to meditate and offer prayers to the idols of Lord Mahavir.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4"> procession</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Peaceful Processions</h3>
+                    <p class="mt-2 text-sm text-gray-600">A statue of Mahavir is carried on a chariot in a silent or low-chanting procession called a 'Rath Yatra'.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">📖</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Study of Scriptures</h3>
+                    <p class="mt-2 text-sm text-gray-600">Many Jains spend the day reading and listening to discourses on Jain scriptures that narrate Mahavir's life and teachings.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">❤️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Acts of Charity</h3>
+                    <p class="mt-2 text-sm text-gray-600">Following the principle of compassion, donations are made to charitable causes, especially those that support animal welfare.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Simplicity</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The food consumed by Jains is strictly vegetarian (often vegan) and sattvic, avoiding root vegetables like onions and garlic to prevent harming microorganisms in the soil. The festival food is simple, yet wholesome.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Common Jain Festival Foods</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Dal, Roti, and Sabzi', 
+                'Kheer (Rice Pudding)', 
+                'Fresh Fruits', 
+                'Simple Salads'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Commonality in Feast',
+                        data: [100, 90, 95, 80],
+                        backgroundColor: [
+                           '#16A34A', // Green
+                           '#F97316', // Saffron
+                           '#F59E0B', // Yellow
+                           '#65A30D'  // Lime Green
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Commonality in Festival Meals',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

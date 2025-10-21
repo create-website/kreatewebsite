@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive AI Domain Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: "Warm Neutral Harmony" - A calming palette with a beige background (#F5F5DC), dark slate for text (#2F4F4F), warm sand accents (#E4C59E), and a subtle sage green for interactive elements (#8FBC8F) to create a professional, supportive, and integrated feel. -->
+    <!-- Application Structure Plan: The SPA uses a "hub-and-spoke" model. The main page acts as a central hub with five interactive cards for each AI domain. This non-linear structure encourages exploration over passive reading. Clicking a card or a top navigation link smoothly scrolls to the relevant section, which presents the report's content through interactive components (e.g., toggles for comparisons, clickable timelines) rather than static text. This design was chosen to break down dense information into digestible, engaging modules, making the complex relationships between AI concepts easier for the user to understand and synthesize. The final "Convergence" section synthesizes all domains through an interactive case study, reinforcing the report's central thesis. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: AI/ML/DL Hierarchy -> Goal: Organize -> Viz: Nested HTML/CSS boxes -> Interaction: Visual hierarchy -> Justification: Clearly shows the subset relationship without complex charts.
+        - Report Info: Learning Paradigms Table -> Goal: Compare -> Viz: Interactive Tabbed Component -> Interaction: Click buttons to reveal content -> Justification: More engaging than a static table, focuses user on one concept at a time.
+        - Report Info: ML vs DL performance -> Goal: Compare -> Viz: Line Chart (Chart.js) -> Interaction: Hover for tooltips -> Justification: Visually represents the key conceptual difference in how model performance scales with data.
+        - Report Info: NLP Evolution (RBMT/SMT/NMT) -> Goal: Show Change -> Viz: Horizontal HTML/CSS Timeline -> Interaction: Clickable stages -> Justification: Intuitively shows progression over time.
+        - Report Info: Image Recognition vs. Object Detection -> Goal: Compare -> Viz: Image with toggleable overlays -> Interaction: Button click to switch views -> Justification: Directly demonstrates the functional difference on a single visual example.
+        - Report Info: Automation vs. Autonomy -> Goal: Compare -> Viz: Two-sided card component -> Interaction: Click to flip/reveal -> Justification: Reinforces the duality and core distinctions of the two concepts.
+        - Report Info: Ethical AI Pillars -> Goal: Inform/Organize -> Viz: Clickable cards -> Interaction: Click to expand -> Justification: A clean, modern way to present related but distinct principles.
+        - Report Info: Convergence Case Study -> Goal: Synthesize -> Viz: Interactive diagram with icons -> Interaction: Hover/click on domain icons -> Justification: Visually ties all five domains together, fulfilling the report's thesis in a single, conclusive graphic.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F5DC;
+            color: #2F4F4F;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #8FBC8F;
+            border-bottom-color: #8FBC8F;
+        }
+        .domain-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .domain-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .interactive-btn {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .interactive-btn.active {
+            background-color: #8FBC8F;
+            color: white;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 11px;
+            left: -10px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #E4C59E;
+            border: 3px solid #F5F5DC;
+        }
+        .timeline-item.active::before {
+            background-color: #8FBC8F;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-slate-800">AI Domain Explorer</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">Home</a>
+                <a href="#ml" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">Machine Learning</a>
+                <a href="#nlp" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">NLP</a>
+                <a href="#vision" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">Computer Vision</a>
+                <a href="#robotics" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">Robotics</a>
+                <a href="#ethics" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">Ethical AI</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section id="home" class="text-center mb-20">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">An Analytical Exposition of Modern AI</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-700">
+                This interactive experience explores the five principal domains that form the pillars of modern Artificial Intelligence. Discover how Machine Learning, Natural Language Processing, Computer Vision, Robotics, and Ethical AI synergize to create the transformative technologies reshaping our world. Select a domain below to begin your exploration.
+            </p>
+        </section>
+
+        <section id="domain-hub" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-20">
+            <a href="#ml" class="domain-card bg-white p-6 rounded-lg shadow-md text-center cursor-pointer">
+                <div class="text-4xl mb-4">🧠</div>
+                <h3 class="text-lg font-bold mb-2">Machine Learning</h3>
+                <p class="text-sm text-slate-600">The learning core that allows systems to improve from experience.</p>
+            </a>
+            <a href="#nlp" class="domain-card bg-white p-6 rounded-lg shadow-md text-center cursor-pointer">
+                <div class="text-4xl mb-4">💬</div>
+                <h3 class="text-lg font-bold mb-2">Natural Language Processing</h3>
+                <p class="text-sm text-slate-600">The language interface bridging humans and machines.</p>
+            </a>
+            <a href="#vision" class="domain-card bg-white p-6 rounded-lg shadow-md text-center cursor-pointer">
+                <div class="text-4xl mb-4">👁️</div>
+                <h3 class="text-lg font-bold mb-2">Computer Vision</h3>
+                <p class="text-sm text-slate-600">The artificial visual cortex empowering machines to see.</p>
+            </a>
+            <a href="#robotics" class="domain-card bg-white p-6 rounded-lg shadow-md text-center cursor-pointer">
+                <div class="text-4xl mb-4">🤖</div>
+                <h3 class="text-lg font-bold mb-2">Robotics</h3>
+                <p class="text-sm text-slate-600">The physical embodiment for interaction with the world.</p>
+            </a>
+            <a href="#ethics" class="domain-card bg-white p-6 rounded-lg shadow-md text-center cursor-pointer">
+                <div class="text-4xl mb-4">⚖️</div>
+                <h3 class="text-lg font-bold mb-2">Ethical AI</h3>
+                <p class="text-sm text-slate-600">The guiding framework for responsible innovation.</p>
+            </a>
+        </section>
+
+        <div id="content-display-area">
+            <section id="ml" class="content-section p-8 bg-white rounded-lg shadow-lg mb-16">
+                <h2 class="text-3xl font-bold mb-4">🧠 The Learning Core: Machine Learning</h2>
+                <p class="mb-8 text-slate-700">Machine Learning (ML) is the engine of modern AI, shifting from explicitly programmed systems to systems that learn patterns from data. This section explores the core concepts of ML, its learning paradigms, and the rise of Deep Learning, which has unlocked unprecedented capabilities through complex neural networks.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">The Hierarchy of Intelligence</h3>
+                        <p class="text-slate-600 mb-4">AI, ML, and Deep Learning are nested concepts. AI is the broad field, ML is a subset that learns from data, and DL is a specialized type of ML using deep neural networks.</p>
+                        <img src="https://storage.googleapis.com/5108_gdrive/slides.kreatewebsites.com/input/content/metrics/images/Slide1200/Slide1.png" alt="Diagram showing AI as the outer circle, Machine Learning as a subset, and Deep Learning as a core subset within Machine Learning" class="w-full h-auto rounded-lg shadow-md border border-stone-200 mt-4">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Paradigms of Learning</h3>
+                        <p class="text-slate-600 mb-4">ML models are categorized by how they learn. Click each paradigm to see how it works, its goals, and key applications.</p>
+                        <div class="flex space-x-2 mb-4">
+                            <button class="interactive-btn flex-1 px-4 py-2 rounded-md bg-stone-200 text-slate-800" data-paradigm="supervised">Supervised</button>
+                            <button class="interactive-btn flex-1 px-4 py-2 rounded-md bg-stone-200 text-slate-800" data-paradigm="unsupervised">Unsupervised</button>
+                            <button class="interactive-btn flex-1 px-4 py-2 rounded-md bg-stone-200 text-slate-800" data-paradigm="reinforcement">Reinforcement</button>
+                        </div>
+                        <div id="paradigm-content" class="bg-stone-100 p-4 rounded-lg border border-stone-200 min-h-[150px]"></div>
+                    </div>
+                </div>
+                <div class="mt-12">
+                     <h3 class="text-xl font-semibold mb-4 text-center">The Deep Learning Advantage: Scaling with Data</h3>
+                     <p class="text-slate-600 mb-4 text-center max-w-2xl mx-auto">A key distinction of Deep Learning is its ability to continuously improve performance as the volume of training data grows, surpassing traditional ML models which often plateau.</p>
+                     <div class="chart-container">
+                        <canvas id="ml-chart"></canvas>
+                     </div>
+                </div>
+            </section>
+
+            <section id="nlp" class="content-section p-8 bg-white rounded-lg shadow-lg mb-16">
+                <h2 class="text-3xl font-bold mb-4">💬 The Language Interface: NLP</h2>
+                <p class="mb-8 text-slate-700">Natural Language Processing (NLP) bridges the gap between human communication and machine computation. This section explores how NLP enables computers to understand and generate language, and highlights the evolution of its core technologies.</p>
+                <h3 class="text-xl font-semibold mb-4">Evolution of Machine Translation</h3>
+                <p class="text-slate-600 mb-8">Machine Translation has evolved from rigid, rule-based systems to context-aware neural networks, mirroring the broader shift in AI. Click each stage on the timeline to learn more.</p>
+                <div class="relative pl-4 border-l-2 border-dashed border-stone-300">
+                    <div id="timeline-item-rbmt" class="timeline-item mb-10 pl-8 cursor-pointer">
+                        <h4 class="font-bold text-lg">Rule-Based (RBMT)</h4>
+                        <p class="text-sm text-slate-600">The earliest approach, relying on handcrafted grammatical rules and dictionaries.</p>
+                    </div>
+                    <div id="timeline-item-smt" class="timeline-item mb-10 pl-8 cursor-pointer">
+                        <h4 class="font-bold text-lg">Statistical (SMT)</h4>
+                        <p class="text-sm text-slate-600">Used statistical models learned from large amounts of human-translated text.</p>
+                    </div>
+                    <div id="timeline-item-nmt" class="timeline-item pl-8 cursor-pointer">
+                        <h4 class="font-bold text-lg">Neural (NMT)</h4>
+                        <p class="text-sm text-slate-600">The current state-of-the-art, using deep neural networks to capture context and nuance.</p>
+                    </div>
+                </div>
+                <div id="timeline-content" class="mt-6 bg-stone-100 p-4 rounded-lg border border-stone-200 min-h-[100px]"></div>
+            </section>
+
+            <section id="vision" class="content-section p-8 bg-white rounded-lg shadow-lg mb-16">
+                <h2 class="text-3xl font-bold mb-4">👁️ The Visual Cortex: Computer Vision</h2>
+                <p class="mb-8 text-slate-700">Computer Vision enables machines to "see" and interpret the visual world. Powered by Convolutional Neural Networks (CNNs), these systems automate tasks that require human sight. This section clarifies the critical distinctions between its core tasks.</p>
+                <h3 class="text-xl font-semibold mb-4 text-center">Recognition vs. Detection: A Critical Distinction</h3>
+                <p class="text-slate-600 mb-6 text-center max-w-2xl mx-auto">While related, these tasks have different goals. Image Recognition assigns a single label to an image ("What is this?"), while Object Detection finds and locates multiple objects ("What is in this, and where?").</p>
+                <div class="flex justify-center space-x-4 mb-6">
+                    <button id="vision-btn-recognition" class="interactive-btn px-6 py-2 rounded-md bg-stone-200 text-slate-800">Image Recognition</button>
+                    <button id="vision-btn-detection" class="interactive-btn px-6 py-2 rounded-md bg-stone-200 text-slate-800">Object Detection</button>
+                </div>
+                <div class="relative w-full max-w-2xl mx-auto aspect-video rounded-lg overflow-hidden shadow-inner bg-stone-200">
+                    <img src="https://images.unsplash.com/photo-1555438573-05a0f0f4c14a?q=80&w=1920&auto=format&fit=crop" class="w-full h-full object-cover" alt="Busy city street">
+                    <div id="vision-overlay-recognition" class="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity duration-300">
+                        <div class="bg-white/90 text-slate-800 px-4 py-2 rounded-md text-2xl font-bold shadow-lg">Cityscape</div>
+                    </div>
+                    <div id="vision-overlay-detection" class="absolute inset-0 transition-opacity duration-300 opacity-0">
+                        <div class="absolute border-2 border-yellow-300" style="left: 5%; top: 45%; width: 25%; height: 40%;"><span class="absolute -top-6 left-0 bg-yellow-300 text-black text-xs px-1">Car</span></div>
+                        <div class="absolute border-2 border-cyan-300" style="left: 35%; top: 55%; width: 10%; height: 35%;"><span class="absolute -top-6 left-0 bg-cyan-300 text-black text-xs px-1">Person</span></div>
+                        <div class="absolute border-2 border-cyan-300" style="left: 48%; top: 60%; width: 8%; height: 30%;"><span class="absolute -top-6 left-0 bg-cyan-300 text-black text-xs px-1">Person</span></div>
+                        <div class="absolute border-2 border-yellow-300" style="left: 60%; top: 58%; width: 38%; height: 35%;"><span class="absolute -top-6 left-0 bg-yellow-300 text-black text-xs px-1">Bus</span></div>
+                        <div class="absolute border-2 border-pink-400" style="left: 40%; top: 10%; width: 20%; height: 25%;"><span class="absolute -top-6 left-0 bg-pink-400 text-black text-xs px-1">Building</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="robotics" class="content-section p-8 bg-white rounded-lg shadow-lg mb-16">
+                <h2 class="text-3xl font-bold mb-4">🤖 The Physical Embodiment: Robotics</h2>
+                <p class="mb-8 text-slate-700">Robotics gives AI a physical form to act upon the world. This section examines the crucial distinction between automation (following a script) and autonomy (making intelligent decisions), a leap enabled by AI.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="p-6 rounded-lg border-2 border-dashed border-stone-300 text-center cursor-pointer" id="robotics-automation-card">
+                        <h3 class="text-2xl font-bold mb-2">Automation</h3>
+                        <p class="text-slate-600 mb-4">Pre-programmed precision for repetitive tasks.</p>
+                        <ul class="text-left list-disc list-inside text-slate-700 space-y-2">
+                            <li>Rule-based and inflexible</li>
+                            <li>Excels in stable, predictable environments</li>
+                            <li>Example: An assembly line arm</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 rounded-lg border-2 border-dashed border-stone-300 text-center cursor-pointer" id="robotics-autonomy-card">
+                        <h3 class="text-2xl font-bold mb-2">Autonomy</h3>
+                        <p class="text-slate-600 mb-4">Adaptive decision-making in dynamic environments.</p>
+                        <ul class="text-left list-disc list-inside text-slate-700 space-y-2">
+                            <li>Learning-based and adaptive</li>
+                            <li>Shines in complex, unpredictable settings</li>
+                            <li>Example: A self-driving car</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ethics" class="content-section p-8 bg-white rounded-lg shadow-lg mb-16">
+                <h2 class="text-3xl font-bold mb-4">⚖️ The Guiding Framework: Ethical AI</h2>
+                <p class="mb-8 text-slate-700">Ethical AI is not a separate domain but an essential framework governing all AI innovation. It ensures systems are developed and used in a way that is fair, accountable, and transparent. Explore the three pillars of trustworthy AI.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-stone-100 p-6 rounded-lg border border-stone-200">
+                        <h3 class="text-xl font-bold mb-2">Fairness</h3>
+                        <p class="text-slate-600">Mitigating bias in algorithms and data to ensure equitable outcomes for all individuals and groups.</p>
+                    </div>
+                    <div class="bg-stone-100 p-6 rounded-lg border border-stone-200">
+                        <h3 class="text-xl font-bold mb-2">Accountability</h3>
+                        <p class="text-slate-600">Establishing clear mechanisms of responsibility for the impacts of AI systems when they make mistakes or cause harm.</p>
+                    </div>
+                    <div class="bg-stone-100 p-6 rounded-lg border border-stone-200">
+                        <h3 class="text-xl font-bold mb-2">Transparency</h3>
+                        <p class="text-slate-600">Ensuring that an AI system's decision-making process is understandable to its users and stakeholders (Explainable AI).</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="convergence" class="p-8 bg-white rounded-lg shadow-lg">
+                <h2 class="text-3xl font-bold mb-4 text-center">Conclusion: The Convergence of AI</h2>
+                <p class="mb-8 text-slate-700 max-w-3xl mx-auto text-center">The most transformative AI applications emerge from the deep and synergistic integration of these domains. Consider an autonomous urban delivery robot—a system that sees, listens, learns, and acts, all governed by an ethical framework. This is the future of integrated AI.</p>
+                <div class="relative max-w-xl mx-auto p-8 bg-stone-100 rounded-full aspect-square flex items-center justify-center">
+                    <div class="text-center">
+                        <div class="text-6xl mb-2">📦</div>
+                        <h3 class="text-xl font-bold">Autonomous Delivery</h3>
+                    </div>
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-3 rounded-full shadow-md text-center w-24">
+                        <div class="text-2xl">🧠</div><span class="text-xs font-semibold">ML</span>
+                    </div>
+                    <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 bg-white p-3 rounded-full shadow-md text-center w-24">
+                        <div class="text-2xl">💬</div><span class="text-xs font-semibold">NLP</span>
+                    </div>
+                     <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-white p-3 rounded-full shadow-md text-center w-24">
+                        <div class="text-2xl">🤖</div><span class="text-xs font-semibold">Robotics</span>
+                    </div>
+                     <div class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 bg-white p-3 rounded-full shadow-md text-center w-24">
+                        <div class="text-2xl">👁️</div><span class="text-xs font-semibold">Vision</span>
+                    </div>
+                    <div class="absolute top-1/4 right-1/4 translate-x-1/2 -translate-y-1/2 bg-white p-3 rounded-full shadow-md text-center w-24">
+                        <div class="text-2xl">⚖️</div><span class="text-xs font-semibold">Ethics</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const content = {
+                ml: {
+                    paradigms: {
+                        supervised: {
+                            title: 'Supervised Learning',
+                            text: 'Learns from labeled data (input-output pairs). The goal is to predict outcomes for new, unseen data. Think of it as learning with an answer key.',
+                            apps: 'Spam classification, stock price prediction.'
+                        },
+                        unsupervised: {
+                            title: 'Unsupervised Learning',
+                            text: 'Works with unlabeled data to find hidden patterns or structures on its own. It\'s like sorting a library of books without knowing the genres beforehand.',
+                            apps: 'Customer segmentation, anomaly detection.'
+                        },
+                        reinforcement: {
+                            title: 'Reinforcement Learning',
+                            text: 'An "agent" learns by interacting with an environment, receiving rewards or penalties for its actions. It learns the best strategy through trial and error.',
+                            apps: 'Game playing (Chess, Go), robotic control.'
+                        }
+                    }
+                },
+                nlp: {
+                    timeline: {
+                        rbmt: 'Relied on vast sets of handcrafted grammatical rules and bilingual dictionaries. These systems were laborious to build and often produced rigid, unnatural translations.',
+                        smt: 'Used machine learning to analyze massive bodies of human-translated text. By learning statistical probabilities, SMT produced more fluent translations than RBMT.',
+                        nmt: 'Uses deep neural networks to consider the entire source sentence as a single input, capturing context far more effectively. This results in dramatically more accurate and natural-sounding translations.'
+                    }
+                }
+            };
+
+            const navLinks = document.querySelectorAll('.nav-link, .domain-card');
+            const contentSections = document.querySelectorAll('.content-section');
+            const hubSection = document.getElementById('domain-hub');
+
+            function showSection(hash) {
+                let targetId = hash.substring(1);
+                
+                if (!targetId || targetId === 'home') {
+                    hubSection.style.display = 'grid';
+                    contentSections.forEach(s => s.style.display = 'none');
+                    document.getElementById('content-display-area').style.display = 'none';
+                    return;
+                }
+                
+                hubSection.style.display = 'none';
+                document.getElementById('content-display-area').style.display = 'block';
+
+                contentSections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+                
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === hash);
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const hash = this.getAttribute('href');
+                    history.pushState(null, null, hash);
+                    showSection(hash);
+                    const targetElement = document.getElementById(hash.substring(1));
+                    if(targetElement) {
+                       const headerOffset = 80;
+                       const elementPosition = targetElement.getBoundingClientRect().top;
+                       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                       window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            window.addEventListener('popstate', () => {
+                showSection(window.location.hash);
+            });
+
+            function initMLParadigmSelector() {
+                const buttons = document.querySelectorAll('[data-paradigm]');
+                const contentDiv = document.getElementById('paradigm-content');
+                
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const paradigm = button.dataset.paradigm;
+                        const data = content.ml.paradigms[paradigm];
+                        
+                        buttons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        
+                        contentDiv.innerHTML = `
+                            <h4 class="font-bold text-lg mb-2">${data.title}</h4>
+                            <p class="text-slate-700 mb-2">${data.text}</p>
+                            <p class="text-sm text-slate-500"><strong>Example:</strong> ${data.apps}</p>
+                        `;
+                    });
+                });
+                buttons[0].click();
+            }
+
+            function initNLPTimeline() {
+                const items = document.querySelectorAll('.timeline-item');
+                const contentDiv = document.getElementById('timeline-content');
+
+                items.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const type = item.id.split('-')[2];
+                        const text = content.nlp.timeline[type];
+                        
+                        items.forEach(i => i.classList.remove('active'));
+                        item.classList.add('active');
+
+                        contentDiv.innerHTML = `<p class="text-slate-700">${text}</p>`;
+                    });
+                });
+                items[0].click();
+            }
+            
+            function initVisionToggle() {
+                const btnRec = document.getElementById('vision-btn-recognition');
+                const btnDet = document.getElementById('vision-btn-detection');
+                const overlayRec = document.getElementById('vision-overlay-recognition');
+                const overlayDet = document.getElementById('vision-overlay-detection');
+
+                function setVisionMode(mode) {
+                    if (mode === 'recognition') {
+                        btnRec.classList.add('active');
+                        btnDet.classList.remove('active');
+                        overlayRec.classList.remove('opacity-0');
+                        overlayDet.classList.add('opacity-0');
+                    } else {
+                        btnRec.classList.remove('active');
+                        btnDet.classList.add('active');
+                        overlayRec.classList.add('opacity-0');
+                        overlayDet.classList.remove('opacity-0');
+                    }
+                }
+                
+                btnRec.addEventListener('click', () => setVisionMode('recognition'));
+                btnDet.addEventListener('click', () => setVisionMode('detection'));
+                
+                setVisionMode('recognition');
+            }
+
+            function createMLChart() {
+                const ctx = document.getElementById('ml-chart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Small Data', 'Medium Data', 'Large Data', 'Very Large Data (Big Data)'],
+                        datasets: [{
+                            label: 'Traditional Machine Learning',
+                            data: [65, 80, 85, 86],
+                            borderColor: '#E4C59E',
+                            backgroundColor: '#E4C59E33',
+                            tension: 0.1,
+                            fill: true,
+                        }, {
+                            label: 'Deep Learning',
+                            data: [40, 60, 85, 95],
+                            borderColor: '#8FBC8F',
+                            backgroundColor: '#8FBC8F33',
+                            tension: 0.1,
+                            fill: true,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Model Performance / Accuracy'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Amount of Data'
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                            },
+                            legend: {
+                                position: 'bottom',
+                            }
+                        }
+                    }
+                });
+            }
+
+            initMLParadigmSelector();
+            initNLPTimeline();
+            initVisionToggle();
+            createMLChart();
+
+            showSection(window.location.hash || '#home');
+        });
+    </script>
+
+</body>
+</html>

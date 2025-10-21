@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sacred Bond: An Infographic on Śrāddha</title>
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a top-down narrative, starting with the foundational philosophy ("The Why"), moving to the practical execution ("The How"), then covering the timing ("The When"), and finally providing broader context ("The Who & The World"). This logical flow guides the user from core concepts to practical details and comparative analysis, telling a complete story. The structure uses a single-column layout with distinct, full-width sections for clarity, making it easy to scroll and digest on any device. -->
+    <!-- Visualization & Content Choices: 1. The Three Debts: Goal is to organize a core concept. Visualized as three styled HTML cards with icons. Justification: This breaks down a foundational philosophical point into three clear, digestible parts. Method: HTML/CSS. 2. The Ritual Flow: Goal is to show a process. Visualized as a horizontal flowchart using styled HTML divs. Justification: Clearly illustrates the step-by-step sequence of the ceremony in a visually engaging way. Method: HTML/CSS. 3. Types of Śrāddha: Goal is to compare composition. Visualized as a Donut Chart. Justification: Shows the relative frequency/importance of different Śrāddha types, offering a quick visual summary that's more engaging than a list. Method: Chart.js (Canvas). 4. Global Comparison: Goal is to compare categories. Visualized as a Grouped Bar Chart. Justification: Provides a direct, quantitative comparison of abstract qualities (like tone and purpose) across different cultures, making the distinctions clear. Method: Chart.js (Canvas). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+            color: #0A2240;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .flow-arrow {
+            font-size: 2rem;
+            line-height: 1;
+            color: #F2542D;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center my-8 md:my-12">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-[#0A2240] mb-4">The Sacred Bond: Understanding Śrāddha</h1>
+            <p class="text-lg md:text-xl text-[#226089] max-w-3xl mx-auto">An infographic exploring the profound Hindu ritual of honoring ancestors, from its ancient philosophy to its modern practice.</p>
+        </header>
+
+        <section class="bg-white rounded-2xl shadow-lg p-6 md:p-8 my-12">
+            <h2 class="text-3xl font-bold text-center text-[#0A2240] mb-2">The Why: A Foundation of Three Sacred Debts</h2>
+            <p class="text-center text-[#226089] mb-8 max-w-2xl mx-auto">Hindu philosophy teaches that every person is born with three fundamental obligations (*Ṛṇatraya*). The performance of Śrāddha is the primary way to fulfill the sacred debt owed to one's ancestors.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-[#F8F9FA] p-6 rounded-xl border-l-4 border-[#F2542D]">
+                    <div class="text-5xl mb-3">🙏</div>
+                    <h3 class="text-xl font-bold text-[#0A2240]">Deva-ṛṇa</h3>
+                    <p class="text-[#226089]">The debt to the Gods for sustaining the cosmos, repaid through worship and ritual.</p>
+                </div>
+                <div class="bg-[#F8F9FA] p-6 rounded-xl border-l-4 border-[#F5DF4D]">
+                    <div class="text-5xl mb-3">📜</div>
+                    <h3 class="text-xl font-bold text-[#0A2240]">Rṣi-ṛṇa</h3>
+                    <p class="text-[#226089]">The debt to the Sages for sacred wisdom, repaid by studying scripture and living righteously.</p>
+                </div>
+                <div class="bg-[#F8F9FA] p-6 rounded-xl border-l-4 border-[#226089]">
+                    <div class="text-5xl mb-3">👨‍👩‍👧‍👦</div>
+                    <h3 class="text-xl font-bold text-[#0A2240]">Pitṛ-ṛṇa</h3>
+                    <p class="text-[#226089]">The debt to the Ancestors for life itself, repaid by performing Śrāddha.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-lg p-6 md:p-8 my-12">
+            <h2 class="text-3xl font-bold text-center text-[#0A2240] mb-2">The How: Anatomy of the Ritual</h2>
+            <p class="text-center text-[#226089] mb-8 max-w-2xl mx-auto">The Śrāddha ceremony is a structured sequence of symbolic acts designed to purify, invoke, and nourish the ancestral spirits, bridging the gap between the earthly and spiritual realms.</p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0">
+                <div class="text-center p-4">
+                    <div class="text-4xl mb-2">🧼</div>
+                    <h4 class="font-bold">Purification</h4>
+                    <p class="text-sm text-[#226089]">Sanctifying the space and performer.</p>
+                </div>
+                <div class="flow-arrow hidden md:block">→</div>
+                <div class="flow-arrow md:hidden">↓</div>
+                <div class="text-center p-4">
+                    <div class="text-4xl mb-2">🗣️</div>
+                    <h4 class="font-bold">Invocation</h4>
+                    <p class="text-sm text-[#226089]">Calling ancestors to be present.</p>
+                </div>
+                <div class="flow-arrow hidden md:block">→</div>
+                <div class="flow-arrow md:hidden">↓</div>
+                <div class="text-center p-4">
+                    <div class="text-4xl mb-2">🔥</div>
+                    <h4 class="font-bold">Fire Ritual</h4>
+                    <p class="text-sm text-[#226089]">Sending offerings via the god Agni.</p>
+                </div>
+                <div class="flow-arrow hidden md:block">→</div>
+                <div class="flow-arrow md:hidden">↓</div>
+                 <div class="text-center p-4">
+                    <div class="text-4xl mb-2">💧</div>
+                    <h4 class="font-bold">Water Libation</h4>
+                    <p class="text-sm text-[#226089]">Quenching the spirits' thirst.</p>
+                </div>
+                <div class="flow-arrow hidden md:block">→</div>
+                <div class="flow-arrow md:hidden">↓</div>
+                <div class="text-center p-4 bg-[#F2542D] text-white rounded-lg">
+                    <div class="text-4xl mb-2">🍚</div>
+                    <h4 class="font-bold">Pinda Daan</h4>
+                    <p class="text-sm">The key offering of rice balls.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 my-12">
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-center text-[#0A2240] mb-2">The When: A Taxonomy of Observance</h2>
+                <p class="text-center text-[#226089] mb-8 max-w-2xl mx-auto">Śrāddha is not a single event but a recurring duty. This chart shows the relative prominence of the different types of rituals, from daily remembrances to annual ceremonies.</p>
+                <div class="chart-container h-[300px] md:h-[400px]">
+                    <canvas id="typesChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                 <h2 class="text-3xl font-bold text-center text-[#0A2240] mb-2">The Who: A Hierarchy of Duty</h2>
+                <p class="text-center text-[#226089] mb-8 max-w-2xl mx-auto">Traditionally, the duty to perform Śrāddha falls to the son, but scriptures provide a detailed hierarchy to ensure ancestors are never neglected. Modern interpretations are expanding the role of women.</p>
+                <div class="space-y-3 text-center">
+                    <div class="bg-[#0A2240] text-white p-3 rounded-lg font-bold text-lg">1. Son</div>
+                    <div class="text-2xl">↓</div>
+                    <div class="bg-[#226089] text-white p-3 rounded-lg font-semibold">2. Grandson / Great-Grandson</div>
+                     <div class="text-2xl">↓</div>
+                    <div class="bg-[#F2542D] text-white p-3 rounded-lg font-semibold">3. Wife or Daughter</div>
+                     <div class="text-2xl">↓</div>
+                    <div class="bg-[#F5DF4D] text-[#0A2240] p-3 rounded-lg font-semibold">4. Other Male Relatives (Brother, Nephew)</div>
+                     <div class="text-2xl">↓</div>
+                    <div class="bg-gray-200 text-gray-700 p-3 rounded-lg font-semibold">5. Extended Kin, Disciples, or Friends</div>
+                </div>
+            </div>
+        </div>
+
+        <section class="bg-white rounded-2xl shadow-lg p-6 md:p-8 my-12">
+            <h2 class="text-3xl font-bold text-center text-[#0A2240] mb-2">The World: A Global Comparison</h2>
+            <p class="text-center text-[#226089] mb-8 max-w-2xl mx-auto">Ancestor veneration is a universal human practice. This chart compares the tone, purpose, and focus of Śrāddha with two other major global traditions, highlighting their unique cultural philosophies.</p>
+            <div class="chart-container h-[400px] md:h-[500px]">
+                <canvas id="comparisonChart"></canvas>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        function wrapText(str) {
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            const maxLength = 16;
+
+            words.forEach(word => {
+                if ((currentLine + word).length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            });
+            lines.push(currentLine.trim());
+            return lines.filter(line => line.length > 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const typesCtx = document.getElementById('typesChart').getContext('2d');
+            new Chart(typesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Annual (Naimittika)', 'Collective (Parvana)', 'Celebratory (Vriddhi)', 'Daily (Nitya)', 'For a Wish (Kamya)'],
+                    datasets: [{
+                        data: [40, 30, 15, 10, 5],
+                        backgroundColor: ['#0A2240', '#226089', '#F2542D', '#F5DF4D', '#A0AEC0'],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutoutPercentage: 60,
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            fontColor: '#0A2240',
+                            boxWidth: 15,
+                            padding: 15,
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    } else {
+                                      return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
+            const originalLabels = ['Śrāddha (Hinduism)', 'Día de los Muertos (Mexico)', 'Qingming Festival (China)'];
+            const wrappedLabels = originalLabels.map(label => wrapText(label));
+
+            new Chart(comparisonCtx, {
+                type: 'bar',
+                data: {
+                    labels: wrappedLabels,
+                    datasets: [{
+                        label: 'Solemnity',
+                        data: [9, 2, 6],
+                        backgroundColor: '#0A2240',
+                    }, {
+                        label: 'Festivity',
+                        data: [1, 9, 5],
+                        backgroundColor: '#F2542D',
+                    }, {
+                        label: 'Focus on Afterlife Progression',
+                        data: [10, 3, 2],
+                        backgroundColor: '#226089',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                max: 10,
+                                stepSize: 2,
+                                fontColor: '#0A2240'
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                fontColor: '#0A2240',
+                                fontStyle: 'bold'
+                            }
+                        }]
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            fontColor: '#0A2240',
+                            boxWidth: 15,
+                            padding: 20
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    } else {
+                                      return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

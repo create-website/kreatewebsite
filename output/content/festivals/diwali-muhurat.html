@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="hi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>दिवाली पूजा: एक इंटरैक्टिव गाइड</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Tiro+Devanagari+Hindi:wght@400&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Festive Harmony (Cream, Saffron, Gold, Maroon) -->
+    <!-- Application Structure Plan: The chosen structure is a thematic, single-page layout with a sticky navigation bar. This transforms the linear report into a user-driven, non-linear exploration. The key interaction is the interactive "Puja Stepper" for the 16-step Shodashopachara ritual. This design choice breaks down the most complex part of the report into digestible, sequential steps, making it far more user-friendly and less intimidating than a long wall of text. It prioritizes task-based learning (how to do the puja) and easy access to specific information (like timings or regional customs) over the original report's narrative flow, thus enhancing usability and comprehension. -->
+    <!-- Visualization & Content Choices: Muhurat Table -> Interactive Cards (Goal: Organize/Inform, Interaction: Hover/Click, Justification: More engaging, Method: HTML/JS). 16 Puja Steps List -> Interactive Stepper (Goal: Guide process, Interaction: Next/Prev buttons, Justification: Simplifies complex ritual, Method: HTML/JS). Puja Materials Table -> Modal List (Goal: Inform, Interaction: Button click, Justification: De-clutters UI, Method: HTML/JS). Regional Variations List -> Vertical Tabs (Goal: Compare/Inform, Interaction: Click tabs, Justification: Space-efficient comparison, Method: HTML/JS). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', 'Tiro Devanagari Hindi', sans-serif;
+            background-color: #FFFBF5;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #D97706; /* amber-600 */
+            border-bottom-color: #D97706;
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .tab.active {
+            background-color: #FEF3C7; /* amber-100 */
+            color: #B45309; /* amber-700 */
+            border-right: 4px solid #D97706; /* amber-600 */
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-amber-100/50 text-center py-8 px-4 shadow-md">
+        <h1 class="text-4xl md:text-5xl font-bold text-amber-800" style="font-family: 'Tiro Devanagari Hindi', serif;">दिव्य Illumination</h1>
+        <p class="mt-2 text-lg text-amber-700">दिवाली लक्ष्मी पूजा के लिए एक इंटरैक्टिव गाइड</p>
+    </header>
+
+    <nav id="navbar" class="sticky top-0 bg-white/80 backdrop-blur-md shadow-sm z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center items-center space-x-4 md:space-x-8 py-3 overflow-x-auto">
+                <a href="#introduction" class="nav-link text-gray-600 font-semibold py-2 px-2 text-sm md:text-base whitespace-nowrap">परिचय</a>
+                <a href="#muhurat" class="nav-link text-gray-600 font-semibold py-2 px-2 text-sm md:text-base whitespace-nowrap">मुहूर्त</a>
+                <a href="#preparation" class="nav-link text-gray-600 font-semibold py-2 px-2 text-sm md:text-base whitespace-nowrap">तैयारी</a>
+                <a href="#vidhi" class="nav-link text-gray-600 font-semibold py-2 px-2 text-sm md:text-base whitespace-nowrap">पूजा विधि</a>
+                <a href="#regional" class="nav-link text-gray-600 font-semibold py-2 px-2 text-sm md:text-base whitespace-nowrap">क्षेत्रीय विविधताएं</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 md:p-8">
+        
+        <section id="introduction" class="my-12">
+            <h2 class="text-3xl font-bold text-amber-700 mb-4 text-center">परिचय: प्रकाश का पर्व</h2>
+            <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+                <p class="text-lg leading-relaxed text-gray-700">
+                    दीपावली, यानी 'दीपों की पंक्ति', केवल प्रकाश और उत्सव का त्योहार नहीं है, बल्कि यह एक गहन आध्यात्मिक अनुष्ठान है। यह गाइड देवी महालक्ष्मी पर केंद्रित है, जो न केवल भौतिक धन, बल्कि आध्यात्मिक पवित्रता, शुभता और समग्र समृद्धि का प्रतीक हैं। यह एप्लिकेशन आपको उन जटिल अनुष्ठानों को समझने में मदद करेगा जो उनकी कृपा का आह्वान करने के लिए डिज़ाइन किए गए हैं, यह दिखाते हुए कि कैसे ये प्रथाएं ब्रह्मांडीय समय, भक्ति और प्रतीकात्मक अर्थ का एक सुंदर संगम हैं।
+                </p>
+            </div>
+        </section>
+
+        <section id="muhurat" class="my-16">
+            <h2 class="text-3xl font-bold text-amber-700 mb-6 text-center">दिव्य आदेश: शुभ मुहूर्त को समझना</h2>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-8">
+                वैदिक ज्योतिष में 'मुहूर्त' या शुभ समय का अत्यधिक महत्व है। लक्ष्मी पूजा को एक सटीक समय पर करना इसकी प्रभावशीलता के लिए मौलिक माना जाता है, क्योंकि यह ब्रह्मांडीय ऊर्जाओं के साथ हमारे कार्यों को संरेखित करता है। नीचे दिए गए कार्ड पर क्लिक करके प्रमुख ज्योतिषीय समयों के महत्व को जानें।
+            </p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="muhurat-card card-hover bg-white p-6 rounded-lg shadow-lg cursor-pointer" data-title="अमावस्या तिथि" data-text="यह कार्तिक मास की सबसे अंधेरी रात है, जो अंधकार पर प्रकाश की विजय का प्रतीक है। माना जाता है कि इस रात देवी लक्ष्मी पृथ्वी पर विचरण करती हैं और अपने भक्तों के घरों में आती हैं।">
+                    <h3 class="font-bold text-xl text-amber-800">अमावस्या तिथि</h3>
+                    <p class="text-gray-600 mt-2">महीने की सबसे अंधेरी रात।</p>
+                </div>
+                <div class="muhurat-card card-hover bg-white p-6 rounded-lg shadow-lg cursor-pointer" data-title="प्रदोष काल" data-text="यह सूर्यास्त के ठीक बाद की लगभग 2 घंटे की अवधि है। इसे लक्ष्मी पूजा के लिए सबसे शुभ समय माना जाता है क्योंकि इस गोधूलि वेला में दिव्य ऊर्जाएं सबसे शक्तिशाली और सुलभ होती हैं।">
+                    <h3 class="font-bold text-xl text-amber-800">प्रदोष काल</h3>
+                    <p class="text-gray-600 mt-2">सूर्यास्त के बाद का समय।</p>
+                </div>
+                <div class="muhurat-card card-hover bg-white p-6 rounded-lg shadow-lg cursor-pointer" data-title="निशिता काल" data-text="यह मध्यरात्रि की अवधि है, जिसे गहन आध्यात्मिक और तांत्रिक साधना के लिए विशेष रूप से शक्तिशाली माना जाता है, जब दिव्य ऊर्जाएं अपने चरम पर होती हैं।">
+                    <h3 class="font-bold text-xl text-amber-800">निशिता काल</h3>
+                    <p class="text-gray-600 mt-2">मध्यरात्रि का समय।</p>
+                </div>
+                <div class="muhurat-card card-hover bg-white p-6 rounded-lg shadow-lg cursor-pointer" data-title="स्थिर लग्न" data-text="वृषभ, सिंह, वृश्चिक, कुंभ जैसी स्थिर राशियों का उदय। यह सुनिश्चित करने के लिए कि देवी लक्ष्मी का आशीर्वाद घर में 'स्थिर' या स्थायी हो, इस लग्न में पूजा की जाती है।">
+                    <h3 class="font-bold text-xl text-amber-800">स्थिर लग्न</h3>
+                    <p class="text-gray-600 mt-2">स्थिर राशियों का उदय।</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="preparation" class="my-16">
+            <h2 class="text-3xl font-bold text-amber-700 mb-6 text-center">दिव्य के लिए आवास तैयार करना</h2>
+             <p class="max-w-3xl mx-auto text-center text-gray-600 mb-8">
+                पूजा से पहले की तैयारी केवल काम नहीं, बल्कि अनुष्ठान का पहला चरण है। यह एक दिव्य अतिथि के स्वागत के लिए स्थान की शुद्धि और अलंकरण का कार्य है, जो भक्ति और सम्मान को दर्शाता है।
+            </p>
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="card-hover bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-4xl text-amber-600 mb-4">🧹</div>
+                    <h3 class="font-bold text-xl text-amber-800">शुद्धि का सिद्धांत</h3>
+                    <p class="text-gray-600 mt-2">माना जाता है कि देवी लक्ष्मी केवल स्वच्छ घरों में ही प्रवेश करती हैं। भौतिक और आध्यात्मिक सफाई नकारात्मक ऊर्जा को दूर करती है।</p>
+                </div>
+                <div class="card-hover bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-4xl text-amber-600 mb-4">🎨</div>
+                    <h3 class="font-bold text-xl text-amber-800">अलंकार की कला</h3>
+                    <p class="text-gray-600 mt-2">रंगोली, तोरण और मालाएं केवल सजावट नहीं हैं, बल्कि देवताओं का स्वागत करने और सकारात्मक कंपन उत्पन्न करने के पवित्र माध्यम हैं।</p>
+                </div>
+                <div class="card-hover bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-4xl text-amber-600 mb-4">🪔</div>
+                    <h3 class="font-bold text-xl text-amber-800">दीये का प्रतीकवाद</h3>
+                    <p class="text-gray-600 mt-2">दीया अंधकार पर प्रकाश, अज्ञान पर ज्ञान और बुराई पर अच्छाई की विजय का केंद्रीय प्रतीक है। यह आत्मा के आंतरिक प्रकाश का भी प्रतिनिधित्व करता है।</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="vidhi" class="my-16">
+            <h2 class="text-3xl font-bold text-amber-700 mb-6 text-center">षोडशोपचार लक्ष्मी पूजा विधि</h2>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-8">
+                यह लक्ष्मी पूजा का सबसे महत्वपूर्ण भाग है, जिसमें 16 चरण ('षोडशोपचार') शामिल हैं। यह एक विस्तृत अनुष्ठान है जो एक सम्मानित अतिथि के रूप में देवी का स्वागत और सम्मान करने के लिए किया जाता है। नीचे दिए गए इंटरेक्टिव गाइड का उपयोग करके प्रत्येक चरण का अन्वेषण करें।
+            </p>
+            <div class="max-w-4xl mx-auto bg-white p-6 md:p-8 rounded-lg shadow-2xl">
+                <div id="stepper-progress" class="w-full bg-gray-200 rounded-full h-2.5 mb-6">
+                    <div id="stepper-bar" class="bg-amber-600 h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
+                <div id="stepper-content" class="text-center fade-in">
+                    <h3 id="step-title" class="text-2xl font-bold text-amber-800 mb-2"></h3>
+                    <p id="step-description" class="text-lg text-gray-700 leading-relaxed"></p>
+                </div>
+                <div class="flex justify-between items-center mt-8">
+                    <button id="prev-step" class="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg hover:bg-gray-400 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">पिछला</button>
+                    <span id="step-counter" class="text-sm font-medium text-gray-500"></span>
+                    <button id="next-step" class="bg-amber-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-amber-700 transition duration-300">अगला</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="regional" class="my-16">
+            <h2 class="text-3xl font-bold text-amber-700 mb-6 text-center">भूमि भर में गूंज: क्षेत्रीय विविधताएं</h2>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-8">
+                दिवाली पूरे भारत में मनाई जाती है, लेकिन हर क्षेत्र की अपनी अनूठी परंपराएं और अनुष्ठान हैं। यह विविधता इस त्योहार की सांस्कृतिक समृद्धि को दर्शाती है। बाईं ओर एक क्षेत्र का चयन करके जानें कि वहां दिवाली कैसे मनाई जाती है।
+            </p>
+            <div class="max-w-5xl mx-auto md:flex bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="md:w-1/4 bg-amber-50 border-r border-amber-200">
+                    <ul id="region-tabs">
+                        <li class="tab p-4 cursor-pointer font-semibold text-amber-800 active" data-region="bengal">बंगाल और पूर्वी भारत</li>
+                        <li class="tab p-4 cursor-pointer font-semibold text-amber-800" data-region="gujarat">गुजरात और पश्चिमी भारत</li>
+                        <li class="tab p-4 cursor-pointer font-semibold text-amber-800" data-region="maharashtra">महाराष्ट्र</li>
+                        <li class="tab p-4 cursor-pointer font-semibold text-amber-800" data-region="north">उत्तर भारत</li>
+                        <li class="tab p-4 cursor-pointer font-semibold text-amber-800" data-region="south">दक्षिण भारत</li>
+                    </ul>
+                </div>
+                <div id="region-content-area" class="md:w-3/4 p-8">
+                    <!-- Content will be injected here -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+<!--
+    <footer class="bg-amber-800 text-white text-center p-6 mt-12">
+        <p>&copy; 2025 दिवाली पूजा इंटरैक्टिव गाइड। श्रद्धा और भक्ति के साथ बनाया गया।</p>
+    </footer>
+-->
+
+    <!-- Modal for Muhurat Details -->
+    <div id="muhurat-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full relative">
+            <h3 id="modal-title" class="text-2xl font-bold text-amber-800 mb-4"></h3>
+            <p id="modal-text" class="text-gray-700"></p>
+            <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const navbar = document.getElementById('navbar');
+            const navLinks = navbar.querySelectorAll('a.nav-link');
+            const sections = document.querySelectorAll('main section');
+
+            function updateActiveLink() {
+                let index = sections.length;
+                while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
+                
+                navLinks.forEach((link) => link.classList.remove('active'));
+                if (navLinks[index]) {
+                    navLinks[index].classList.add('active');
+                }
+            }
+
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+
+            const muhuratCards = document.querySelectorAll('.muhurat-card');
+            const modal = document.getElementById('muhurat-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalText = document.getElementById('modal-text');
+            const closeModal = document.getElementById('close-modal');
+
+            muhuratCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    modalTitle.textContent = card.dataset.title;
+                    modalText.textContent = card.dataset.text;
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                });
+            });
+
+            const closeModalHandler = () => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            };
+
+            closeModal.addEventListener('click', closeModalHandler);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModalHandler();
+                }
+            });
+
+            const pujaSteps = [
+                { title: "1. ध्यानम्", description: "देवी के रूप का ध्यान करना और उन्हें मन में स्थापित करना।" },
+                { title: "2. आवाहनम्", description: "देवी को मूर्ति में उपस्थित होने के लिए आमंत्रित करना।" },
+                { title: "3. आसनम्", description: "एक फूल को प्रतीकात्मक आसन के रूप में अर्पित करना।" },
+                { title: "4. पाद्यम्", description: "उनके पैर धोने के लिए जल अर्पित करना।" },
+                { title: "5. अर्घ्यम्", description: "उनके हाथ धोने के लिए जल अर्पित करना।" },
+                { title: "6. आचमनीयम्", description: "पीने के लिए शुद्ध जल अर्पित करना।" },
+                { title: "7. स्नानम्", description: "मूर्ति को जल, फिर पंचामृत, और फिर शुद्ध जल से स्नान कराना।" },
+                { title: "8. वस्त्रम्", description: "नए कपड़े का एक टुकड़ा या पवित्र धागा ('मौली') अर्पित करना।" },
+                { title: "9. आभूषणम्", description: "देवी को आभूषण अर्पित करना।" },
+                { title: "10. गंधम्", description: "चंदन का लेप, सिंदूर और कुमकुम लगाना।" },
+                { title: "11. अक्षतम्", description: "अटूट चावल अर्पित करना, जो पूर्णता और उर्वरता का प्रतीक है।" },
+                { title: "12. पुष्पम्", description: "ताजे फूल, विशेष रूप से कमल और गेंदा अर्पित करना।" },
+                { title: "13. धूपम्", description: "सुगंधित अगरबत्ती जलाना और उसकी सुगंध अर्पित करना।" },
+                { title: "14. दीपम्", description: "देवी के सामने घी का दीपक घुमाना, जो ज्ञान के प्रकाश का प्रतीक है।" },
+                { title: "15. नैवेद्यम्", description: "विशेष रूप से तैयार भोजन, मिठाई, फल, और खील-बताशे अर्पित करना।" },
+                { title: "16. प्रदक्षिणा और नमस्कारम्", description: "परिक्रमा, क्षमा प्रार्थना और प्रणाम के साथ पूजा का समापन करना।" }
+            ];
+
+            let currentStep = 0;
+            const stepTitle = document.getElementById('step-title');
+            const stepDescription = document.getElementById('step-description');
+            const prevButton = document.getElementById('prev-step');
+            const nextButton = document.getElementById('next-step');
+            const stepCounter = document.getElementById('step-counter');
+            const progressBar = document.getElementById('stepper-bar');
+            const stepperContent = document.getElementById('stepper-content');
+
+            function updateStepper() {
+                stepperContent.classList.remove('fade-in');
+                void stepperContent.offsetWidth; // Trigger reflow
+                stepperContent.classList.add('fade-in');
+
+                stepTitle.textContent = pujaSteps[currentStep].title;
+                stepDescription.textContent = pujaSteps[currentStep].description;
+                stepCounter.textContent = `चरण ${currentStep + 1} / ${pujaSteps.length}`;
+                
+                prevButton.disabled = currentStep === 0;
+                nextButton.disabled = currentStep === pujaSteps.length - 1;
+
+                const progressPercentage = ((currentStep + 1) / pujaSteps.length) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+            }
+
+            nextButton.addEventListener('click', () => {
+                if (currentStep < pujaSteps.length - 1) {
+                    currentStep++;
+                    updateStepper();
+                }
+            });
+
+            prevButton.addEventListener('click', () => {
+                if (currentStep > 0) {
+                    currentStep--;
+                    updateStepper();
+                }
+            });
+
+            updateStepper();
+
+            const regionData = {
+                bengal: {
+                    title: "बंगाल और पूर्वी भारत",
+                    text: "यहाँ दिवाली पर देवी काली की पूजा का अधिक महत्व है, जिसे काली पूजा या श्यामा पूजा कहते हैं। ओडिशा में, 'कौरिया काठी' नामक अनुष्ठान में पूर्वजों की आत्माओं का सम्मान करने के लिए जूट की छड़ें जलाई जाती हैं।"
+                },
+                gujarat: {
+                    title: "गुजरात और पश्चिमी भारत",
+                    text: "दिवाली नए वित्तीय वर्ष की शुरुआत का प्रतीक है। व्यवसायी 'चोपड़ा पूजन' करते हैं, जिसमें नई खाता बहियों की पूजा की जाती है। दिवाली के अगले दिन को गुजराती नव वर्ष, 'बेस्तु बरस' के रूप में मनाया जाता है।"
+                },
+                maharashtra: {
+                    title: "महाराष्ट्र",
+                    text: "त्योहार की शुरुआत 'वसु बरस' से होती है, जिसमें गायों और बछड़ों की पूजा की जाती है। 'दिवाली चा पड़वा' पति-पत्नी के बीच के बंधन का जश्न मनाता है।"
+                },
+                north: {
+                    title: "उत्तर भारत",
+                    text: "समारोह अक्सर भगवान राम की अयोध्या वापसी से जुड़े होते हैं, जिसमें लक्ष्मी-गणेश पूजा केंद्रीय होती है। दिवाली के अगले दिन गोवर्धन पूजा की जाती है, जो भगवान कृष्ण के पराक्रम का जश्न है।"
+                },
+                south: {
+                    title: "दक्षिण भारत",
+                    text: "त्योहार, जिसे दीपावली कहा जाता है, मुख्य रूप से नरक चतुर्दशी पर मनाया जाता है। यह राक्षस नरकासुर पर भगवान कृष्ण की विजय का स्मरण करता है। दिन की शुरुआत सूर्योदय से पहले एक अनुष्ठानिक तेल स्नान से होती है।"
+                }
+            };
+            
+            const regionTabs = document.querySelectorAll('.tab');
+            const regionContentArea = document.getElementById('region-content-area');
+
+            function updateRegionContent(regionKey) {
+                const data = regionData[regionKey];
+                regionContentArea.innerHTML = `
+                    <div class="fade-in">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-4">${data.title}</h3>
+                        <p class="text-lg text-gray-700 leading-relaxed">${data.text}</p>
+                    </div>
+                `;
+            }
+
+            regionTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    regionTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const regionKey = tab.dataset.region;
+                    updateRegionContent(regionKey);
+                });
+            });
+
+            updateRegionContent('bengal');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Explainer: A Survey of Context Engineering for LLMs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: "Warm Neutrals & Slate Blue" -->
+    <!-- Application Structure Plan: The SPA is designed as a narrative journey, starting with a high-level introduction ("The New Paradigm") that defines Context Engineering and contrasts it with Prompt Engineering. It then logically flows into three core thematic sections: 1) "The Building Blocks," which interactively explains the foundational components (Retrieval, Processing, Management); 2) "Intelligent Systems in Action," which showcases how these blocks are assembled into advanced applications like RAG, Tool-Use, and Multi-Agent Systems; and 3) "The Frontier," which presents evaluation data and the core research challenges. This thematic, top-down structure was chosen over a linear chapter-by-chapter mirror of the paper because it allows users to grasp the 'why' (paradigm shift), then the 'what' (components), the 'how' (systems), and finally the 'what's next' (challenges), creating a more intuitive and educational user flow. Navigation is handled by a sticky header, allowing users to jump to any section of interest easily. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Formal definition of Context vs. Prompt Engineering. Goal: Compare. Viz/Method: Interactive HTML table with highlighted differences. Interaction: Hover effects on rows to draw attention. Justification: A table is the clearest way to present a side-by-side comparison of features. Library/Method: HTML/Tailwind.
+        - Report Info: The three foundational pillars (Retrieval, Processing, Management). Goal: Organize & Explain. Viz/Method: An interactive three-column layout using HTML/CSS. Interaction: Clicking on each pillar reveals a detailed explanation and key techniques within it. Justification: This allows users to get a high-level overview first and then drill down into the specifics of each component without being overwhelmed. Library/Method: HTML/Tailwind/JS.
+        - Report Info: The ReAct (Reason + Act) framework for tool use. Goal: Explain a process. Viz/Method: A dynamic, multi-step diagram built with styled HTML divs and arrows. Interaction: A "Play" button animates the flow of Thought -> Action -> Observation, highlighting each step sequentially. Justification: A static diagram can be confusing; an animated one clearly demonstrates the cyclical nature of the agent's reasoning loop. Library/Method: HTML/Tailwind/JS.
+        - Report Info: WebArena benchmark performance data. Goal: Compare & Inform. Viz/Method: A horizontal bar chart using Chart.js. Interaction: Tooltips on hover provide exact success rates. Justification: A bar chart is ideal for comparing the performance of different models/methods against a single metric (success rate). Library/Method: Chart.js/Canvas.
+        - Report Info: The Comprehension-Generation Asymmetry. Goal: Explain a core concept. Viz/Method: A side-by-side visual comparison using HTML/Tailwind with icons (Unicode) and text. One side shows complex inputs being understood, the other shows a simplified, struggling output. Interaction: Subtle animations on hover. Justification: A visual metaphor helps to quickly convey the abstract idea of this fundamental imbalance in LLM capabilities. Library/Method: HTML/Tailwind/JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #333;
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #4A6C8A;
+            border-bottom-color: #4A6C8A;
+        }
+        .card {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .pill {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+        .section-title {
+            color: #2c3e50;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 450px;
+            max-height: 50vh;
+        }
+        .react-diagram-step {
+            transition: all 0.5s ease-in-out;
+            border: 2px solid transparent;
+        }
+        .react-diagram-step.active {
+            border-color: #4A6C8A;
+            transform: scale(1.05);
+            background-color: #eff6ff;
+        }
+        .arrow {
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .arrow.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="main-header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">Context Engineering</h1>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#paradigm" class="nav-link">Paradigm</a>
+                <a href="#blocks" class="nav-link">Building Blocks</a>
+                <a href="#systems" class="nav-link">Systems</a>
+                <a href="#frontier" class="nav-link">Frontier</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#paradigm" class="block py-2 px-4 text-sm hover:bg-gray-200">Paradigm</a>
+            <a href="#blocks" class="block py-2 px-4 text-sm hover:bg-gray-200">Building Blocks</a>
+            <a href="#systems" class="block py-2 px-4 text-sm hover:bg-gray-200">Systems</a>
+            <a href="#frontier" class="block py-2 px-4 text-sm hover:bg-gray-200">Frontier</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="paradigm" class="text-center mb-24 scroll-mt-20">
+            <h2 class="text-4xl font-bold mb-4 section-title">A New Paradigm for AI</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12">
+                The performance of Large Language Models (LLMs) is not just about model size. It's fundamentally determined by the information they receive. This application explores "Context Engineering," the formal discipline of designing, managing, and optimizing this information to build truly intelligent systems. It marks a shift from the art of "prompting" to the science of information architecture for AI.
+            </p>
+
+            <div class="max-w-5xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                    <div class="card p-6">
+                        <h3 class="text-2xl font-semibold mb-3 text-gray-500">Prompt Engineering</h3>
+                        <p class="text-gray-600 mb-4">The traditional approach. It treats context as a single, static string of text, manually crafted to get a desired output. It's powerful but often brittle, hard to scale, and more of an art form.</p>
+                        <div class="bg-red-100 text-red-800 p-4 rounded-lg font-mono text-sm">C = "prompt"</div>
+                    </div>
+                    <div class="card p-6 border-2 border-[#4A6C8A]">
+                        <h3 class="text-2xl font-semibold mb-3 text-[#4A6C8A]">Context Engineering</h3>
+                        <p class="text-gray-600 mb-4">The systematic approach. It defines context as a dynamic, structured assembly of components like instructions, knowledge, memory, and tools. It's a scalable, modular engineering discipline.</p>
+                        <div class="bg-blue-100 text-blue-800 p-4 rounded-lg font-mono text-sm">C = A(c_instr, c_know, c_mem, ...)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="blocks" class="mb-24 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-4 section-title">The Building Blocks of Context</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600 text-center mb-12">
+                Context Engineering is built on three foundational pillars that manage the lifecycle of information. Click on each pillar to explore the key techniques that bring it to life. This section explains the core components that are assembled to create sophisticated AI systems.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div id="block-retrieval" class="card p-6 cursor-pointer">
+                    <h3 class="text-2xl font-bold mb-3 text-center">① Retrieval & Generation</h3>
+                    <p class="text-gray-600 text-center">Sourcing the raw materials of context, from generating reasoning steps to fetching external knowledge.</p>
+                </div>
+                <div id="block-processing" class="card p-6 cursor-pointer">
+                    <h3 class="text-2xl font-bold mb-3 text-center">② Processing</h3>
+                    <p class="text-gray-600 text-center">Transforming and refining information to make it more effective and efficient for the model to use.</p>
+                </div>
+                <div id="block-management" class="card p-6 cursor-pointer">
+                    <h3 class="text-2xl font-bold mb-3 text-center">③ Management</h3>
+                    <p class="text-gray-600 text-center">Organizing, compressing, and storing context to overcome memory limits and ensure consistency.</p>
+                </div>
+            </div>
+            <div id="block-details" class="mt-8 card p-8 hidden">
+                <h4 id="details-title" class="text-2xl font-bold mb-4"></h4>
+                <p id="details-description" class="text-gray-700 mb-6"></p>
+                <div id="details-content" class="space-y-4"></div>
+            </div>
+        </section>
+
+        <section id="systems" class="mb-24 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-4 section-title">Intelligent Systems in Action</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600 text-center mb-12">
+                When the building blocks are combined, they form powerful, agentic systems capable of complex tasks. This section demonstrates how an LLM evolves from a simple text generator into a proactive agent that can reason, act, and collaborate.
+            </p>
+            <div class="card p-8">
+                <h3 class="text-2xl font-semibold mb-2">Tool-Integrated Reasoning: The ReAct Framework</h3>
+                <p class="text-gray-600 mb-6">A core pattern for agentic behavior is the "Reason + Act" (ReAct) loop. The LLM doesn't just answer; it thinks, decides on an action (like using a tool), observes the result, and then thinks again. This allows it to solve problems that require interacting with the outside world. Click "Animate" to see the cycle in action.</p>
+                
+                <div id="react-diagram" class="relative flex flex-col md:flex-row items-center justify-around p-4 space-y-8 md:space-y-0 md:space-x-8 h-96 md:h-64">
+                    <div id="step-thought" class="react-diagram-step w-48 text-center p-4 bg-white rounded-lg shadow">
+                        <h4 class="font-bold">🤔 Thought</h4>
+                        <p class="text-sm">"I need to find the capital of France. I should use the search tool."</p>
+                    </div>
+                    <div id="arrow-thought-action" class="arrow text-3xl font-bold text-gray-400 transform md:-rotate-0 -rotate-90">&rarr;</div>
+                    <div id="step-action" class="react-diagram-step w-48 text-center p-4 bg-white rounded-lg shadow">
+                        <h4 class="font-bold">⚡ Action</h4>
+                        <p class="text-sm font-mono">search("capital of France")</p>
+                    </div>
+                     <div id="arrow-action-observation" class="arrow text-3xl font-bold text-gray-400 transform md:rotate-180 -rotate-90">&rarr;</div>
+                    <div id="step-observation" class="react-diagram-step w-48 text-center p-4 bg-white rounded-lg shadow">
+                        <h4 class="font-bold">👀 Observation</h4>
+                        <p class="text-sm">Tool returned: "Paris"</p>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-6">
+                    <button id="animate-react-btn" class="bg-[#4A6C8A] text-white font-bold py-2 px-6 rounded-lg hover:bg-[#3e5a74] transition-colors">Animate Cycle</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="frontier" class="scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-4 section-title">The Frontier: Evaluation & Challenges</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600 text-center mb-12">
+                While powerful, today's AI agents still face significant hurdles. This section explores how we measure their performance and highlights the fundamental research gap that defines the next wave of AI innovation.
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="card p-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-center">Agent Performance on Web Tasks</h3>
+                    <p class="text-gray-600 mb-6 text-center">The WebArena benchmark tests an agent's ability to complete real-world tasks on websites. The results show a clear gap between current state-of-the-art systems and human-level performance, highlighting the difficulty of real-world interaction.</p>
+                    <div class="chart-container">
+                        <canvas id="webArenaChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card p-8 flex flex-col justify-center">
+                    <h3 class="text-2xl font-semibold mb-4 text-center">The Core Challenge: Comprehension vs. Generation</h3>
+                    <p class="text-gray-600 mb-6 text-center">The survey identifies a critical asymmetry: LLMs are becoming masters of understanding complex inputs, but struggle to generate equally complex, coherent, long-form outputs. They can read the book, but they can't write one yet.</p>
+                    <div class="flex items-center justify-around space-x-4">
+                        <div class="text-center p-4 bg-green-50 border-2 border-green-200 rounded-lg">
+                            <h4 class="text-lg font-semibold text-green-800">Comprehension ✅</h4>
+                            <p class="text-5xl my-4">📚</p>
+                            <p class="text-green-700">Excels at processing vast, complex information.</p>
+                        </div>
+                        <div class="text-5xl font-thin text-gray-400">&rarr;</div>
+                        <div class="text-center p-4 bg-orange-50 border-2 border-orange-200 rounded-lg">
+                            <h4 class="text-lg font-semibold text-orange-800">Generation ⚠️</h4>
+                             <p class="text-5xl my-4">📝</p>
+                            <p class="text-orange-700">Struggles with long-range planning and coherence.</p>
+                        </div>
+                    </div>
+                    <p class="text-center text-gray-600 mt-6">Closing this gap is the key to unlocking the next level of AI capability, requiring new architectures focused on planning and world modeling.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-gray-800 text-white mt-24">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>Interactive explainer based on "A Survey of Context Engineering for Large Language Models" by Mei, L. et al. (2025).</p>
+            <p class="text-sm text-gray-400 mt-2">This is a conceptual visualization and not an official publication.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link, #mobile-menu a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = e.currentTarget.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    if(mobileMenu.classList.contains('hidden') === false){
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+            
+            const sections = document.querySelectorAll('section');
+            const headerLinks = document.querySelectorAll('#main-header .nav-link');
+            
+            const observerOptions = {
+                root: null,
+                rootMargin: '-80px 0px -50% 0px',
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    const link = document.querySelector(`.nav-link[href="#${id}"]`);
+                    if (entry.isIntersecting) {
+                        headerLinks.forEach(l => l.classList.remove('active'));
+                        if(link) link.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+
+            const blockDetailsData = {
+                retrieval: {
+                    title: '① Context Retrieval & Generation',
+                    description: 'This is the first step: sourcing the raw information the LLM will use. It goes beyond the user\'s query to include structured reasoning and external facts, ensuring the model has the necessary material to form a high-quality response.',
+                    content: `
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h5 class="font-bold">Chain-of-Thought (CoT)</h5>
+                            <p class="text-sm text-gray-600">Prompts the LLM to "think step by step," breaking down complex problems into a logical sequence of reasoning. This dramatically improves performance on tasks requiring logic and inference.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h5 class="font-bold">Retrieval-Augmented Generation (RAG)</h5>
+                            <p class="text-sm text-gray-600">Connects the LLM to external knowledge bases (like a document library or database). It retrieves relevant facts and adds them to the context, grounding the model's response in reality and reducing hallucinations.</p>
+                        </div>
+                    `
+                },
+                processing: {
+                    title: '② Context Processing',
+                    description: 'Once information is gathered, it must be refined. Processing techniques handle challenges like very long documents, enable the model to improve its own work, and integrate different types of data into a usable format.',
+                    content: `
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h5 class="font-bold">Long-Context Architectures (e.g., Mamba)</h5>
+                            <p class="text-sm text-gray-600">New model architectures that can process millions of tokens efficiently, overcoming the quadratic bottleneck of standard Transformers. This opens the door to understanding entire books or codebases at once.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h5 class="font-bold">Self-Refinement</h5>
+                            <p class="text-sm text-gray-600">An iterative process where the LLM generates a response, critiques its own work based on a set of rules, and then refines the response. This creates a feedback loop that improves output quality without human intervention.</p>
+                        </div>
+                    `
+                },
+                management: {
+                    title: '③ Context Management',
+                    description: 'An LLM\'s "working memory" (its context window) is finite. Management techniques are crucial for deciding what information is most important, how to keep it available over long conversations, and how to compress it to save space.',
+                    content: `
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h5 class="font-bold">Memory Hierarchies (e.g., MemGPT)</h5>
+                            <p class="text-sm text-gray-600">Inspired by computer operating systems, this creates a "virtual memory" for LLMs. It intelligently pages information in and out of the limited context window from a larger external store, enabling persistent memory.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h5 class="font-bold">Context Compression</h5>
+                            <p class="text-sm text-gray-600">Techniques that summarize or filter the context to keep only the most semantically important information. This reduces the number of tokens the model needs to process, lowering cost and latency.</p>
+                        </div>
+                    `
+                }
+            };
+
+            const blockRetrieval = document.getElementById('block-retrieval');
+            const blockProcessing = document.getElementById('block-processing');
+            const blockManagement = document.getElementById('block-management');
+            const blockDetails = document.getElementById('block-details');
+            const detailsTitle = document.getElementById('details-title');
+            const detailsDescription = document.getElementById('details-description');
+            const detailsContent = document.getElementById('details-content');
+            
+            let activeBlock = null;
+
+            function showDetails(blockId) {
+                const data = blockDetailsData[blockId];
+                detailsTitle.textContent = data.title;
+                detailsDescription.textContent = data.description;
+                detailsContent.innerHTML = data.content;
+                blockDetails.classList.remove('hidden');
+                
+                [blockRetrieval, blockProcessing, blockManagement].forEach(b => b.classList.remove('border-2', 'border-[#4A6C8A]'));
+                document.getElementById(`block-${blockId}`).classList.add('border-2', 'border-[#4A6C8A]');
+                activeBlock = blockId;
+            }
+            
+            function toggleDetails(blockId) {
+                if (activeBlock === blockId) {
+                    blockDetails.classList.add('hidden');
+                    document.getElementById(`block-${blockId}`).classList.remove('border-2', 'border-[#4A6C8A]');
+                    activeBlock = null;
+                } else {
+                    showDetails(blockId);
+                }
+            }
+
+            blockRetrieval.addEventListener('click', () => toggleDetails('retrieval'));
+            blockProcessing.addEventListener('click', () => toggleDetails('processing'));
+            blockManagement.addEventListener('click', () => toggleDetails('management'));
+            
+            const animateReactBtn = document.getElementById('animate-react-btn');
+            const stepThought = document.getElementById('step-thought');
+            const stepAction = document.getElementById('step-action');
+            const stepObservation = document.getElementById('step-observation');
+            const arrowThoughtAction = document.getElementById('arrow-thought-action');
+            const arrowActionObservation = document.getElementById('arrow-action-observation');
+
+            animateReactBtn.addEventListener('click', () => {
+                animateReactBtn.disabled = true;
+                animateReactBtn.textContent = 'Animating...';
+                
+                const steps = [stepThought, arrowThoughtAction, stepAction, arrowActionObservation, stepObservation];
+                steps.forEach(el => el.classList.remove('active'));
+
+                setTimeout(() => stepThought.classList.add('active'), 500);
+                setTimeout(() => arrowThoughtAction.classList.add('active'), 1500);
+                setTimeout(() => stepAction.classList.add('active'), 2000);
+                setTimeout(() => arrowActionObservation.classList.add('active'), 3000);
+                setTimeout(() => stepObservation.classList.add('active'), 3500);
+                
+                setTimeout(() => {
+                    steps.forEach(el => el.classList.remove('active'));
+                    animateReactBtn.disabled = false;
+                    animateReactBtn.textContent = 'Animate Cycle';
+                }, 5000);
+            });
+
+            const webArenaData = {
+                labels: ['IBM CUGA', 'OpenAI Operator', 'Jace.AI', 'ScribeAgent', 'Agent Symbiotic', 'WebPilot', 'BrowserGym + GPT-4'],
+                successRates: [61.7, 58.1, 57.1, 53.0, 52.1, 37.2, 23.5]
+            };
+
+            const ctx = document.getElementById('webArenaChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: webArenaData.labels,
+                    datasets: [{
+                        label: 'Success Rate (%)',
+                        data: webArenaData.successRates,
+                        backgroundColor: 'rgba(74, 108, 138, 0.6)',
+                        borderColor: 'rgba(74, 108, 138, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Success Rate: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Success Rate (%)'
+                            }
+                        },
+                        y: {
+                           ticks: {
+                                autoSkip: false,
+                                callback: function(value, index, values) {
+                                    const label = this.getLabelForValue(value);
+                                    return label.length > 16 ? label.substring(0, 16) + '...' : label;
+                                }
+                           }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Sale Tax Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The application is designed as an interactive calculator-first tool. The user is immediately engaged with input fields to calculate their potential tax burden. This is the core task. Below the calculator, a tabbed section provides progressive disclosure of key concepts (Capital Gains, Holding Periods, QSBS), allowing users to learn more without being overwhelmed. Finally, a dynamic bar chart visually synthesizes the information from the calculator, providing a powerful comparison of tax outcomes based on holding period. This structure prioritizes action and learning-by-doing, moving from a specific user calculation to broader concepts and a clear visual summary, making a complex topic intuitive and easy to explore. -->
+    <!-- Visualization & Content Choices: Report Info: Calculating tax on startup sale. -> Goal: Allow user-specific calculation and comparison. -> Viz/Presentation Method: Interactive form for inputs, dynamic text for outputs, and a dynamic bar chart (Chart.js) for visual comparison. -> Interaction: User enters sale details, holding period (via slider), filing status, and QSBS status. All outputs and the chart update in real-time. -> Justification: This direct manipulation provides immediate feedback, making the relationship between holding period and tax liability tangible. The bar chart is the clearest way to compare the financial outcomes of short-term, long-term, and QSBS scenarios. -> Library/Method: Chart.js on Canvas for the dynamic chart. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4; /* stone-100 */
+            color: #292524; /* stone-800 */
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #3b82f6;
+            cursor: pointer;
+            border-radius: 50%;
+            margin-top: -8px;
+        }
+        input[type=range]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: #3b82f6;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="container mx-auto px-4 py-8 md:py-12">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-stone-900">Startup Sale Tax Calculator</h1>
+            <p class="mt-3 text-lg text-stone-600 max-w-3xl mx-auto">See how the duration you hold your startup equity impacts your tax bill when you sell.</p>
+        </header>
+
+        <section id="calculator" class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-stone-200">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-semibold text-stone-800">Enter Your Sale Details</h2>
+                    <div>
+                        <label for="purchasePrice" class="block text-sm font-medium text-stone-600 mb-1">Purchase Price (Cost Basis)</label>
+                        <input type="number" id="purchasePrice" value="50000" class="w-full p-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="salePrice" class="block text-sm font-medium text-stone-600 mb-1">Sale Price</label>
+                        <input type="number" id="salePrice" value="1050000" class="w-full p-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                     <div>
+                        <label for="holdingPeriod" class="block text-sm font-medium text-stone-600 mb-1">Holding Period: <span id="holdingPeriodValue" class="font-bold text-blue-600">6.0 years</span></label>
+                        <input type="range" id="holdingPeriod" min="0.5" max="10" value="6" step="0.5" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div>
+                        <label for="filingStatus" class="block text-sm font-medium text-stone-600 mb-1">Filing Status (for ordinary income)</label>
+                        <select id="filingStatus" class="w-full p-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="single">Single</option>
+                            <option value="marriedFilingJointly" selected>Married Filing Jointly</option>
+                            <option value="headOfHousehold">Head of Household</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center justify-between bg-stone-50 p-4 rounded-lg">
+                        <label for="isQSBS" class="text-sm font-medium text-stone-700">Stock qualifies as QSBS?</label>
+                        <div class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="isQSBS" class="sr-only peer">
+                            <div class="w-11 h-6 bg-stone-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200 flex flex-col justify-center">
+                    <h2 class="text-2xl font-semibold text-stone-800 mb-4">Estimated Results</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-baseline">
+                            <span class="text-stone-600">Total Profit (Gain):</span>
+                            <span id="totalProfit" class="text-2xl font-bold text-stone-900">$1,000,000</span>
+                        </div>
+                        <div class="flex justify-between items-baseline">
+                            <span class="text-stone-600">Holding Category:</span>
+                            <span id="holdingCategory" class="text-lg font-semibold text-blue-600">Long-Term (> 5 Years, QSBS Eligible)</span>
+                        </div>
+                        <hr class="border-stone-200">
+                        <div class="flex justify-between items-baseline">
+                            <span class="text-stone-600">Applicable Tax Rate:</span>
+                            <span id="taxRate" class="text-2xl font-bold text-red-600">0%</span>
+                        </div>
+                        <div class="flex justify-between items-baseline">
+                            <span class="text-stone-600">Estimated Tax Owed:</span>
+                            <span id="taxOwed" class="text-2xl font-bold text-red-600">$0</span>
+                        </div>
+                        <hr class="border-stone-200">
+                        <div class="flex justify-between items-baseline bg-green-50 p-4 rounded-lg">
+                            <span class="text-green-800 font-semibold">Net Profit (After Tax):</span>
+                            <span id="netProfit" class="text-3xl font-bold text-green-700">$1,000,000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="explanation" class="mt-12">
+            <div class="text-center mb-8">
+                 <h2 class="text-3xl font-bold text-stone-900">How It Works</h2>
+                 <p class="mt-2 text-stone-600 max-w-2xl mx-auto">The duration you own an asset—your holding period—is the key to determining how it's taxed.</p>
+            </div>
+            <div>
+                <div class="mb-4 flex justify-center border-b border-stone-200">
+                    <button class="tab-button active py-2 px-6 font-semibold border-b-2" data-tab="tab1">Capital Gains</button>
+                    <button class="tab-button py-2 px-6 font-semibold border-b-2" data-tab="tab2">Holding Periods</button>
+                    <button class="tab-button py-2 px-6 font-semibold border-b-2" data-tab="tab3">QSBS Explained</button>
+                </div>
+                <div id="tab1" class="tab-content active p-4 bg-white rounded-lg shadow-sm border border-stone-200">
+                    <h3 class="text-xl font-semibold mb-2 text-stone-800">What are Capital Gains?</h3>
+                    <p class="text-stone-700">A capital gain is the profit you make from selling an asset for more than you paid for it. For startups, this asset is typically your equity or stock. The U.S. tax system treats these gains differently depending on how long you held the asset before selling.</p>
+                </div>
+                <div id="tab2" class="tab-content p-4 bg-white rounded-lg shadow-sm border border-stone-200">
+                    <h3 class="text-xl font-semibold mb-2 text-stone-800">Short-Term vs. Long-Term</h3>
+                    <p class="text-stone-700">This is the most critical distinction for tax purposes. The dividing line is exactly one year.</p>
+                    <ul class="list-disc list-inside mt-2 space-y-1 text-stone-700">
+                        <li><strong>Short-Term Capital Gains:</strong> If you hold the stock for <strong>one year or less</strong>, your profit is taxed at your ordinary income tax rate. This is the same rate applied to your salary, and it's the highest tax rate you can pay on investments.</li>
+                        <li><strong>Long-Term Capital Gains:</strong> If you hold the stock for <strong>more than one year</strong>, your profit is taxed at lower, preferential rates. These rates are typically 0%, 15%, or 20%, depending on your total income. This is a significant tax advantage.</li>
+                    </ul>
+                </div>
+                <div id="tab3" class="tab-content p-4 bg-white rounded-lg shadow-sm border border-stone-200">
+                     <h3 class="text-xl font-semibold mb-2 text-stone-800">The Power of QSBS (Section 1202)</h3>
+                    <p class="text-stone-700">Qualified Small Business Stock (QSBS) is a major tax incentive from the IRS to encourage investment in small, growing businesses. If your stock meets the criteria and you hold it for <strong>more than five years</strong>, you can potentially exclude up to 100% of your capital gains from federal taxes, up to $10 million or 10x your cost basis.</p>
+                    <p class="text-stone-700 mt-2"><strong>Key Requirements:</strong></p>
+                    <ul class="list-disc list-inside mt-2 space-y-1 text-stone-700">
+                        <li>The company must be a U.S. C-Corporation.</li>
+                        <li>Its gross assets must have been $50 million or less at all times before and immediately after the stock was issued.</li>
+                        <li>You must have acquired the stock directly from the company (not on a secondary market).</li>
+                        <li>The company must be in a qualified trade or business (most tech startups qualify).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="visual-comparison" class="mt-12">
+            <div class="text-center mb-8">
+                 <h2 class="text-3xl font-bold text-stone-900">Visualizing the Impact</h2>
+                 <p class="mt-2 text-stone-600 max-w-2xl mx-auto">This chart compares the tax owed on your profit under three scenarios, based on your inputs above. Notice how the tax bill drops dramatically with longer holding periods.</p>
+            </div>
+            <div class="bg-white p-4 md:p-6 rounded-2xl shadow-lg border border-stone-200">
+                <div class="chart-container">
+                    <canvas id="taxChart"></canvas>
+                </div>
+            </div>
+        </section>
+        <!--
+        <footer class="text-center mt-12 text-sm text-stone-500">
+            <p><strong>Disclaimer:</strong> This calculator is for informational and illustrative purposes only and does not constitute tax or financial advice. Tax laws are complex and subject to change. Consult with a qualified professional for advice tailored to your specific situation.</p>
+        </footer>
+        -->
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const purchasePriceEl = document.getElementById('purchasePrice');
+            const salePriceEl = document.getElementById('salePrice');
+            const holdingPeriodEl = document.getElementById('holdingPeriod');
+            const holdingPeriodValueEl = document.getElementById('holdingPeriodValue');
+            const filingStatusEl = document.getElementById('filingStatus');
+            const isQSBSEl = document.getElementById('isQSBS');
+
+            const totalProfitEl = document.getElementById('totalProfit');
+            const holdingCategoryEl = document.getElementById('holdingCategory');
+            const taxRateEl = document.getElementById('taxRate');
+            const taxOwedEl = document.getElementById('taxOwed');
+            const netProfitEl = document.getElementById('netProfit');
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            const chartCanvas = document.getElementById('taxChart');
+            let taxChart;
+
+            const taxBrackets = {
+                ordinary: {
+                    single: [
+                        { rate: 0.10, upto: 11600 },
+                        { rate: 0.12, upto: 47150 },
+                        { rate: 0.22, upto: 100525 },
+                        { rate: 0.24, upto: 191950 },
+                        { rate: 0.32, upto: 243725 },
+                        { rate: 0.35, upto: 609350 },
+                        { rate: 0.37, upto: Infinity }
+                    ],
+                    marriedFilingJointly: [
+                        { rate: 0.10, upto: 23200 },
+                        { rate: 0.12, upto: 94300 },
+                        { rate: 0.22, upto: 201050 },
+                        { rate: 0.24, upto: 383900 },
+                        { rate: 0.32, upto: 487450 },
+                        { rate: 0.35, upto: 731200 },
+                        { rate: 0.37, upto: Infinity }
+                    ],
+                    headOfHousehold: [
+                        { rate: 0.10, upto: 16550 },
+                        { rate: 0.12, upto: 63100 },
+                        { rate: 0.22, upto: 100500 },
+                        { rate: 0.24, upto: 191950 },
+                        { rate: 0.32, upto: 243700 },
+                        { rate: 0.35, upto: 609350 },
+                        { rate: 0.37, upto: Infinity }
+                    ]
+                },
+                longTerm: {
+                    single: [{ rate: 0, upto: 47025 }, { rate: 0.15, upto: 518900 }, { rate: 0.20, upto: Infinity }],
+                    marriedFilingJointly: [{ rate: 0, upto: 94050 }, { rate: 0.15, upto: 583750 }, { rate: 0.20, upto: Infinity }],
+                    headOfHousehold: [{ rate: 0, upto: 63000 }, { rate: 0.15, upto: 551350 }, { rate: 0.20, upto: Infinity }]
+                }
+            };
+
+            const calculateEffectiveRate = (income, brackets) => {
+                let tax = 0;
+                let remainingIncome = income;
+                let lastLimit = 0;
+
+                for (const bracket of brackets) {
+                    if (remainingIncome > 0) {
+                        const taxableInBracket = Math.min(remainingIncome, bracket.upto - lastLimit);
+                        tax += taxableInBracket * bracket.rate;
+                        remainingIncome -= taxableInBracket;
+                        lastLimit = bracket.upto;
+                    }
+                }
+                return income > 0 ? (tax / income) * 100 : 0;
+            };
+            
+            const calculateTaxOnGain = (gain, brackets) => {
+                 let tax = 0;
+                let remainingGain = gain;
+                let lastLimit = 0;
+                for (const bracket of brackets) {
+                    if (remainingGain <= 0) break;
+                    const taxableInBracket = Math.min(remainingGain, bracket.upto - lastLimit);
+                    tax += taxableInBracket * bracket.rate;
+                    remainingGain -= taxableInBracket;
+                    lastLimit = bracket.upto;
+                }
+                return tax;
+            }
+
+            const update = () => {
+                const purchasePrice = parseFloat(purchasePriceEl.value) || 0;
+                const salePrice = parseFloat(salePriceEl.value) || 0;
+                const holdingPeriod = parseFloat(holdingPeriodEl.value);
+                const filingStatus = filingStatusEl.value;
+                const isQSBS = isQSBSEl.checked;
+
+                holdingPeriodValueEl.textContent = `${holdingPeriod.toFixed(1)} years`;
+
+                const profit = salePrice - purchasePrice;
+                if (profit < 0) {
+                    // Handle loss scenario
+                    totalProfitEl.textContent = formatCurrency(profit);
+                    holdingCategoryEl.textContent = "Capital Loss";
+                    taxRateEl.textContent = "0%";
+                    taxOwedEl.textContent = formatCurrency(0);
+                    netProfitEl.textContent = formatCurrency(profit); // Show the loss
+                    updateChart(0, 0, 0); // Update chart with zero taxes
+                    return;
+                }
+                
+                let category = '';
+                let tax = 0;
+                let rate = 0;
+
+                const stBrackets = taxBrackets.ordinary[filingStatus];
+                const ltBrackets = taxBrackets.longTerm[filingStatus];
+
+                const stTax = calculateTaxOnGain(profit, stBrackets);
+                const ltTax = calculateTaxOnGain(profit, ltBrackets);
+                const qsbsTax = (isQSBS && holdingPeriod > 5) ? 0 : ltTax;
+                
+                if (holdingPeriod <= 1) {
+                    category = 'Short-Term (< 1 Year)';
+                    tax = stTax;
+                    rate = profit > 0 ? (tax / profit) * 100 : 0;
+                } else if (holdingPeriod > 1 && holdingPeriod <= 5) {
+                    category = 'Long-Term (> 1 Year)';
+                    tax = ltTax;
+                    rate = profit > 0 ? (tax / profit) * 100 : 0;
+                } else {
+                    category = `Long-Term (> 5 Years${isQSBS ? ', QSBS' : ''})`;
+                     tax = qsbsTax;
+                     rate = (isQSBS && profit > 0) ? 0 : (profit > 0 ? (tax / profit) * 100 : 0);
+                }
+
+                totalProfitEl.textContent = formatCurrency(profit);
+                holdingCategoryEl.textContent = category;
+                taxRateEl.textContent = `${rate.toFixed(1)}%`;
+                taxOwedEl.textContent = formatCurrency(tax);
+                netProfitEl.textContent = formatCurrency(profit - tax);
+
+                updateChart(stTax, ltTax, qsbsTax);
+            };
+
+            const formatCurrency = (amount) => {
+                return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
+            };
+
+            const updateChart = (stTax, ltTax, qsbsTax) => {
+                const chartData = {
+                    labels: ['Short-Term (< 1yr)', 'Long-Term (> 1yr)', `QSBS (> 5yrs)`],
+                    datasets: [{
+                        label: 'Estimated Tax Owed',
+                        data: [stTax, ltTax, qsbsTax],
+                        backgroundColor: ['#ef4444', '#f97316', '#22c55e'],
+                        borderColor: ['#dc2626', '#ea580c', '#16a34a'],
+                        borderWidth: 1,
+                        borderRadius: 6,
+                    }]
+                };
+
+                if (taxChart) {
+                    taxChart.data = chartData;
+                    taxChart.update();
+                } else {
+                    taxChart = new Chart(chartCanvas, {
+                        type: 'bar',
+                        data: chartData,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            indexAxis: 'y',
+                            scales: {
+                                x: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Tax Amount ($)'
+                                    },
+                                    ticks: {
+                                        callback: function(value) {
+                                            return formatCurrency(value);
+                                        }
+                                    }
+                                },
+                                y: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return formatCurrency(context.raw);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            };
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    const tabId = button.dataset.tab;
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === tabId) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            [purchasePriceEl, salePriceEl, holdingPeriodEl, filingStatusEl, isQSBSEl].forEach(el => {
+                el.addEventListener('input', update);
+            });
+
+            update();
+        });
+    </script>
+</body>
+</html>

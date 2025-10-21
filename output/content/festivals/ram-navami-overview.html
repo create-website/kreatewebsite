@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Story of Ram Navami</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Saffron Harmony -->
+    <!-- Application Structure Plan: The application is structured thematically to create a narrative journey for the user, rather than mirroring the report's sections. It starts with a broad introduction (Hero), delves into the foundational story (The Divine Birth), explores the core philosophy (The Ideal of Dharma), details the practices (The Path of Devotion), showcases geographical diversity (A Cultural Map), and concludes with sensory details (Flavors of Faith). This thematic flow was chosen because it allows users to explore aspects of the festival based on interest (e.g., story, practice, food) in any order after the initial introduction, making the complex information more accessible and less intimidating than a formal report structure. Key interactions include tabbed content for rituals, and a dynamic region selector to compare cultural practices, which is more engaging than a static table. -->
+    <!-- Visualization & Content Choices: The report's comparative table of regional traditions is transformed into an interactive component. Goal: Compare diverse cultural practices. Viz/Presentation: A set of buttons for regions dynamically updates a content area. Interaction: User clicks a region to see its unique rituals and foods. Justification: This is more engaging and user-friendly than a large table, especially on mobile devices. It encourages exploration and direct comparison. Library/Method: Vanilla JavaScript for DOM manipulation. To visually represent the *concept* of diversity, a simple bar chart from Chart.js is used, abstracting the qualitative data into visual categories, making the information more digestible. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8F0; /* Warm Neutral */
+            color: #4A2E1A; /* Deep Brown */
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #FF9933; /* Saffron Accent */
+            border-bottom-color: #FF9933;
+        }
+        .tab-button {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tab-button.active {
+            background-color: #FF9933;
+            color: #FFFFFF;
+        }
+        .region-button {
+            transition: background-color 0.3s, color 0.3s, transform 0.2s;
+        }
+        .region-button.active {
+            background-color: #C67624;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-[#FFF8F0]/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-[#D46B08]">Ram Navami</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#story" class="nav-link pb-1">The Story</a>
+                <a href="#dharma" class="nav-link pb-1">The Ideal</a>
+                <a href="#devotion" class="nav-link pb-1">Devotion</a>
+                <a href="#map" class="nav-link pb-1">Cultural Map</a>
+                <a href="#food" class="nav-link pb-1">Flavors of Faith</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-white border border-gray-300 rounded-md py-2 px-3 text-[#4A2E1A] focus:outline-none focus:ring-2 focus:ring-[#FF9933]">
+                    <option value="#hero">Home</option>
+                    <option value="#story">The Story</option>
+                    <option value="#dharma">The Ideal</option>
+                    <option value="#devotion">Devotion</option>
+                    <option value="#map">Cultural Map</option>
+                    <option value="#food">Flavors of Faith</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="min-h-[60vh] flex items-center bg-[#FDEFE0]">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-[#C67624] mb-4">The Divine Advent</h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto text-[#6B4F3A]">
+                    Explore the profound story, spiritual significance, and rich cultural tapestry of Ram Navami, a festival celebrating the birth of Lord Rama and the timeless victory of righteousness.
+                </p>
+            </div>
+        </section>
+
+        <section id="story" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[#C67624]">The Divine Birth</h2>
+                <p class="text-center max-w-3xl mx-auto mb-12 text-[#6B4F3A]">
+                    The birth of Lord Rama was not an ordinary event but a preordained cosmic intervention to restore balance and righteousness (*dharma*) to the world. This section walks you through the celestial context and the earthly rituals that led to his divine incarnation.
+                </p>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+                        <h3 class="text-2xl font-semibold mb-3 text-[#D46B08]">A Cosmic Plea</h3>
+                        <p class="text-[#4A2E1A]">
+                            The world was under the tyrannical rule of the demon king Ravana. Granted a boon of near-invincibility, he terrorized gods and mortals alike, disrupting cosmic order. Unable to defeat him, the celestial beings and Mother Earth appealed to Lord Vishnu, the preserver, for help. Vishnu promised to incarnate as a mortal man—the one being Ravana had arrogantly overlooked in his quest for power—to vanquish evil and restore *dharma*.
+                        </p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+                        <h3 class="text-2xl font-semibold mb-3 text-[#D46B08]">The Sacred Ritual</h3>
+                        <p class="text-[#4A2E1A]">
+                            On Earth, King Dasharatha of Ayodhya was childless. On the advice of sages, he performed the *Putrakameshti Yajna*, a sacred fire sacrifice for progeny. From the flames emerged a divine being with a vessel of *payasam* (sweet pudding). The king distributed this divine offering among his three queens, who then conceived. On the ninth day of the month of Chaitra, Lord Rama was born to Queen Kausalya, fulfilling both a king's prayer and a cosmic need.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dharma" class="py-16 md:py-24 bg-[#FDEFE0]">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[#C67624]">The Ideal of Dharma</h2>
+                 <p class="text-center max-w-3xl mx-auto mb-12 text-[#6B4F3A]">
+                    Ram Navami is more than a birthday; it's a celebration of the ideals Lord Rama embodied. Revered as *Maryada Purushottam* (the ideal man), his life serves as a blueprint for righteous conduct. This section explores the core virtues and allegorical meanings that give the festival its profound moral and spiritual depth.
+                </p>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-4xl mb-4 text-[#FF9933]">👑</div>
+                        <h3 class="text-xl font-semibold mb-2">Maryada Purushottam</h3>
+                        <p class="text-sm text-[#4A2E1A]">The "Ideal Man" who upheld *dharma* above all else. He was the perfect son, brother, husband, and king, choosing righteousness over personal gain, exemplified by his acceptance of a 14-year exile.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-4xl mb-4 text-[#FF9933]">🏹</div>
+                        <h3 class="text-xl font-semibold mb-2">Good Over Evil</h3>
+                        <p class="text-sm text-[#4A2E1A]">The festival celebrates Rama's ultimate victory over Ravana. This symbolizes the triumph of virtue, compassion, and righteousness over vice, arrogance, and ego, reminding us that good will always prevail.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-4xl mb-4 text-[#FF9933]">🧘</div>
+                        <h3 class="text-xl font-semibold mb-2">Allegory of the Self</h3>
+                        <p class="text-sm text-[#4A2E1A]">In Vedantic philosophy, the story is an inner journey. Rama is the divine Self (*Atman*), Sita is the mind, and Ravana is the ego. The quest to rescue Sita represents the spiritual journey to free the mind from the ego's grasp.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="devotion" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[#C67624]">The Path of Devotion</h2>
+                <p class="text-center max-w-3xl mx-auto mb-12 text-[#6B4F3A]">
+                    Devotees express their reverence for Lord Rama through a variety of rituals and observances, from personal austerity to grand public celebrations. These practices are designed to purify the body and mind, focusing one's energy on spiritual reflection. Explore the different modes of worship by selecting a tab below.
+                </p>
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex justify-center border-b border-gray-300 mb-8">
+                        <button class="tab-button active text-lg px-6 py-3 font-medium" data-tab="vrata">Fasting (Vrata)</button>
+                        <button class="tab-button text-lg px-6 py-3 font-medium" data-tab="puja">Worship (Puja)</button>
+                        <button class="tab-button text-lg px-6 py-3 font-medium" data-tab="yatra">Celebrations</button>
+                    </div>
+                    <div id="tab-content" class="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+                        <div class="tab-pane active" id="vrata">
+                            <h3 class="text-2xl font-semibold mb-3 text-[#D46B08]">Ritual Austerity</h3>
+                            <p class="text-[#4A2E1A]">Fasting is a key observance to cleanse the body and enhance spiritual focus. Fasts can be partial (consuming only fruits and milk), strict (abstaining from all food until noon), or even waterless (*nirjal vrat*). A special *sattvic* (pure) diet is followed, avoiding grains, lentils, onions, and garlic, and using special non-grain flours.</p>
+                        </div>
+                        <div class="tab-pane hidden" id="puja">
+                             <h3 class="text-2xl font-semibold mb-3 text-[#D46B08]">Modes of Worship</h3>
+                            <p class="text-[#4A2E1A]">Worship is performed at home and in temples. Idols of Rama, Sita, Lakshmana, and Hanuman are decorated, and offerings of flowers, fruits, and sweets are made. The day is filled with the chanting of mantras, singing of devotional songs (*bhajans*), and culminates with the *aarti* (ritual of light). A charming tradition is placing an idol of infant Rama (*Ram Lalla*) in a cradle and swinging it at noon.</p>
+                        </div>
+                        <div class="tab-pane hidden" id="yatra">
+                            <h3 class="text-2xl font-semibold mb-3 text-[#D46B08]">Public Spectacle</h3>
+                            <p class="text-[#4A2E1A]">The festival spills into the streets with vibrant chariot processions known as *Rath Yatras* or *Shobha Yatras*. Ornate floats carrying the deities are paraded, accompanied by drumming, dancing, and chanting. In North India, *Ramlila*—dramatic folk enactments of Rama's life—are performed for several days, serving as both entertainment and religious instruction.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="map" class="py-16 md:py-24 bg-[#FDEFE0]">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[#C67624]">A Cultural Map of India</h2>
+                <p class="text-center max-w-3xl mx-auto mb-12 text-[#6B4F3A]">
+                    Ram Navami is celebrated across India with unique regional flavors, shaped by local culture and sacred geography. While Ayodhya is the epicenter, each region adds its own distinct traditions to the festival. Select a region below to discover its unique customs and culinary specialties.
+                </p>
+                <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-8">
+                    <button class="region-button active bg-[#FF9933] text-white font-semibold py-2 px-5 rounded-full shadow" data-region="up">Uttar Pradesh</button>
+                    <button class="region-button bg-white text-[#C67624] font-semibold py-2 px-5 rounded-full shadow" data-region="south">South India</button>
+                    <button class="region-button bg-white text-[#C67624] font-semibold py-2 px-5 rounded-full shadow" data-region="maharashtra">Maharashtra</button>
+                    <button class="region-button bg-white text-[#C67624] font-semibold py-2 px-5 rounded-full shadow" data-region="bihar">Bihar</button>
+                    <button class="region-button bg-white text-[#C67624] font-semibold py-2 px-5 rounded-full shadow" data-region="karnataka">Karnataka</button>
+                </div>
+                <div class="grid md:grid-cols-5 gap-8 items-start bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+                    <div id="region-content" class="md:col-span-3">
+                        
+                    </div>
+                    <div class="md:col-span-2">
+                        <h4 class="text-xl font-semibold mb-4 text-center text-[#D46B08]">Diversity of Celebration</h4>
+                        <div class="chart-container">
+                            <canvas id="regionalChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="food" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[#C67624]">Flavors of Faith</h2>
+                <p class="text-center max-w-3xl mx-auto mb-12 text-[#6B4F3A]">
+                    The food of Ram Navami is a form of "gastronomic dharma," reflecting the festival's principles of purity and discipline. Based on a *sattvic* diet, the cuisine is vegetarian and excludes stimulating ingredients like onion and garlic, promoting mental clarity and spiritual well-being.
+                </p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-xl font-semibold mb-2 text-[#D46B08]">North Indian Prasad</h3>
+                        <p class="text-sm text-[#4A2E1A]">A classic trio served after fasts: *Sookhe Kale Chane* (dry black chickpeas), fluffy *Poori* (fried bread), and sweet *Sooji Halwa* (semolina pudding).</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-xl font-semibold mb-2 text-[#D46B08]">South Indian Offerings</h3>
+                        <p class="text-sm text-[#4A2E1A]">Cooling and refreshing dishes like *Panakam* (a jaggery drink), *Neer Mor* (spiced buttermilk), and *Vadapappu* (a light moong dal salad).</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-xl font-semibold mb-2 text-[#D46B08]">Fasting Foods (Vrat)</h3>
+                        <p class="text-sm text-[#4A2E1A]">Special non-grain foods provide energy during fasts. These include dishes made from *Sabudana* (tapioca), *Kuttu* (buckwheat) flour, potatoes, and *Makhana* (fox nuts).</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-xl font-semibold mb-2 text-[#D46B08]">Western Indian Sweets</h3>
+                        <p class="text-sm text-[#4A2E1A]">In Maharashtra and Gujarat, festive treats like *Shrikhand* (sweet strained yogurt) and *Puran Poli* (sweet lentil-stuffed flatbread) are popular.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+<!--
+    <footer class="bg-[#FDEFE0] py-8">
+        <div class="container mx-auto px-6 text-center text-[#6B4F3A]">
+            <p>An Interactive Exploration of the Ram Navami Festival</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab-button');
+            const panes = document.querySelectorAll('.tab-pane');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    const target = tab.getAttribute('data-tab');
+                    panes.forEach(pane => {
+                        if (pane.id === target) {
+                            pane.classList.remove('hidden');
+                            pane.classList.add('active');
+                        } else {
+                            pane.classList.add('hidden');
+                            pane.classList.remove('active');
+                        }
+                    });
+                });
+            });
+            
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', (event) => {
+                const targetId = event.target.value;
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+
+            const regionalData = {
+                up: {
+                    title: "Uttar Pradesh: The Epicenter",
+                    rituals: "As the birthplace of Lord Rama, Ayodhya is the heart of the celebration. Festivities include grand *Shobha Yatras* (processions), large-scale *Ramlila* performances, and a holy dip in the Sarayu River. A modern highlight is the *Surya Tilak* ceremony, where a beam of sunlight anoints the idol of infant Rama at noon.",
+                    food: "Sookhe Kale Chane (dry black chickpeas), Poori (fried bread), and Sooji Halwa (semolina pudding)."
+                },
+                south: {
+                    title: "South India: Celestial Wedding",
+                    rituals: "In Telangana, Andhra Pradesh, and Tamil Nadu, the focus is on the *Sitarama Kalyanam*, a grand ceremonial reenactment of the celestial wedding of Rama and Sita. Bhadrachalam and Rameswaram are key pilgrimage sites. The mood is devotional, with Carnatic music concerts and recitations from the Tamil Ramayana.",
+                    food: "Panakam (jaggery drink), Vadapappu (soaked moong dal salad), and Neer Mor (spiced buttermilk)."
+                },
+                maharashtra: {
+                    title: "Maharashtra: Devotional Focus",
+                    rituals: "Celebrations are more personal and devotional. Families and communities gather for chanting the *Ram Raksha Stotra* (a hymn for protection) and hold evening *Bhajan Sandhyas* (musical gatherings). Nashik, associated with Rama's exile, is an important pilgrimage site.",
+                    food: "Puran Poli (sweet flatbread) and Shrikhand (sweet strained yogurt)."
+                },
+                bihar: {
+                    title: "Bihar & Jharkhand: Sita's Homeland",
+                    rituals: "With Sitamarhi revered as Sita's birthplace, the festival has a special focus on the divine couple. Reenactments of the *Sita-Rama Kalyanam* are common. There is a strong culture of *Ramayan Mandalis*, where communities gather for scripture readings.",
+                    food: "Sattvic thalis (platters with a variety of pure vegetarian dishes)."
+                },
+                karnataka: {
+                    title: "Karnataka: A Musical Tribute",
+                    rituals: "Bengaluru hosts a prestigious, month-long classical music festival organized by the Sree Ramaseva Mandali, making it a unique cultural highlight. Across the state, there is widespread distribution of free *panaka* (a sweet drink) and *kosambari* (lentil salad) to the public.",
+                    food: "Kosambari (lentil salad) and Panaka (jaggery drink)."
+                }
+            };
+
+            const regionButtons = document.querySelectorAll('.region-button');
+            const regionContent = document.getElementById('region-content');
+            let regionalChart;
+
+            function updateRegionContent(regionKey) {
+                const data = regionalData[regionKey];
+                regionContent.innerHTML = `
+                    <h3 class="text-2xl font-semibold mb-3 text-[#D46B08]">${data.title}</h3>
+                    <p class="text-[#4A2E1A] mb-4"><strong>Unique Traditions:</strong> ${data.rituals}</p>
+                    <p class="text-[#4A2E1A]"><strong>Signature Foods:</strong> ${data.food}</p>
+                `;
+            }
+            
+            function createOrUpdateChart() {
+                const ctx = document.getElementById('regionalChart').getContext('2d');
+                const chartData = {
+                    labels: ['Uttar Pradesh', 'South India', 'Maharashtra', 'Bihar', 'Karnataka'],
+                    datasets: [{
+                        label: 'Processions & Public Events',
+                        data: [9, 7, 4, 6, 5],
+                        backgroundColor: 'rgba(255, 153, 51, 0.6)',
+                        borderColor: 'rgba(255, 153, 51, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Temple Rituals & Music',
+                        data: [7, 9, 8, 7, 9],
+                        backgroundColor: 'rgba(212, 107, 8, 0.6)',
+                        borderColor: 'rgba(212, 107, 8, 1)',
+                        borderWidth: 1
+                    }]
+                };
+
+                if (regionalChart) {
+                    regionalChart.data = chartData;
+                    regionalChart.update();
+                } else {
+                    regionalChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: chartData,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        color: '#6B4F3A'
+                                    },
+                                    grid: {
+                                        color: '#EAE0D5'
+                                    }
+                                },
+                                x: {
+                                    ticks: {
+                                        color: '#6B4F3A'
+                                    },
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                    labels: {
+                                        color: '#4A2E1A'
+                                    }
+                                },
+                                tooltip: {
+                                    bodyFont: {
+                                        family: 'Inter'
+                                    },
+                                    titleFont: {
+                                        family: 'Lora'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            regionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    regionButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.classList.add('bg-white', 'text-[#C67624]');
+                        btn.classList.remove('bg-[#FF9933]', 'text-white');
+                    });
+                    button.classList.add('active');
+                    button.classList.remove('bg-white', 'text-[#C67624]');
+                    button.classList.add('bg-[#FF9933]', 'text-white');
+                    updateRegionContent(button.dataset.region);
+                });
+            });
+
+            updateRegionContent('up');
+            createOrUpdateChart();
+        });
+    </script>
+</body>
+</html>

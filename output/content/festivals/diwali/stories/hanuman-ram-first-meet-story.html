@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanuman Meets Rama: The Fateful Encounter in Kishkindha</title>
+    <meta name="description" content="An interactive story detailing the first meeting between Hanuman and Lord Rama in the forests of Kishkindha, a pivotal moment in the Ramayana that led to the great alliance between Rama and the Vanara king, Sugriva.">
+    <meta name="keywords" content="Hanuman, Rama, Ramayana, Kishkindha, Sugriva, Sita, Lakshmana, Hindu mythology, Vanara, divine encounter">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4B5563; 
+        }
+        .font-sanskrit {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+        }
+        .tab-active {
+            border-color: #D97706;
+            background-color: #FFFBEB;
+            color: #D97706;
+        }
+        .step-item-active {
+            background-color: #D97706;
+            color: #FFFFFF;
+            transform: scale(1.1);
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The page follows a chronological narrative to tell the story of this crucial first meeting. The structure is designed to build the story logically: 1) The Setup explains the context of both parties. 2) The Disguise introduces the initial caution from the Vanaras. 3) The Encounter details the conversation where devotion is sparked. 4) The Alliance shows the formal pact being made. 5) The Significance reflects on the event's importance. This linear progression is enhanced with interactive elements at key points (the disguise, the alliance formation) to engage the user and break down the narrative into memorable parts. -->
+    <!-- Visualization & Content Choices: Report Info: Hanuman's initial disguise -> Goal: Inform/Show Change -> Viz/Method: Interactive HTML card -> Interaction: Button click to reveal his true form -> Justification: This visually represents Hanuman's caution and subsequent revelation, a key moment in the story. | Report Info: The steps to forming the alliance -> Goal: Show Process -> Viz/Method: Interactive step-based diagram -> Interaction: Click each step to see the progression from introduction to pact -> Justification: It clearly and sequentially illustrates how the historic alliance was forged. | Report Info: The meeting's importance for both Rama and Hanuman -> Goal: Organize/Compare -> Viz/Method: HTML Tabbed content -> Interaction: Click tabs to view the significance from each perspective -> Justification: This provides a clear, concise way to understand the profound, dual impact of this single event. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-amber-100/30 sticky top-0 z-50 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="font-sanskrit text-2xl font-bold text-amber-800">हनुमत्-राम समागम</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#setup" class="text-stone-600 hover:text-amber-700 transition">The Setup</a>
+                    <a href="#disguise" class="text-stone-600 hover:text-amber-700 transition">The Disguise</a>
+                    <a href="#alliance" class="text-stone-600 hover:text-amber-700 transition">The Alliance</a>
+                    <a href="#significance" class="text-stone-600 hover:text-amber-700 transition">The Significance</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section class="text-center my-12 md:my-20">
+            <h1 class="font-sanskrit text-5xl md:text-7xl font-bold text-amber-900 leading-tight">The Fateful Meeting</h1>
+            <p class="mt-4 text-xl md:text-2xl text-stone-600">An Encounter that Shaped Destinies</p>
+            <p class="mt-6 max-w-3xl mx-auto text-stone-500">
+                In the dense forests near Rishyamuka mountain, two journeys of despair were about to intersect. Rama, in his desperate search for Sita, and Sugriva, the exiled Vanara king, living in fear of his brother Vali. This is the story of the divine meeting, orchestrated by fate, that would unite them through the wisdom and devotion of Hanuman.
+            </p>
+        </section>
+
+        <section id="setup" class="my-16 md:my-24 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-800">Two Paths Converge</h2>
+            <p class="mt-4 text-lg max-w-3xl mx-auto text-stone-600">
+                Wandering in search of his beloved Sita, Rama and his brother Lakshmana entered the lands of the Vanaras. From a mountaintop, the exiled Vanara prince Sugriva saw the two mighty warriors. Fearing they were assassins sent by his tyrannical brother Vali, Sugriva sent his most trusted minister, Hanuman, to discover their identity and purpose.
+            </p>
+        </section>
+
+        <section id="disguise" class="my-16 md:my-24 py-12 bg-amber-50/50 rounded-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Brahmin's Guise</h2>
+            <p class="text-center text-stone-600 mb-8 max-w-3xl mx-auto">To approach the unknown warriors without causing alarm, the wise Hanuman used his shapeshifting powers to take the form of a humble Brahmin scholar. This allowed him to gauge their character and intentions before revealing his true self.</p>
+            <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-stone-200/80">
+                <h3 id="hanuman-title" class="font-sanskrit text-3xl font-bold text-amber-700 text-center">हनुमान्</h3>
+                <div id="brahmin-form" class="text-center">
+                    <div class="text-6xl my-4"> विद्वान् </div>
+                    <p class="text-stone-500 mt-2">Hanuman as a humble Brahmin, approaching with caution and respect.</p>
+                </div>
+                <div id="vanara-form" class="hidden text-center">
+                     <div class="text-6xl my-4"> वानर </div>
+                    <p class="text-stone-500 mt-2">Hanuman in his divine Vanara form, ready to serve his lord.</p>
+                </div>
+                <button id="transform-button" class="w-full mt-4 bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition">Reveal True Form</button>
+            </div>
+        </section>
+        
+        <section id="alliance" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">The Sacred Alliance</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Upon hearing Rama's story and recognizing his divinity, Hanuman revealed himself. He understood that these two noble souls could help each other. This led to the forging of a sacred pact, a friendship that would change the course of the war.</p>
+            
+            <div>
+                <div class="flex flex-col md:flex-row justify-center items-center md:space-x-4 mb-6">
+                    <button class="step-item step-item-active w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 mb-2 md:mb-0" data-step="1">1. The Revelation</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white mb-2 md:mb-0" data-step="2">2. The Introduction</button>
+                    <div class="hidden md:block w-12 h-0.5 bg-stone-300"></div>
+                    <button class="step-item w-full md:w-auto px-4 h-16 rounded-lg font-bold transition duration-300 bg-white" data-step="3">3. The Pact</button>
+                </div>
+
+                <div id="step-details" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md min-h-[150px]">
+                    <h4 id="step-title" class="font-bold text-xl text-amber-700 mb-2">Step 1: The Revelation</h4>
+                    <p id="step-description" class="text-stone-600">Impressed by Rama's nobility and recognizing him as an incarnation of Vishnu, Hanuman dropped his disguise and fell at Rama's feet. He explained his mission and the plight of his master, Sugriva.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="significance" class="my-16 md:my-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-amber-800 mb-2">A Meeting of Purpose</h2>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">This encounter was no mere coincidence. It was the moment a devotee found his god, and a prince found the means to rescue his wife. It marked the turning point in the epic, giving hope to the hopeless and purpose to the powerful.</p>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="flex border-b border-stone-300 mb-6">
+                    <button class="tab-button tab-active flex-1 text-center font-semibold p-3 border-b-2 transition" data-tab="rama">Significance for Rama</button>
+                    <button class="tab-button flex-1 text-center font-semibold p-3 border-b-2 border-transparent text-stone-500 transition" data-tab="hanuman">Significance for Hanuman</button>
+                </div>
+                <div id="tab-content">
+                    <div id="rama-content" class="tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">Hope Reborn</h3>
+                        <p class="text-stone-600">For Rama, meeting Hanuman was a divine intervention. He gained not only his most capable and devoted follower but also the allegiance of Sugriva's mighty Vanara army. This alliance was the key to finding Sita's location and waging war against the powerful Ravana. It transformed his lonely quest into a full-fledged military campaign.</p>
+                    </div>
+                    <div id="hanuman-content" class="hidden tab-pane">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-3">Purpose Found</h3>
+                        <p class="text-stone-600">For Hanuman, meeting Rama was the fulfillment of his existence. Despite his immense power, he had been serving an exiled king with no clear purpose. In Rama, he found his true master and a divine cause to which he could dedicate his strength, wisdom, and unwavering devotion. It was the moment his life's mission began.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-100 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-stone-500">
+            <p>An interactive retelling of the divine meeting that sparked the search for Sita.</p>
+            <p class="text-sm mt-2">Inspired by the epic Ramayana.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const transformButton = document.getElementById('transform-button');
+            const brahminForm = document.getElementById('brahmin-form');
+            const vanaraForm = document.getElementById('vanara-form');
+            let isBrahmin = true;
+
+            transformButton.addEventListener('click', () => {
+                isBrahmin = !isBrahmin;
+                brahminForm.classList.toggle('hidden');
+                vanaraForm.classList.toggle('hidden');
+                transformButton.textContent = isBrahmin ? 'Reveal True Form' : 'Show Brahmin Guise';
+            });
+
+            const stepData = {
+                1: { title: 'Step 1: The Revelation', description: 'Impressed by Rama\'s nobility and recognizing him as an incarnation of Vishnu, Hanuman dropped his disguise and fell at Rama\'s feet. He explained his mission and the plight of his master, Sugriva.' },
+                2: { title: 'Step 2: The Introduction', description: 'Trusting Hanuman completely, Rama and Lakshmana agreed to meet Sugriva. Hanuman, in his mighty form, carried the two brothers on his shoulders, leaping effortlessly to the peak of Rishyamuka mountain where Sugriva was hiding.' },
+                3: { title: 'Step 3: The Pact', description: 'With Hanuman as the witness, a sacred fire was lit. Rama swore to slay Vali and restore Sugriva to his throne. In return, Sugriva swore to commit his entire Vanara army to the search for Sita. This bond of friendship and mutual aid was sealed.' }
+            };
+
+            const stepItems = document.querySelectorAll('.step-item');
+            const stepTitle = document.getElementById('step-title');
+            const stepDescription = document.getElementById('step-description');
+
+            stepItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    stepItems.forEach(i => i.classList.remove('step-item-active', 'bg-white'));
+                    stepItems.forEach(i => {
+                        if (i !== item) i.classList.add('bg-white');
+                    });
+                    item.classList.add('step-item-active');
+                    item.classList.remove('bg-white');
+
+                    const step = item.dataset.step;
+                    stepTitle.textContent = stepData[step].title;
+                    stepDescription.textContent = stepData[step].description;
+                });
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+                    button.classList.add('tab-active');
+
+                    const tab = button.dataset.tab;
+                    tabPanes.forEach(pane => {
+                        if (pane.id === `${tab}-content`) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+

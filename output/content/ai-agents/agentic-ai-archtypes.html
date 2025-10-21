@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Agentic Paradigm Shift: An Interactive Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutrals -->
+    <!-- Application Structure Plan: The SPA is designed as an interactive dashboard, moving away from the linear report format. The core structure is a central "Overview" section with a visual, clickable map of the four agent archetypes. This provides an immediate mental model. Clicking a node navigates to the "Agent Archetypes" section, which uses a tab-like card system for focused exploration of each agent type with unique interactive elements (toggles, animated comparisons, charts). A dedicated "Comparative Analysis" section centralizes all tables for direct comparison. Finally, the "Future & Risks" section synthesizes high-level concepts. This non-linear, visually-guided structure was chosen to enhance user engagement and comprehension, allowing users to explore based on interest rather than being forced through a sequential narrative. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: 4 Agent Archetypes -> Goal: Organize/Inform -> Viz: Interactive Diagram (HTML/CSS nodes) -> Interaction: Hover/Click -> Justification: Provides a high-level map of the domain. -> Library/Method: HTML/CSS/JS.
+        - Report Info: Traditional vs. Agentic RAG -> Goal: Compare -> Viz: Toggle with dynamic diagram/text -> Interaction: Click toggle -> Justification: Clearly shows the evolution. -> Library/Method: HTML/CSS/JS.
+        - Report Info: JSON vs. CodeAct -> Goal: Compare -> Viz: Side-by-side code blocks -> Interaction: Scroll-triggered animation -> Justification: Visually demonstrates efficiency gains. -> Library/Method: HTML/CSS/JS.
+        - Report Info: CUA Benchmarks (Table 4) -> Goal: Compare -> Viz: Interactive Bar Chart -> Interaction: Hover for tooltips -> Justification: Ideal for quantitative comparison. -> Library/Method: Chart.js.
+        - Report Info: Risk Matrix (Table 5) -> Goal: Organize/Inform -> Viz: Interactive Grid of Cards -> Interaction: Click to expand -> Justification: Makes dense data digestible. -> Library/Method: HTML/CSS/JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #333333;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 640px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        .nav-link.active {
+            color: #E59866;
+            border-bottom-color: #E59866;
+        }
+        .agent-card, .risk-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .tab-button.active {
+            background-color: #A9CCE3;
+            color: #1F2937;
+        }
+        .risk-card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-[#F8F7F4]/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-200">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-xl font-bold text-[#333333]">Agentic AI</h1>
+                <div class="hidden sm:flex sm:space-x-8">
+                    <a href="#overview" class="nav-link text-gray-500 hover:text-[#E59866] border-b-2 border-transparent pb-1">Overview</a>
+                    <a href="#archetypes" class="nav-link text-gray-500 hover:text-[#E59866] border-b-2 border-transparent pb-1">Archetypes</a>
+                    <a href="#analysis" class="nav-link text-gray-500 hover:text-[#E59866] border-b-2 border-transparent pb-1">Analysis</a>
+                    <a href="#future" class="nav-link text-gray-500 hover:text-[#E59866] border-b-2 border-transparent pb-1">Future & Risks</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="overview" class="text-center min-h-screen flex flex-col justify-center">
+            <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">The Agentic Paradigm Shift</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12">
+                A fundamental transformation is underway, moving from reactive AI tools to proactive, autonomous agents. This interactive report deconstructs the key architectural patterns driving this evolution. Explore the ecosystem below to understand how these new agentic systems reason, act, and learn.
+            </p>
+            <div class="w-full max-w-4xl mx-auto p-8">
+                <div class="relative grid grid-cols-2 grid-rows-2 gap-12 md:gap-20">
+                    <div id="eco-rag" class="agent-card bg-white p-6 rounded-xl shadow-md cursor-pointer border-2 border-transparent hover:border-[#A9CCE3]">
+                        <h3 class="text-xl font-semibold mb-2">Agentic RAG</h3>
+                        <p class="text-sm text-gray-500">Dynamic, reasoning-driven information retrieval.</p>
+                    </div>
+                    <div id="eco-codeact" class="agent-card bg-white p-6 rounded-xl shadow-md cursor-pointer border-2 border-transparent hover:border-[#A3D2B3]">
+                        <h3 class="text-xl font-semibold mb-2">CodeAct Agents</h3>
+                        <p class="text-sm text-gray-500">Taking action through expressive, executable code.</p>
+                    </div>
+                    <div id="eco-dr" class="agent-card bg-white p-6 rounded-xl shadow-md cursor-pointer border-2 border-transparent hover:border-[#E59866]">
+                        <h3 class="text-xl font-semibold mb-2">Deep Research Agents</h3>
+                        <p class="text-sm text-gray-500">Automating complex, open-ended research tasks.</p>
+                    </div>
+                    <div id="eco-cua" class="agent-card bg-white p-6 rounded-xl shadow-md cursor-pointer border-2 border-transparent hover:border-gray-400">
+                        <h3 class="text-xl font-semibold mb-2">Computer-Using Agents</h3>
+                        <p class="text-sm text-gray-500">Interacting with the world via GUIs, mouse, and keyboard.</p>
+                    </div>
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#333333] rounded-full flex items-center justify-center text-white font-bold text-center text-sm shadow-2xl z-10">Agentic Core</div>
+                </div>
+            </div>
+             <p class="mt-12 text-gray-500">Click on an archetype to explore its architecture and capabilities.</p>
+        </section>
+
+        <section id="archetypes" class="pt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Agent Archetypes: A Deep Dive</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600 mt-4">
+                    Each agent archetype represents a distinct axis of capability. Select a tab to explore how they work, from advanced information retrieval to direct interaction with computer interfaces.
+                </p>
+            </div>
+
+            <div class="mb-8 flex justify-center space-x-2 md:space-x-4 p-1 bg-gray-200 rounded-full">
+                <button class="tab-button flex-1 py-2 px-4 rounded-full text-sm md:text-base font-semibold transition-colors duration-300" data-tab="rag">Agentic RAG</button>
+                <button class="tab-button flex-1 py-2 px-4 rounded-full text-sm md:text-base font-semibold transition-colors duration-300" data-tab="codeact">CodeAct</button>
+                <button class="tab-button flex-1 py-2 px-4 rounded-full text-sm md:text-base font-semibold transition-colors duration-300" data-tab="dr">Deep Research</button>
+                <button class="tab-button flex-1 py-2 px-4 rounded-full text-sm md:text-base font-semibold transition-colors duration-300" data-tab="cua">Computer-Using</button>
+            </div>
+
+            <div id="tab-content" class="bg-white p-6 md:p-8 rounded-2xl shadow-lg min-h-[600px]">
+                <!-- Agentic RAG Content -->
+                <div id="rag-content" class="tab-pane">
+                    <h3 class="text-2xl font-bold mb-4">Agentic RAG: From Augmentation to Agency</h3>
+                    <p class="mb-6 text-gray-600">Agentic RAG transforms information retrieval from a static, one-shot lookup into a dynamic, reasoning-driven process. By embedding autonomous agents into the workflow, these systems can plan, execute multi-step searches, and iteratively refine results, mimicking a human research process.</p>
+                    
+                    <div class="text-center my-6">
+                        <span class="mr-2 font-medium">Traditional RAG</span>
+                        <label for="rag-toggle" class="inline-flex relative items-center cursor-pointer">
+                            <input type="checkbox" value="" id="rag-toggle" class="sr-only peer">
+                            <div class="w-14 h-7 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-[#A9CCE3]"></div>
+                        </label>
+                        <span class="ml-2 font-medium">Agentic RAG</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 items-start">
+                        <div id="rag-diagram" class="border p-4 rounded-lg bg-gray-50 transition-all duration-500">
+                            <!-- Diagram will be dynamically updated -->
+                        </div>
+                        <div id="rag-features" class="transition-all duration-500">
+                            <!-- Features will be dynamically updated -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CodeAct Content -->
+                <div id="codeact-content" class="tab-pane hidden">
+                    <h3 class="text-2xl font-bold mb-4">CodeAct: The Power of Imperative Action</h3>
+                    <p class="mb-6 text-gray-600">The CodeAct paradigm revolutionizes how agents take action by shifting from constrained JSON-based tool calls to generating expressive Python code. This grants agents unprecedented flexibility to compose tools, handle complex logic, and even debug their own errors, all within a single, efficient turn.</p>
+                    <div class="grid md:grid-cols-2 gap-8 items-center bg-gray-800 text-white p-6 rounded-lg">
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2 text-red-400">JSON-Based (Multiple Turns)</h4>
+                            <pre class="bg-gray-900 rounded p-2 text-xs overflow-x-auto"><code id="json-code"></code></pre>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2 text-green-400">CodeAct (Single Turn)</h4>
+                            <pre class="bg-gray-900 rounded p-2 text-xs overflow-x-auto"><code id="codeact-code"></code></pre>
+                        </div>
+                    </div>
+                     <p class="mt-4 text-sm text-center text-gray-500">This example illustrates how CodeAct can consolidate a multi-step data lookup and calculation into a single, efficient action.</p>
+                </div>
+
+                <!-- Deep Research Content -->
+                <div id="dr-content" class="tab-pane hidden">
+                    <h3 class="text-2xl font-bold mb-4">Deep Research Agents: Automating Complex Inquiry</h3>
+                    <p class="mb-6 text-gray-600">DR Agents are purpose-built to automate complex, open-ended research. They integrate dynamic planning, multi-source information gathering, and iterative tool use to produce structured, analytical reports with citations, tackling tasks that previously required hours of human expert labor.</p>
+                    <div id="dr-platforms-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- DR Platforms will be dynamically inserted here -->
+                    </div>
+                </div>
+
+                <!-- CUA Content -->
+                <div id="cua-content" class="tab-pane hidden">
+                    <h3 class="text-2xl font-bold mb-4">Computer-Using Agents: The Final Frontier</h3>
+                    <p class="mb-6 text-gray-600">CUAs represent a universal interface for AI, enabling them to interact with any application through its graphical user interface (GUI), just like a human. By perceiving the screen and controlling a virtual mouse and keyboard, they can operate across the entire digital world without needing specialized APIs.</p>
+                    <div class="chart-container">
+                        <canvas id="cuaBenchmarkChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-center text-gray-500">This chart shows the success rates of leading CUAs on various benchmarks, compared to the human baseline. Hover over the bars for precise values. Note the performance gap on more complex, general OS tasks.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="analysis" class="pt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Comparative Analysis</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600 mt-4">
+                    This section provides a centralized view of the key comparisons and data presented in the report. Use the dropdown to switch between different analytical tables and charts.
+                </p>
+            </div>
+            <div class="max-w-4xl mx-auto">
+                <select id="analysis-selector" class="w-full p-3 border border-gray-300 rounded-lg bg-white mb-6">
+                    <option value="rag-comparison">RAG vs. Agentic RAG</option>
+                    <option value="codeact-comparison">JSON vs. CodeAct</option>
+                    <option value="dr-platforms">DR Agent Platforms</option>
+                    <option value="cua-benchmarks">CUA Benchmarks</option>
+                    <option value="risk-matrix">Security & Ethical Risks</option>
+                </select>
+                <div id="analysis-content" class="bg-white p-6 rounded-2xl shadow-lg overflow-x-auto">
+                    <!-- Content will be dynamically loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <section id="future" class="pt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Future Frontiers & Critical Risks</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600 mt-4">
+                    The agentic paradigm is rapidly converging, but this progress introduces significant technical, security, and ethical challenges. Explore the future trajectory and the risks that must be managed for responsible development.
+                </p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">The Trajectory of Convergence</h3>
+                    <p class="mb-6 text-gray-600">Specialized agent capabilities are merging. A future general-purpose agent will likely be a CUA at its core, incorporating the retrieval strategies of DR Agents and the execution power of CodeAct, all managed by a multi-agent orchestrator.</p>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-gray-100 rounded-lg">
+                            <h4 class="font-semibold text-[#333333]">Continual Learning</h4>
+                            <p class="text-sm text-gray-600">Agents that improve their performance from ongoing interactions without full retraining.</p>
+                        </div>
+                        <div class="p-4 bg-gray-100 rounded-lg">
+                            <h4 class="font-semibold text-[#333333]">Bootstrapped Reasoning</h4>
+                            <p class="text-sm text-gray-600">Multi-agent systems that create their own training data from successful task completions.</p>
+                        </div>
+                         <div class="p-4 bg-gray-100 rounded-lg">
+                            <h4 class="font-semibold text-[#333333]">Self-Judging Models</h4>
+                            <p class="text-sm text-gray-600">Agents that evaluate their own outputs to generate reward signals for self-improvement.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">Risk Landscape</h3>
+                    <p class="mb-6 text-gray-600">Agent autonomy creates a new "cognitive security" attack surface. Click on a risk to learn more about its impact and potential mitigations.</p>
+                    <div id="risk-matrix-container" class="space-y-2">
+                        <!-- Risk matrix will be dynamically inserted -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+<!--
+
+    <footer class="border-t border-gray-200 mt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-gray-500">
+            <p>&copy; 2025 Interactive AI Analysis. All rights reserved.</p>
+            <p class="text-sm mt-1">Based on "The Agentic Paradigm Shift: An Architectural Analysis of Modern AI Systems".</p>
+        </div>
+    </footer>
+-->
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const data = {
+        rag: {
+            traditional: {
+                diagram: `
+                    <h4 class="font-semibold text-center mb-2">Traditional RAG</h4>
+                    <div class="flex flex-col items-center space-y-2">
+                        <div class="p-2 bg-blue-100 rounded w-4/5 text-center">User Query</div>
+                        <div class="text-2xl">&darr;</div>
+                        <div class="p-2 bg-blue-200 rounded w-4/5 text-center">Retrieve from 1 Source</div>
+                        <div class="text-2xl">&darr;</div>
+                        <div class="p-2 bg-blue-300 rounded w-4/5 text-center">Augment Prompt</div>
+                        <div class="text-2xl">&darr;</div>
+                        <div class="p-2 bg-blue-400 rounded w-4/5 text-center">Generate Response</div>
+                    </div>`,
+                features: `
+                    <h4 class="font-semibold mb-2">Key Features:</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="text-red-600">Static Workflow:</strong> A rigid, one-shot "retrieve-then-generate" pipeline.</li>
+                        <li><strong>Single-Step Reasoning:</strong> No capacity for validation or iterative refinement.</li>
+                        <li><strong>Limited Integration:</strong> Typically connects to a single, predefined knowledge base.</li>
+                        <li><strong>Reactive & Brittle:</strong> Highly sensitive to the quality of the initial retrieval.</li>
+                    </ul>`
+            },
+            agentic: {
+                diagram: `
+                    <h4 class="font-semibold text-center mb-2">Agentic RAG</h4>
+                    <div class="relative p-4">
+                        <div class="p-2 bg-orange-200 rounded w-full text-center mb-2">Orchestrator Agent (Plans & Synthesizes)</div>
+                        <div class="absolute top-12 left-1/2 w-0.5 h-6 bg-gray-400"></div>
+                        <div class="mt-8 grid grid-cols-2 gap-2">
+                            <div class="p-2 bg-orange-100 rounded text-center text-sm">Query Analyzer</div>
+                            <div class="p-2 bg-orange-100 rounded text-center text-sm">Retrieval Manager</div>
+                            <div class="p-2 bg-orange-100 rounded text-center text-sm">Generation Controller</div>
+                            <div class="p-2 bg-orange-100 rounded text-center text-sm">Expert Agent</div>
+                        </div>
+                        <div class="mt-2 text-center text-2xl font-bold text-orange-500">&#8635;</div>
+                        <div class="p-2 bg-orange-300 rounded w-full text-center mt-2">Iterative Refinement Loop</div>
+                    </div>`,
+                features: `
+                    <h4 class="font-semibold mb-2">Key Features:</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="text-green-600">Dynamic Workflow:</strong> Multi-step plan-retrieve-reason-generate loop.</li>
+                        <li><strong>Multi-Hop Reasoning:</strong> Iteratively refines search and self-corrects based on findings.</li>
+                        <li><strong>Multiple Sources:</strong> Can query databases, APIs, and the web simultaneously.</li>
+                        <li><strong>Proactive & Adaptive:</strong> Adapts its strategy to the query's complexity and context.</li>
+                    </ul>`
+            }
+        },
+        codeact: {
+            json: `// Turn 1: Find user ID
+{ 
+  "tool": "search_users",
+  "parameters": { "name": "Alice" }
+}
+// --> System returns: { "id": "user-123" }
+
+// Turn 2: Get recent orders
+{
+  "tool": "get_orders",
+  "parameters": { "user_id": "user-123" }
+}
+// --> System returns: [{...}, {...}]
+
+// Turn 3: Calculate total
+{
+  "tool": "calculate_sum",
+  "parameters": { "items": [...] }
+}
+`,
+            codeact: `from my_tools import search_users, get_orders
+
+# Find user and get their orders
+user_id = search_users(name="Alice")["id"]
+orders = get_orders(user_id=user_id)
+
+# Calculate total spending in one go
+total_spent = sum(order['amount'] for order in orders)
+print(f"Total spent by Alice: \${total_spent}")
+`
+        },
+        drPlatforms: [
+            { name: 'OpenAI ChatGPT Agent', model: 'Reasoning-optimized models', features: 'Unified agentic system; RL-based training; visual browser and terminal tools.', capabilities: 'Seamlessly combines web interaction, research, and conversational abilities.' },
+            { name: 'Google Gemini Deep Research', model: 'Gemini 2.5 family', features: 'Multi-step planning; asynchronous task manager for long-running inference and error recovery.', capabilities: 'High resilience for long tasks; can use user-uploaded files as sources.' },
+            { name: 'Anthropic Research System', model: 'Claude 3.5 Sonnet', features: 'Explicit orchestrator-worker multi-agent architecture; dedicated citation agent.', capabilities: 'High degree of parallelism in research; strong emphasis on verifiable, cited outputs.' },
+            { name: 'Perplexity AI', model: 'Proprietary modified transformer', features: 'Focus on real-time data aggregation; knowledge integration framework.', capabilities: 'Functions as a dedicated "answer engine" with a strong focus on source attribution.' }
+        ],
+        cuaBenchmarks: {
+            labels: ['WebVoyager (Live Websites)', 'WebArena (Realistic Tasks)', 'OSWorld (Full OS Control)'],
+            datasets: [
+                {
+                    label: 'Simular Agent S2',
+                    data: [90.1, null, 41.4],
+                    backgroundColor: '#A9CCE3',
+                    borderColor: '#A9CCE3',
+                    borderWidth: 1
+                },
+                {
+                    label: 'OpenAI CUA',
+                    data: [87, 58.1, 38.1],
+                    backgroundColor: '#A3D2B3',
+                    borderColor: '#A3D2B3',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Human Baseline',
+                    data: [null, 88, 72.4],
+                    backgroundColor: '#E59866',
+                    borderColor: '#E59866',
+                    borderWidth: 1
+                }
+            ]
+        },
+        riskMatrix: [
+            { type: 'Agentic RAG', vulnerability: 'Data Poisoning / Misinformation', concern: 'Amplification of Bias', failure: 'An agent retrieves and synthesizes biased or false information from the web, presenting it as a factual, authoritative answer.', mitigation: 'Cross-source verification loops; fact-checking tools; regular bias audits of knowledge sources.' },
+            { type: 'CodeAct Agent', vulnerability: 'Malicious Code Execution', concern: 'Accountability for Errors', failure: 'An agent is tricked into writing and executing a script that deletes user files or exfiltrates data from a secure environment.', mitigation: 'Strict, isolated code sandboxing (e.g., Docker); runtime monitoring; restricting access to high-risk libraries/commands.' },
+            { type: 'Deep Research Agent', vulnerability: 'Cascading Failure in Multi-Agent System', concern: 'Lack of Transparency', failure: 'A compromised "researcher" agent passes poisoned data to a "writer" agent, resulting in a final report that is subtly but dangerously incorrect.', mitigation: 'Implementing explainable AI (XAI) to trace outputs back to sources; secure inter-agent communication protocols.' },
+            { type: 'Computer-Using Agent (CUA)', vulnerability: 'Perception / Interface Hijacking', concern: 'Deception and Manipulation', failure: 'An agent interacting with a website is tricked by a manipulated UI into clicking a malicious link that initiates an unauthorized financial transaction.', mitigation: 'User confirmation for sensitive actions; robust visual grounding models; clear disclosure that the user is interacting with an AI.' }
+        ],
+        analysisTables: {
+            'rag-comparison': {
+                headers: ['Feature', 'Traditional RAG', 'Agentic RAG'],
+                rows: [
+                    ['Workflow', 'Static, linear, one-shot', 'Dynamic, iterative, multi-step'],
+                    ['Reasoning', 'Single-step, no validation', 'Multi-hop reasoning, self-correction'],
+                    ['Source Integration', 'Single, predefined knowledge base', 'Multiple, heterogeneous sources'],
+                    ['Adaptability', 'Reactive; requires prompt engineering', 'Proactive; adapts to query'],
+                    ['Tool Use', 'Limited to retrieval', 'Wide array of external tools via APIs'],
+                    ['Typical Use Case', 'Factual Q&A over a known corpus', 'Complex problem-solving and research'],
+                    ['Primary Limitation', 'Brittleness; depends on first retrieval', 'Complexity, cost, and latency']
+                ]
+            },
+            'codeact-comparison': {
+                headers: ['Capability', 'JSON/Text-Based Actions', 'CodeAct (Python)'],
+                rows: [
+                    ['Tool Composition', 'Limited; requires multiple turns', 'Native; chains tools in one action'],
+                    ['Control Flow', 'Not supported', 'Native support for loops/conditionals'],
+                    ['Data Flow', 'Difficult; system must manage state', 'Native; uses variables'],
+                    ['Access to Libraries', 'Limited to pre-defined tools', 'Can import any Python library'],
+                    ['Efficiency', 'Inefficient for complex tasks', 'Highly efficient; reduces turns/cost'],
+                    ['Self-Correction', 'Indirect; re-evaluates text feedback', 'Direct; debugs from error messages']
+                ]
+            },
+            'dr-platforms': {
+                headers: ['Platform', 'Core Model / Engine', 'Key Architectural Features', 'Distinctive Capabilities'],
+                rows: data.drPlatforms.map(p => [p.name, p.model, p.features, p.capabilities])
+            },
+             'cua-benchmarks': {
+                isChart: true,
+            },
+            'risk-matrix': {
+                headers: ['Agent Type', 'Primary Security Vulnerability', 'Primary Ethical Concern', 'Example Failure Mode', 'Proposed Mitigation'],
+                rows: data.riskMatrix.map(r => [r.type, r.vulnerability, r.concern, r.failure, r.mitigation])
+            }
+        }
+    };
+
+    const ragToggle = document.getElementById('rag-toggle');
+    const ragDiagram = document.getElementById('rag-diagram');
+    const ragFeatures = document.getElementById('rag-features');
+
+    function updateRagContent(isAgentic) {
+        const content = isAgentic ? data.rag.agentic : data.rag.traditional;
+        ragDiagram.innerHTML = content.diagram;
+        ragFeatures.innerHTML = content.features;
+    }
+
+    ragToggle.addEventListener('change', (e) => {
+        updateRagContent(e.target.checked);
+    });
+    updateRagContent(false);
+
+    document.getElementById('json-code').textContent = data.codeact.json;
+    document.getElementById('codeact-code').textContent = data.codeact.codeact;
+
+    const drContainer = document.getElementById('dr-platforms-container');
+    data.drPlatforms.forEach(platform => {
+        const card = document.createElement('div');
+        card.className = 'bg-gray-100 p-4 rounded-lg shadow transition-all duration-300';
+        card.innerHTML = `
+            <h4 class="font-bold text-[#333333]">${platform.name}</h4>
+            <p class="text-sm text-gray-500 mt-1 mb-2"><strong>Model:</strong> ${platform.model}</p>
+            <p class="text-sm text-gray-600 mb-2"><strong>Features:</strong> ${platform.features}</p>
+            <p class="text-sm text-gray-800 bg-yellow-100 p-2 rounded"><strong>Capabilities:</strong> ${platform.capabilities}</p>
+        `;
+        drContainer.appendChild(card);
+    });
+
+    const riskContainer = document.getElementById('risk-matrix-container');
+    data.riskMatrix.forEach((risk, index) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'border border-gray-200 rounded-lg';
+        wrapper.innerHTML = `
+            <button class="risk-card-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center" data-index="${index}">
+                <span class="font-semibold">${risk.vulnerability}</span>
+                <span class="plus-minus transform transition-transform duration-300">+</span>
+            </button>
+            <div class="risk-card-content px-4">
+                <div class="py-4 border-t border-gray-200">
+                    <p class="mb-2"><strong class="text-gray-700">Agent Type:</strong> ${risk.type}</p>
+                    <p class="mb-2"><strong class="text-gray-700">Ethical Concern:</strong> ${risk.concern}</p>
+                    <p class="mb-2"><strong class="text-gray-700">Failure Mode:</strong> ${risk.failure}</p>
+                    <p class="mb-2"><strong class="text-green-700">Mitigation:</strong> ${risk.mitigation}</p>
+                </div>
+            </div>
+        `;
+        riskContainer.appendChild(wrapper);
+    });
+
+    riskContainer.addEventListener('click', (e) => {
+        const header = e.target.closest('.risk-card-header');
+        if (header) {
+            const content = header.nextElementSibling;
+            const plusMinus = header.querySelector('.plus-minus');
+            const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+
+            document.querySelectorAll('.risk-card-content').forEach(c => c.style.maxHeight = '0px');
+            document.querySelectorAll('.plus-minus').forEach(pm => pm.textContent = '+');
+
+            if (!isOpen) {
+                content.style.maxHeight = content.scrollHeight + "px";
+                plusMinus.textContent = '-';
+            }
+        }
+    });
+    
+    let cuaChart;
+    function renderCuaChart() {
+        const ctx = document.getElementById('cuaBenchmarkChart').getContext('2d');
+        if (cuaChart) {
+            cuaChart.destroy();
+        }
+        cuaChart = new Chart(ctx, {
+            type: 'bar',
+            data: data.cuaBenchmarks,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Success Rate (%)'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'CUA Performance on Key Industry Benchmarks'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    const tabs = document.querySelectorAll('.tab-button');
+    const panes = document.querySelectorAll('.tab-pane');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            panes.forEach(pane => pane.classList.add('hidden'));
+            const targetPane = document.getElementById(tab.dataset.tab + '-content');
+            targetPane.classList.remove('hidden');
+
+            if (tab.dataset.tab === 'cua') {
+                setTimeout(renderCuaChart, 50);
+            }
+        });
+    });
+    tabs[0].click();
+
+    const ecosystemCards = document.querySelectorAll('.agent-card');
+    ecosystemCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const agentType = card.id.split('-')[1];
+            document.querySelector(`a[href="#archetypes"]`).click();
+            document.querySelector(`.tab-button[data-tab="${agentType}"]`).click();
+            document.getElementById('archetypes').scrollIntoView();
+        });
+    });
+    
+    const analysisSelector = document.getElementById('analysis-selector');
+    const analysisContent = document.getElementById('analysis-content');
+
+    function renderAnalysisContent(key) {
+        const contentData = data.analysisTables[key];
+        analysisContent.innerHTML = ''; 
+
+        if (contentData.isChart) {
+            const canvas = document.createElement('canvas');
+            canvas.id = 'analysis-chart';
+            const container = document.createElement('div');
+            container.className = 'chart-container h-[450px]';
+            container.appendChild(canvas);
+            analysisContent.appendChild(container);
+            renderCuaChart();
+        } else {
+            const table = document.createElement('table');
+            table.className = 'min-w-full divide-y divide-gray-200';
+            const thead = document.createElement('thead');
+            thead.className = 'bg-gray-50';
+            let tr = document.createElement('tr');
+            contentData.headers.forEach(header => {
+                const th = document.createElement('th');
+                th.scope = 'col';
+                th.className = 'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider';
+                th.textContent = header;
+                tr.appendChild(th);
+            });
+            thead.appendChild(tr);
+            table.appendChild(thead);
+
+            const tbody = document.createElement('tbody');
+            tbody.className = 'bg-white divide-y divide-gray-200';
+            contentData.rows.forEach(row => {
+                tr = document.createElement('tr');
+                row.forEach(cell => {
+                    const td = document.createElement('td');
+                    td.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+                    td.textContent = cell;
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+            analysisContent.appendChild(table);
+        }
+    }
+    
+    analysisSelector.addEventListener('change', (e) => {
+        renderAnalysisContent(e.target.value);
+    });
+    renderAnalysisContent(analysisSelector.value);
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section');
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.3
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === entry.target.id) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => {
+        observer.observe(section);
+        const link = document.querySelector(`a[href="#${section.id}"]`);
+        if(link) {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                section.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+    });
+});
+</script>
+
+</body>
+</html>

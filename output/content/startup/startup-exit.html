@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Startup Exit Strategies</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Sage -->
+    <!-- Application Structure Plan: The application is structured as a thematic, single-page guide. It starts with a brief introduction, followed by the core interactive 'Exploration Hub'. This hub features prominent navigation buttons for each exit strategy, a dynamic content area to display details (description, pros, cons), and a comparative radar chart. This dashboard-like approach was chosen to allow users to easily compare and contrast complex options on multiple dimensions, which is more intuitive than a simple linear document. It's followed by a 'Pathfinder' tool for personalized recommendations and a final 'Key Considerations' section for holistic advice. This flow guides the user from general understanding to specific comparison, then to personalized insight, providing a comprehensive and user-centric learning journey. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Different Exit Strategies (IPO, M&A, etc.). Goal: Compare. Viz/Method: Interactive Dashboard with dynamic text and a Radar Chart. Interaction: User clicks a strategy button, and all content (text, chart data) updates. Justification: A radar chart provides an immediate visual 'fingerprint' of each option's trade-offs (e.g., high return vs. low control), which is far more effective for comparison than a table. Library: Chart.js (Canvas).
+        - Report Info: Founder Priorities. Goal: Organize/Personalize. Viz/Method: Interactive 'Pathfinder' with clickable priorities. Interaction: User selects priorities, and relevant exit strategies are highlighted. Justification: This makes the information actionable and tailored to the user's specific context, increasing engagement. Method: HTML/CSS/JS.
+        - Report Info: General Advice. Goal: Inform. Viz/Method: Content cards in a grid layout. Interaction: Minimal hover effects. Justification: Cards break down information into digestible, scannable chunks. Method: HTML/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #383838;
+        }
+        .active-tab {
+            background-color: #3A6B4C !important;
+            color: #FFFFFF !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        .content-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease-in-out;
+        }
+        .priority-tag {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border: 1px solid #D1D5DB;
+        }
+        .priority-tag.selected {
+            background-color: #D1FAE5;
+            color: #065F46;
+            border-color: #3A6B4C;
+        }
+        .recommendation-card {
+            transition: all 0.3s ease-in-out;
+            border: 2px solid transparent;
+        }
+        .recommendation-card.highlight {
+            border-color: #3A6B4C;
+            transform: scale(1.03);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#3A6B4C] tracking-tight">Navigating Your Startup's Exit</h1>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">An interactive guide to understanding and comparing the most common exit strategies for founders and investors.</p>
+        </header>
+
+        <main>
+            <section id="explorer" class="mb-16">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800">Exit Strategy Exploration Hub</h2>
+                    <p class="mt-2 text-gray-600">Select an exit path to learn about its process, benefits, and drawbacks. The chart will update to compare each option across key factors.</p>
+                </div>
+
+                <div id="exit-options-nav" class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-8">
+                    <button data-option="ipo" class="exit-option-btn text-sm sm:text-base font-medium py-3 px-4 sm:px-6 rounded-full bg-white shadow-sm hover:bg-gray-100 transition-all duration-200">IPO</button>
+                    <button data-option="ma" class="exit-option-btn text-sm sm:text-base font-medium py-3 px-4 sm:px-6 rounded-full bg-white shadow-sm hover:bg-gray-100 transition-all duration-200">Acquisition (M&A)</button>
+                    <button data-option="secondary" class="exit-option-btn text-sm sm:text-base font-medium py-3 px-4 sm:px-6 rounded-full bg-white shadow-sm hover:bg-gray-100 transition-all duration-200">Secondary Market Sale</button>
+                    <button data-option="mbo" class="exit-option-btn text-sm sm:text-base font-medium py-3 px-4 sm:px-6 rounded-full bg-white shadow-sm hover:bg-gray-100 transition-all duration-200">Management Buyout</button>
+                    <button data-option="liquidation" class="exit-option-btn text-sm sm:text-base font-medium py-3 px-4 sm:px-6 rounded-full bg-white shadow-sm hover:bg-gray-100 transition-all duration-200">Liquidation</button>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                    <div id="exit-details" class="content-card p-6 md:p-8">
+                        <h3 id="details-title" class="text-2xl font-bold text-[#3A6B4C] mb-4"></h3>
+                        <p id="details-description" class="text-gray-600 mb-6"></p>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 text-green-700">Pros</h4>
+                                <ul id="details-pros" class="list-none space-y-2 text-gray-600"></ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 text-red-700">Cons</h4>
+                                <ul id="details-cons" class="list-none space-y-2 text-gray-600"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-card p-6 md:p-8 flex flex-col items-center justify-center">
+                        <h3 class="text-xl font-bold text-center text-gray-800 mb-4">Strategy Comparison</h3>
+                        <div class="chart-container">
+                            <canvas id="exit-strategy-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="pathfinder" class="mb-16">
+                 <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800">Which Path is Right for You?</h2>
+                    <p class="mt-2 text-gray-600 max-w-2xl mx-auto">This is a simplified tool to help you think about your priorities. Select what's most important to you to see which strategies might align with your goals.</p>
+                </div>
+                <div class="content-card p-6 md:p-8">
+                    <div class="text-center mb-6">
+                        <h3 class="font-semibold text-lg text-gray-700">Select Your Top Priorities:</h3>
+                         <div id="priority-tags" class="flex flex-wrap justify-center gap-3 mt-4">
+                            <span data-priority="return" class="priority-tag bg-white text-gray-700 rounded-full px-4 py-2">Maximize Financial Return</span>
+                            <span data-priority="control" class="priority-tag bg-white text-gray-700 rounded-full px-4 py-2">Retain Control/Legacy</span>
+                            <span data-priority="speed" class="priority-tag bg-white text-gray-700 rounded-full px-4 py-2">Speed of Exit</span>
+                            <span data-priority="simplicity" class="priority-tag bg-white text-gray-700 rounded-full px-4 py-2">Process Simplicity</span>
+                            <span data-priority="culture" class="priority-tag bg-white text-gray-700 rounded-full px-4 py-2">Preserve Team/Culture</span>
+                        </div>
+                    </div>
+                    <div id="recommendations" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6 border-t">
+                    </div>
+                </div>
+            </section>
+
+            <section id="considerations">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800">Universal Key Considerations</h2>
+                    <p class="mt-2 text-gray-600">Regardless of the path you choose, careful planning is essential for a successful exit.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="content-card p-6">
+                        <h3 class="font-semibold text-lg mb-2 text-[#3A6B4C]">Market Timing</h3>
+                        <p class="text-gray-600">The state of the economy and public markets can significantly impact valuation and the viability of certain exits, especially IPOs.</p>
+                    </div>
+                    <div class="content-card p-6">
+                        <h3 class="font-semibold text-lg mb-2 text-[#3A6B4C]">Financial Health</h3>
+                        <p class="text-gray-600">Clean, audited financials are non-negotiable. Strong, predictable revenue and profitability dramatically increase your options and valuation.</p>
+                    </div>
+                    <div class="content-card p-6">
+                        <h3 class="font-semibold text-lg mb-2 text-[#3A6B4C]">Legal & IP Preparedness</h3>
+                        <p class="text-gray-600">Ensure your corporate structure, contracts, and intellectual property portfolio are well-documented and secure to withstand due diligence.</p>
+                    </div>
+                    <div class="content-card p-6">
+                        <h3 class="font-semibold text-lg mb-2 text-[#3A6B4C]">Management Team Alignment</h3>
+                        <p class="text-gray-600">All key stakeholders, including the management team and board, should be aligned on the desired exit strategy and timing.</p>
+                    </div>
+                    <div class="content-card p-6">
+                        <h3 class="font-semibold text-lg mb-2 text-[#3A6B4C]">Investor Expectations</h3>
+                        <p class="text-gray-600">Your investors have their own timelines and return expectations. Maintain open communication to manage these expectations effectively.</p>
+                    </div>
+                    <div class="content-card p-6">
+                        <h3 class="font-semibold text-lg mb-2 text-[#3A6B4C]">Post-Exit Role</h3>
+                        <p class="text-gray-600">Consider your own future. Do you want to stay on after an acquisition? An exit is a personal transition as much as a business one.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script>
+        const exitData = {
+            ipo: {
+                title: 'Initial Public Offering (IPO)',
+                description: 'An IPO is the process of offering shares of a private corporation to the public in a new stock issuance. This allows a company to raise capital from public investors.',
+                pros: ['Highest potential valuation and capital infusion.', 'Increases public profile and brand credibility.', 'Provides liquidity for all shareholders.'],
+                cons: ['Extremely expensive, complex, and lengthy process.', 'Intense regulatory scrutiny and reporting requirements.', 'Loss of privacy and significant pressure from public markets.'],
+                scores: { 'Return': 5, 'Control': 1, 'Speed': 1, 'Simplicity': 1, 'Culture': 3 },
+                priorities: ['return']
+            },
+            ma: {
+                title: 'Acquisition (M&A)',
+                description: 'A merger or acquisition involves selling the company to another, larger company. This can be for strategic reasons, such as acquiring technology, talent (acqui-hire), or market share.',
+                pros: ['Can be much faster than an IPO.', 'Often a cleaner, more definitive exit.', 'Synergies with the acquirer can lead to a strong valuation.'],
+                cons: ['Founders often lose control post-acquisition.', 'Risk of cultural clashes and team disruption.', 'Valuation may be lower than a top-tier IPO.'],
+                scores: { 'Return': 4, 'Control': 2, 'Speed': 4, 'Simplicity': 3, 'Culture': 2 },
+                priorities: ['return', 'speed', 'simplicity']
+            },
+            secondary: {
+                title: 'Secondary Market Sale',
+                description: 'This involves founders, employees, and early investors selling their private company shares to other investors, such as private equity firms or late-stage VCs, without the company itself issuing new shares.',
+                pros: ['Provides early liquidity for founders and employees.', 'Company can remain private and maintain control.', 'Less dilutive than raising a new funding round.'],
+                cons: ['Can be complex to arrange and requires board approval.', 'May create signaling issues for future funding rounds.', 'Valuation is typically at a discount to primary rounds.'],
+                scores: { 'Return': 3, 'Control': 4, 'Speed': 3, 'Simplicity': 2, 'Culture': 5 },
+                priorities: ['control', 'culture']
+            },
+            mbo: {
+                title: 'Management Buyout (MBO)',
+                description: 'In an MBO, the existing management team of a company acquires the assets and operations of the business they manage. This is often financed through a mix of personal funds and debt.',
+                pros: ['Ensures continuity and preserves the company culture and legacy.', 'The business is sold to a known, trusted party.', 'Can be a good option for stable, profitable businesses not suited for VC-scale exits.'],
+                cons: ['Limited by management\'s ability to raise capital.', 'Valuation is often lower than a strategic acquisition.', 'Potential for conflicts of interest during the sale process.'],
+                scores: { 'Return': 2, 'Control': 5, 'Speed': 3, 'Simplicity': 3, 'Culture': 5 },
+                priorities: ['control', 'culture']
+            },
+            liquidation: {
+                title: 'Liquidation / Wind-Down',
+                description: 'Liquidation is the process of closing a business and distributing its assets to claimants. This is typically a last resort when the company is not viable, aiming to return as much capital as possible to investors.',
+                pros: ['Provides an orderly shutdown process.', 'Can return some capital to investors, which is better than nothing.', 'Allows founders to move on from a failing venture.'],
+                cons: ['Represents a failure to achieve a positive exit.', 'Often results in minimal or no return for founders and employees.', 'Can be emotionally difficult and damaging to reputation.'],
+                scores: { 'Return': 1, 'Control': 1, 'Speed': 2, 'Simplicity': 2, 'Culture': 1 },
+                priorities: ['speed']
+            }
+        };
+
+        let exitChart;
+
+        function updateDetails(optionKey) {
+            const data = exitData[optionKey];
+            document.getElementById('details-title').textContent = data.title;
+            document.getElementById('details-description').textContent = data.description;
+            
+            const prosList = document.getElementById('details-pros');
+            prosList.innerHTML = '';
+            data.pros.forEach(pro => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="text-green-500 mr-2">✔</span>${pro}`;
+                prosList.appendChild(li);
+            });
+
+            const consList = document.getElementById('details-cons');
+            consList.innerHTML = '';
+            data.cons.forEach(con => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="text-red-500 mr-2">✖</span>${con}`;
+                consList.appendChild(li);
+            });
+        }
+        
+        const chartLabels = {
+            'Return': 'Potential Return',
+            'Control': 'Founder Control Post-Exit',
+            'Speed': 'Time to Exit',
+            'Simplicity': 'Process Simplicity',
+            'Culture': 'Culture Preservation'
+        };
+        
+        function updateChart(optionKey) {
+            const scores = exitData[optionKey].scores;
+            exitChart.data.datasets[0].data = Object.values(scores);
+            exitChart.data.datasets[0].label = exitData[optionKey].title;
+            exitChart.update();
+        }
+
+        function selectExitOption(optionKey) {
+            document.querySelectorAll('.exit-option-btn').forEach(btn => {
+                btn.classList.remove('active-tab');
+                if (btn.dataset.option === optionKey) {
+                    btn.classList.add('active-tab');
+                }
+            });
+            updateDetails(optionKey);
+            updateChart(optionKey);
+        }
+        
+        function createRecommendations() {
+            const container = document.getElementById('recommendations');
+            container.innerHTML = '';
+            Object.keys(exitData).forEach(key => {
+                const data = exitData[key];
+                const card = document.createElement('div');
+                card.id = `rec-${key}`;
+                card.className = 'recommendation-card content-card p-4 text-center';
+                card.innerHTML = `<h4 class="font-bold text-lg text-[#3A6B4C]">${data.title}</h4>`;
+                container.appendChild(card);
+            });
+        }
+        
+        function updateRecommendations() {
+            const selectedPriorities = Array.from(document.querySelectorAll('.priority-tag.selected')).map(tag => tag.dataset.priority);
+            document.querySelectorAll('.recommendation-card').forEach(card => card.classList.remove('highlight'));
+
+            if (selectedPriorities.length > 0) {
+                 Object.keys(exitData).forEach(key => {
+                    const data = exitData[key];
+                    const isMatch = selectedPriorities.every(p => data.priorities.includes(p));
+                    if (isMatch) {
+                        document.getElementById(`rec-${key}`).classList.add('highlight');
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('exit-strategy-chart').getContext('2d');
+            exitChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: Object.values(chartLabels),
+                    datasets: [{
+                        label: '',
+                        data: [],
+                        backgroundColor: 'rgba(58, 107, 76, 0.2)',
+                        borderColor: 'rgba(58, 107, 76, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(58, 107, 76, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(58, 107, 76, 1)'
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                            grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                            pointLabels: { 
+                                font: { size: 12 },
+                                color: '#383838'
+                            },
+                            ticks: {
+                                display: false,
+                                beginAtZero: true,
+                                max: 5,
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                           display: false
+                        }
+                    }
+                }
+            });
+
+            document.querySelectorAll('.exit-option-btn').forEach(btn => {
+                btn.addEventListener('click', () => selectExitOption(btn.dataset.option));
+            });
+            
+            document.querySelectorAll('.priority-tag').forEach(tag => {
+                tag.addEventListener('click', () => {
+                    tag.classList.toggle('selected');
+                    updateRecommendations();
+                });
+            });
+
+            createRecommendations();
+            selectExitOption('ipo');
+        });
+    </script>
+</body>
+</html>

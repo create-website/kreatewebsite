@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Durga Puja: Festival of the Divine Mother</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Traditional Puja Hues (Red, White, Gold) -->
+    <!-- Application Structure Plan: A narrative infographic that explains Durga Puja from its core meaning to its grand conclusion. The structure is: 1. Hero section. 2. "What is Durga Puja?" with key facts. 3. "The Legend of Mahishasuramardini". 4. "The Five Days of Puja" timeline. 5. "Artistry and Culture" grid. 6. "A Taste of Puja" chart. This flow is designed to immerse the user in the festival's spiritual and cultural dimensions. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The five main days -> Goal: Show Process -> Viz: Vertical timeline -> Justification: Clearly illustrates the sequence of rituals. -> Library/Method: HTML/CSS.
+        - Data Point: Key cultural elements -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the festival's artistic aspects. -> Library/Method: HTML/CSS.
+        - Data Point: Key Puja foods -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display popular festive dishes. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #FFFDF9; /* Off-white */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-red { color: #D90429; }
+        .palette-text-gold { color: #FFB703; }
+        .palette-text-darkred { color: #8D0801; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #D90429; /* Red */
+            border: 3px solid #FFB703; /* Gold */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-red tracking-wider">Durga Puja</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">Celebrating the Divine Mother's Triumph</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Durga Puja?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Durga Puja is an annual Hindu festival, most prominently celebrated in West Bengal, that reveres the warrior Goddess Durga. It's a multi-day festival of art, culture, and devotion, celebrating the victory of the goddess over the shape-shifting demon Mahishasura.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-red mb-4">⚔️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Victory of Good</h3>
+                    <p class="mt-2 text-gray-600">The festival's core theme is the triumph of good over evil, embodied by Durga's victory over the powerful demon Mahishasura.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-gold mb-4">👨‍👩‍👧‍👦</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Divine Homecoming</h3>
+                    <p class="mt-2 text-gray-600">Durga is also worshipped as a beloved daughter, Uma, who visits her maternal home on Earth for five days, bringing joy and festivity.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-darkred mb-4">🎨</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Carnival of Creativity</h3>
+                    <p class="mt-2 text-gray-600">It's a grand celebration of art and culture, featuring elaborate temporary temples (pandals) and beautifully crafted idols of the goddess.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Legend of Mahishasuramardini</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The heart of Durga Puja lies in the powerful story from the *Devi Mahatmya*. It tells of a time when the worlds were terrorized by the buffalo demon Mahishasura, who could not be defeated by any man or god. To save creation, the gods combined their divine energies to create a supreme female power: Goddess Durga.
+                </p>
+            </div>
+            <div class="mt-12 card rounded-lg shadow-lg p-8 lg:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-9xl">🐅</div>
+                        <p class="text-xl font-bold mt-2 palette-text-darkred">The Ten-Armed Warrior Goddess</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-700 leading-relaxed">Armed with the deadliest weapons from each god, Durga rode her lion into battle. The fight against the shape-shifting Mahishasura raged for nine nights. On the tenth day, she finally pinned him down as he emerged from a buffalo and vanquished him with her trident. This victory restored balance to the universe and established her as the ultimate protector, earning her the name *Mahishasuramardini* (The Slayer of Mahishasura). The festival celebrates this divine feminine power and the ultimate triumph of righteousness.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Five Days of Puja</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   While the festivities build up over a longer period, the main worship and celebration of Durga Puja unfolds over five key days.
+                </p>
+            </div>
+            <div class="mt-12 max-w-3xl mx-auto">
+                <div class="relative pl-8 border-l-4 border-yellow-200">
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-red">Day 1: Shashti</h3>
+                        <p class="text-gray-600">On the sixth day of Navaratri, the face of the Durga idol is unveiled. Rituals like *Kalparambha* (the start of the pujas) and *Bodhon* (the awakening of the Goddess) are performed.</p>
+                    </div>
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-red">Day 2: Saptami</h3>
+                        <p class="text-gray-600">The sacred presence of the Goddess is invoked into the idol in a ritual called *Pran Pratishthan*. A small banana plant, the *Kola Bou*, is bathed and draped in a saree, symbolizing the divine energy of Durga.</p>
+                    </div>
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-red">Day 3: Ashtami</h3>
+                        <p class="text-gray-600">This is one of the most significant days. The *Kumari Puja* is performed, where young girls are worshipped as living embodiments of the Goddess. The evening *Sandhya Puja* marks the moment Durga slayed the demon.</p>
+                    </div>
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-red">Day 4: Navami</h3>
+                        <p class="text-gray-600">The ninth day marks the conclusion of the main worship rituals. A grand *aarti* (fire ceremony) and *hom* (fire oblation) are performed to honor the Goddess and mark the successful completion of the puja.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="text-2xl font-bold palette-text-darkred">Day 5: Dashami (Vijayadashami)</h3>
+                        <p class="text-gray-600">The final day is both joyous and somber. Married women perform *Sindoor Khela*, smearing vermilion on each other. Later, the idols are taken in grand processions for *Visarjan* (immersion) in a river, symbolizing Durga's return to her celestial home.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="celebrations" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Artistry and Culture</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Durga Puja is as much a cultural carnival as it is a religious festival. It is a time when creativity and community spirit are on full display, transforming cities into open-air art galleries.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🏛️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Thematic Pandals</h3>
+                    <p class="mt-2 text-sm text-gray-600">Elaborate temporary structures are built to house the idols, often based on creative themes from ancient temples to modern social issues.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">👩‍🎨</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Idol Making</h3>
+                    <p class="mt-2 text-sm text-gray-600">The clay idols of Durga and her family are handcrafted by skilled artisans in a tradition passed down through generations.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🥁</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Dhak Beats</h3>
+                    <p class="mt-2 text-sm text-gray-600">The air is filled with the energetic and rhythmic beats of the Dhak, a traditional drum that is synonymous with the festival's sound.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">✨</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Cultural Programs</h3>
+                    <p class="mt-2 text-sm text-gray-600">Evenings are filled with cultural events, including traditional dances, music performances, and plays, held near the pandals.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Puja</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Food is an integral part of the Durga Puja experience. From the community feasts (*bhog*) served at pandals to street food stalls, the festival is a paradise for food lovers.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">The Main Foods of the Festival</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Khichuri & Labra (Bhog)', 
+                'Luchi & Alur Dom', 
+                'Kathi Rolls', 
+                'Sandesh & Rasgulla'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity during Puja',
+                        data: [100, 90, 85, 95],
+                        backgroundColor: [
+                           '#FFB703', // Gold
+                           '#F48C06', // Orange
+                           '#D90429', // Red
+                           '#8D0801'  // Dark Red
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Popularity & Importance',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

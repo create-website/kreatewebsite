@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Blueprint: LLM Complaint Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutrals with Subtle Accents -->
+    <!-- Application Structure Plan: The SPA is designed as an interactive dashboard with four main tabs: 'System Architecture', 'Tech Deep Dive', 'Phased Rollout', and 'Operational Excellence'. This tabbed structure allows users to explore the project's key pillars in a non-linear fashion, which is more user-friendly than a long scrolling page. It breaks down the dense information from both reports into thematic, digestible sections. The core interaction is switching between these tabs to reveal detailed content, including interactive charts and process diagrams, making the complex strategy easy to navigate and understand. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: 5-Layer System Architecture. Goal: Organize. Viz: HTML/CSS Flowchart. Interaction: Static visual aid within the 'Architecture' tab. Justification: Clearly illustrates the system's layers and their connections without using prohibited SVG/Mermaid. Method: HTML/CSS with Tailwind.
+        - Report Info: STT API Comparison (Table 1). Goal: Compare. Viz: Horizontal Bar Chart (Chart.js). Interaction: Hover for details. Justification: Visually compares providers on a key metric (DevEx score), making it easier to digest than a table. Method: Chart.js/Canvas.
+        - Report Info: LLM Performance (Table 2). Goal: Relationships. Viz: Combined Bar and Line Chart (Chart.js). Interaction: Hover for precise metrics. Justification: Effectively shows the trade-off between accuracy, cost, and speed for different LLMs. Method: Chart.js/Canvas.
+        - Report Info: Phased Product Rollout. Goal: Organize/Change. Viz: HTML/CSS Timeline Diagram. Interaction: Static visual within the 'Phased Rollout' tab. Justification: Clearly presents the 1-5-45 product rollout strategy over time. Method: HTML/CSS with Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 60vh;
+            }
+        }
+        .tab {
+            transition: all 0.3s;
+        }
+        .tab.active {
+            border-color: #4A90E2;
+            color: #4A90E2;
+            background-color: #EAF2FB;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .phase-line {
+            width: calc(100% - 2rem);
+            left: 1rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">LLM Complaint Management System</h1>
+            <p class="mt-2 text-lg text-gray-600">An Interactive Strategic Blueprint</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <div class="bg-white rounded-lg shadow-md p-4 sm:p-6">
+            <div class="border-b border-gray-200 mb-6">
+                <nav class="flex flex-wrap -mb-px" aria-label="Tabs">
+                    <button class="tab active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="architecture">System Architecture</button>
+                    <button class="tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="tech">Tech Deep Dive</button>
+                    <button class="tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="rollout">Phased Rollout</button>
+                    <button class="tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="operations">Operational Excellence</button>
+                </nav>
+            </div>
+
+            <div id="architecture" class="tab-content active">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">System Architecture</h2>
+                <p class="text-gray-600 mb-8">The system is designed as a cyclical ecosystem, not just a linear pipeline. It ensures data is ingested, processed, analyzed, and acted upon in a structured manner, with feedback loops that enable the system to learn and improve over time. The initial deployment will start with clean text, simplifying the pipeline to three core layers.</p>
+                
+                <div class="flex flex-col md:flex-row items-stretch justify-around space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="flex-1 text-center p-6 bg-gray-50 rounded-lg border">
+                        <div class="text-4xl mb-2">🧠</div>
+                        <h3 class="font-bold text-lg">1. Core AI Layer</h3>
+                        <p class="text-sm text-gray-500 mt-2">Ingests clean text. Performs summarization and classification via a single API call, outputting structured JSON.</p>
+                    </div>
+                    <div class="self-center text-2xl text-gray-400">&rarr;</div>
+                    <div class="flex-1 text-center p-6 bg-gray-50 rounded-lg border">
+                        <div class="text-4xl mb-2">📊</div>
+                        <h3 class="font-bold text-lg">2. Analysis & Action Layer</h3>
+                        <p class="text-sm text-gray-500 mt-2">Feeds JSON output to analytics dashboards for trend monitoring and triggers automated workflows in other enterprise systems.</p>
+                    </div>
+                    <div class="self-center text-2xl text-gray-400">&rarr;</div>
+                    <div class="flex-1 text-center p-6 bg-gray-50 rounded-lg border">
+                        <div class="text-4xl mb-2">🧑‍💻</div>
+                        <h3 class="font-bold text-lg">3. Human-in-the-Loop (HITL)</h3>
+                        <p class="text-sm text-gray-500 mt-2">Allows human agents to validate AI outputs, ensuring quality and systematically collecting labeled data for future model fine-tuning.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tech" class="tab-content">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Technology Deep Dive</h2>
+                <p class="text-gray-600 mb-8">This section provides a comparative analysis of the key technologies powering the system. The charts below visualize data from the technical report to help illustrate the trade-offs between different API providers.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div>
+                        <h3 class="text-xl font-bold text-center mb-2">Speech-to-Text (STT) API Comparison</h3>
+                        <p class="text-center text-sm text-gray-600 mb-6">While the initial rollout starts with text, the full architecture requires STT. This chart evaluates leading providers on Developer Experience, a key factor for rapid integration.</p>
+                        <div class="chart-container">
+                            <canvas id="sttChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-center mb-2">LLM Zero-Shot Classification Performance</h3>
+                        <p class="text-center text-sm text-gray-600 mb-6">This chart visualizes the trade-offs between accuracy, cost, and speed for leading LLMs, guiding the selection for the initial API-based deployment.</p>
+                        <div class="chart-container">
+                            <canvas id="llmChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="rollout" class="tab-content">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Phased Product Rollout Strategy</h2>
+                <p class="text-gray-600 mb-8">The system will be deployed incrementally across the 50-product portfolio to manage risk, validate performance, and scale effectively. This approach prioritizes rapid learning and iterative development.</p>
+                
+                <div class="relative">
+                    <div class="absolute top-4 h-1 bg-gray-200 phase-line"></div>
+                    <div class="flex justify-between items-start">
+                        <div class="relative text-center w-1/3">
+                            <div class="mx-auto w-8 h-8 bg-blue-500 rounded-full text-white flex items-center justify-center z-10 relative">1</div>
+                            <div class="mt-2 p-4 bg-blue-50 rounded-lg">
+                                <h3 class="font-bold">Phase 1: Pilot</h3>
+                                <p class="text-sm mt-1">Deploy for **1 product**. Focus on mastering prompt engineering and validating the business case.</p>
+                            </div>
+                        </div>
+                        <div class="relative text-center w-1/3">
+                            <div class="mx-auto w-8 h-8 bg-blue-500 rounded-full text-white flex items-center justify-center z-10 relative">2</div>
+                            <div class="mt-2 p-4 bg-blue-50 rounded-lg">
+                                <h3 class="font-bold">Phase 2: Expansion</h3>
+                                <p class="text-sm mt-1">Expand to **4 more products**. Focus on configuration, generalization, and aggregating data.</p>
+                            </div>
+                        </div>
+                        <div class="relative text-center w-1/3">
+                            <div class="mx-auto w-8 h-8 bg-blue-500 rounded-full text-white flex items-center justify-center z-10 relative">3</div>
+                            <div class="mt-2 p-4 bg-blue-50 rounded-lg">
+                                <h3 class="font-bold">Phase 3: Full Scale</h3>
+                                <p class="text-sm mt-1">Roll out to the **remaining 45 products**. Focus on cost optimization and scalability, likely via a fine-tuned model.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="operations" class="tab-content">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Operational Excellence</h2>
+                <p class="text-gray-600 mb-8">The long-term value of the system comes from transforming the aggregated data into actionable business intelligence and ensuring the system operates in a robust and ethical manner.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-gray-50 p-6 rounded-lg border">
+                        <h3 class="font-bold text-lg mb-2">Root Cause & Trend Analysis</h3>
+                        <p class="text-gray-600">The structured JSON output from the LLM is a strategic asset. When aggregated, it allows for precise quantification of complaint drivers, enabling the business to move from reactive handling to proactive issue prevention. Time-series analysis can also act as an early warning system for emerging problems.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg border">
+                        <h3 class="font-bold text-lg mb-2">Ethical AI & Continuous Improvement</h3>
+                        <p class="text-gray-600">A commitment to fairness is critical. The system must be monitored for algorithmic bias. The HITL workflow is non-negotiable, ensuring accuracy, handling ambiguity, and providing the high-quality labeled data needed to periodically retrain and improve the model, creating a self-improving asset.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            let sttChartInstance, llmChartInstance;
+
+            function switchTab(tabId) {
+                tabs.forEach(tab => {
+                    tab.classList.toggle('active', tab.dataset.tab === tabId);
+                });
+                tabContents.forEach(content => {
+                    content.classList.toggle('active', content.id === tabId);
+                });
+
+                if (tabId === 'tech') {
+                    renderCharts();
+                }
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchTab(tab.dataset.tab);
+                });
+            });
+
+            function renderCharts() {
+                if (!sttChartInstance) {
+                    const sttCtx = document.getElementById('sttChart').getContext('2d');
+                    sttChartInstance = new Chart(sttCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['AssemblyAI', 'Deepgram', 'Gladia', 'AWS Transcribe', 'Google Cloud STT', 'Microsoft Azure'],
+                            datasets: [{
+                                label: 'Developer Experience Score (1-5)',
+                                data: [5, 5, 4, 3, 3, 3],
+                                backgroundColor: '#4A90E2',
+                            }]
+                        },
+                        options: {
+                            indexAxis: 'y',
+                            maintainAspectRatio: false,
+                            responsive: true,
+                            plugins: { legend: { display: false } },
+                            scales: { x: { beginAtZero: true, max: 5 } }
+                        }
+                    });
+                }
+
+                if (!llmChartInstance) {
+                    const llmCtx = document.getElementById('llmChart').getContext('2d');
+                    llmChartInstance = new Chart(llmCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Claude 3.5 Sonnet', 'GPT-4o', 'DeepSeek-V3', 'Claude 3.5 Haiku', 'GPT-4o-mini'],
+                            datasets: [{
+                                label: 'Accuracy (F1-Score)',
+                                data: [0.762, 0.736, 0.737, 0.722, 0.693],
+                                backgroundColor: '#4A90E2',
+                                yAxisID: 'y'
+                            }, {
+                                type: 'line',
+                                label: 'Cost per 1k ($)',
+                                data: [0.64, 0.45, 0.01, 0.17, 0.03],
+                                borderColor: '#F5A623',
+                                backgroundColor: '#F5A623',
+                                yAxisID: 'y1',
+                                tension: 0.1
+                            }]
+                        },
+                        options: {
+                            maintainAspectRatio: false,
+                            responsive: true,
+                            interaction: { mode: 'index', intersect: false },
+                            scales: {
+                                y: { type: 'linear', position: 'left', title: { display: true, text: 'Accuracy (F1)' }, min: 0.65, max: 0.8 },
+                                y1: { type: 'linear', position: 'right', title: { display: true, text: 'Cost ($)' }, grid: { drawOnChartArea: false }, min: 0 }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

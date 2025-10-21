@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Govardhan Puja: Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Harmony -->
+    <!-- Application Structure Plan: The application is structured as a narrative journey, guiding the user through the core aspects of Govardhan Puja. It starts with an introduction, moves to the central story (The Divine Lila), explores the key ritual (Annakut), details the practices (Ritual Praxis), and concludes with the festival's deeper meaning (Significance). This thematic, linear flow was chosen over a dashboard model because the source material is primarily qualitative and narrative-driven. The goal is to facilitate understanding and appreciation of a cultural and religious event. Interactivity is introduced through clickable tabs for detailed exploration of rituals and significance, and a dynamic chart to visualize the components of the 'Chappan Bhog' offering. This structure makes complex information digestible and engaging for a general audience. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: The detailed list of 'Chappan Bhog' offerings. Goal: Organize & Inform. Viz/Presentation Method: Donut Chart (Chart.js/Canvas). Interaction: Hover to see categories. Justification: A donut chart provides a quick, visually appealing way to understand the composition and variety of the sacred offering, making the abstract concept of '56 dishes' more concrete.
+        - Report Info: The core rituals of the puja. Goal: Organize & Compare. Viz/Presentation Method: Interactive Tabbed Interface (HTML/CSS/JS). Interaction: Click tabs to reveal detailed descriptions. Justification: Tabs allow for a clean presentation of dense information, letting users explore each ritual without being overwhelmed by a long wall of text. It encourages active engagement.
+        - Report Info: The multifaceted significance (Spiritual, Ecological, Social). Goal: Organize & Inform. Viz/Presentation Method: Interactive Tabbed Interface (HTML/CSS/JS). Interaction: Click tabs. Justification: Similar to the rituals, this allows for a structured exploration of the festival's deeper meanings, making the content more accessible and user-driven.
+        - Library/Method: Chart.js for the chart, custom Vanilla JS for tab functionality and dynamic content updates.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .active-tab {
+            border-bottom: 2px solid #D97706;
+            color: #D97706;
+            font-weight: 600;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-amber-800 mb-2">Giridhari's Grace</h1>
+            <p class="text-lg md:text-xl text-gray-600">An Interactive Exploration of Govardhan Puja</p>
+        </header>
+
+        <main>
+            <!-- Introduction Section -->
+            <section id="introduction" class="mb-16 bg-white p-8 rounded-xl shadow-sm">
+                <h2 class="text-3xl font-bold text-amber-700 mb-4 text-center">The Festival of the Sacred Mountain</h2>
+                <p class="text-gray-700 leading-relaxed max-w-3xl mx-auto text-center">
+                    Govardhan Puja, also known as Annakut ("a mountain of food"), is a vibrant Hindu festival celebrating Lord Krishna's divine act of lifting Govardhan Hill to protect the people of Vrindavan. This application guides you through the mythology, rituals, and profound significance of this celebration of faith, nature, and community. It explores the shift from ancient ritualism to heartfelt devotion (*bhakti*) and highlights the festival's timeless message of divine protection and environmental stewardship.
+                </p>
+            </section>
+
+            <!-- The Divine Lila Section -->
+            <section id="lila" class="mb-16">
+                <h2 class="text-3xl font-bold text-amber-700 mb-6 text-center">The Divine Lila of Govardhan</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm transition-transform hover:scale-105">
+                        <h3 class="font-bold text-lg text-amber-600 mb-2">1. A Divine Inquiry</h3>
+                        <p class="text-sm text-gray-600">Child Krishna questions the traditional worship of the celestial deity Indra, challenging the villagers to honor what directly sustains them.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm transition-transform hover:scale-105">
+                        <h3 class="font-bold text-lg text-amber-600 mb-2">2. The First Puja</h3>
+                        <p class="text-sm text-gray-600">Persuaded by Krishna, the villagers prepare a magnificent feast and offer it to Govardhan Hill, venerating it as their true benefactor.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm transition-transform hover:scale-105">
+                        <h3 class="font-bold text-lg text-amber-600 mb-2">3. The Wrath of Indra</h3>
+                        <p class="text-sm text-gray-600">Feeling slighted, an enraged Indra unleashes torrential rains to punish the villagers for their perceived disobedience.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm transition-transform hover:scale-105">
+                        <h3 class="font-bold text-lg text-amber-600 mb-2">4. The Miracle of Giridhari</h3>
+                        <p class="text-sm text-gray-600">Krishna effortlessly lifts Govardhan Hill, sheltering all of Vrindavan for seven days and nights, thus earning the name 'Giridhari'.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Annakut Section -->
+            <section id="annakut" class="mb-16 bg-white p-8 rounded-xl shadow-sm">
+                 <h2 class="text-3xl font-bold text-amber-700 mb-4 text-center">Annakut: The Mountain of Food</h2>
+                 <p class="text-gray-700 leading-relaxed max-w-3xl mx-auto text-center mb-8">
+                    The centerpiece of the festival is the Annakut, a "mountain of food" offered to the deity. Traditionally, this consists of 56 dishes, known as *Chappan Bhog*, representing the full spectrum of culinary tastes and nature's bounty. This offering is a profound expression of gratitude and is later distributed as blessed food (*prasad*). The chart below illustrates the typical composition of this grand feast.
+                </p>
+                <div class="chart-container">
+                    <canvas id="chappanBhogChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Rituals Section -->
+            <section id="rituals" class="mb-16">
+                <h2 class="text-3xl font-bold text-amber-700 mb-6 text-center">Ritual Praxis: Embodying Devotion</h2>
+                 <p class="text-gray-700 leading-relaxed max-w-3xl mx-auto text-center mb-8">
+                    Govardhan Puja involves a series of deeply symbolic rituals where humble, earthy materials and physical gestures are transformed into potent expressions of surrender, gratitude, and reverence. Explore the core practices by clicking on the tabs below to understand how faith is put into action.
+                </p>
+                <div class="w-full max-w-4xl mx-auto">
+                    <div class="flex border-b border-gray-300 mb-6 justify-center">
+                        <button class="ritual-tab py-2 px-4 text-gray-500 hover:text-amber-600 focus:outline-none active-tab" data-target="hillock">Govardhan Hillock</button>
+                        <button class="ritual-tab py-2 px-4 text-gray-500 hover:text-amber-600 focus:outline-none" data-target="go-puja">Go Puja (Cow Worship)</button>
+                        <button class="ritual-tab py-2 px-4 text-gray-500 hover:text-amber-600 focus:outline-none" data-target="parikrama">Parikrama</button>
+                    </div>
+                    <div id="hillock" class="ritual-content bg-white p-6 rounded-lg shadow-sm active">
+                        <h3 class="font-bold text-xl text-amber-600 mb-3">The Govardhan Hillock</h3>
+                        <p class="text-gray-700">A symbolic replica of Govardhan Hill is created, traditionally from sacred cow dung or clay. This act brings the sacred landscape into the home. The mound is then beautifully decorated with flowers, leaves, and miniature figures of cows and cowherds, transforming a simple material into a divine icon and a living tableau of the pastoral scene under Krishna's protection.</p>
+                    </div>
+                    <div id="go-puja" class="ritual-content bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-bold text-xl text-amber-600 mb-3">Go Puja (Worship of the Cow)</h3>
+                        <p class="text-gray-700">Given Krishna's identity as Gopala ("protector of the cows"), the worship of cattle is integral. Cows are lovingly bathed, their horns painted, and they are adorned with garlands and a mark of respect (*tilak*). They are then fed special food, an act expressing profound gratitude for the sustenance they provide and acknowledging their sacred status as beloved of Lord Krishna.</p>
+                    </div>
+                    <div id="parikrama" class="ritual-content bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-bold text-xl text-amber-600 mb-3">Parikrama (Devotional Circumambulation)</h3>
+                        <p class="text-gray-700">Devotees walk clockwise around the symbolic hillock or, most meritoriously, the actual 23-km path around Govardhan Hill in Braj. This pilgrimage is a fundamental act of devotion, symbolizing that the object of veneration is the center of one's life. It is a physical journey of surrender and faith, representing the complete submission of the ego to the divine.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Significance Section -->
+            <section id="significance" class="mb-16 bg-white p-8 rounded-xl shadow-sm">
+                <h2 class="text-3xl font-bold text-amber-700 mb-6 text-center">Enduring Significance</h2>
+                 <p class="text-gray-700 leading-relaxed max-w-3xl mx-auto text-center mb-8">
+                    Govardhan Puja is more than a historical commemoration; it is a festival rich with profound spiritual, ecological, and social messages that resonate deeply today. It presents a worldview that seamlessly integrates faith with environmental stewardship and community cohesion. Click the tabs to discover its multifaceted importance.
+                </p>
+                <div class="w-full max-w-4xl mx-auto">
+                    <div class="flex border-b border-gray-300 mb-6 justify-center">
+                        <button class="significance-tab py-2 px-4 text-gray-500 hover:text-amber-600 focus:outline-none active-tab" data-target="bhakti">Triumph of Bhakti</button>
+                        <button class="significance-tab py-2 px-4 text-gray-500 hover:text-amber-600 focus:outline-none" data-target="ecology">Ecological Awakening</button>
+                        <button class="significance-tab py-2 px-4 text-gray-500 hover:text-amber-600 focus:outline-none" data-target="community">Social Harmony</button>
+                    </div>
+                    <div id="bhakti" class="significance-content active">
+                        <h3 class="font-bold text-xl text-amber-600 mb-3">The Triumph of Bhakti (Devotion)</h3>
+                        <p class="text-gray-700">The festival's core message is the supremacy of pure, loving devotion (*bhakti*) over transactional ritual. It teaches that God is a loving protector who responds to sincere faith, not a ruler to be placated. The humbling of Indra serves as a timeless lesson against pride, emphasizing that true spiritual connection is rooted in humility and selfless service.</p>
+                    </div>
+                    <div id="ecology" class="significance-content">
+                        <h3 class="font-bold text-xl text-amber-600 mb-3">An Ecological Awakening</h3>
+                        <p class="text-gray-700">Long before the modern environmental movement, the festival established a powerful paradigm for ecological consciousness. By shifting worship from a sky god to a mountain, Krishna taught devotees to honor the natural resources that sustain life. The festival promotes a worldview of harmony and sustainability, urging a deep appreciation for the gifts of Mother Earth.</p>
+                    </div>
+                    <div id="community" class="significance-content">
+                        <h3 class="font-bold text-xl text-amber-600 mb-3">Fostering Community and Social Harmony</h3>
+                        <p class="text-gray-700">Govardhan Puja is fundamentally a festival of community. The narrative emphasizes collective action, from preparing the feast to taking shelter together. The sharing of sanctified food (*prasad*) dissolves social barriers and reinforces bonds of unity and love, making the festival a powerful force for social cohesion and mutual care.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Date Section -->
+            <section id="date" class="text-center bg-amber-100 p-8 rounded-xl">
+                 <h2 class="text-3xl font-bold text-amber-700 mb-4">Festival Date for 2025</h2>
+                 <p class="text-xl text-amber-800 font-semibold">Wednesday, October 22, 2025</p>
+                 <p class="text-sm text-gray-600 mt-2">The date is determined by the Hindu lunar calendar, falling on the first day of the bright fortnight of the Kartika month.</p>
+            </section>
+
+        </main>
+<!--
+        <footer class="text-center mt-12 pt-8 border-t border-gray-200">
+            <p class="text-sm text-gray-500">Interactive application designed based on the report "Giridhari's Grace: A Comprehensive Analysis of Govardhan Puja."</p>
+        </footer>
+-->
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            function setupTabs(tabSelector, contentSelector, activeClass) {
+                const tabs = document.querySelectorAll(tabSelector);
+                const contents = document.querySelectorAll(contentSelector);
+                
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        tabs.forEach(t => t.classList.remove(activeClass));
+                        tab.classList.add(activeClass);
+                        
+                        const targetId = tab.dataset.target;
+                        contents.forEach(content => {
+                            if (content.id === targetId) {
+                                content.classList.add('active');
+                            } else {
+                                content.classList.remove('active');
+                            }
+                        });
+                    });
+                });
+            }
+
+            setupTabs('.ritual-tab', '.ritual-content', 'active-tab');
+            setupTabs('.significance-tab', '.significance-content', 'active-tab');
+
+            const ctx = document.getElementById('chappanBhogChart').getContext('2d');
+            const chappanBhogChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Sweets (Mithai)', 'Savories & Snacks', 'Cereals & Breads', 'Vegetable Preparations', 'Dairy & Drinks', 'Fruits & Accompaniments'],
+                    datasets: [{
+                        label: 'Chappan Bhog Composition',
+                        data: [25, 20, 20, 15, 10, 10],
+                        backgroundColor: [
+                            '#F59E0B',
+                            '#FBBF24',
+                            '#FCD34D',
+                            '#FEF3C7',
+                            '#D97706',
+                            '#B45309'
+                        ],
+                        borderColor: '#FDFBF8',
+                        borderWidth: 4,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#4A4A4A',
+                                font: {
+                                    size: 12,
+                                    family: "'Inter', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '% (Approximate)';
+                                    }
+                                    return label;
+                                }
+                            },
+                            backgroundColor: '#4A4A4A',
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 12 },
+                            padding: 10,
+                            cornerRadius: 4
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

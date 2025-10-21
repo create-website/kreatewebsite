@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diwali Celebrations Across India</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Saffron & Gold -->
+    <!-- Application Structure Plan: The application is structured around a central, region-based navigation system (North, South, East, West). This user-centric design allows for intuitive exploration of geographical variations in Diwali celebrations. A dedicated, non-regional section explains the universal "Five Days of Diwali" to provide foundational context. A comparative chart then synthesizes this information, allowing users to visually grasp regional differences at a glance. This structure was chosen over a linear format to encourage user interaction and self-directed discovery, making the rich, diverse information more digestible and engaging. -->
+    <!-- Visualization & Content Choices: 
+        - Regional Navigation: Report Info -> Geographical variations. Goal -> Organize. Viz -> Interactive HTML Buttons. Interaction -> Click to update content display. Justification -> Provides clear, direct access to specific information segments. Method -> HTML/CSS/JS.
+        - Regional Details: Report Info -> Specific traditions, rituals. Goal -> Inform. Viz -> Structured HTML text blocks with Unicode icons. Interaction -> Content appears based on navigation choice. Justification -> Presents detailed qualitative data in a clean, readable format. Method -> HTML/CSS.
+        - Five Days of Diwali: Report Info -> The 5-day festival structure. Goal -> Organize/Inform. Viz -> Horizontal timeline-style cards. Interaction -> Subtle hover effects. Justification -> A chronological layout is the most logical way to present a multi-day event. Method -> HTML/Tailwind CSS.
+        - Celebration Focus Chart: Report Info -> Regional emphasis on different activities. Goal -> Compare. Viz -> Horizontal Bar Chart. Interaction -> Tooltips on hover. Justification -> A bar chart is ideal for comparing the magnitude of different aspects (lights, fireworks, etc.) across distinct categories (regions). Method -> Chart.js/Canvas.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #FFF8F0;
+            color: #4A2E2C;
+        }
+        h1, h2, h3 {
+            font-family: 'Merriweather', serif;
+            color: #C55A11;
+        }
+        .nav-btn {
+            transition: all 0.3s ease;
+            border-bottom-width: 4px;
+            border-color: transparent;
+        }
+        .nav-btn.active {
+            color: #C55A11;
+            border-color: #C55A11;
+            transform: translateY(-2px);
+        }
+        .content-card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="text-center py-10 px-4 bg-amber-100/50">
+        <h1 class="text-4xl md:text-5xl font-bold mb-2">The Festival of Lights</h1>
+        <p class="text-lg md:text-xl max-w-3xl mx-auto text-amber-900">An interactive journey through the diverse and vibrant celebrations of Diwali across India.</p>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        
+        <section id="regional-celebrations" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8">Regional Tapestry of Diwali</h2>
+            <p class="text-center max-w-3xl mx-auto mb-8">
+                While the spirit of Diwali—the victory of light over darkness—is universal across India, the traditions, rituals, and stories behind the celebration vary beautifully from region to region. This section allows you to explore these unique cultural expressions. Click on a region below to discover how the festival of lights illuminates different parts of the country.
+            </p>
+            <nav class="flex justify-center items-center gap-4 md:gap-8 mb-8 border-b-2 border-amber-200 pb-4">
+                <button id="nav-north" class="nav-btn text-lg md:text-xl font-bold py-2 px-4 focus:outline-none">North</button>
+                <button id="nav-south" class="nav-btn text-lg md:text-xl font-bold py-2 px-4 focus:outline-none">South</button>
+                <button id="nav-east" class="nav-btn text-lg md:text-xl font-bold py-2 px-4 focus:outline-none">East</button>
+                <button id="nav-west" class="nav-btn text-lg md:text-xl font-bold py-2 px-4 focus:outline-none">West</button>
+            </nav>
+
+            <div id="content-container">
+            </div>
+        </section>
+
+        <section id="five-days" class="py-12 bg-amber-100/50 rounded-lg">
+            <h2 class="text-3xl font-bold text-center mb-8">The Five Days of Diwali</h2>
+            <p class="text-center max-w-3xl mx-auto mb-8">
+                Diwali is not a single-day event but a grand five-day festival. Each day holds a unique significance and is celebrated with distinct rituals that build up to the main day of Lakshmi Puja. Explore the journey through these five auspicious days that together form the complete Diwali experience.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-6 max-w-7xl mx-auto">
+                <div class="content-card p-6 text-center">
+                    <h3 class="text-xl font-bold mb-2">Day 1: Dhanteras</h3>
+                    <p class="text-sm">The festival begins with the worship of Lord Dhanvantari. It's considered auspicious to buy gold, silver, or new utensils on this day, symbolizing the welcoming of wealth and prosperity.</p>
+                </div>
+                <div class="content-card p-6 text-center">
+                    <h3 class="text-xl font-bold mb-2">Day 2: Naraka Chaturdashi</h3>
+                    <p class="text-sm">Also known as 'Choti Diwali', this day celebrates Lord Krishna's victory over the demon Narakasura. It symbolizes the triumph of good over evil and the liberation from suffering.</p>
+                </div>
+                <div class="content-card p-6 text-center">
+                    <h3 class="text-xl font-bold mb-2">Day 3: Lakshmi Puja</h3>
+                    <p class="text-sm">This is the main day of Diwali. Families worship Goddess Lakshmi, the bestower of wealth and prosperity. Homes are lit with diyas and candles to welcome her, and fireworks light up the night sky.</p>
+                </div>
+                <div class="content-card p-6 text-center">
+                    <h3 class="text-xl font-bold mb-2">Day 4: Govardhan Puja</h3>
+                    <p class="text-sm">This day commemorates Lord Krishna lifting the Govardhan Hill to protect villagers from the wrath of Lord Indra. Food is prepared in vast quantities and offered to the deity as a mark of gratitude.</p>
+                </div>
+                <div class="content-card p-6 text-center">
+                    <h3 class="text-xl font-bold mb-2">Day 5: Bhai Dooj</h3>
+                    <p class="text-sm">The final day celebrates the special bond between brothers and sisters. Sisters pray for their brothers' long life and prosperity, strengthening the familial ties and concluding the festival on a note of love.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparison" class="py-12">
+            <h2 class="text-3xl font-bold text-center mb-8">A Comparative Look at Celebrations</h2>
+             <p class="text-center max-w-3xl mx-auto mb-8">
+                How does the focus of Diwali celebrations change across India? This chart provides a visual comparison of the general emphasis placed on different aspects of the festival—from grand light displays to community worship. Use this to understand the subtle shifts in priorities that make each regional celebration unique.
+            </p>
+            <div class="content-card p-4 md:p-8">
+                <div class="chart-container">
+                    <canvas id="regionalComparisonChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-6 bg-amber-100/50">
+        <p class="text-amber-800">An Interactive Visualization | 2025</p>
+    </footer>
+
+    <script>
+        const regionalData = {
+            north: {
+                title: 'North India: The Homecoming of Rama',
+                description: 'In North India, especially in the states of Uttar Pradesh, Punjab, and Delhi, Diwali commemorates the return of Lord Rama to Ayodhya after 14 years of exile and his victory over Ravana. The celebration is marked by grand illuminations, elaborate Lakshmi Puja, and a joyous, social atmosphere.',
+                highlights: [
+                    { icon: '🪔', title: 'Grand Illuminations', text: 'Cities like Varanasi and Ayodhya are famous for their spectacular display of diyas along the river ghats.' },
+                    { icon: '🙏', title: 'Lakshmi-Ganesha Puja', text: 'The main event is the worship of Goddess Lakshmi and Lord Ganesha for prosperity and wisdom.' },
+                    { icon: '🍬', title: 'Feasts and Sweets', text: 'Exchanging sweets and hosting grand feasts for family and friends is a central part of the celebration.' },
+                    { icon: '💥', title: 'Community Fireworks', text: 'Elaborate fireworks displays light up the night sky, celebrating Rama\'s victorious return.' },
+                ]
+            },
+            south: {
+                title: 'South India: The Defeat of Narakasura',
+                description: 'In the South, particularly in Tamil Nadu, Karnataka, and Andhra Pradesh, Diwali, known as Deepavali, predominantly celebrates Lord Krishna\'s victory over the demon Narakasura. The emphasis is more on rituals and family, with celebrations often starting before dawn.',
+                highlights: [
+                    { icon: '🌅', title: 'Pre-Dawn Oil Bath', text: 'The day begins with a ritual oil bath (Thailam Snanam), which is considered as holy as bathing in the Ganges.' },
+                    { icon: '🎉', title: 'Naraka Chaturdashi', text: 'This is the main day of celebration, a day before the new moon, marking the triumph of good over evil.' },
+                    { icon: '🍚', title: 'Kolam and Rangoli', text: 'Intricate patterns are drawn at the entrance of homes using rice flour to welcome positive energy.' },
+                    { icon: '🎶', title: 'Subdued Celebrations', text: 'Compared to the North, fireworks are less prominent, with more focus on family gatherings and traditional music.' },
+                ]
+            },
+            east: {
+                title: 'East India: The Worship of Goddess Kali',
+                description: 'In Eastern India, especially in West Bengal, Odisha, and Assam, Diwali often coincides with Kali Puja. While diyas and lights are still a part of the festival, the primary focus is the worship of the fierce Goddess Kali, the destroyer of evil forces.',
+                highlights: [
+                    { icon: '🌺', title: 'Kali Puja', text: 'Elaborate pandals are set up, and Goddess Kali is worshipped with offerings, often through the night.' },
+                    { icon: '💀', title: 'Strength over Evil', text: 'The celebration honors the divine feminine power and her ability to vanquish darkness and protect devotees.' },
+                    { icon: '🏮', title: 'Akashdeep', text: 'Tall bamboo poles with lanterns (Akashdeep) are lit, believed to guide the spirits of ancestors.' },
+                    { icon: '🎶', title: 'Cultural Performances', text: 'The festivities are accompanied by devotional songs, dances, and theatrical performances.' },
+                ]
+            },
+            west: {
+                title: 'West India: The Start of a New Year',
+                description: 'In Western states like Gujarat and Maharashtra, Diwali marks the end of the harvest season and the beginning of a new financial year. The festival is a blend of devotion to Goddess Lakshmi and celebrating prosperity and new beginnings.',
+                highlights: [
+                    { icon: '📖', title: 'Chopda Pujan', text: 'Business owners worship their new account books, seeking blessings from Goddess Lakshmi for the upcoming year.' },
+                    { icon: '🏡', title: 'Home Decoration', text: 'Homes are meticulously cleaned and decorated with rangoli, torans (door hangings), and lights.' },
+                    { icon: '🍲', title: 'Farsan and Sweets', text: 'A variety of savory snacks (Farsan) and sweets are prepared and shared, making it a culinary delight.' },
+                    { icon: '✨', title: 'Bestu Varas', text: 'For Gujaratis, the day after Diwali is the New Year (Bestu Varas), celebrated with great enthusiasm and family visits.' },
+                ]
+            }
+        };
+
+        const contentContainer = document.getElementById('content-container');
+        const navButtons = {
+            north: document.getElementById('nav-north'),
+            south: document.getElementById('nav-south'),
+            east: document.getElementById('nav-east'),
+            west: document.getElementById('nav-west'),
+        };
+
+        function renderContent(region) {
+            const data = regionalData[region];
+            let highlightsHtml = data.highlights.map(h => `
+                <div class="flex items-start space-x-4">
+                    <div class="text-3xl">${h.icon}</div>
+                    <div>
+                        <h4 class="font-bold text-lg text-amber-800">${h.title}</h4>
+                        <p class="text-sm text-gray-600">${h.text}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            contentContainer.innerHTML = `
+                <div class="content-card p-6 md:p-8 animate-fade-in">
+                    <h3 class="text-2xl font-bold mb-4 text-center">${data.title}</h3>
+                    <p class="mb-8 text-center max-w-2xl mx-auto">${data.description}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                        ${highlightsHtml}
+                    </div>
+                </div>
+                <style>
+                    .animate-fade-in {
+                        animation: fadeIn 0.5s ease-in-out;
+                    }
+                    @keyframes fadeIn {
+                        from { opacity: 0; transform: translateY(10px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+                </style>
+            `;
+        }
+
+        function setActiveNav(region) {
+            Object.values(navButtons).forEach(btn => btn.classList.remove('active'));
+            navButtons[region].classList.add('active');
+        }
+
+        function initApp() {
+            Object.keys(navButtons).forEach(region => {
+                navButtons[region].addEventListener('click', () => {
+                    renderContent(region);
+                    setActiveNav(region);
+                });
+            });
+
+            renderContent('north');
+            setActiveNav('north');
+            renderChart();
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('regionalComparisonChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['North', 'South', 'East', 'West'],
+                    datasets: [{
+                        label: 'Diyas & Lights',
+                        data: [9, 7, 7, 8],
+                        backgroundColor: '#F59E0B',
+                    }, {
+                        label: 'Fireworks',
+                        data: [8, 4, 5, 6],
+                        backgroundColor: '#D97706',
+                    }, {
+                        label: 'Sweets & Feasts',
+                        data: [9, 8, 7, 9],
+                        backgroundColor: '#B45309',
+                    }, {
+                        label: 'Community Puja',
+                        data: [7, 6, 9, 8],
+                        backgroundColor: '#78350F',
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'Relative Emphasis (out of 10)'
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Regional Focus of Diwali Celebrations',
+                            font: {
+                                size: 18,
+                                family: "'Merriweather', serif"
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 20
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        legend: {
+                            position: 'bottom',
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+
+</body>
+</html>

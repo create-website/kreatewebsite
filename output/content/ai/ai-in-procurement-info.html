@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Rise of AI in Procurement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Narrative Structure Plan: The infographic tells a story of AI's evolution in procurement. It starts with a high-level introduction (The Three Tiers) to establish the key players. It then moves to a quantitative comparison (Capability Matrix) to give a data-driven perspective on their strengths. Next, it visualizes the practical application of this evolution across a standard workflow (Procurement Lifecycle, Reimagined), showing where each AI provides value. The narrative concludes with a forward-looking statement (The Future is Autonomous) to emphasize the ultimate direction and impact of this technology, leaving a lasting impression. -->
+    <!-- Visualization & Content Choices:
+        1. Data: The three types of AI (AI/ML, GenAI, Agentic AI). Goal: Inform/Compare. Chosen Visualization: Three-column card layout. Justification: This provides a clear, digestible, side-by-side introduction to the core concepts. Method: HTML/CSS with Tailwind. NO SVG.
+        2. Data: AI capabilities (Analysis, Creation, Autonomy). Goal: Compare. Chosen Visualization: Horizontal Bar Chart. Justification: A horizontal bar chart is highly effective for ranking and comparing distinct categories, making the relative strengths of each AI type immediately obvious. It's more direct than a radar chart for a static, scrolling format. Library: Chart.js/Canvas. NO SVG.
+        3. Data: Procurement Process. Goal: Organize/Show Process. Chosen Visualization: A simplified flowchart. Justification: A flowchart is the most intuitive way to represent a linear process and clearly map the different AI interventions at each stage. Method: Structured HTML/CSS using flexbox and borders. NO SVG/Mermaid JS.
+        4. Data: Future Impact. Goal: Inform. Chosen Visualization: A large, bold "Key Stat" callout. Justification: A single, high-impact number creates a strong focal point and makes the key takeaway memorable. Method: HTML/CSS with Tailwind. NO SVG.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-height: 450px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center my-8 md:my-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold" style="color: #073B4C;">The New Procurement Playbook</h1>
+            <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto" style="color: #118AB2;">How Artificial Intelligence is Moving from Analyst to Autonomous Agent in Supplier Management.</p>
+        </header>
+
+        <section class="my-16">
+            <h2 class="text-3xl font-bold text-center mb-10" style="color: #073B4C;">The Three Tiers of Procurement AI</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg border-t-4" style="border-color: #118AB2;">
+                    <div class="text-4xl mb-4">🔍</div>
+                    <h3 class="text-xl font-bold mb-2" style="color: #073B4C;">Analytical AI (AI/ML)</h3>
+                    <p class="text-gray-600">This foundational layer excels at analyzing vast datasets to optimize decisions. It's the data scientist of your procurement team.</p>
+                    <ul class="mt-4 space-y-2 text-gray-700 list-disc list-inside">
+                        <li>Optimizes supplier selection</li>
+                        <li>Enhances pricing negotiations</li>
+                        <li>Performs data-driven risk evaluation</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border-t-4" style="border-color: #06D6A0;">
+                    <div class="text-4xl mb-4">✍️</div>
+                    <h3 class="text-xl font-bold mb-2" style="color: #073B4C;">Generative AI (GenAI)</h3>
+                    <p class="text-gray-600">Building on analysis, GenAI focuses on creation and communication. It's the strategic writer and negotiator.</p>
+                     <ul class="mt-4 space-y-2 text-gray-700 list-disc list-inside">
+                        <li>Drafts RFPs and contracts</li>
+                        <li>Automates supplier communications</li>
+                        <li>Models "what-if" negotiation scenarios</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border-t-4" style="border-color: #FF6B6B;">
+                    <div class="text-4xl mb-4">🤖</div>
+                    <h3 class="text-xl font-bold mb-2" style="color: #073B4C;">Agentic AI</h3>
+                    <p class="text-gray-600">The most advanced tier, Agentic AI acts with autonomy to execute tasks and manage workflows. It's the tireless procurement assistant.</p>
+                     <ul class="mt-4 space-y-2 text-gray-700 list-disc list-inside">
+                        <li>Autonomously scouts for new suppliers</li>
+                        <li>Proactively initiates contract renewals</li>
+                        <li>Flags risks from geopolitical events</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-20 py-12 bg-white rounded-xl shadow-lg">
+             <div class="text-center px-6">
+                <h2 class="text-3xl font-bold mb-2" style="color: #073B4C;">AI Capability Matrix</h2>
+                <p class="max-w-3xl mx-auto text-gray-600 mb-8">Each type of AI brings a unique strength to the table. This chart compares their proficiency across core procurement functions, rated on a scale of 1 to 10 for effectiveness.</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="capabilitiesChart"></canvas>
+            </div>
+        </section>
+
+        <section class="my-20">
+            <h2 class="text-3xl font-bold text-center mb-12" style="color: #073B4C;">The Procurement Lifecycle, Reimagined</h2>
+             <div class="relative flex flex-col md:flex-row justify-center items-center gap-4 md:gap-0 px-4">
+                
+                <div class="flex-1 text-center p-4 border-2 border-dashed rounded-lg bg-white w-full md:w-auto">
+                    <h3 class="font-bold" style="color: #118AB2;">1. Sourcing & Selection</h3>
+                    <p class="text-sm text-gray-600">AI/ML analyzes performance data to find optimal suppliers.</p>
+                </div>
+
+                <div class="w-full md:w-12 h-8 md:h-auto flex justify-center items-center">
+                    <div class="text-2xl font-mono" style="color: #FFD166;">➔</div>
+                </div>
+
+                <div class="flex-1 text-center p-4 border-2 border-dashed rounded-lg bg-white w-full md:w-auto">
+                    <h3 class="font-bold" style="color: #06D6A0;">2. Negotiation & Contracting</h3>
+                    <p class="text-sm text-gray-600">GenAI drafts contracts and models negotiation strategies.</p>
+                </div>
+
+                <div class="w-full md:w-12 h-8 md:h-auto flex justify-center items-center">
+                    <div class="text-2xl font-mono" style="color: #FFD166;">➔</div>
+                </div>
+                
+                <div class="flex-1 text-center p-4 border-2 border-dashed rounded-lg bg-white w-full md:w-auto">
+                    <h3 class="font-bold" style="color: #FF6B6B;">3. Management & Monitoring</h3>
+                    <p class="text-sm text-gray-600">Agentic AI initiates renewals and flags supply chain risks.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="my-20">
+             <div class="bg-white rounded-xl shadow-lg overflow-hidden md:flex">
+                <div class="md:w-1/2 p-8 md:p-12">
+                    <h2 class="text-3xl font-bold" style="color: #073B4C;">The Future is Autonomous</h2>
+                    <p class="mt-4 text-gray-600">While analytical and generative AI provide powerful decision support and automation, Agentic AI represents the true paradigm shift. By autonomously executing complex workflows, these agents free up human teams to focus on strategic relationships and high-level strategy, fundamentally changing the role of a procurement professional.</p>
+                     <p class="mt-4 text-gray-600">The key benefit is proactive risk management—identifying and acting on potential disruptions before they impact the supply chain.</p>
+                </div>
+                <div class="md:w-1/2 p-8 md:p-12 flex items-center justify-center" style="background-color: #118AB2;">
+                    <div class="text-center text-white">
+                        <p class="text-xl">Potential increase in proactive risk detection with Agentic AI:</p>
+                        <div class="text-7xl md:text-8xl font-extrabold my-2">4X</div>
+                        <p class="text-xl">Compared to traditional methods</p>
+                    </div>
+                </div>
+             </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('capabilitiesChart').getContext('2d');
+            const capabilitiesChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Data Analysis & Optimization', 'Content & Strategy Creation', 'Autonomous Task Execution'],
+                    datasets: [
+                        {
+                            label: 'Analytical AI (AI/ML)',
+                            data: [9, 2, 1],
+                            backgroundColor: '#118AB2',
+                            borderColor: '#073B4C',
+                            borderWidth: 2,
+                        },
+                        {
+                            label: 'Generative AI (GenAI)',
+                            data: [6, 9, 3],
+                            backgroundColor: '#06D6A0',
+                            borderColor: '#073B4C',
+                            borderWidth: 2,
+                        },
+                        {
+                            label: 'Agentic AI',
+                            data: [7, 6, 9],
+                            backgroundColor: '#FF6B6B',
+                            borderColor: '#073B4C',
+                            borderWidth: 2,
+                        }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 10,
+                             grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                font: {
+                                    size: 14,
+                                }
+                            },
+                             grid: {
+                                color: '#e0e0e0'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    } else {
+                                      return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

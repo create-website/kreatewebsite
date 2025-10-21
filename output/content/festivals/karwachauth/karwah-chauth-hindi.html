@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="hi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>करवा चौथ गाइड (Karwa Chauth Guide)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Warm Neutrals & Festive Accents -->
+    <!-- Application Structure Plan: A thematic, single-page application with a sticky navigation bar for easy access to key sections: History, Fasting Rituals, Puja Steps, 2025 Timings, Puja Thali items, and Food traditions. This non-linear structure is chosen over a simple report layout to allow users to quickly find the specific information they need, enhancing usability. Interactivity is focused on clarifying complex processes (like the Puja Thali and fasting steps) through visual, clickable elements. -->
+    <!-- Visualization & Content Choices: 1. 2025 Timings -> Goal: Inform -> Method: Prominent info cards (HTML/CSS) -> Interaction: None -> Justification: Quick access to critical date/time info. 2. Puja Thali -> Goal: Organize/Explain -> Method: Interactive grid diagram (HTML/CSS) -> Interaction: Click/hover on items to reveal their significance -> Justification: More engaging and memorable than a text list. 3. Fasting Process -> Goal: Organize/Explain -> Method: Step-by-step timeline (HTML/Flexbox) -> Interaction: Hover effects to guide the user -> Justification: Visually breaks down the day's events sequentially. No Chart.js/Plotly needed as data is qualitative. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8F0;
+            color: #4B3F36;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #D9534F;
+            border-bottom-color: #D9534F;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #F0E5D8;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .tab.active {
+            background-color: #D9534F;
+            color: white;
+        }
+        .thali-item {
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .thali-item:hover, .thali-item.active {
+            background-color: #FEECEB;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background-color: #D9534F;
+            border-radius: 50%;
+            border: 2px solid #FFF8F0;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-rose-100/50 backdrop-blur-lg py-4 text-center sticky top-0 z-50 shadow-sm">
+        <h1 class="text-3xl md:text-4xl font-bold text-red-700">करवा चौथ संपूर्ण गाइड</h1>
+        <p class="text-stone-600 mt-1">परंपरा, पूजा विधि और 2025 की जानकारी</p>
+    </header>
+
+    <nav id="navbar" class="bg-white/70 backdrop-blur-md py-3 sticky top-[88px] z-50 shadow-md">
+        <div class="max-w-6xl mx-auto px-4">
+            <ul class="flex justify-center space-x-2 sm:space-x-4 md:space-x-8 text-sm md:text-base font-semibold overflow-x-auto pb-2">
+                <li><a href="#intro" class="nav-link p-2">परिचय</a></li>
+                <li><a href="#date-time" class="nav-link p-2">2025 तिथि</a></li>
+                <li><a href="#history" class="nav-link p-2">इतिहास</a></li>
+                <li><a href="#fasting" class="nav-link p-2">व्रत विधि</a></li>
+                <li><a href="#thali" class="nav-link p-2">पूजा थाली</a></li>
+                <li><a href="#puja" class="nav-link p-2">पूजा विधि</a></li>
+                <li><a href="#food" class="nav-link p-2">भोजन</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+        <section id="intro" class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-red-800 mb-4">करवा चौथ का पर्व</h2>
+            <p class="text-lg text-stone-700 max-w-3xl mx-auto leading-relaxed">
+                करवा चौथ भारतीय सुहागिनों का सबसे महत्वपूर्ण त्योहार है। इस दिन विवाहित महिलाएं अपने पति की लंबी आयु, सफलता और अच्छे स्वास्थ्य के लिए सूर्योदय से चंद्रोदय तक निर्जला व्रत रखती हैं। यह त्योहार पति-पत्नी के बीच प्रेम, त्याग और विश्वास के पवित्र बंधन का प्रतीक है। यह ऐप आपको इस पवित्र त्योहार से जुड़ी हर जानकारी प्रदान करने के लिए डिज़ाइन किया गया है।
+            </p>
+        </section>
+
+        <section id="date-time" class="mb-16">
+            <h2 class="text-3xl font-bold text-red-800 mb-6 text-center">करवा चौथ 2025: तिथि और समय</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card p-6 text-center rounded-xl">
+                    <div class="text-5xl mb-3">📅</div>
+                    <h3 class="text-xl font-semibold text-stone-800 mb-2">तिथि</h3>
+                    <p class="text-2xl font-bold text-red-700">17 अक्टूबर 2025</p>
+                    <p class="text-stone-600">शुक्रवार</p>
+                </div>
+                <div class="card p-6 text-center rounded-xl">
+                    <div class="text-5xl mb-3">🙏</div>
+                    <h3 class="text-xl font-semibold text-stone-800 mb-2">पूजा मुहूर्त</h3>
+                    <p class="text-2xl font-bold text-red-700">शाम 05:53 - शाम 07:08</p>
+                    <p class="text-stone-600">अवधि: 1 घंटा 15 मिनट</p>
+                </div>
+                <div class="card p-6 text-center rounded-xl">
+                    <div class="text-5xl mb-3">🌕</div>
+                    <h3 class="text-xl font-semibold text-stone-800 mb-2">चंद्रोदय का समय</h3>
+                    <p class="text-2xl font-bold text-red-700">रात 08:16</p>
+                    <p class="text-stone-600">(समय शहर के अनुसार बदल सकता है)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="history" class="mb-16">
+            <h2 class="text-3xl font-bold text-red-800 mb-6 text-center">त्योहार का इतिहास और महत्व</h2>
+            <p class="text-center text-lg text-stone-700 max-w-3xl mx-auto mb-8">करवा चौथ की परंपरा के पीछे कई पौराणिक कथाएं प्रचलित हैं, जो इस व्रत के महत्व को दर्शाती हैं। इनमें से कुछ प्रमुख कथाएं इस प्रकार हैं, जिन्हें आप नीचे टैब पर क्लिक करके पढ़ सकते हैं।</p>
+            <div class="card rounded-xl p-4 md:p-6">
+                <div class="flex border-b border-orange-200 mb-4">
+                    <button class="tab flex-1 py-2 px-4 rounded-t-lg font-semibold active" onclick="showTab('veervati')">रानी वीरवती की कथा</button>
+                    <button class="tab flex-1 py-2 px-4 rounded-t-lg font-semibold" onclick="showTab('draupadi')">द्रौपदी की कथा</button>
+                    <button class="tab flex-1 py-2 px-4 rounded-t-lg font-semibold" onclick="showTab('savitri')">सावित्री की कथा</button>
+                </div>
+                <div id="veervati" class="tab-content text-stone-700 leading-relaxed">
+                    <h3 class="font-bold text-xl mb-2 text-stone-800">रानी वीरवती की कथा</h3>
+                    <p>सबसे प्रसिद्ध कथा रानी वीरवती की है। वह सात भाइयों की इकलौती और लाडली बहन थीं। शादी के बाद जब उन्होंने अपना पहला करवा चौथ का व्रत रखा, तो भूख-प्यास से उनका हाल बेहाल हो गया। अपने बहन की यह हालत देखकर भाइयों ने एक पेड़ के पीछे मशाल जलाकर और छलनी रखकर नकली चांद बना दिया। वीरवती ने उसे असली चांद समझकर व्रत खोल लिया। जैसे ही उन्होंने खाना खाया, उनके पति के निधन का समाचार मिला। उन्होंने विलाप किया और फिर पूरी श्रद्धा से अगले साल व्रत रखा, जिससे उनके पति को पुनः जीवनदान मिला।</p>
+                </div>
+                <div id="draupadi" class="tab-content hidden text-stone-700 leading-relaxed">
+                    <h3 class="font-bold text-xl mb-2 text-stone-800">द्रौपदी और भगवान कृष्ण</h3>
+                    <p>महाभारत काल में, जब अर्जुन नीलगिरी पर्वत पर तपस्या करने गए, तो पांडवों पर संकट आ गया। चिंतित होकर द्रौपदी ने भगवान कृष्ण से मदद मांगी। कृष्ण ने उन्हें करवा चौथ व्रत रखने की सलाह दी, जैसा माता पार्वती ने शिव जी के लिए रखा था। द्रौपदी ने पूरी श्रद्धा से यह व्रत किया, जिसके फलस्वरूप पांडवों के संकट दूर हो गए और अर्जुन भी सुरक्षित लौट आए।</p>
+                </div>
+                 <div id="savitri" class="tab-content hidden text-stone-700 leading-relaxed">
+                    <h3 class="font-bold text-xl mb-2 text-stone-800">सावित्री और सत्यवान</h3>
+                    <p>एक और कथा सावित्री और सत्यवान की है। जब यमराज उनके पति सत्यवान के प्राण लेने आए, तो सावित्री ने अपने पतिव्रता धर्म और दृढ़ निश्चय से यमराज का पीछा किया। उनकी पतिभक्ति से प्रसन्न होकर यमराज ने सत्यवान को जीवनदान दिया। करवा चौथ का व्रत इसी पतिव्रता धर्म का प्रतीक माना जाता है।</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="fasting" class="mb-16">
+            <h2 class="text-3xl font-bold text-red-800 mb-8 text-center">व्रत की दिनचर्या</h2>
+            <p class="text-center text-lg text-stone-700 max-w-3xl mx-auto mb-8">यह व्रत सूर्योदय से शुरू होकर चंद्रोदय तक चलता है। यह एक निर्जला व्रत है जिसमें अन्न और जल का त्याग किया जाता है। दिनभर की प्रमुख क्रियाएं इस प्रकार हैं।</p>
+            <div class="relative pl-6 border-l-2 border-dashed border-orange-300">
+                <div class="timeline-item mb-8">
+                    <h3 class="text-xl font-semibold text-stone-800">सरगी (सूर्योदय से पहले)</h3>
+                    <p class="text-stone-700">सास अपनी बहू को सरगी देती है, जिसमें मिठाइयां, फल और सूखे मेवे होते हैं। सूर्योदय से पहले इसे खाकर व्रत की शुरुआत होती है।</p>
+                </div>
+                <div class="timeline-item mb-8">
+                    <h3 class="text-xl font-semibold text-stone-800">संकल्प लेना</h3>
+                    <p class="text-stone-700">सरगी के बाद स्नान करके महिलाएं देवी-देवताओं का ध्यान करती हैं और निर्जला व्रत का संकल्प लेती हैं।</p>
+                </div>
+                <div class="timeline-item mb-8">
+                    <h3 class="text-xl font-semibold text-stone-800">दिनभर का व्रत</h3>
+                    <p class="text-stone-700">महिलाएं दिनभर बिना कुछ खाए-पिए रहती हैं। वे भजन-कीर्तन करती हैं और शाम की पूजा की तैयारी करती हैं।</p>
+                </div>
+                <div class="timeline-item mb-8">
+                    <h3 class="text-xl font-semibold text-stone-800">शाम की पूजा</h3>
+                    <p class="text-stone-700">शाम को सभी महिलाएं एक साथ मिलकर करवा चौथ की कथा सुनती हैं और पूजा करती हैं।</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 class="text-xl font-semibold text-stone-800">चंद्रमा को अर्घ्य और व्रत खोलना</h3>
+                    <p class="text-stone-700">चंद्रमा निकलने पर महिलाएं छलनी से चांद और फिर अपने पति का चेहरा देखती हैं। पति अपनी पत्नी को पानी पिलाकर व्रत तुड़वाते हैं।</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="thali" class="mb-16">
+            <h2 class="text-3xl font-bold text-red-800 mb-6 text-center">पूजा थाली की आवश्यक सामग्री</h2>
+            <p class="text-center text-lg text-stone-700 max-w-3xl mx-auto mb-8">करवा चौथ की पूजा में थाली का विशेष महत्व है। इसमें रखी हर वस्तु का अपना एक प्रतीक और महत्व होता है। किसी भी वस्तु पर क्लिक करके उसके बारे में और जानें।</p>
+            <div class="flex flex-col md:flex-row gap-8 items-start">
+                <div class="w-full md:w-1/2 grid grid-cols-3 gap-4">
+                    <div class="thali-item card p-4 flex flex-col items-center justify-center text-center rounded-xl h-28" data-info="करवा मिट्टी का एक पवित्र बर्तन है जिसमें जल भरकर पूजा की जाती है। यह चंद्रमा को अर्घ्य देने के काम आता है।">
+                        <div class="text-3xl">🏺</div>
+                        <p class="font-semibold mt-1">करवा</p>
+                    </div>
+                    <div class="thali-item card p-4 flex flex-col items-center justify-center text-center rounded-xl h-28 active" data-info="छलनी का उपयोग चंद्रमा और फिर पति का चेहरा देखने के लिए किया जाता है। यह पति-पत्नी के रिश्ते में पवित्रता और सम्मान का प्रतीक है।">
+                        <div class="text-3xl">🕸️</div>
+                        <p class="font-semibold mt-1">छलनी</p>
+                    </div>
+                    <div class="thali-item card p-4 flex flex-col items-center justify-center text-center rounded-xl h-28" data-info="दीपक अंधकार को दूर कर प्रकाश का प्रतीक है। यह पूजा में सकारात्मक ऊर्जा का संचार करता है।">
+                        <div class="text-3xl">🪔</div>
+                        <p class="font-semibold mt-1">दीया</p>
+                    </div>
+                    <div class="thali-item card p-4 flex flex-col items-center justify-center text-center rounded-xl h-28" data-info="सिंदूर सुहाग का प्रतीक है। महिलाएं पूजा के दौरान इसे अपनी मांग में लगाती हैं।">
+                        <div class="text-3xl">🔴</div>
+                        <p class="font-semibold mt-1">सिंदूर/रोली</p>
+                    </div>
+                    <div class="thali-item card p-4 flex flex-col items-center justify-center text-center rounded-xl h-28" data-info="पूजा में देवी-देवताओं को मिठाइयों का भोग लगाया जाता है। यह जीवन में मिठास का प्रतीक है।">
+                        <div class="text-3xl">🍬</div>
+                        <p class="font-semibold mt-1">मिठाई</p>
+                    </div>
+                    <div class="thali-item card p-4 flex flex-col items-center justify-center text-center rounded-xl h-28" data-info="जल को जीवन का आधार माना जाता है। पूजा में जल का उपयोग शुद्धि और अर्घ्य के लिए होता है।">
+                        <div class="text-3xl">💧</div>
+                        <p class="font-semibold mt-1">जल का लोटा</p>
+                    </div>
+                    <div class="thali-item card p-4 flex flex-col items-center justify-center text-center rounded-xl h-28" data-info="अगरबत्ती वातावरण को सुगंधित और पवित्र बनाती है, जो ध्यान केंद्रित करने में मदद करती है।">
+                        <div class="text-3xl">✨</div>
+                        <p class="font-semibold mt-1">अगरबत्ती</p>
+                    </div>
+                    <div class="thali-item card p-4 flex flex-col items-center justify-center text-center rounded-xl h-28" data-info="पूजा के बाद फल प्रसाद के रूप में बांटे जाते हैं। यह प्रकृति के प्रति आभार का प्रतीक है।">
+                        <div class="text-3xl">🍎</div>
+                        <p class="font-semibold mt-1">फल</p>
+                    </div>
+                    <div class="thali-item card p-4 flex flex-col items-center justify-center text-center rounded-xl h-28" data-info="चावल को अक्षत कहा जाता है, जिसका अर्थ है 'अखंडित'। यह पूर्णता और समृद्धि का प्रतीक है।">
+                        <div class="text-3xl">🍚</div>
+                        <p class="font-semibold mt-1">चावल</p>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 card rounded-xl p-6 min-h-[18rem] bg-amber-50">
+                    <h3 class="text-xl font-bold text-red-800 mb-3">सामग्री का महत्व</h3>
+                    <p id="thali-info-display" class="text-stone-700 text-lg leading-relaxed">
+                        छलनी का उपयोग चंद्रमा और फिर पति का चेहरा देखने के लिए किया जाता है। यह पति-पत्नी के रिश्ते में पवित्रता और सम्मान का प्रतीक है।
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="puja" class="mb-16">
+            <h2 class="text-3xl font-bold text-red-800 mb-8 text-center">संपूर्ण पूजा विधि</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold text-stone-800 mb-3">1. पूजा स्थल की तैयारी</h3>
+                    <p class="text-stone-700">शाम के समय, घर में पूजा के लिए एक साफ स्थान चुनें। एक चौकी पर लाल कपड़ा बिछाएं और उस पर करवा चौथ का कैलेंडर या शिव-पार्वती की मूर्ति स्थापित करें।</p>
+                </div>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold text-stone-800 mb-3">2. करवा की स्थापना</h3>
+                    <p class="text-stone-700">पूजा की थाली तैयार करें और मिट्टी के करवे में जल भरकर चौकी पर रखें। करवे पर रोली से स्वास्तिक बनाएं और कलावा बांधें।</p>
+                </div>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold text-stone-800 mb-3">3. कथा का वाचन</h3>
+                    <p class="text-stone-700">परिवार की या पड़ोस की सभी महिलाएं एक साथ इकट्ठा हों। एक वरिष्ठ महिला करवा चौथ की कथा सुनाती हैं और बाकी सभी महिलाएं ध्यान से सुनती हैं।</p>
+                </div>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold text-stone-800 mb-3">4. थाली घुमाना</h3>
+                    <p class="text-stone-700">कथा समाप्त होने के बाद, सभी महिलाएं अपनी-अपनी पूजा की थाली एक-दूसरे के साथ घुमाती हैं और अपने पति की लंबी आयु की कामना करती हैं।</p>
+                </div>
+                 <div class="card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold text-stone-800 mb-3">5. चंद्रमा की पूजा</h3>
+                    <p class="text-stone-700">चंद्रमा निकलने पर, छलनी से पहले चांद को और फिर पति को देखें। चंद्रमा को करवे के जल से अर्घ्य दें और अपने पति की लंबी उम्र के लिए प्रार्थना करें।</p>
+                </div>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold text-stone-800 mb-3">6. व्रत का समापन</h3>
+                    <p class="text-stone-700">पूजा के बाद, पति अपनी पत्नी को पानी पिलाकर और मिठाई खिलाकर व्रत को पूरा करवाते हैं। इसके बाद महिलाएं भोजन ग्रहण करती हैं।</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="food" class="mb-16">
+            <h2 class="text-3xl font-bold text-red-800 mb-8 text-center">सरगी और पारंपरिक भोजन</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card rounded-xl p-6">
+                    <h3 class="text-2xl font-bold text-stone-800 mb-4">सरगी: व्रत की शुरुआत</h3>
+                    <p class="text-stone-700 mb-4">सरगी वह भोजन है जो सूर्योदय से पहले खाया जाता है। यह सास अपनी बहू को आशीर्वाद के रूप में देती है। इसका उद्देश्य दिनभर ऊर्जावान बनाए रखना है।</p>
+                    <ul class="list-disc list-inside text-stone-700 space-y-2">
+                        <li><strong>फेनी या दूध से बनी सेवइयां:</strong> ऊर्जा के लिए।</li>
+                        <li><strong>फल:</strong> शरीर में पानी की कमी को रोकने के लिए।</li>
+                        <li><strong>मिठाई:</strong> दिन की मीठी शुरुआत के लिए।</li>
+                        <li><strong>सूखे मेवे:</strong> पोषण और ताकत के लिए।</li>
+                    </ul>
+                </div>
+                <div class="card rounded-xl p-6">
+                    <h3 class="text-2xl font-bold text-stone-800 mb-4">व्रत खोलने का भोजन</h3>
+                    <p class="text-stone-700 mb-4">चांद देखने और पूजा करने के बाद, एक सात्विक और स्वादिष्ट भोजन के साथ व्रत खोला जाता है।</p>
+                     <ul class="list-disc list-inside text-stone-700 space-y-2">
+                        <li><strong>पूरी और आलू की सब्जी:</strong> एक पारंपरिक और पसंदीदा व्यंजन।</li>
+                        <li><strong>पनीर की सब्जी:</strong> भोजन को और खास बनाने के लिए।</li>
+                        <li><strong>दही भल्ले:</strong> व्रत के बाद ठंडक देने के लिए।</li>
+                        <li><strong>हलवा या खीर:</strong> मीठे के बिना कोई भी त्योहार अधूरा है।</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-rose-100/50 text-center py-6">
+        <p class="text-stone-600">करवा चौथ की हार्दिक शुभकामनाएं!</p>
+    </footer>
+
+    <script>
+        function showTab(tabName) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+            
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            document.getElementById(tabName).classList.remove('hidden');
+            event.currentTarget.classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const thaliItems = document.querySelectorAll('.thali-item');
+            const infoDisplay = document.getElementById('thali-info-display');
+
+            thaliItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    thaliItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    const info = item.getAttribute('data-info');
+                    infoDisplay.textContent = info;
+                });
+            });
+            
+            const navbar = document.getElementById('navbar');
+            const navLinks = navbar.querySelectorAll('a');
+            const sections = document.querySelectorAll('main section');
+
+            function changeNavOnScroll() {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 150) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+            window.addEventListener('scroll', changeNavOnScroll);
+        });
+    </script>
+</body>
+</html>

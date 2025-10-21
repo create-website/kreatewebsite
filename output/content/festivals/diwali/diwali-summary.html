@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Diwali</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Festive Warmth -->
+    <!-- Application Structure Plan: A tab-based single-page application is used to organize the content into four distinct, user-selectable themes: 'Welcome,' 'The Five Days,' 'Traditions,' and 'Calendar.' This structure was chosen over a linear scroll to improve usability by allowing users to directly access specific information without being overwhelmed. It transforms passive reading into an active, exploratory experience. Key interactions include tab-switching to change content panels, an accordion-style interface for the five days of celebration, and a clickable grid for exploring traditions. This design prioritizes clarity and user engagement. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Overview of Diwali -> Goal: Inform -> Presentation: Thematic welcome text -> Interaction: None, it serves as the landing page introduction -> Justification: Provides immediate context for the festival's significance. -> Method: Styled HTML.
+        - Report Info: The Five Days of Diwali -> Goal: Organize/Inform -> Presentation: An interactive vertical accordion list -> Interaction: Clicking a day expands its details while collapsing others -> Justification: Breaks down dense information into manageable, focused segments, encouraging discovery. -> Method: HTML, Tailwind CSS, Vanilla JS.
+        - Report Info: Diwali Traditions -> Goal: Organize/Inform -> Presentation: A grid of clickable cards with icons -> Interaction: Clicking a card reveals its detailed description -> Justification: A visually scannable and engaging way to present cultural practices, superior to a simple text list. -> Method: HTML, Tailwind CSS, Vanilla JS.
+        - Report Info: Diwali Dates -> Goal: Inform -> Presentation: A clean HTML table -> Interaction: None -> Justification: A table is the most direct and universally understood format for presenting date-based data. -> Method: HTML, Tailwind CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFBF5;
+            color: #4D4332;
+        }
+        .nav-btn {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-btn.active {
+            border-bottom-color: #FF7D00;
+            color: #FF7D00;
+            font-weight: 600;
+        }
+        .content-panel {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .content-panel.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .day-accordion-btn {
+            transition: all 0.3s ease;
+        }
+        .day-accordion-btn.active {
+            background-color: #FFFAF0;
+            border-left-color: #FF7D00;
+        }
+        .day-accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .tradition-card {
+            transition: all 0.3s ease;
+            transform: scale(1);
+        }
+        .tradition-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .tradition-card.active {
+            border-color: #FF7D00;
+            background-color: #FFFAF0;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="min-h-screen container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#FF7D00]">Exploring Diwali</h1>
+            <p class="text-lg md:text-xl mt-2 text-[#4D4332]">An Interactive Guide to the Festival of Lights</p>
+        </header>
+
+        <nav class="flex justify-center border-b border-gray-200 mb-8">
+            <button class="nav-btn px-4 py-3 text-sm md:text-base" data-target="welcome">Welcome</button>
+            <button class="nav-btn px-4 py-3 text-sm md:text-base" data-target="five-days">The Five Days</button>
+            <button class="nav-btn px-4 py-3 text-sm md:text-base" data-target="traditions">Traditions</button>
+            <button class="nav-btn px-4 py-3 text-sm md:text-base" data-target="calendar">Calendar</button>
+        </nav>
+
+        <main>
+            <section id="welcome" class="content-panel active">
+                <div class="max-w-3xl mx-auto bg-white/50 p-6 md:p-8 rounded-lg shadow-sm">
+                    <h2 class="text-2xl md:text-3xl font-bold text-[#FF7D00] mb-4">The Triumph of Light Over Darkness</h2>
+                    <p class="text-base md:text-lg leading-relaxed text-justify">
+                        Diwali, also known as Deepavali, is one of the most significant festivals in Indian culture. Celebrated by millions of Hindus, Jains, Sikhs, and some Buddhists across the globe, it is a five-day festival that symbolizes the spiritual victory of good over evil, light over darkness, and knowledge over ignorance. The word "Deepavali" means "row of lighted lamps," and the festival is aptly named for the millions of small oil lamps, or diyas, that illuminate homes and public spaces. This section provides a brief introduction to the essence of Diwali and what it represents. Use the navigation above to explore the specific days, rich traditions, and upcoming dates of this vibrant celebration.
+                    </p>
+                </div>
+            </section>
+
+            <section id="five-days" class="content-panel">
+                 <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-6">
+                        <h2 class="text-2xl md:text-3xl font-bold text-[#FF7D00]">The Five Days of Celebration</h2>
+                        <p class="mt-2 text-base md:text-lg">Each day of Diwali has its own unique significance and rituals. Click on a day below to learn more about its story and how it is celebrated.</p>
+                    </div>
+                    <div class="md:flex md:space-x-8">
+                        <div id="day-buttons" class="md:w-1/3 flex flex-row md:flex-col overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 mb-4 md:mb-0">
+                        </div>
+                        <div id="day-details" class="md:w-2/3 bg-white/50 p-6 rounded-lg shadow-sm min-h-[300px]">
+                            <h3 id="day-detail-title" class="text-xl font-bold text-[#FF7D00] mb-2"></h3>
+                            <p id="day-detail-content" class="text-base leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="traditions" class="content-panel">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center mb-6">
+                         <h2 class="text-2xl md:text-3xl font-bold text-[#FF7D00]">Cultural Traditions</h2>
+                         <p class="mt-2 text-base md:text-lg">Diwali is celebrated with many beautiful customs. Click on a tradition to understand its meaning and role in the festival.</p>
+                    </div>
+                    <div id="tradition-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
+                    </div>
+                     <div id="tradition-details" class="bg-white/50 p-6 rounded-lg shadow-sm min-h-[150px]">
+                        <h3 id="tradition-detail-title" class="text-xl font-bold text-[#FF7D00] mb-2"></h3>
+                        <p id="tradition-detail-content" class="text-base leading-relaxed"></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="calendar" class="content-panel">
+                <div class="max-w-md mx-auto">
+                    <div class="text-center mb-6">
+                        <h2 class="text-2xl md:text-3xl font-bold text-[#FF7D00]">Upcoming Diwali Dates</h2>
+                        <p class="mt-2 text-base md:text-lg">Plan your celebrations with the main Diwali (Lakshmi Puja) dates for the coming years.</p>
+                    </div>
+                    <div class="bg-white/50 rounded-lg shadow-sm overflow-hidden">
+                        <table class="w-full text-left">
+                            <thead class="bg-[#FFFAF0]">
+                                <tr>
+                                    <th class="p-4 font-semibold">Year</th>
+                                    <th class="p-4 font-semibold">Date</th>
+                                    <th class="p-4 font-semibold">Day</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-200">
+                                    <td class="p-4">2025</td>
+                                    <td class="p-4">October 21</td>
+                                    <td class="p-4">Tuesday</td>
+                                </tr>
+                                <tr class="border-b border-gray-200">
+                                    <td class="p-4">2026</td>
+                                    <td class="p-4">November 8</td>
+                                    <td class="p-4">Sunday</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2027</td>
+                                    <td class="p-4">October 29</td>
+                                    <td class="p-4">Friday</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-12 text-sm text-gray-500">
+            <p>Content adapted from happydiwali.org for an interactive experience.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const contentPanels = document.querySelectorAll('.content-panel');
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const targetId = button.dataset.target;
+                    contentPanels.forEach(panel => {
+                        panel.classList.remove('active');
+                        if (panel.id === targetId) {
+                            panel.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            const fiveDaysData = [
+                { 
+                    day: "Day 1",
+                    title: "Dhanteras",
+                    content: "This day marks the beginning of Diwali. It is dedicated to the worship of Lord Dhanvantari, the physician of the gods. People traditionally clean their homes and buy gold, silver, or new utensils, as it is considered auspicious and believed to bring good luck."
+                },
+                {
+                    day: "Day 2",
+                    title: "Naraka Chaturdasi",
+                    content: "Also known as Choti Diwali (Small Diwali), this day commemorates Lord Krishna's victory over the demon Narakasura, liberating 16,000 captive princesses. Celebrations involve early morning religious rituals and the lighting of a few lamps."
+                },
+                {
+                    day: "Day 3",
+                    title: "Lakshmi Puja",
+                    content: "This is the main day of the festival. Families gather to perform Lakshmi Puja, a prayer to the goddess of wealth and prosperity. Homes and streets are brightly lit with diyas and rangoli patterns adorn doorways, welcoming the goddess. The evening is celebrated with feasts and fireworks."
+                },
+                {
+                    day: "Day 4",
+                    title: "Govardhan Puja",
+                    content: "This day is celebrated differently across India. In the North, it commemorates the day Lord Krishna lifted the Govardhan Hill to shelter villagers from torrential rain. In other regions, it is celebrated as Padwa, honoring the bond between husband and wife."
+                },
+                {
+                    day: "Day 5",
+                    title: "Bhai Dooj",
+                    content: "The final day of Diwali celebrates the bond between brothers and sisters. Sisters apply a tilak (a ceremonial mark) on their brothers' foreheads, praying for their long life and prosperity. Brothers, in turn, give gifts to their sisters."
+                }
+            ];
+
+            const dayButtonsContainer = document.getElementById('day-buttons');
+            const dayDetailTitle = document.getElementById('day-detail-title');
+            const dayDetailContent = document.getElementById('day-detail-content');
+            
+            fiveDaysData.forEach((data, index) => {
+                const button = document.createElement('button');
+                button.className = 'day-accordion-btn text-left p-4 border-l-4 border-transparent w-full whitespace-nowrap';
+                button.innerHTML = `<span class="font-semibold">${data.day}:</span> ${data.title}`;
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.day-accordion-btn').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    dayDetailTitle.textContent = data.title;
+                    dayDetailContent.textContent = data.content;
+                });
+                dayButtonsContainer.appendChild(button);
+            });
+
+            const traditionsData = [
+                {
+                    icon: '🪔',
+                    title: 'Diyas',
+                    content: 'Small clay oil lamps are lit and placed in rows in homes and temples. They symbolize the inner light that protects from spiritual darkness and represent enlightenment and goodness.'
+                },
+                {
+                    icon: '🎨',
+                    title: 'Rangoli',
+                    content: 'Colorful and intricate patterns are created on the floors of homes, usually near the entrance, using colored powder, rice, or flowers. They are meant to be a sacred welcoming area for deities.'
+                },
+                {
+                    icon: '🎆',
+                    title: 'Fireworks',
+                    content: 'Bursting firecrackers and sparklers is a major part of the celebration, believed by some to ward off evil spirits and express joy and excitement for the festival.'
+                },
+                {
+                    icon: '🙏',
+                    title: 'Puja',
+                    content: 'Elaborate prayers and offerings are made, especially to Goddess Lakshmi, for wealth and prosperity, and to Lord Ganesha, the remover of obstacles.'
+                },
+                {
+                    icon: '🍬',
+                    title: 'Feasts',
+                    content: 'Families and friends gather to share elaborate meals and sweets (mithai). Sharing food is a key part of the community and celebratory aspect of Diwali.'
+                },
+                {
+                    icon: '🎁',
+                    title: 'Gifts',
+                    content: 'Exchanging gifts is a common practice during Diwali, symbolizing love, respect, and good wishes among family, friends, and colleagues.'
+                }
+            ];
+
+            const traditionGrid = document.getElementById('tradition-grid');
+            const traditionDetailTitle = document.getElementById('tradition-detail-title');
+            const traditionDetailContent = document.getElementById('tradition-detail-content');
+
+            traditionsData.forEach((data, index) => {
+                const card = document.createElement('div');
+                card.className = 'tradition-card cursor-pointer p-4 bg-white/50 rounded-lg shadow-sm text-center border-2 border-transparent';
+                card.innerHTML = `<div class="text-4xl mb-2">${data.icon}</div><div class="font-semibold">${data.title}</div>`;
+                card.addEventListener('click', () => {
+                     document.querySelectorAll('.tradition-card').forEach(c => c.classList.remove('active'));
+                     card.classList.add('active');
+                     traditionDetailTitle.textContent = data.title;
+                     traditionDetailContent.textContent = data.content;
+                });
+                traditionGrid.appendChild(card);
+            });
+            
+            function setInitialState() {
+                document.querySelector('.nav-btn[data-target="welcome"]').classList.add('active');
+                
+                document.querySelector('.day-accordion-btn').click();
+                document.querySelector('.tradition-card').click();
+            }
+
+            setInitialState();
+
+        });
+    </script>
+</body>
+</html>

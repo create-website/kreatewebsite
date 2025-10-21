@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Festive Greetings</title>
+    <!-- Meta tags for description and keywords will be added dynamically by JavaScript -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Vollkorn:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Subtle Accent -->
+    <!-- Application Structure Plan: A dynamic, single-page template designed to generate article pages based on URL query parameters. The structure is a classic article layout with a main image and accompanying text. This is a highly reusable and efficient design for content-driven websites. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Image URL, description, keywords, and article text from URL parameters. Goal: Display dynamic content. Method: JavaScript is used to parse all URL parameters and populate the corresponding elements on the page, including meta tags, the main image, and the article body. Interaction: None. Justification: This dynamic approach allows for the creation of unlimited unique pages from a single template file, which is extremely efficient. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Vollkorn', serif;
+        }
+        .hindi-title {
+            font-family: 'Tiro Devanagari Hindi', serif;
+        }
+    </style>
+</head>
+<body class="bg-rose-50 text-stone-800">
+
+    <nav class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 border-b border-rose-100">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-2">
+                 <div class="flex flex-wrap space-x-4 md:space-x-6 text-sm md:text-base">
+                    <a href="karwa_chauth_homepage_2025.html" class="text-stone-600 hover:text-rose-800 py-2">Home</a>
+                    <a href="karwa_chauth_about_2025.html" class="text-stone-600 hover:text-rose-800 py-2">About</a>
+                    <a href="karwa_chauth_rituals_2025.html" class="text-stone-600 hover:text-rose-800 py-2">Rituals</a>
+                    <a href="diwali_cards_2025.html" class="text-stone-600 hover:text-rose-800 py-2">Diwali Cards</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="text-center py-12 md:py-20 bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(255, 241, 242, 0.7), rgba(255, 241, 242, 1)), url('https://storage.googleapis.com/kreatewebsite/sites/karwa-chauth.happydiwali.org/Banner/Celebrate-Karwa-Chauth.jpg');">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl md:text-6xl font-bold text-rose-900 hindi-title">Festive Greetings</h1>
+            <p id="header-description" class="mt-4 text-lg md:text-xl text-stone-700 max-w-3xl mx-auto">A special message for the festival of lights.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 md:py-12">
+
+        <article class="grid md:grid-cols-2 gap-8 items-start bg-white p-8 rounded-2xl shadow-lg border border-rose-200 max-w-5xl mx-auto">
+            <div id="image-container" class="w-full">
+                <!-- Image will be inserted here -->
+            </div>
+            <div id="article-container" class="text-stone-700 leading-relaxed space-y-4">
+                <!-- Article text will be inserted here -->
+            </div>
+        </article>
+
+    </main>
+
+    <footer class="text-center py-8 mt-12 bg-white/50 border-t border-rose-100">
+        <div class="container mx-auto px-4">
+            <p class="text-stone-600">Wishing you a happy and prosperous festival!</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+
+            const imageUrl = params.get('imageurl');
+            const description = params.get('desc');
+            const keywords = params.get('keywords');
+            const articleText = params.get('article_text');
+
+            // --- Populate Meta Tags and Title ---
+            if (description) {
+                document.title = description;
+                const metaDesc = document.createElement('meta');
+                metaDesc.name = 'description';
+                metaDesc.content = description;
+                document.head.appendChild(metaDesc);
+                document.getElementById('header-description').textContent = description;
+            }
+
+            if (keywords) {
+                const metaKeywords = document.createElement('meta');
+                metaKeywords.name = 'keywords';
+                metaKeywords.content = keywords;
+                document.head.appendChild(metaKeywords);
+            }
+
+            // --- Populate Image ---
+            const imageContainer = document.getElementById('image-container');
+            if (imageUrl) {
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = description || 'Festive Image';
+                img.classList.add('w-full', 'h-auto', 'object-cover', 'rounded-xl', 'shadow-md');
+                imageContainer.appendChild(img);
+            } else {
+                imageContainer.innerHTML = '<div class="w-full aspect-square bg-rose-100 rounded-xl flex items-center justify-center"><p class="text-stone-500">Image not available</p></div>';
+            }
+
+            // --- Populate Article Text ---
+            const articleContainer = document.getElementById('article-container');
+            if (articleText) {
+                // Split by newline characters to create separate paragraphs
+                const paragraphs = articleText.split('\\n');
+                paragraphs.forEach(pText => {
+                    if (pText.trim() !== '') {
+                        const p = document.createElement('p');
+                        p.textContent = pText.trim();
+                        articleContainer.appendChild(p);
+                    }
+                });
+            } else {
+                articleContainer.innerHTML = '<p>No article text provided.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Strategic Roadmap for the Agentic Enterprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: This infographic is designed as a top-down strategic guide. It begins with the core investment principle (the 10-20-70 rule) to frame the entire journey. It then presents a four-phase roadmap as the central narrative flow. Each subsequent section—Pilot Selection, Readiness Assessment, and KPI Dashboard—is a practical deep-dive into a key part of that roadmap. This structure transforms a dense report into an actionable, visual playbook for executives. -->
+    <!-- Visualization & Content Choices: 1. 10-20-70 Rule (Goal: Inform): Three large "Single Big Number" cards are used for maximum impact. 2. Strategic Roadmap (Goal: Organize): A horizontal flowchart built with HTML/CSS clearly visualizes the four-phase process. 3. Pilot Prioritization Matrix (Goal: Compare): A 2x2 grid with distinct colors makes the strategic choices immediately understandable. 4. KPI Dashboard (Goal: Compare/Inform): A Chart.js Donut chart is used to visually represent the different categories of KPIs, providing a balanced view of how success should be measured. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF9F0; /* Light Cream */
+            color: #333333;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 400px;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #FF4E50, #F9D423);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .flow-step {
+            background-color: #ffffff;
+            border: 2px solid #FFC947; /* Gold */
+            color: #1E293B;
+            padding: 1rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .flow-arrow {
+            font-size: 2rem;
+            color: #FFC947; /* Gold */
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+        <section class="text-center mb-24">
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4">
+                <span class="gradient-text">The Agentic Enterprise</span>
+            </h1>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-slate-600">A Strategic Roadmap for Building, Scaling, and Sustaining AI-Powered Value. Success is not a technology problem—it's a strategic transformation.</p>
+        </section>
+
+        <section class="mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">The "10-20-70" Rule for AI Success</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-slate-600 mb-12">Analysis of over 1,000 AI programs reveals a critical insight: where you focus your investment and effort determines your success. The technology itself is only a small part of the equation.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="stat-card text-center">
+                    <div class="text-7xl font-extrabold text-[#FF4E50]">10%</div>
+                    <h3 class="text-2xl font-bold mt-2">Algorithms & Models</h3>
+                    <p class="text-slate-500 mt-2">The AI models and algorithms being used.</p>
+                </div>
+                <div class="stat-card text-center">
+                    <div class="text-7xl font-extrabold text-[#F9D423]">20%</div>
+                    <h3 class="text-2xl font-bold mt-2">Technology & Data</h3>
+                    <p class="text-slate-500 mt-2">The hardware, software, and data pipelines that support the AI.</p>
+                </div>
+                <div class="stat-card text-center">
+                    <div class="text-7xl font-extrabold text-[#007A7A]">70%</div>
+                    <h3 class="text-2xl font-bold mt-2">People & Process</h3>
+                    <p class="text-slate-500 mt-2">The organizational change, reskilling, process reengineering, and governance.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">The Four-Phase Strategic Roadmap</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-slate-600 mb-16">A successful agentic transformation is an evolutionary journey. This disciplined, four-phase approach ensures you build capabilities, manage risk, and deliver sustainable value at every step.</p>
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                <div class="flow-step">1. Charting the Course</div>
+                <div class="flow-arrow">&rarr;</div>
+                <div class="flow-step">2. Building the Engine</div>
+                <div class="flow-arrow">&rarr;</div>
+                <div class="flow-step">3. Achieving Scale</div>
+                <div class="flow-arrow">&rarr;</div>
+                <div class="flow-step">4. Sustaining the Journey</div>
+            </div>
+        </section>
+
+        <section class="mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Prioritizing Your First Move: The Pilot Selection Matrix</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-slate-600 mb-16">The selection of initial pilot projects is a critical strategic decision. The goal is to find "Quick Wins" that deliver tangible value, build momentum, and serve as powerful internal success stories. Use this matrix to classify potential projects.</p>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-1">
+                <div class="bg-green-100 p-6 border-4 border-white rounded-tl-2xl">
+                    <h4 class="font-bold text-xl text-green-800">🚀 Quick Wins (Prioritize Now)</h4>
+                    <p class="text-green-700 mt-2">High Impact, High Feasibility, Low Effort. The ideal starting point. Delivers measurable value quickly, builds momentum, and minimizes risk.</p>
+                </div>
+                <div class="bg-blue-100 p-6 border-4 border-white rounded-tr-2xl">
+                    <h4 class="font-bold text-xl text-blue-800">🔭 Strategic Bets</h4>
+                    <p class="text-blue-700 mt-2">High Impact, Low Feasibility/High Effort. Transformative potential but requires significant investment. Plan for the future, not for initial pilots.</p>
+                </div>
+                <div class="bg-yellow-100 p-6 border-4 border-white rounded-bl-2xl">
+                    <h4 class="font-bold text-xl text-yellow-800">🌱 Incremental Gains</h4>
+                    <p class="text-yellow-700 mt-2">Low Impact, High Feasibility, Low Effort. Easy to implement but won't move the needle strategically. Useful for training or small-scale experimentation.</p>
+                </div>
+                <div class="bg-red-100 p-6 border-4 border-white rounded-br-2xl">
+                    <h4 class="font-bold text-xl text-red-800">❌ Avoid for Now</h4>
+                    <p class="text-red-700 mt-2">Low Impact, Low Feasibility/High Effort. High cost for little return. These projects drain resources and morale.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">Measuring Success: A Multi-Dimensional KPI Dashboard</h2>
+            <p class="max-w-4xl mx-auto text-center text-lg text-slate-600 mb-12">To demonstrate value and guide continuous improvement, organizations must track a balanced set of KPIs. Success is not just about financial return; it's a holistic measure of efficiency, user experience, and innovation capacity.</p>
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">The Four Pillars of Value</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-center"><span class="w-4 h-4 rounded-full bg-[#FF4E50] mr-3"></span><span class="font-semibold">Financial Impact</span></li>
+                            <li class="flex items-center"><span class="w-4 h-4 rounded-full bg-[#F9D423] mr-3"></span><span class="font-semibold">Operational Efficiency</span></li>
+                            <li class="flex items-center"><span class="w-4 h-4 rounded-full bg-[#007A7A] mr-3"></span><span class="font-semibold">Customer & User Experience</span></li>
+                            <li class="flex items-center"><span class="w-4 h-4 rounded-full bg-[#00A6FB] mr-3"></span><span class="font-semibold">Innovation & Agility</span></li>
+                        </ul>
+                        <p class="mt-6 text-slate-600">A balanced approach ensures that while cost savings are tracked, the equally important gains in customer satisfaction, speed to market, and employee productivity are not overlooked.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="kpiChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const kpiData = {
+            labels: [
+                'Financial Impact',
+                'Operational Efficiency',
+                'Customer & User Experience',
+                'Innovation & Agility'
+            ],
+            datasets: [{
+                label: 'Focus of KPIs',
+                data: [25, 35, 25, 15],
+                backgroundColor: [
+                    '#FF4E50', // Coral Red
+                    '#F9D423', // Bright Yellow
+                    '#007A7A', // Teal
+                    '#00A6FB'  // Bright Blue
+                ],
+                borderColor: '#FFF9F0',
+                borderWidth: 4,
+                hoverOffset: 8
+            }]
+        };
+
+        const kpiConfig = {
+            type: 'doughnut',
+            data: kpiData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 14,
+                                weight: '500'
+                            },
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            },
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        },
+                        backgroundColor: '#333333',
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 12 },
+                        padding: 12,
+                        cornerRadius: 8,
+                    }
+                }
+            }
+        };
+
+        window.addEventListener('load', () => {
+            const kpiChart = new Chart(
+                document.getElementById('kpiChart'),
+                kpiConfig
+            );
+        });
+    </script>
+</body>
+</html>

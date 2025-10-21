@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 10 Days of Ramlila</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The application is designed as a vertical, single-page timeline to guide users through the chronological narrative of Ramlila's final 10 days. This structure is the most intuitive for storytelling, allowing users to scroll through the events in order. A sticky side navigation bar is included for non-linear exploration, enabling users to jump directly to any specific day. This dual-navigation approach supports both guided discovery and specific information retrieval, making the complex story easy to follow and reference. -->
+    <!-- Visualization & Content Choices: The primary presentation method is structured textual content, organized into thematic cards for each day to enhance readability. Report Info: Events of each day -> Goal: Inform -> Presentation: Themed text sections with clear headings -> Interaction: Scrolling and direct navigation via side-menu. For the final day, a symbolic visualization is used. Report Info: Victory of Good over Evil -> Goal: Symbolize Climax -> Viz: Donut Chart -> Interaction: Hover for tooltip -> Justification: A simple, impactful visual to conclude the narrative, representing the triumph of Dharma. -> Library: Chart.js. This confirms NO SVG/Mermaid is used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF5;
+            color: #4A2E2A;
+        }
+        .nav-link.active {
+            background-color: #FFA726;
+            color: #FFFFFF;
+            font-weight: 700;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 300px;
+            width: 100%;
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body class="bg-stone-50">
+
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-orange-600">The Epic 10 Days of Ramlila</h1>
+            <p class="mt-4 text-lg text-stone-700 max-w-3xl mx-auto">
+                Explore the dramatic culmination of the Ramayana, presented day-by-day as traditionally enacted in Ramlila. This interactive guide walks you through the final ten days of the epic battle between the forces of good, led by Lord Rama, and evil, embodied by the demon king Ravana. Scroll to follow the story or use the navigation to jump to a specific day's events.
+            </p>
+        </header>
+
+        <div class="flex flex-col md:flex-row gap-8">
+            <nav id="timeline-nav" class="md:sticky md:top-8 md:w-1/4 h-full">
+                <ul class="flex md:flex-col flex-wrap gap-2">
+                    <!-- Navigation links will be inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <main id="timeline-content" class="w-full md:w-3/4">
+                <!-- Day sections will be inserted here by JavaScript -->
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const ramlilaData = [
+            {
+                day: 1,
+                title: "The Spark of Conflict",
+                summary: "The story begins with Ravana's sister, Shurpanakha, attempting to seduce Rama and Lakshmana. When rejected, she tries to harm Sita and is punished by Lakshmana, who cuts off her nose and ears. Enraged and humiliated, she flies to Lanka to incite her brother Ravana, exaggerating the beauty of Sita and demanding vengeance.",
+                key_moment: "Shurpanakha's plea to Ravana sets the stage for the entire conflict, fueling his arrogance and desire."
+            },
+            {
+                day: 2,
+                title: "The First Retaliation",
+                summary: "Furious at his sister's disfigurement, Ravana dispatches his fiercest demon generals, Khara and Dushana, along with an army of 14,000 rakshasas, to annihilate Rama and Lakshmana. In a display of divine prowess, Rama single-handedly defeats and eliminates the entire army, including the two formidable demon brothers, demonstrating his power and righteousness.",
+                key_moment: "Rama's solitary victory against a massive army showcases his divine strength and establishes the stakes of the coming war."
+            },
+            {
+                day: 3,
+                title: "The Abduction of Sita",
+                summary: "Devastated by the news of his army's destruction, Ravana devises a deceitful plan. He enlists the help of the demon Maricha, who transforms into a magical golden deer to lure Rama away from their ashram. While Rama is in pursuit, Ravana, disguised as a sage, abducts Sita and carries her away to his kingdom of Lanka in his flying chariot, the Pushpaka Vimana.",
+                key_moment: "Sita's abduction is the pivotal event of the Ramayana, triggering Rama's quest and the great war for her rescue."
+            },
+            {
+                day: 4,
+                title: "The Search and an Alliance",
+                summary: "Rama and Lakshmana, heartbroken, begin their desperate search for Sita. Their journey leads them to the monkey kingdom of Kishkindha. Here, they meet Hanuman, the devoted disciple of Sugriva, the exiled monkey king. Rama helps Sugriva defeat his tyrannical brother Vali and regain his kingdom. In return, Sugriva pledges his entire Vanara (monkey) army to aid Rama in his search for Sita.",
+                key_moment: "The alliance with Sugriva provides Rama with the crucial army he needs to confront Ravana's might."
+            },
+            {
+                day: 5,
+                title: "Hanuman's Leap of Faith",
+                summary: "With the Vanara army searching in all directions, the great Hanuman is chosen for the most difficult task: to cross the southern ocean to Lanka. Taking a monstrous leap, he flies across the sea. In Lanka, he finds Sita in the Ashoka Grove, offers her Rama's ring as a sign of hope, and reassures her of her impending rescue. Before leaving, he sets a large part of Lanka on fire to deliver a message of warning to Ravana.",
+                key_moment: "Hanuman's courage and devotion in finding Sita and terrorizing Lanka single-handedly revitalizes the mission."
+            },
+            {
+                day: 6,
+                title: "The Righteous Defection",
+                summary: "After Hanuman's return, Rama's army marches to the southern shore. In Lanka, Ravana's righteous younger brother, Vibhishana, advises him to return Sita and avoid war. Scorned and insulted by Ravana for his counsel, Vibhishana abandons Lanka and seeks refuge with Rama. Rama accepts him into his camp, gaining a valuable ally who knows all of Ravana's secrets.",
+                key_moment: "Vibhishana's defection is a moral victory for Rama, symbolizing that righteousness transcends loyalty to family."
+            },
+            {
+                day: 7,
+                title: "Awakening the Giant",
+                summary: "As the battle rages, the rakshasa army suffers heavy losses. In desperation, Ravana orders the awakening of his colossal brother, Kumbhakarna. Cursed to sleep for six months at a time, Kumbhakarna is roused with great difficulty. A giant of unimaginable size and strength, he wreaks havoc on the Vanara army before being slain by Rama in a tremendous battle.",
+                key_moment: "The fall of the seemingly invincible Kumbhakarna is a massive blow to the morale of Ravana's forces."
+            },
+            {
+                day: 8,
+                title: "The Serpent's Arrow",
+                summary: "Ravana's most powerful son, Indrajit (also known as Meghanada), enters the battlefield. A master of illusion and celestial weapons, he engages Lakshmana in a fierce duel. Indrajit uses his divine weapon, the Shakti, which grievously wounds Lakshmana, leaving him near death. The battle halts as Hanuman is dispatched to the Himalayas to fetch the life-saving Sanjeevani herb.",
+                key_moment: "Lakshmana's near-fatal injury brings a moment of despair and showcases the immense power of Indrajit."
+            },
+            {
+                day: 9,
+                title: "The Fall of Indrajit",
+                summary: "After being revived by the magical herb, a reinvigorated Lakshmana seeks out Indrajit to finish their duel. Guided by Vibhishana, Lakshmana disrupts a sacred ritual that would have made Indrajit invincible. In the ensuing cataclysmic battle, relying on pure skill and righteousness, Lakshmana slays the mighty Indrajit, shattering Ravana's last great hope.",
+                key_moment: "Indrajit's death signifies the turning of the tide, leaving Ravana isolated and vulnerable for the final confrontation."
+            },
+            {
+                day: 10,
+                title: "Triumph of Good Over Evil",
+                summary: "On the final day, known as Vijayadashami or Dussehra, a grief-stricken but furious Ravana marches onto the battlefield himself. A legendary, final battle ensues between Rama and the ten-headed demon king. Rama, using the divine Brahmastra weapon given to him by the sage Agastya, pierces Ravana's heart, his only vulnerable point, and vanquishes him. The war ends, and Dharma (righteousness) is restored.",
+                key_moment: "Rama's victory over Ravana is the ultimate triumph of good over evil, light over darkness, and knowledge over ignorance."
+            }
+        ];
+
+        const navContainer = document.getElementById('timeline-nav');
+        const contentContainer = document.getElementById('timeline-content');
+
+        ramlilaData.forEach(dayData => {
+            const navLink = document.createElement('a');
+            navLink.href = `#day-${dayData.day}`;
+            navLink.textContent = `Day ${dayData.day}`;
+            navLink.className = 'nav-link block w-full md:w-auto text-center md:text-left px-4 py-2 rounded-md transition-colors duration-300 hover:bg-orange-200 hover:text-orange-800';
+            navLink.dataset.day = dayData.day;
+            
+            navLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector(navLink.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+            navContainer.querySelector('ul').appendChild(navLink);
+
+            const section = document.createElement('section');
+            section.id = `day-${dayData.day}`;
+            section.className = 'day-section mb-16 p-6 bg-white rounded-xl shadow-md transition-all duration-300 transform';
+            section.dataset.day = dayData.day;
+            
+            let contentHtml = `
+                <h2 class="text-3xl font-bold text-orange-600 mb-2">${dayData.title}</h2>
+                <span class="block text-sm font-semibold text-stone-500 mb-4">DAY ${dayData.day}</span>
+                <p class="text-stone-700 mb-4 leading-relaxed">${dayData.summary}</p>
+                <div class="p-4 bg-orange-50 border-l-4 border-orange-500 rounded-r-lg">
+                    <h4 class="font-bold text-orange-800">Key Moment</h4>
+                    <p class="text-orange-700 italic">${dayData.key_moment}</p>
+                </div>
+            `;
+            
+            if (dayData.day === 10) {
+                contentHtml += `
+                    <div class="mt-8 text-center">
+                        <h3 class="text-2xl font-bold text-stone-800">The Restoration of Dharma</h3>
+                        <p class="text-stone-600 mt-2 mb-4 max-w-lg mx-auto">This final victory is not just the end of a war, but a powerful symbol of righteousness prevailing. The chart below represents this absolute triumph.</p>
+                        <div class="chart-container">
+                            <canvas id="dharmaChart"></canvas>
+                        </div>
+                    </div>
+                `;
+            }
+
+            section.innerHTML = contentHtml;
+            contentContainer.appendChild(section);
+        });
+        
+        const dharmaChartCtx = document.getElementById('dharmaChart');
+        if (dharmaChartCtx) {
+            new Chart(dharmaChartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Triumph of Dharma (Good)', 'Defeat of Adharma (Evil)'],
+                    datasets: [{
+                        data: [100, 0],
+                        backgroundColor: [
+                            '#F97316', 
+                            '#4A2E2A'
+                        ],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 4,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                             labels: {
+                                color: '#4A2E2A',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        const sections = document.querySelectorAll('.day-section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5 
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const day = entry.target.dataset.day;
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.dataset.day === day);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ram Navami Information</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a linear narrative that guides the user from the 'why' to the 'how' of the festival. It begins with a hook (The Divine Purpose), explaining the cosmic need for Rama's birth. It then moves to the core story (A King's Prayer), detailing the ritual genesis. The next section (The Ideal of Dharma) visualizes Rama's key virtues. This is followed by a breakdown of devotional practices (The Path of Devotion). The largest section (A Cultural Tapestry) uses a comparative bar chart to visualize the diversity of celebrations across India. Finally, it concludes with the culinary traditions (Flavors of Faith). This structure was chosen to build understanding layer by layer, making the rich, multi-faceted report accessible in a single, scrollable narrative. -->
+    <!-- Visualization & Content Choices: 1. The distribution of divine payasam. Goal: Organize. Viz: Styled HTML/CSS flow diagram. Justification: A flowchart clearly shows the sequence and division of the sacred offering, which is a key part of the birth narrative. Method: Tailwind CSS. NO SVG/Mermaid. 2. Rama's Virtues. Goal: Inform/Compare. Viz: Donut Charts. Justification: Donut charts provide a visually engaging way to represent abstract concepts like virtues, with each chart highlighting a core ideal. Library: Chart.js. 3. Regional Celebrations. Goal: Compare. Viz: Horizontal Bar Chart. Justification: A bar chart is the most effective way to compare the focus of rituals across multiple regions, allowing for easy visual ranking of different celebration styles (e.g., processions vs. temple worship). Library: Chart.js. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F0F4F8; /* Light Blue-Gray */
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .horizontal-chart-container {
+             position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 500px;
+            max-height: 600px;
+        }
+    </style>
+</head>
+<body class="text-[#1A202C]">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center my-12">
+            <h1 class="text-4xl md:text-6xl font-bold text-[#FF495C]">Ram Navami</h1>
+            <p class="text-xl md:text-2xl mt-4 text-[#3490DC]">The Divine Advent: A Visual Journey</p>
+        </header>
+
+        <section class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-4 text-[#FF495C]">The Divine Purpose</h2>
+            <p class="text-center max-w-3xl mx-auto mb-8 text-[#4A5568]">
+                The story of Ram Navami begins with a cosmic crisis. The powerful demon king Ravana, protected by a boon of near-invincibility, had thrown the world into chaos. His tyranny disrupted the cosmic order, or *dharma*. This section explains the celestial plea that set the stage for Lord Vishnu's incarnation as Rama.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="text-center">
+                    <div class="text-6xl mb-4">👿</div>
+                    <h3 class="text-2xl font-semibold text-[#3490DC]">Ravana's Reign of Terror</h3>
+                    <p class="mt-2 text-[#4A5568]">Granted immunity from gods and celestial beings, Ravana's arrogance grew unchecked. He tormented sages and conquered kingdoms, forcing the gods and Mother Earth to seek divine intervention.</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-6xl mb-4">🙏</div>
+                    <h3 class="text-2xl font-semibold text-[#3490DC]">A Celestial Plea</h3>
+                    <p class="mt-2 text-[#4A5568]">In desperation, the celestial beings appealed to Lord Vishnu, the preserver. He promised to be born as a mortal man—the one being Ravana had overlooked in his quest for power—to restore balance.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-4 text-[#FF495C]">A King's Prayer, A Divine Birth</h2>
+            <p class="text-center max-w-3xl mx-auto mb-8 text-[#4A5568]">
+                On Earth, King Dasharatha of Ayodhya was childless. To seek an heir, he performed the sacred *Putrakameshti Yajna*, a fire sacrifice. This ritual was the earthly mechanism for the divine birth, culminating in a miraculous offering that led to the birth of Rama and his brothers.
+            </p>
+            <div class="flex flex-col items-center">
+                <div class="text-center bg-[#F0F4F8] p-4 rounded-lg">
+                    <div class="text-5xl">🔥</div>
+                    <p class="font-semibold mt-2">Divine figure emerges from the Yajna fire</p>
+                </div>
+                <div class="w-0.5 h-8 bg-[#3490DC] my-2"></div>
+                <div class="text-center bg-[#F0F4F8] p-4 rounded-lg">
+                     <div class="text-5xl">🥣</div>
+                    <p class="font-semibold mt-2">Offers a vessel of divine *payasam* (pudding)</p>
+                </div>
+                <div class="w-0.5 h-8 bg-[#3490DC] my-2"></div>
+                <div class="w-full max-w-2xl p-4 border-2 border-dashed border-[#3490DC] rounded-lg">
+                    <p class="text-center font-bold text-[#3490DC] mb-4">King Dasharatha Distributes the Offering</p>
+                    <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4">
+                        <div class="text-center">
+                            <p class="font-semibold">Queen Kausalya</p>
+                            <p class="text-sm text-[#4A5568]">(1/2 share)</p>
+                            <div class="text-2xl mt-1">👑</div>
+                            <p class="font-bold text-[#FF495C] mt-1">Birth of Rama</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-semibold">Queen Kaikeyi</p>
+                            <p class="text-sm text-[#4A5568]">(1/4 share)</p>
+                            <div class="text-2xl mt-1">👑</div>
+                            <p class="font-bold text-[#FF495C] mt-1">Birth of Bharata</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-semibold">Queen Sumitra</p>
+                            <p class="text-sm text-[#4A5568]">(Two 1/8 shares)</p>
+                            <div class="text-2xl mt-1">👑</div>
+                            <p class="font-bold text-[#FF495C] mt-1">Birth of Lakshmana & Shatrughna</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-4 text-[#FF495C]">The Ideal of Dharma</h2>
+            <p class="text-center max-w-3xl mx-auto mb-8 text-[#4A5568]">
+                Ram Navami celebrates the virtues Lord Rama embodied. Known as *Maryada Purushottam* (the ideal man), his life is a guide to righteous conduct. These visualizations represent the core principles of his character, which form the moral foundation of the festival.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="chart-container h-64 max-h-64">
+                        <canvas id="dharmaChart"></canvas>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mt-4 text-[#3490DC]">Commitment to Duty</h3>
+                    <p class="text-center text-sm mt-1 text-[#4A5568]">Upholding righteousness above personal interest, exemplified by his 14-year exile.</p>
+                </div>
+                <div>
+                    <div class="chart-container h-64 max-h-64">
+                        <canvas id="virtueChart"></canvas>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mt-4 text-[#3490DC]">Exemplary Virtues</h3>
+                    <p class="text-center text-sm mt-1 text-[#4A5568]">A perfect blend of compassion, courage, integrity, and patience.</p>
+                </div>
+                <div>
+                    <div class="chart-container h-64 max-h-64">
+                        <canvas id="roleChart"></canvas>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mt-4 text-[#3490DC]">Ideal Social Roles</h3>
+                    <p class="text-center text-sm mt-1 text-[#4A5568]">The perfect son, brother, husband, and king, embodying selfless governance.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-4 text-[#FF495C]">A Cultural Tapestry of Celebration</h2>
+            <p class="text-center max-w-3xl mx-auto mb-8 text-[#4A5568]">
+                While Ayodhya is the epicenter, Ram Navami is celebrated with unique traditions across India. This chart compares the primary focus of celebrations in key regions, highlighting the festival's remarkable cultural diversity and adaptability.
+            </p>
+            <div class="horizontal-chart-container">
+                <canvas id="regionalChart"></canvas>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-4 text-[#FF495C]">Flavors of Faith</h2>
+            <p class="text-center max-w-3xl mx-auto mb-8 text-[#4A5568]">
+                The food of Ram Navami reflects the festival's principles of purity and discipline. Based on a *sattvic* diet, the cuisine is vegetarian and excludes stimulating ingredients like onion and garlic to promote mental clarity.
+            </p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-[#F0F4F8] p-4 rounded-lg text-center">
+                    <div class="text-4xl">🍛</div>
+                    <h3 class="font-semibold mt-2 text-[#3490DC]">North India</h3>
+                    <p class="text-sm text-[#4A5568]">Sookhe Kale Chane, Poori, and Sooji Halwa.</p>
+                </div>
+                <div class="bg-[#F0F4F8] p-4 rounded-lg text-center">
+                    <div class="text-4xl">🍹</div>
+                    <h3 class="font-semibold mt-2 text-[#3490DC]">South India</h3>
+                    <p class="text-sm text-[#4A5568]">Panakam (jaggery drink) & Vadapappu (dal salad).</p>
+                </div>
+                <div class="bg-[#F0F4F8] p-4 rounded-lg text-center">
+                    <div class="text-4xl">🥔</div>
+                    <h3 class="font-semibold mt-2 text-[#3490DC]">Fasting Foods</h3>
+                    <p class="text-sm text-[#4A5568]">Dishes from Sabudana (tapioca) & Kuttu (buckwheat).</p>
+                </div>
+                <div class="bg-[#F0F4F8] p-4 rounded-lg text-center">
+                    <div class="text-4xl">🍮</div>
+                    <h3 class="font-semibold mt-2 text-[#3490DC]">West India</h3>
+                    <p class="text-sm text-[#4A5568]">Shrikhand (sweet yogurt) & Puran Poli.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const wrapLabel = (label) => {
+            const maxLength = 16;
+            if (label.length <= maxLength) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        };
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+
+        const donutChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: { title: tooltipTitleCallback }
+                }
+            }
+        };
+
+        new Chart(document.getElementById('dharmaChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Honor Promise', 'Sacrifice Throne', 'Righteous Conduct'],
+                datasets: [{
+                    data: [40, 35, 25],
+                    backgroundColor: ['#3490DC', '#6CB2EB', '#A4CFF4'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 4
+                }]
+            },
+            options: donutChartOptions
+        });
+
+        new Chart(document.getElementById('virtueChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Compassion', 'Courage', 'Integrity'],
+                datasets: [{
+                    data: [33, 33, 34],
+                    backgroundColor: ['#FF495C', '#FF8A80', '#FFC2B2'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 4
+                }]
+            },
+            options: donutChartOptions
+        });
+
+        new Chart(document.getElementById('roleChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Perfect Son', 'Loyal Brother', 'Ideal King'],
+                datasets: [{
+                    data: [30, 30, 40],
+                    backgroundColor: ['#38C172', '#6EE7B7', '#A7F3D0'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 4
+                }]
+            },
+            options: donutChartOptions
+        });
+
+        const regionalLabels = [
+            'Uttar Pradesh', 
+            wrapLabel('Telangana & Andhra Pradesh'), 
+            'Tamil Nadu', 
+            'Karnataka', 
+            'Maharashtra'
+        ];
+
+        new Chart(document.getElementById('regionalChart'), {
+            type: 'bar',
+            data: {
+                labels: regionalLabels,
+                datasets: [
+                    {
+                        label: 'Processions & Public Spectacle',
+                        data: [9, 7, 3, 4, 2],
+                        backgroundColor: '#FF8A80',
+                    },
+                    {
+                        label: 'Temple Rituals & Worship',
+                        data: [8, 9, 8, 7, 8],
+                        backgroundColor: '#6CB2EB',
+                    },
+                    {
+                        label: 'Music & Cultural Festivals',
+                        data: [5, 6, 7, 9, 6],
+                        backgroundColor: '#6EE7B7',
+                    }
+                ]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: { color: '#4A5568' },
+                        grid: { color: '#E2E8F0' }
+                    },
+                    y: {
+                        stacked: true,
+                        ticks: { color: '#1A202C' },
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: '#1A202C' }
+                    },
+                    tooltip: {
+                        callbacks: { title: tooltipTitleCallback }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

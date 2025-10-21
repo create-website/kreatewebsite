@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Agentic AI Shift</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Narrative & Structure Plan: The infographic tells a linear story designed for progressive understanding. It begins with a high-level hook defining the core conflict (Agent vs. Agentic). It then delves into the 'building blocks' (Classical Agents) before presenting the main thesis: the five core distinctions. Next, it reveals the 'how' with a flowchart of agentic architecture. This is followed by the 'why it matters' section, showcasing explosive market growth and economic impact through hard data. The story concludes by looking forward at the 'Human-Agent Frontier' and the importance of governance, providing a complete narrative from concept to real-world implication. -->
+    <!-- Visualization Choices:
+        - Market Growth: Data -> Market projections 2024-2030. Goal -> Change. Viz -> Line Chart (Chart.js/Canvas). Justification -> Ideal for showing trends over time. NO SVG.
+        - Agentic Architecture: Data -> System components (Orchestrator, Plan, Act, Memory). Goal -> Organize. Viz -> Flowchart (HTML/CSS). Justification -> Best way to show a cyclical process. NO SVG/Mermaid.
+        - Classical Agent Types: Data -> The 5 classical agent types. Goal -> Organize. Viz -> Styled HTML list. Justification -> Clearly presents hierarchical/progressive concepts without needing a complex diagram. NO SVG.
+        - Core Distinctions: Data -> Side-by-side comparison. Goal -> Compare. Viz -> Two-column styled HTML grid. Justification -> Direct comparison is most effective for highlighting differences. NO SVG.
+        - Economic/Adoption Stats: Data -> Large single numbers (e.g., $15.7T, 80%). Goal -> Inform. Viz -> Big Number Typography. Justification -> High-impact for key metrics. NO SVG.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flowchart-node {
+            border: 2px solid #3E92CC;
+            background-color: #0A2463;
+            color: #FFFFFF;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .flowchart-arrow {
+            position: relative;
+            width: 100%;
+            height: 2px;
+            background-color: #3E92CC;
+        }
+        .flowchart-arrow::after {
+            content: '';
+            position: absolute;
+            right: -1px;
+            top: -5px;
+            border-style: solid;
+            border-width: 6px 0 6px 12px;
+            border-color: transparent transparent transparent #3E92CC;
+        }
+        .flowchart-arrow-vertical {
+            position: relative;
+            width: 2px;
+            height: 40px;
+            background-color: #3E92CC;
+            margin: 0 auto;
+        }
+        .flowchart-arrow-vertical::after {
+             content: '';
+            position: absolute;
+            bottom: -1px;
+            left: -5px;
+            border-style: solid;
+            border-width: 12px 6px 0 6px;
+            border-color: #3E92CC transparent transparent transparent;
+        }
+    </style>
+</head>
+<body class="bg-[#051433] text-gray-200">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center py-12">
+            <h1 class="text-4xl md:text-6xl font-black text-white uppercase tracking-wider">The Agentic Shift</h1>
+            <p class="mt-4 text-xl md:text-2xl text-[#D8DDEF] max-w-4xl mx-auto">From Task-Oriented Bots to Goal-Driven Autonomous Systems</p>
+            <p class="mt-6 max-w-3xl mx-auto text-gray-400">
+                The AI landscape is undergoing a monumental change. We're moving beyond simple **AI Agents** that perform defined tasks, to sophisticated **Agentic AI** systems that can autonomously plan, reason, and achieve complex, high-level goals. This is the evolution from a specialized tool to an autonomous manager.
+            </p>
+        </header>
+
+        <section class="my-16">
+            <h2 class="text-3xl font-bold text-center text-white mb-10">The Core Distinction: Building Blocks vs. System Architecture</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                <div class="bg-[#0A2463] p-8 rounded-xl shadow-2xl border border-blue-800">
+                    <h3 class="text-2xl font-bold text-[#3E92CC] mb-4">AI AGENT</h3>
+                    <p class="text-5xl mb-4">🤖</p>
+                    <p class="text-lg font-semibold mb-2">The Specialized Tool</p>
+                    <p class="text-gray-300">A discrete, reactive component that operates within predefined rules to complete a specific task. It follows a plan.</p>
+                </div>
+                <div class="bg-[#0A2463] p-8 rounded-xl shadow-2xl border border-blue-800">
+                    <h3 class="text-2xl font-bold text-[#3E92CC] mb-4">AGENTIC AI</h3>
+                    <p class="text-5xl mb-4">🧠</p>
+                    <p class="text-lg font-semibold mb-2">The Autonomous System</p>
+                    <p class="text-gray-300">A proactive system that orchestrates multiple tools and agents to achieve a broad goal. It creates the plan.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16">
+            <h2 class="text-3xl font-bold text-center text-white mb-12">Anatomy of an Agentic System</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-400 mb-12">
+                Agentic behavior isn't magic; it emerges from a well-defined architecture. A continuous loop of planning, acting, and reflecting, powered by a reasoning engine and memory, enables true autonomy.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-5 items-center gap-y-4 md:gap-x-4">
+                <div class="flowchart-node md:col-span-2">
+                    <h4 class="font-bold">1. Planning & Reflection</h4>
+                    <p class="text-sm text-gray-300">LLM creates/adapts a step-by-step plan to achieve the goal.</p>
+                </div>
+                <div class="items-center justify-center hidden md:flex">
+                    <div class="flowchart-arrow"></div>
+                </div>
+                <div class="flex md:hidden justify-center my-2"><div class="flowchart-arrow-vertical"></div></div>
+                <div class="flowchart-node md:col-span-2">
+                    <h4 class="font-bold">2. Tool Integration</h4>
+                    <p class="text-sm text-gray-300">Orchestrator calls external tools (APIs, web search, databases) to act.</p>
+                </div>
+                
+                <div class="md:col-span-2"></div>
+                <div class="flex md:hidden justify-center my-2"><div class="flowchart-arrow-vertical"></div></div>
+                <div class="items-center justify-center hidden md:flex"><div class="w-full h-2 bg-[#3E92CC]"></div></div>
+                <div class="flex md:hidden justify-center my-2"><div class="flowchart-arrow-vertical"></div></div>
+                <div class="md:col-span-2"></div>
+
+                <div class="flowchart-node md:col-span-2 order-last md:order-none">
+                     <h4 class="font-bold">4. Memory Integration</h4>
+                    <p class="text-sm text-gray-300">Results are stored in memory; relevant long-term knowledge is retrieved to inform the next cycle.</p>
+                </div>
+                <div class="items-center justify-center hidden md:flex">
+                   <div class="flowchart-arrow" style="transform: rotate(180deg);"></div>
+                </div>
+                <div class="flex md:hidden justify-center my-2"><div class="flowchart-arrow-vertical"></div></div>
+                 <div class="flowchart-node md:col-span-2">
+                    <h4 class="font-bold">3. World Interaction</h4>
+                    <p class="text-sm text-gray-300">The action is executed, and the outcome/data is returned to the system.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16">
+            <h2 class="text-3xl font-bold text-center text-white mb-10">Explosive Market Growth & Economic Impact</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-400 mb-12">
+                The shift to agentic AI is not just academic. It's fueling a new wave of economic activity, with projections indicating a massive expansion in market size and enterprise adoption over the next decade.
+            </p>
+            <div class="bg-[#0A2463] p-4 md:p-8 rounded-xl shadow-2xl border border-blue-800">
+                <div class="chart-container">
+                    <canvas id="marketGrowthChart"></canvas>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 text-center">
+                <div class="bg-[#0A2463] p-6 rounded-xl">
+                    <p class="text-5xl font-black text-[#3E92CC]">33%</p>
+                    <p class="mt-2 text-lg">of enterprise apps will include agentic AI by 2028.</p>
+                    <p class="text-sm text-gray-500">(Source: Gartner)</p>
+                </div>
+                <div class="bg-[#0A2463] p-6 rounded-xl">
+                    <p class="text-5xl font-black text-[#3E92CC]">$15.7T</p>
+                    <p class="mt-2 text-lg">potential contribution to the global economy by 2030.</p>
+                    <p class="text-sm text-gray-500">(Source: PwC)</p>
+                </div>
+                <div class="bg-[#0A2463] p-6 rounded-xl">
+                    <p class="text-5xl font-black text-[#3E92CC]">80%</p>
+                    <p class="mt-2 text-lg">of common customer issues will be resolved autonomously by 2029.</p>
+                    <p class="text-sm text-gray-500">(Source: Gartner)</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16">
+            <h2 class="text-3xl font-bold text-center text-white mb-12">The Human-Agent Frontier</h2>
+             <p class="text-center max-w-3xl mx-auto text-gray-400 mb-12">
+                The future isn't about replacement, but collaboration. Humans are transitioning to roles as strategists and overseers, combining their creativity and ethical judgment with the speed and scale of AI agents to achieve unprecedented results.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-[#0A2463] p-6 rounded-xl text-center border border-blue-800">
+                    <p class="text-5xl mb-3">🤝</p>
+                    <h4 class="text-xl font-bold text-[#3E92CC]">Human-Agent Teaming</h4>
+                    <p class="mt-2 text-gray-300">Combining human creativity and ethical oversight with AI's speed and data processing power.</p>
+                </div>
+                <div class="bg-[#0A2463] p-6 rounded-xl text-center border border-blue-800">
+                    <p class="text-5xl mb-3">🧑‍💻</p>
+                    <h4 class="text-xl font-bold text-[#3E92CC]">Developer Augmentation</h4>
+                    <p class="mt-2 text-gray-300">AI co-pilots handle boilerplate code, freeing developers for high-level architectural design.</p>
+                </div>
+                 <div class="bg-[#0A2463] p-6 rounded-xl text-center border border-blue-800">
+                    <p class="text-5xl mb-3">📈</p>
+                    <h4 class="text-xl font-bold text-[#3E92CC]">Professional Services</h4>
+                    <p class="mt-2 text-gray-300">Agents draft contracts and initial analyses, allowing human experts to focus on strategy.</p>
+                </div>
+                 <div class="bg-[#0A2463] p-6 rounded-xl text-center border border-blue-800">
+                    <p class="text-5xl mb-3">🏛️</p>
+                    <h4 class="text-xl font-bold text-[#3E92CC]">Governance is Critical</h4>
+                    <p class="mt-2 text-gray-300">Frameworks like the EU AI Act and NIST RMF are essential for managing risks and ensuring accountability.</p>
+                </div>
+            </div>
+        </section>
+
+<!--
+
+        <footer class="text-center text-gray-500 pt-12 mt-12 border-t border-gray-700">
+            <p>Data synthesized from the "Agentic AI vs. AI Agents" technical report.</p>
+            <p>Infographic created for illustrative purposes.</p>
+        </footer>
+    -->
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const wrapLabel = (label) => {
+                if (label.length <= 16) {
+                    return label;
+                }
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + word).length > 16) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const chartTooltipConfig = {
+                plugins: {
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#FFFFFF',
+                        bodyColor: '#DDDDDD',
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            }
+                        }
+                    }
+                }
+            };
+            
+            const marketGrowthCtx = document.getElementById('marketGrowthChart').getContext('2d');
+            const marketGrowthData = {
+                labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+                datasets: [{
+                    label: 'AI Agents Market Size (Billion USD)',
+                    data: [6.5, 10, 15, 22, 31, 41, 52],
+                    borderColor: '#3E92CC',
+                    backgroundColor: 'rgba(62, 146, 204, 0.2)',
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#FFFFFF',
+                    pointBorderColor: '#3E92CC',
+                    pointHoverRadius: 7,
+                    pointHoverBackgroundColor: '#FFFFFF',
+                    pointRadius: 5,
+                }]
+            };
+
+            new Chart(marketGrowthCtx, {
+                type: 'line',
+                data: marketGrowthData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    ...chartTooltipConfig,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(216, 221, 239, 0.1)'
+                            },
+                            ticks: {
+                                color: '#D8DDEF',
+                                callback: function(value) {
+                                    return '$' + value + 'B';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(216, 221, 239, 0.1)'
+                            },
+                            ticks: {
+                                color: '#D8DDEF'
+                            }
+                        }
+                    },
+                    plugins: {
+                        ...chartTooltipConfig.plugins,
+                        legend: {
+                            labels: {
+                                color: '#D8DDEF'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

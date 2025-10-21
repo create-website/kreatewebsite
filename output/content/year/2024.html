@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2024: The Year in Review</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Dusty Blue -->
+    <!-- Application Structure Plan: A thematic, single-page vertical scrolling application. The structure is designed for a narrative journey through the year, starting with a high-level overview and then diving into specific themes: Global Politics, Economy, Culture, and Innovation. This top-down approach is more intuitive for a "year-in-review" than a dashboard, as it guides the user through a story. Navigation is facilitated by a sticky header with smooth-scrolling links, allowing both linear exploration and direct access to topics of interest. Key interactions include hover effects for detail discovery and interactive charts to explore data points, making the consumption of information engaging rather than passive. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Key global events. -> Goal: Inform. -> Viz/Presentation: Card grid. -> Interaction: Hover to highlight. -> Justification: Organizes diverse events into digestible blocks. -> Library/Method: HTML/Tailwind.
+        - Report Info: 2024 stock market performance. -> Goal: Show Change. -> Viz/Presentation: Line Chart. -> Interaction: Hover for tooltips with specific values. -> Justification: Line chart is the clearest way to show trends over time. -> Library/Method: Chart.js (Canvas).
+        - Report Info: Box office performance. -> Goal: Compare. -> Viz/Presentation: Horizontal Bar Chart. -> Interaction: Hover for tooltips with exact revenue. -> Justification: Bar chart excels at comparing magnitudes of discrete items. -> Library/Method: Chart.js (Canvas).
+        - Report Info: Olympic medal distribution. -> Goal: Show Proportions. -> Viz/Presentation: Donut Chart. -> Interaction: Hover for tooltips. -> Justification: Effectively shows part-to-whole relationships for top countries. -> Library/Method: Chart.js (Canvas).
+        - Report Info: Award winners (Oscars/Grammys). -> Goal: Organize/Inform. -> Viz/Presentation: Tabbed content with lists. -> Interaction: Click tabs to switch views. -> Justification: Manages a large amount of related information cleanly without cluttering the page. -> Library/Method: JS-driven HTML/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFDFB;
+            color: #333;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #3b82f6;
+        }
+        .tab-btn.active {
+            border-bottom-color: #3b82f6;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">2024 Review</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#politics" class="nav-link text-gray-600 font-medium">Politics</a>
+                <a href="#economy" class="nav-link text-gray-600 font-medium">Economy</a>
+                <a href="#culture" class="nav-link text-gray-600 font-medium">Culture</a>
+                <a href="#tech" class="nav-link text-gray-600 font-medium">Innovation</a>
+                <a href="#sports" class="nav-link text-gray-600 font-medium">Sports</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-white border border-gray-300 rounded-md p-2">
+                    <option value="#hero">Home</option>
+                    <option value="#politics">Politics</option>
+                    <option value="#economy">Economy</option>
+                    <option value="#culture">Culture</option>
+                    <option value="#tech">Innovation</option>
+                    <option value="#sports">Sports</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="text-center py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-5xl font-extrabold text-gray-900 mb-4">2024: The Year in Review</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    A look back at the defining moments, trends, and breakthroughs of 2024. From pivotal elections and economic shifts to cultural milestones and technological leaps, this is an interactive summary of a year of significant change and progress.
+                </p>
+            </div>
+        </section>
+
+        <section id="politics" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-4xl font-bold text-gray-800">Global Landscape</h3>
+                    <p class="text-md text-gray-500 mt-2 max-w-2xl mx-auto">
+                        The year was marked by major electoral contests and significant geopolitical developments around the world. This section highlights some of the key events that shaped the international political scene.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                        <h4 class="text-xl font-semibold mb-2">🗳️ U.S. Presidential Election</h4>
+                        <p class="text-gray-600">A highly anticipated election saw record voter turnout. The results signaled a shift in the political landscape, with key battleground states playing a decisive role.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                        <h4 class="text-xl font-semibold mb-2">🇪🇺 European Parliament Election</h4>
+                        <p class="text-gray-600">Elections across the EU in June resulted in a notable shift to the right, impacting the bloc's legislative agenda on climate, migration, and economic policy for the next five years.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                        <h4 class="text-xl font-semibold mb-2">🇮🇳 India General Election</h4>
+                        <p class="text-gray-600">The world's largest democratic exercise concluded with Prime Minister Narendra Modi's coalition securing another term, though with a reduced majority, leading to new political dynamics.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                        <h4 class="text-xl font-semibold mb-2">🕊️ Global Peace Initiatives</h4>
+                        <p class="text-gray-600">Several high-level diplomatic talks aimed at resolving ongoing conflicts took place, with mixed results. International focus remained on efforts in Eastern Europe and the Middle East.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                        <h4 class="text-xl font-semibold mb-2">🌍 Climate Policy Summits</h4>
+                        <p class="text-gray-600">Nations convened to assess progress on the Paris Agreement. Debates centered on funding for developing nations and accelerating the transition away from fossil fuels amidst energy security concerns.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                        <h4 class="text-xl font-semibold mb-2">🇬🇧 UK General Election</h4>
+                        <p class="text-gray-600">The United Kingdom held a general election that resulted in a significant change in government, with the Labour Party winning a large majority, ending 14 years of Conservative rule.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="economy" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-4xl font-bold text-gray-800">The Economic Pulse</h3>
+                    <p class="text-md text-gray-500 mt-2 max-w-2xl mx-auto">
+                        Economies globally navigated challenges of inflation and growth. This section visualizes key market trends and provides a snapshot of the financial environment in 2024. Use the chart to explore market performance over the year.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h4 class="text-2xl font-semibold mb-4 text-center">S&P 500 Performance in 2024</h4>
+                    <div class="chart-container">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="culture" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-4xl font-bold text-gray-800">Cultural Canvas</h3>
+                    <p class="text-md text-gray-500 mt-2 max-w-2xl mx-auto">
+                        The world of entertainment delivered blockbuster hits and celebrated artistic excellence. Explore the year's top-grossing films and dive into the major winners from the Academy Awards and the Grammys.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg mb-12">
+                    <h4 class="text-2xl font-semibold mb-4 text-center">Top 5 Box Office Hits of 2024</h4>
+                    <div class="chart-container h-96 md:h-[450px]">
+                        <canvas id="moviesChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="border-b border-gray-200">
+                        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                            <button id="tab-oscars" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 active">
+                                🏆 Oscars
+                            </button>
+                            <button id="tab-grammys" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                🎶 Grammys
+                            </button>
+                        </nav>
+                    </div>
+                    <div id="content-oscars" class="py-6">
+                        <ul class="space-y-4">
+                            <li class="p-4 bg-gray-50 rounded-md"><strong>Best Picture:</strong> "Oppenheimer"</li>
+                            <li class="p-4 bg-gray-50 rounded-md"><strong>Best Director:</strong> Christopher Nolan for "Oppenheimer"</li>
+                            <li class="p-4 bg-gray-50 rounded-md"><strong>Best Actor:</strong> Cillian Murphy for "Oppenheimer"</li>
+                            <li class="p-4 bg-gray-50 rounded-md"><strong>Best Actress:</strong> Emma Stone for "Poor Things"</li>
+                        </ul>
+                    </div>
+                    <div id="content-grammys" class="py-6 hidden">
+                         <ul class="space-y-4">
+                            <li class="p-4 bg-gray-50 rounded-md"><strong>Record of the Year:</strong> "Flowers" by Miley Cyrus</li>
+                            <li class="p-4 bg-gray-50 rounded-md"><strong>Album of the Year:</strong> "Midnights" by Taylor Swift</li>
+                            <li class="p-4 bg-gray-50 rounded-md"><strong>Song of the Year:</strong> "What Was I Made For?" by Billie Eilish O'Connell & Finneas O'Connell</li>
+                             <li class="p-4 bg-gray-50 rounded-md"><strong>Best New Artist:</strong> Victoria Monét</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-4xl font-bold text-gray-800">Innovation & Discovery</h3>
+                    <p class="text-md text-gray-500 mt-2 max-w-2xl mx-auto">
+                        Technological and scientific advancements continued to accelerate, promising to reshape industries and improve lives. This section covers the most impactful breakthroughs of the year.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                        <h4 class="text-xl font-semibold mb-2">🤖 Generative AI Evolution</h4>
+                        <p class="text-gray-600">New, more powerful large language models (LLMs) were released, capable of more complex reasoning, code generation, and multi-modal understanding. AI integration into consumer and enterprise products became mainstream.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                        <h4 class="text-xl font-semibold mb-2">🚀 Advances in Space Exploration</h4>
+                        <p class="text-gray-600">The Artemis program progressed with successful uncrewed tests, paving the way for future lunar missions. Private companies expanded satellite constellations, enhancing global connectivity.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                        <h4 class="text-xl font-semibold mb-2">🧬 CRISPR Gene Editing Therapies</h4>
+                        <p class="text-gray-600">Following initial approvals, the first patients were successfully treated for genetic disorders using CRISPR-based therapies, marking a new era in personalized medicine.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="sports" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-4xl font-bold text-gray-800">The Global Stage: Sports</h3>
+                    <p class="text-md text-gray-500 mt-2 max-w-2xl mx-auto">
+                        The world came together in Paris for the 2024 Summer Olympics, a spectacular display of athletic prowess and international unity. Explore the final medal standings for the top-performing nations.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h4 class="text-2xl font-semibold mb-4 text-center">Paris 2024 Olympics: Top 5 Medal Count</h4>
+                    <div class="chart-container h-80 md:h-96">
+                        <canvas id="olympicsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+<!--
+    <footer class="bg-gray-800 text-white text-center py-6">
+        <p>&copy; 2025 Interactive Summary. All rights reserved.</p>
+        <p class="text-sm text-gray-400">Created to provide an engaging overview of 2024.</p>
+    </footer>
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const marketData = {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'S&P 500 Index',
+                    data: [4845, 4983, 5254, 5035, 5277, 5460, 5480, 5530, 5320, 5100, 5400, 5500],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            };
+
+            const moviesData = {
+                labels: ['Dune: Part Two', 'Inside Out 2', 'Godzilla x Kong', 'Kingdom of the Planet of the Apes', 'Kung Fu Panda 4'],
+                datasets: [{
+                    label: 'Worldwide Box Office (in millions USD)',
+                    data: [711, 940, 570, 397, 549],
+                    backgroundColor: ['#60a5fa', '#3b82f6', '#2563eb', '#1d4ed8', '#1e40af'],
+                    borderColor: '#fff',
+                    borderWidth: 2
+                }]
+            };
+
+            const olympicsData = {
+                labels: ['USA', 'China', 'Japan', 'Australia', 'Great Britain'],
+                datasets: [{
+                    label: 'Total Medals',
+                    data: [126, 91, 58, 52, 65],
+                    backgroundColor: ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6'],
+                    hoverOffset: 4
+                }]
+            };
+
+            const commonChartOptions = (title) => ({
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14,
+                                family: 'Inter'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        backgroundColor: '#333',
+                        titleFont: { size: 16 },
+                        bodyFont: { size: 14 },
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', notation: 'compact' }).format(context.parsed.y * 1000000);
+                                }
+                                return label;
+                            }
+                        }
+                    },
+                    title: {
+                        display: false,
+                        text: title,
+                        font: { size: 18 }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: { size: 12, family: 'Inter' }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            font: { size: 12, family: 'Inter' }
+                        },
+                        grid: {
+                            color: '#e5e7eb'
+                        }
+                    }
+                }
+            });
+            
+            const marketChartCtx = document.getElementById('marketChart').getContext('2d');
+            new Chart(marketChartCtx, {
+                type: 'line',
+                data: marketData,
+                options: commonChartOptions('S&P 500 Performance')
+            });
+
+            const moviesChartCtx = document.getElementById('moviesChart').getContext('2d');
+            new Chart(moviesChartCtx, {
+                type: 'bar',
+                data: moviesData,
+                options: {
+                    ...commonChartOptions('Top Box Office Hits'),
+                    indexAxis: 'y', 
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                             ticks: {
+                                callback: function(value) {
+                                    return '$' + value + 'M';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const olympicsChartCtx = document.getElementById('olympicsChart').getContext('2d');
+            new Chart(olympicsChartCtx, {
+                type: 'doughnut',
+                data: olympicsData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right' },
+                        tooltip: {
+                             callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw} medals`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const tabOscars = document.getElementById('tab-oscars');
+            const tabGrammys = document.getElementById('tab-grammys');
+            const contentOscars = document.getElementById('content-oscars');
+            const contentGrammys = document.getElementById('content-grammys');
+
+            tabOscars.addEventListener('click', () => {
+                tabOscars.classList.add('active');
+                tabGrammys.classList.remove('active');
+                contentOscars.classList.remove('hidden');
+                contentGrammys.classList.add('hidden');
+            });
+
+            tabGrammys.addEventListener('click', () => {
+                tabGrammys.classList.add('active');
+                tabOscars.classList.remove('active');
+                contentGrammys.classList.remove('hidden');
+                contentOscars.classList.add('hidden');
+            });
+
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', (e) => {
+                const section = document.querySelector(e.target.value);
+                if(section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 70) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

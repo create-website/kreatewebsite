@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Enduring Thread: Rakhi and RakshaBandhan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Saffron and Marigold Accents -->
+    <!-- Application Structure Plan: The application is structured as a narrative journey, guiding the user from the festival's core meaning to its diverse expressions. It starts with a captivating introduction (The Core), moves to an interactive exploration of its mythological roots (The Legends), then to its historical evolution (The History), followed by a detailed breakdown of the ritual (The Ceremony), and finally its modern, global adaptations (The Evolution). This thematic, scrolling structure was chosen over a dashboard to create an engaging, story-like experience that mirrors the report's rich, qualitative content. Interactivity is focused on revealing information progressively through clicks and selections, encouraging deeper exploration rather than just data filtering. -->
+    <!-- Visualization & Content Choices: The report is primarily qualitative, so visualizations focus on organizing and comparing textual information. 1) Mythological Narratives: Goal is to compare the core themes of different origin stories. A dynamic card layout was chosen where clicking a character's name reveals the full story. This is more engaging than a static table. 2) Historical Timeline: Goal is to show the festival's evolution. An interactive vertical timeline is used, where clicking an event expands to show details. This visually represents the passage of time. 3) Regional Variations: Goal is to showcase cultural diversity. An interactive map or clickable region list updates a central content area, allowing users to explore different customs. This is more intuitive than a simple list. All diagrams are built with HTML/Tailwind to adhere to the no-SVG constraint. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8F0; /* Warm Ivory */
+            color: #4A4A4A;
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active {
+            color: #FF9933; /* Saffron */
+            border-bottom-color: #FF9933;
+        }
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #FFC15E; /* Marigold */
+            border: 4px solid #FFF8F0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-[#D95B43]">The Enduring Thread</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#core" class="nav-link border-b-2 border-transparent pb-1">The Core</a>
+                <a href="#legends" class="nav-link border-b-2 border-transparent pb-1">The Legends</a>
+                <a href="#history" class="nav-link border-b-2 border-transparent pb-1">The History</a>
+                <a href="#ceremony" class="nav-link border-b-2 border-transparent pb-1">The Ceremony</a>
+                <a href="#evolution" class="nav-link border-b-2 border-transparent pb-1">The Evolution</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        
+        <section id="core" class="text-center min-h-[60vh] flex flex-col justify-center items-center">
+            <h2 class="text-5xl md:text-6xl font-bold text-[#D95B43] leading-tight">Raksha Bandhan</h2>
+            <p class="mt-4 text-xl text-gray-600 font-serif italic">"The Bond of Protection"</p>
+            <p class="mt-8 max-w-3xl text-lg text-gray-700">
+                This interactive experience explores Raksha Bandhan, a festival that venerates the relationship between brothers and sisters, but whose meaning has expanded to embrace a wide spectrum of chosen family and protective bonds. Journey through its rich tapestry of mythology, contested history, and modern global adaptations to understand how a simple thread became a profound symbol of love and obligation.
+            </p>
+        </section>
+
+        <div class="my-16 border-t-2 border-dashed border-[#FFC15E]"></div>
+        
+        <section id="legends" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-[#D95B43]">Foundations in Myth & Legend</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-700">
+                    The emotional core of Raksha Bandhan is built on a collection of powerful stories from ancient texts. These narratives establish the festival's primary themes of protection, duty, and love that transcends kinship. Select a character to uncover their foundational story.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-6 mb-8">
+                <button class="myth-btn active bg-[#FF9933] text-white py-2 px-4 rounded-full shadow" data-myth="krishna">Krishna & Draupadi</button>
+                <button class="myth-btn bg-white text-gray-700 py-2 px-4 rounded-full shadow" data-myth="lakshmi">Lakshmi & King Bali</button>
+                <button class="myth-btn bg-white text-gray-700 py-2 px-4 rounded-full shadow" data-myth="indra">Indra & Sachi</button>
+                <button class="myth-btn bg-white text-gray-700 py-2 px-4 rounded-full shadow" data-myth="yama">Yama & Yamuna</button>
+            </div>
+
+            <div id="myth-content-area" class="bg-white p-8 rounded-lg shadow-lg transition-opacity duration-500">
+            </div>
+        </section>
+
+        <div class="my-16 border-t-2 border-dashed border-[#FFC15E]"></div>
+
+        <section id="history" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-[#D95B43]">The Thread Through History</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-700">
+                    From ancient protective rites to symbols of political unity, the Rakhi has been woven through the fabric of Indian history. Explore key moments that shaped the festival's journey from a sacred amulet to a powerful social and political tool.
+                </p>
+            </div>
+
+            <div class="relative max-w-2xl mx-auto border-l-2 border-[#FFC15E] pl-10">
+                <div id="history-timeline" class="space-y-12">
+                </div>
+            </div>
+        </section>
+
+        <div class="my-16 border-t-2 border-dashed border-[#FFC15E]"></div>
+
+        <section id="ceremony" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-[#D95B43]">The Ritual Fabric</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-700">
+                    The Raksha Bandhan ceremony is a meticulously structured ritual where each element holds deep symbolic meaning. This interactive diagram deconstructs the Puja Thali, the ritual plate at the heart of the celebration. Click on each item to learn about its significance.
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="relative w-full aspect-square flex items-center justify-center">
+                    <div class="absolute w-full h-full rounded-full bg-[#FFC15E]/20"></div>
+                    <div class="absolute w-2/3 h-2/3 rounded-full bg-[#FFC15E]/30"></div>
+                    <div class="absolute w-1/3 h-1/3 rounded-full bg-[#FFC15E]/40"></div>
+                    
+                    <div id="thali-item-rakhi" class="thali-item absolute cursor-pointer" style="top: 10%; left: 45%;">
+                        <div class="w-10 h-10 bg-red-400 rounded-full flex items-center justify-center text-xl shadow-md">🧵</div>
+                    </div>
+                    <div id="thali-item-diya" class="thali-item absolute cursor-pointer" style="top: 45%; left: 10%;">
+                        <div class="w-10 h-10 bg-orange-400 rounded-full flex items-center justify-center text-xl shadow-md">🔥</div>
+                    </div>
+                    <div id="thali-item-roli" class="thali-item absolute cursor-pointer" style="top: 45%; right: 10%;">
+                        <div class="w-10 h-10 bg-pink-400 rounded-full flex items-center justify-center text-xl shadow-md">🔴</div>
+                    </div>
+                    <div id="thali-item-sweets" class="thali-item absolute cursor-pointer" style="bottom: 10%; left: 45%;">
+                        <div class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center text-xl shadow-md">🍬</div>
+                    </div>
+                </div>
+                <div id="ceremony-content-area" class="bg-white p-8 rounded-lg shadow-lg min-h-[250px]">
+                    <h3 class="text-2xl font-bold text-[#D95B43] mb-2">The Puja Thali</h3>
+                    <p class="text-gray-600">Click an item on the thali to discover its role in the ceremony.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="my-16 border-t-2 border-dashed border-[#FFC15E]"></div>
+
+        <section id="evolution" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-[#D95B43]">A Festival in Flux</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-700">
+                    Raksha Bandhan is not a static tradition. It varies significantly across regions and has adapted globally. Explore its diverse expressions and see how the festival is being reinterpreted in the 21st century.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-[#D95B43] mb-4">Regional Diversity</h3>
+                    <p class="text-gray-600 mb-4">In West Bengal, it's Jhulan Purnima, celebrating Radha-Krishna. In Maharashtra, it's Narali Poornima, where fishermen offer coconuts to the sea. In Rajasthan, a 'Lumba Rakhi' is tied to the sister-in-law, extending the bond.</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-[#D95B43] mb-4">Global Diaspora</h3>
+                    <p class="text-gray-600 mb-4">Across the world, the diaspora maintains tradition through community events. In the UK and Australia, the ritual has been adapted, with rakhis tied on police and soldiers as a gesture of gratitude and respect for community protectors.</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-[#D95B43] mb-4">Modern Interpretations</h3>
+                    <p class="text-gray-600 mb-4">Today, the festival embraces inclusivity. Sisters tie rakhis on each other, friends exchange them, and eco-friendly rakhis made of seeds or jute are gaining popularity, reflecting a shift towards mutual support and sustainability.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2024 An Interactive Exploration. All content derived from the source report.</p>
+            <p class="text-sm text-gray-400 mt-2">This visualization was created to make the rich information of the Raksha Bandhan report accessible and engaging.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mythData = {
+                krishna: {
+                    title: 'Krishna & Draupadi: The Archetypal Bond',
+                    content: `The most resonant origin story tells of Draupadi tearing a strip from her sari to bandage Lord Krishna's bleeding finger. Moved by this selfless act, Krishna promised to protect her, a vow he famously fulfilled by miraculously extending her sari to save her honor. This story establishes the ideal bond as one based on righteous duty (dharma) and selfless action, not just blood relations, setting a precedent for the festival's modern, inclusive interpretations.`
+                },
+                lakshmi: {
+                    title: 'Lakshmi & King Bali: The Strategic Bond',
+                    content: `This narrative from the Puranas illustrates the strategic creation of a sibling bond. To secure the return of her consort, Lord Vishnu, Goddess Lakshmi approached the demon king Bali and tied a rakhi to his wrist, making him her brother. In return, Bali granted her wish to release Vishnu from his service. This story highlights the rakhi's power to create sacred, obligation-based kinship where none existed before.`
+                },
+                indra: {
+                    title: 'Indra & Sachi: The Protective Amulet',
+                    content: `Found in the Bhavishya Purana, this legend reveals an older tradition. Before a battle, Sachi, wife of the god Indra, tied a consecrated sacred thread (raksha sutra) to her husband's wrist as a protective amulet to ensure his victory. This points to the rakhi's origins as a talisman for warriors, suggesting a broader, more ancient function of the sacred thread in Vedic-era rituals.`
+                },
+                yama: {
+                    title: 'Yama & Yamuna: The Bond Beyond Mortality',
+                    content: `This tale powerfully illustrates the sibling bond's capacity to transcend even death. The river goddess Yamuna tied a rakhi to her brother Yama, the god of death. Moved by her love, he granted her immortality and declared that any brother who receives a rakhi and pledges to protect his sister will be blessed with a long life. This story reinforces the deep cultural emphasis on the brother-sister relationship.`
+                }
+            };
+
+            const historyData = [
+                {
+                    year: 'c. 1000 BCE',
+                    title: 'Ancient Vedic Precedents',
+                    content: 'The practice of tying protective threads has deep roots. The Atharvaveda mentions the tying of a *pratisara*, a protective thread used in rituals, indicating the ancient origins of using amulets for protection, a precursor to the modern rakhi.'
+                },
+                {
+                    year: '16th Century',
+                    title: 'Rani Karnavati & Emperor Humayun',
+                    content: 'A popular but historically contested legend. The story goes that Rani Karnavati of Chittor sent a rakhi to the Mughal Emperor Humayun for protection. While a powerful symbol of Hindu-Muslim unity, contemporary historical accounts do not corroborate the event, making it a key example of cultural memory versus historical fact.'
+                },
+                {
+                    year: '1905',
+                    title: 'Rabindranath Tagore & Bengal Partition',
+                    content: 'A well-documented historical event. In response to the British partition of Bengal along religious lines, Nobel laureate Rabindranath Tagore initiated *Rakhi Utsavs*. He called upon Hindus and Muslims to tie rakhis on each other, transforming the ritual into a powerful public symbol of unity and resistance against colonial "divide and rule" policies.'
+                }
+            ];
+            
+            const ceremonyData = {
+                rakhi: {
+                    title: 'The Rakhi (Sacred Thread)',
+                    content: 'The central element. It can be a simple silk thread or an ornate bracelet. Its fragile nature symbolizes a bond that is precious yet immensely strong. Tying it signifies the sister\'s prayer for her brother\'s well-being.'
+                },
+                diya: {
+                    title: 'The Diya (Lamp)',
+                    content: 'The flame of the oil lamp represents the fire deity, Agni. It is believed to purify the atmosphere, ward off negative influences, and create a protective shield of light around the brother during the *aarti* ceremony.'
+                },
+                roli: {
+                    title: 'Roli & Chawal (Tilak)',
+                    content: 'The red *roli* powder is a symbol of prosperity and spiritual consciousness. The uncooked rice grains (*akshat*) are a blessing for wholeness and signify protection from evil. Together, they form the auspicious *tilak* on the brother\'s forehead.'
+                },
+                sweets: {
+                    title: 'Mithai (Sweets)',
+                    content: 'Sweets represent the sweetness of the sibling relationship and the joy of the occasion. The sister offers a sweet to her brother after tying the rakhi, and he consumes it, symbolizing the happy and sweet moments they share.'
+                }
+            };
+
+            const mythBtnContainer = document.querySelector('.flex-wrap');
+            const mythContentArea = document.getElementById('myth-content-area');
+            const historyTimeline = document.getElementById('history-timeline');
+            const ceremonyContentArea = document.getElementById('ceremony-content-area');
+            const thaliItems = document.querySelectorAll('.thali-item');
+
+            function updateMythContent(mythKey) {
+                const data = mythData[mythKey];
+                mythContentArea.style.opacity = 0;
+                setTimeout(() => {
+                    mythContentArea.innerHTML = `
+                        <h3 class="text-2xl font-bold text-[#D95B43] mb-2">${data.title}</h3>
+                        <p class="text-gray-600 leading-relaxed">${data.content}</p>
+                    `;
+                    mythContentArea.style.opacity = 1;
+                }, 300);
+            }
+            
+            function updateCeremonyContent(itemKey) {
+                const data = ceremonyData[itemKey];
+                ceremonyContentArea.innerHTML = `
+                    <h3 class="text-2xl font-bold text-[#D95B43] mb-2">${data.title}</h3>
+                    <p class="text-gray-600 leading-relaxed">${data.content}</p>
+                `;
+            }
+
+            mythBtnContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('myth-btn')) {
+                    document.querySelectorAll('.myth-btn').forEach(btn => {
+                        btn.classList.remove('active', 'bg-[#FF9933]', 'text-white');
+                        btn.classList.add('bg-white', 'text-gray-700');
+                    });
+                    e.target.classList.add('active', 'bg-[#FF9933]', 'text-white');
+                    e.target.classList.remove('bg-white', 'text-gray-700');
+                    updateMythContent(e.target.dataset.myth);
+                }
+            });
+            
+            thaliItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const itemKey = item.id.split('-')[2];
+                    updateCeremonyContent(itemKey);
+                });
+            });
+
+            function populateHistory() {
+                historyData.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'timeline-item relative';
+                    div.innerHTML = `
+                        <div class="bg-white p-6 rounded-lg shadow-lg card cursor-pointer">
+                            <p class="text-sm font-semibold text-[#FF9933]">${item.year}</p>
+                            <h3 class="text-xl font-bold text-gray-800 mt-1">${item.title}</h3>
+                            <div class="history-content hidden mt-2 text-gray-600">
+                                <p>${item.content}</p>
+                            </div>
+                        </div>
+                    `;
+                    historyTimeline.appendChild(div);
+                });
+                
+                document.querySelectorAll('.timeline-item .card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        card.querySelector('.history-content').classList.toggle('hidden');
+                    });
+                });
+            }
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.4
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            navLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            updateMythContent('krishna');
+            populateHistory();
+        });
+    </script>
+</body>
+</html>

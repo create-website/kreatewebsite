@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diwali: The Global Festival of Lights</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Narrative Structure Plan: The infographic tells a story in a top-down format. It starts with a high-impact header to define Diwali's global significance. It then breaks down the core concepts: the 'What' (meaning and key facts), the 'When' (a 5-day journey visualized as a process), and the 'How' (the core components of the celebration). To add depth, it visualizes the festival's global reach and the popular foods associated with it. The narrative concludes with practical date information and a reinforcing message of unity and light, providing a comprehensive overview from introduction to conclusion. -->
+    <!-- Visualization & Content Choices:
+        - Data Point: Core Diwali Concepts -> Goal: Inform -> Chosen Visualization: Large numbers in cards -> Justification: This is the most direct way to convey foundational statistics (duration, celebrants) for immediate impact and context. -> Library/Method: HTML/CSS with Unicode Icons. (Confirming NO SVG).
+        - Data Point: The Five Days of Diwali -> Goal: Organize -> Chosen Visualization: Horizontal Numbered Process Flow -> Justification: A process flow is more dynamic than a list and clearly shows the chronological sequence of the festival's five distinct days. -> Library/Method: Structured HTML/CSS with Tailwind. (Confirming NO SVG/Mermaid).
+        - Data Point: Core Pillars of Celebration -> Goal: Compare -> Chosen Visualization: Radar Chart -> Justification: A radar chart effectively displays the balance and importance of multiple interconnected themes (Light, Family, Food, etc.), showing they are all integral to the festival. -> Library/Method: Chart.js/Canvas. (Confirming NO SVG).
+        - Data Point: Global Celebration Hubs (Conceptual) -> Goal: Compare -> Chosen Visualization: Bubble Chart -> Justification: A bubble chart is excellent for comparing the relative scale of celebrations across different geographical locations in a single, easy-to-understand visual. -> Library/Method: Chart.js/Canvas. (Confirming NO SVG).
+        - Data Point: Popular Diwali Sweets -> Goal: Compare/Rank -> Chosen Visualization: Polar Area Chart -> Justification: This chart is a visually engaging alternative to a bar or pie chart for comparing categories, adding a festive and decorative feel to the data presentation. -> Library/Method: Chart.js/Canvas. (Confirming NO SVG).
+        - Data Point: Future Dates -> Goal: Inform -> Chosen Visualization: Simple Table -> Justification: A table remains the most straightforward and universally understood method for presenting structured date information clearly. -> Library/Method: HTML/CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfdfe;
+            color: #1C2541;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #FF7D00, #FBB13C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-[#0B132B]">The Global Festival of <span class="gradient-text">Lights</span></h1>
+            <p class="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-[#3A506B]">An inside look at Diwali, a celebration of light, community, and the triumph of good over evil, cherished by millions across the world.</p>
+        </header>
+        
+        <section class="mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto text-center">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <p class="text-6xl font-bold gradient-text">5</p>
+                    <h3 class="mt-2 text-xl font-bold text-[#0B132B]">Consecutive Days</h3>
+                    <p class="mt-1 text-[#3A506B]">The festival unfolds over five days, each with unique traditions and meaning.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <p class="text-6xl font-bold gradient-text">900M+</p>
+                    <h3 class="mt-2 text-xl font-bold text-[#0B132B]">Global Celebrants</h3>
+                    <p class="mt-1 text-[#3A506B]">Celebrated by Hindus, Jains, Sikhs, and Buddhists worldwide.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                     <p class="text-6xl font-bold gradient-text">1st</p>
+                    <h3 class="mt-2 text-xl font-bold text-[#0B132B]">Major Festival</h3>
+                    <p class="mt-1 text-[#3A506B]">It is one of the most significant festivals in the Hindu calendar.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#0B132B]">The Five-Day Journey</h2>
+                <p class="mt-2 text-lg text-[#3A506B]">Diwali is not just one day, but a series of interconnected celebrations.</p>
+            </div>
+            <div class="flex flex-col md:flex-row justify-center items-stretch gap-4 max-w-6xl mx-auto">
+                <div class="flex-1 bg-white p-6 rounded-lg shadow-md border-t-4 border-[#FF7D00]">
+                    <p class="font-bold text-[#FF7D00]">Day 1: Dhanteras</p>
+                    <p class="mt-2 text-[#3A506B]">The festival kicks off with preparations and purchases of precious metals, symbolizing wealth.</p>
+                </div>
+                <div class="flex-1 bg-white p-6 rounded-lg shadow-md border-t-4 border-[#FBB13C]">
+                    <p class="font-bold text-[#FBB13C]">Day 2: Choti Diwali</p>
+                    <p class="mt-2 text-[#3A506B]">A smaller-scale celebration day, focused on cleansing and preparing for the main event.</p>
+                </div>
+                <div class="flex-1 bg-white p-6 rounded-lg shadow-md border-t-4 border-[#5BC0BE]">
+                    <p class="font-bold text-[#5BC0BE]">Day 3: Lakshmi Puja</p>
+                    <p class="mt-2 text-[#3A506B]">The main event. Homes glow with lights, and prayers are offered to the goddess of prosperity.</p>
+                </div>
+                <div class="flex-1 bg-white p-6 rounded-lg shadow-md border-t-4 border-[#3A506B]">
+                    <p class="font-bold text-[#3A506B]">Day 4: Govardhan Puja</p>
+                    <p class="mt-2 text-[#3A506B]">A day to celebrate faith and the bond between spouses in different regional traditions.</p>
+                </div>
+                <div class="flex-1 bg-white p-6 rounded-lg shadow-md border-t-4 border-[#1C2541]">
+                    <p class="font-bold text-[#1C2541]">Day 5: Bhai Dooj</p>
+                    <p class="mt-2 text-[#3A506B]">The festival concludes with a celebration of the cherished bond between siblings.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="chart-container">
+                        <canvas id="pillarsChart"></canvas>
+                    </div>
+                </div>
+                <div class="text-center md:text-left">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#0B132B]">The Pillars of Celebration</h2>
+                    <p class="mt-4 text-lg text-[#3A506B]">Diwali's spirit is built on several key pillars. While lighting diyas is iconic, the festival is equally about community, faith, and family.</p>
+                    <p class="mt-4 text-[#3A506B]">This chart shows the balanced importance of different aspects of the celebration, from spiritual devotion to the joy of feasting and spending time with loved ones. Each pillar is essential to the vibrant and holistic experience of Diwali.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-20">
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="md:order-2">
+                    <div class="chart-container">
+                        <canvas id="globalBubbleChart"></canvas>
+                    </div>
+                </div>
+                <div class="text-center md:text-left md:order-1">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#0B132B]">A Beacon Across the Globe</h2>
+                    <p class="mt-4 text-lg text-[#3A506B]">Though its roots are in India, Diwali's light has spread across the world. Significant diaspora communities have carried these traditions with them, making it a truly global festival.</p>
+                    <p class="mt-4 text-[#3A506B]">The chart provides a conceptual visualization of major celebration hubs outside of India. The size of each bubble represents the relative scale of public and private festivities, from large-scale events in the USA and UK to vibrant community gatherings in Canada, Australia, and beyond.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                 <div>
+                    <div class="chart-container">
+                        <canvas id="sweetsPolarChart"></canvas>
+                    </div>
+                </div>
+                <div class="text-center md:text-left">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#0B132B]">The Sweet Taste of Joy</h2>
+                    <p class="mt-4 text-lg text-[#3A506B]">Sharing food, especially sweets ("mithai"), is central to Diwali. It's a gesture of hospitality, celebration, and goodwill offered to guests and exchanged between families.</p>
+                    <p class="mt-4 text-[#3A506B]">This chart showcases the immense popularity of various traditional sweets during the festival. Each segment represents a beloved treat, highlighting the rich culinary heritage that accompanies the spiritual celebrations of Diwali.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="bg-white p-8 rounded-lg shadow-lg">
+             <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#0B132B]">Mark Your Calendar</h2>
+                <p class="mt-2 mb-8 text-lg text-[#3A506B]">Celebrate the main day of Diwali (Lakshmi Puja) on these upcoming dates.</p>
+                <div class="max-w-md mx-auto border border-gray-200 rounded-lg overflow-hidden">
+                    <table class="w-full text-center">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="p-4 font-semibold text-[#1C2541]">Year</th>
+                                <th class="p-4 font-semibold text-[#1C2541]">Date</th>
+                                <th class="p-4 font-semibold text-[#1C2541]">Day</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="p-4">2025</td>
+                                <td class="p-4">October 21</td>
+                                <td class="p-4">Tuesday</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4">2026</td>
+                                <td class="p-4">November 8</td>
+                                <td class="p-4">Sunday</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4">2027</td>
+                                <td class="p-4">October 29</td>
+                                <td class="p-4">Friday</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            const primaryColors = ['#FF7D00', '#FBB13C', '#5BC0BE', '#3A506B', '#1C2541'];
+            const fontFamily = "'Inter', sans-serif";
+            const textColor = '#1C2541';
+            const gridColor = 'rgba(58, 80, 107, 0.1)';
+
+            const pillarsCtx = document.getElementById('pillarsChart').getContext('2d');
+            new Chart(pillarsCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Light (Diyas)', 'Family & Friends', 'Food (Feasts)', 'Faith (Puja)', 'Community'],
+                    datasets: [{
+                        label: 'Importance',
+                        data: [9, 10, 8, 9, 7],
+                        backgroundColor: 'rgba(255, 125, 0, 0.2)',
+                        borderColor: '#FF7D00',
+                        pointBackgroundColor: '#FF7D00',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#FF7D00',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: gridColor },
+                            grid: { color: gridColor },
+                            pointLabels: { 
+                                font: { size: 12, family: fontFamily, weight: '600' },
+                                color: textColor
+                            },
+                            ticks: {
+                                display: false,
+                                backdropColor: 'transparent'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    }
+                }
+            });
+
+            const bubbleCtx = document.getElementById('globalBubbleChart').getContext('2d');
+            new Chart(bubbleCtx, {
+                type: 'bubble',
+                data: {
+                    datasets: [
+                        { label: 'USA', data: [{ x: 5, y: 7, r: 25 }], backgroundColor: primaryColors[0] },
+                        { label: 'UK', data: [{ x: 3, y: 4, r: 22 }], backgroundColor: primaryColors[1] },
+                        { label: 'Canada', data: [{ x: 8, y: 3, r: 20 }], backgroundColor: primaryColors[2] },
+                        { label: 'Australia', data: [{ x: 1, y: 8, r: 18 }], backgroundColor: primaryColors[3] },
+                        { label: 'Mauritius', data: [{ x: 6, y: 1, r: 15 }], backgroundColor: primaryColors[4] }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { display: false, min: 0, max: 10 },
+                        y: { display: false, min: 0, max: 10 }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: textColor,
+                                font: { family: fontFamily, size: 14 }
+                            }
+                        },
+                        tooltip: {
+                             callbacks: {
+                                title: (tooltipItems) => tooltipItems[0].dataset.label
+                            }
+                        }
+                    }
+                }
+            });
+
+            const sweetsCtx = document.getElementById('sweetsPolarChart').getContext('2d');
+            new Chart(sweetsCtx, {
+                type: 'polarArea',
+                data: {
+                    labels: ['Kaju Katli', 'Jalebi', 'Ladoo', 'Gulab Jamun', 'Barfi'],
+                    datasets: [{
+                        data: [10, 9, 8, 7, 6],
+                        backgroundColor: primaryColors,
+                        borderWidth: 2,
+                        borderColor: '#fcfdfe'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            grid: { color: gridColor },
+                            ticks: {
+                                display: false,
+                                backdropColor: 'transparent'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: textColor,
+                                font: { family: fontFamily, size: 14 }
+                            }
+                        },
+                         tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

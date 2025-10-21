@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shraddha Calendar & Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The application is designed as a single-page, top-down narrative guide. It starts with a broad introduction to Shraddha and Pitru Paksha, then funnels the user into the specific 2025 calendar, and finally provides actionable information on how to determine their specific date and understand the ritual's importance. This linear, educational structure was chosen over a complex dashboard because the user's primary goal is to find a specific date within a fixed, short period. The flow—What it is, When it is, How to find yours, Why it's important—is the most intuitive path to understanding for a user who may be unfamiliar with the details. -->
+    <!-- Visualization & Content Choices: Report Info: Shraddha dates for Pitru Paksha 2025 and rules for determination. -> Goal: Inform and guide the user to their specific Shraddha date. -> Viz/Presentation Method: A clear, styled HTML list/table. -> Interaction: Simple vertical scroll and clear visual grouping of information. -> Justification: For a fixed and relatively small dataset (16 days), a graphical chart or calendar is overly complex and less direct than a simple list. The list format directly maps the Hindu Tithi to the Gregorian date, which is the user's primary need. It's highly readable on all devices without complex interactions. -> Library/Method: HTML and Tailwind CSS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        .header-gradient {
+            background: linear-gradient(90deg, #FDE68A, #F59E0B);
+        }
+        .accent-color {
+            color: #D97706; 
+        }
+        .bg-accent {
+            background-color: #F59E0B;
+        }
+        .border-accent {
+            border-color: #F59E0B;
+        }
+        .date-item {
+            border-left: 4px solid #FDBA74;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="min-h-screen">
+        <header class="bg-white shadow-md">
+            <div class="max-w-5xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                <h1 class="text-3xl font-bold text-gray-800 tracking-tight">Shraddha Calendar & Guide 2025</h1>
+                <p class="text-gray-500 mt-1">An interactive guide to understanding and finding Shraddha dates during Pitru Paksha.</p>
+            </div>
+        </header>
+
+        <main class="py-10">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                
+                <section id="introduction" class="card p-6 md:p-8">
+                    <h2 class="text-2xl font-bold accent-color mb-4">Understanding Shraddha and Pitru Paksha</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        This guide is designed to help you navigate the significant Hindu period of Pitru Paksha, a time for honoring ancestors. The central ritual, known as Shraddha, is a way to pay homage and express gratitude to the departed souls of one's family. This application provides a calendar for the 2025 Pitru Paksha period and explains the simple principles for identifying the correct day for performing these rites for your ancestors, ensuring you can observe these traditions with clarity and confidence.
+                    </p>
+                </section>
+
+                <section id="calendar" class="card overflow-hidden">
+                    <div class="p-6 md:p-8">
+                        <h2 class="text-2xl font-bold accent-color mb-2">Pitru Paksha 2025 Calendar</h2>
+                        <p class="text-gray-600 mb-6">Pitru Paksha in 2025 is observed from September 7th to September 21st. Below are the specific Shraddha Tithis and their corresponding dates on the Gregorian calendar.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 md:p-8">
+                        <div id="shraddha-dates-container" class="space-y-4">
+                        </div>
+                    </div>
+                </section>
+
+                <section id="how-to" class="card p-6 md:p-8">
+                    <h2 class="text-2xl font-bold accent-color mb-4">How to Find Your Shraddha Date</h2>
+                    <p class="text-gray-600 mb-6">Determining the correct date for performing Shraddha is straightforward. This section outlines the primary rule and notes some important exceptions. The goal is to perform the ceremony on the lunar day (Tithi) that corresponds to the day the ancestor passed away.</p>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-amber-50 rounded-lg border-l-4 border-amber-400">
+                            <h3 class="font-bold text-lg text-gray-800">The Main Rule: Match the Tithi</h3>
+                            <p class="text-gray-700 mt-1">The annual Shraddha for an ancestor is performed on the same <strong class="accent-color">Tithi (lunar day)</strong> of their passing, but during the Krishna Paksha (waning phase of the moon) in the month of Bhadrapada/Ashwin, which is known as Pitru Paksha. For example, if a person passed away on a Panchami Tithi, their Shraddha would be performed on the Panchami Tithi date listed in the calendar above.</p>
+                        </div>
+                        <div class="p-4 bg-amber-50 rounded-lg border-l-4 border-amber-400">
+                            <h3 class="font-bold text-lg text-gray-800">Key Exceptions and Special Days</h3>
+                            <ul class="list-disc list-inside mt-2 text-gray-700 space-y-1">
+                                <li><strong>Navami Shraddha:</strong> Known as Avidhava Navami, this day is for performing Shraddha for married women who passed away before their husbands.</li>
+                                <li><strong>Chaturdashi Shraddha:</strong> This Tithi is reserved for those who had an unnatural death, such as by accident, suicide, or murder.</li>
+                                <li><strong>Sarva Pitru Amavasya:</strong> This is the most significant day. If you do not know the Tithi of an ancestor's passing or missed the specific day, you can perform Shraddha for all your ancestors on this final day of Pitru Paksha.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="importance" class="card p-6 md:p-8">
+                    <h2 class="text-2xl font-bold accent-color mb-4">Significance of the Ritual</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        Shraddha is more than a ritual; it's a profound act of remembrance and gratitude. According to Hindu scriptures, performing these rites during Pitru Paksha helps the souls of ancestors find peace and move forward in their journey. It is believed that the ancestors, in turn, bestow blessings of health, wealth, and prosperity upon their descendants. This period strengthens familial bonds that transcend the physical realm, reinforcing a connection to one's heritage and lineage.
+                    </p>
+                </section>
+
+            </div>
+        </main>
+        
+    
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const shraddhaData = [
+                { date: "September 7, 2025", day: "Sunday", tithi: "Purnima Shraddha", description: "For those who passed on a full moon day (Purnima)." },
+                { date: "September 8, 2025", day: "Monday", tithi: "Pratipada Shraddha", description: "For those who passed on the first lunar day." },
+                { date: "September 9, 2025", day: "Tuesday", tithi: "Dwitiya Shraddha", description: "For those who passed on the second lunar day." },
+                { date: "September 10, 2025", day: "Wednesday", tithi: "Tritiya & Chaturthi Shraddha", description: "For those who passed on the third or fourth lunar day." },
+                { date: "September 11, 2025", day: "Thursday", tithi: "Panchami Shraddha / Maha Bharani", description: "For those who passed on the fifth lunar day." },
+                { date: "September 12, 2025", day: "Friday", tithi: "Shashthi Shraddha", description: "For those who passed on the sixth lunar day." },
+                { date: "September 13, 2025", day: "Saturday", tithi: "Saptami Shraddha", description: "For those who passed on the seventh lunar day." },
+                { date: "September 14, 2025", day: "Sunday", tithi: "Ashtami Shraddha", description: "For those who passed on the eighth lunar day." },
+                { date: "September 15, 2025", day: "Monday", tithi: "Navami Shraddha", description: "Also known as Avidhava Navami, for married women." },
+                { date: "September 16, 2025", day: "Tuesday", tithi: "Dashami Shraddha", description: "For those who passed on the tenth lunar day." },
+                { date: "September 17, 2025", day: "Wednesday", tithi: "Ekadashi Shraddha", description: "For those who passed on the eleventh lunar day." },
+                { date: "September 18, 2025", day: "Thursday", tithi: "Dwadashi Shraddha", description: "For those who passed on the twelfth lunar day." },
+                { date: "September 19, 2025", day: "Friday", tithi: "Trayodashi Shraddha", description: "For those who passed on the thirteenth lunar day." },
+                { date: "September 20, 2025", day: "Saturday", tithi: "Chaturdashi Shraddha", description: "For those who had an unnatural death." },
+                { date: "September 21, 2025", day: "Sunday", tithi: "Sarva Pitru Amavasya", description: "For all ancestors, or if the Tithi is unknown." }
+            ];
+
+            const container = document.getElementById('shraddha-dates-container');
+            
+            shraddhaData.forEach(item => {
+                const element = document.createElement('div');
+                element.className = 'date-item bg-white p-4 rounded-lg shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between';
+                
+                element.innerHTML = `
+                    <div class="flex-1">
+                        <p class="font-bold text-lg accent-color">${item.tithi}</p>
+                        <p class="text-gray-800 font-medium">${item.date}, ${item.day}</p>
+                        <p class="text-gray-500 text-sm mt-1">${item.description}</p>
+                    </div>
+                `;
+                container.appendChild(element);
+            });
+        });
+    </script>
+</body>
+</html>

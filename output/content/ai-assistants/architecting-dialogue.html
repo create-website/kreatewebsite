@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecting Dialogue: An Interactive Guide to Conversational AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Tech -->
+    <!-- Application Structure Plan: The application is structured as a single-page exploratory dashboard, not a linear report. The information architecture uses a top navigation for quick access and thematic sections for deep dives (Foundations, Persona, Mechanics, Modality, Platforms, Ethics, and Pitfalls). This non-linear structure was chosen to empower users—from designers to product managers—to immediately access the content most relevant to their needs, rather than forcing them through a sequential read. Interactions like accordions, toggles, and chart filters are used to manage information density, making complex topics digestible and comparable, which is critical for a text-heavy source report. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Nielsen's 10 Heuristics -> Goal: Inform/Organize -> Viz: Interactive Grid -> Interaction: Hover to reveal details -> Justification: Breaks down a dense list into a scannable, engaging component. -> Method: HTML/JS.
+        - Report Info: Persona Dimensions -> Goal: Engage/Inform -> Viz: Radar Chart -> Interaction: Visual representation of a balanced persona -> Justification: Transforms abstract traits into a memorable, quantitative visualization. -> Library: Chart.js.
+        - Report Info: Voice vs. Text Design -> Goal: Compare -> Viz: Toggle-able side-by-side cards -> Interaction: Click toggle to switch context -> Justification: Facilitates direct comparison of modality-specific constraints and opportunities. -> Method: HTML/JS.
+        - Report Info: Platform Comparison Table -> Goal: Compare/Analyze -> Viz: Interactive HTML Table -> Interaction: Dropdown filter to highlight a platform column -> Justification: Improves readability of a complex table by allowing users to focus on one vendor at a time. -> Method: HTML/JS.
+        - Report Info: Ethical Risk Table -> Goal: Inform/Organize -> Viz: Accordion -> Interaction: Click to expand/collapse risks -> Justification: Manages cognitive load by hiding detailed text until requested, making a dense topic approachable. -> Method: HTML/JS.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F5F2;
+            color: #1a202c;
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .card-flip { perspective: 1000px; }
+        .card-flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
+        .card-flip.flipped .card-flip-inner { transform: rotateY(180deg); }
+        .card-face { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+        .card-back { transform: rotateY(180deg); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-gray-800">Architecting Dialogue</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#foundations" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Foundations</a>
+                        <a href="#persona" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Persona</a>
+                        <a href="#mechanics" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Mechanics</a>
+                        <a href="#modalities" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Modalities</a>
+                        <a href="#platforms" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Platforms</a>
+                        <a href="#ethics" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Ethics</a>
+                        <a href="#pitfalls" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Pitfalls</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-800 hover:bg-gray-100 focus:outline-none">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="md:hidden hidden pb-3">
+                <a href="#foundations" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-gray-700">Foundations</a>
+                <a href="#persona" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-gray-700">Persona</a>
+                <a href="#mechanics" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-gray-700">Mechanics</a>
+                <a href="#modalities" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-gray-700">Modalities</a>
+                <a href="#platforms" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-gray-700">Platforms</a>
+                <a href="#ethics" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-gray-700">Ethics</a>
+                <a href="#pitfalls" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-gray-700">Pitfalls</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <section id="intro" class="text-center py-16">
+            <h2 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">The New Locus of Control</h2>
+            <p class="mt-6 text-lg leading-8 text-gray-600 max-w-3xl mx-auto">The paradigm of human-computer interaction is shifting. Technology is now learning to speak our language. This guide provides an interactive exploration of the principles, mechanics, and ethics of designing the conversations that power modern AI.</p>
+        </section>
+
+        <div class="space-y-24">
+
+            <section id="foundations">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900">Foundational Principles</h3>
+                    <p class="mt-4 text-md text-gray-600 max-w-2xl mx-auto">Effective conversational design adapts timeless usability heuristics to the unique context of dialogue. This section explores how Nielsen's 10 heuristics are re-interpreted for conversation, transforming visual principles into linguistic ones. Hover over each card to see its application in conversational AI.</p>
+                </div>
+                <div id="heuristics-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                </div>
+            </section>
+
+            <section id="persona">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900">Crafting the Agent's Persona</h3>
+                    <p class="mt-4 text-md text-gray-600 max-w-2xl mx-auto">An agent's persona—its personality and tone—is not an afterthought; it's a core component that builds trust and ensures brand alignment. A well-defined persona is consistent, relatable, and transparently an AI. The chart below visualizes the dimensions of tone for a balanced, helpful persona: professional yet approachable.</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="persona-chart"></canvas>
+                </div>
+            </section>
+
+            <section id="mechanics">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900">Core Interaction Mechanics</h3>
+                    <p class="mt-4 text-md text-gray-600 max-w-2xl mx-auto">Intelligent conversation relies on robust underlying mechanics. These are the systems that manage context, pacing, ambiguity, and errors, separating a sophisticated agent from a brittle script. Explore the key mechanics that create a resilient and coherent dialogue.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-lg text-blue-600">Context Management</h4>
+                        <p class="mt-2 text-gray-600">The agent's memory. It must track conversation history to understand pronouns, remember user preferences across sessions, and handle topic switches gracefully. A context-aware agent might ask, "Shipping to your usual address?" instead of asking for it again.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-lg text-blue-600">Turn-Taking & Pacing</h4>
+                        <p class="mt-2 text-gray-600">The rhythm of dialogue. Agents should avoid long monologues, break information into digestible chunks, and use cues like typing indicators and direct questions ("What else can I help with?") to manage the conversational flow.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-lg text-blue-600">Disambiguation</h4>
+                        <p class="mt-2 text-gray-600">Handling ambiguity. When a user's request is unclear (e.g., "Book a ticket to Springfield"), a good agent proactively asks for clarification ("Which Springfield? There are several.") or offers choices to resolve the uncertainty.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-lg text-blue-600">Graceful Error Handling</h4>
+                        <p class="mt-2 text-gray-600">Recovering from failure. Instead of a dead-end "I don't understand," a helpful agent acknowledges the issue and guides the user toward a solution: "Sorry, I can't book more than a year out. Please provide a date in the next 12 months."</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="modalities">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900">Modality-Specific Design</h3>
+                    <p class="mt-4 text-md text-gray-600 max-w-2xl mx-auto">The medium shapes the message. Designing for a voice-only interface presents different challenges and opportunities than a text-based chatbot. This section compares the design considerations for each modality. Use the toggle to switch your focus.</p>
+                </div>
+                <div class="flex justify-center mb-8">
+                    <div class="relative flex items-center bg-gray-200 rounded-full p-1">
+                        <button id="voice-btn" class="w-24 text-sm font-semibold py-2 px-4 rounded-full z-10 transition-colors duration-300">Voice</button>
+                        <button id="text-btn" class="w-24 text-sm font-semibold py-2 px-4 rounded-full z-10 transition-colors duration-300">Text</button>
+                        <span id="toggle-bg" class="absolute bg-white shadow h-10 w-24 rounded-full transition-transform duration-300 ease-in-out"></span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div id="voice-card" class="bg-white p-6 rounded-lg shadow-lg border-2 border-blue-500 transition-all duration-300">
+                        <h4 class="text-2xl font-bold text-center mb-4">Voice (VUI)</h4>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">▶</span><span><strong>Transience:</strong> Spoken words disappear, placing a high load on user memory. Brevity is a necessity.</span></li>
+                            <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">▶</span><span><strong>Writing for the Ear:</strong> Must use conversational language, contractions, and natural phrasing. Scripts must be read aloud to test flow.</span></li>
+                            <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">▶</span><span><strong>No Visuals:</strong> Cannot rely on visual aids. Lists and complex data must be presented succinctly.</span></li>
+                            <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">▶</span><span><strong>Prosody is Key:</strong> The rhythm and intonation of speech (controlled via SSML) are critical for conveying meaning and emotion.</span></li>
+                        </ul>
+                    </div>
+                    <div id="text-card" class="bg-white p-6 rounded-lg shadow-md border-2 border-transparent transition-all duration-300">
+                        <h4 class="text-2xl font-bold text-center mb-4">Text (Chatbot)</h4>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">▶</span><span><strong>Persistence:</strong> Users can scroll back through the history, reducing memory load.</span></li>
+                            <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">▶</span><span><strong>Visual Elements:</strong> Can leverage buttons, quick replies, and menus to guide users and prevent errors.</span></li>
+                            <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">▶</span><span><strong>Rich Media:</strong> Can use images, GIFs, and cards to convey information more effectively and engagingly.</span></li>
+                            <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">▶</span><span><strong>Scannability:</strong> Messages must be short and well-formatted with lists and bolding to be easily scannable on screens.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="platforms">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900">Platform Landscape</h3>
+                    <p class="mt-4 text-md text-gray-600 max-w-2xl mx-auto">The choice of a conversational AI platform aligns you with a specific design philosophy. This table compares the approaches of major players. Use the dropdown to highlight a specific platform and see its core philosophy at a glance.</p>
+                </div>
+                <div class="flex justify-center mb-4">
+                    <select id="platform-filter" class="block w-full max-w-xs p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="all">Show All Platforms</option>
+                        <option value="google">Highlight Google</option>
+                        <option value="microsoft">Highlight Microsoft</option>
+                        <option value="ibm">Highlight IBM</option>
+                    </select>
+                </div>
+                <div class="overflow-x-auto">
+                    <table id="platform-table" class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dimension</th>
+                                <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider platform-col google">Google</th>
+                                <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider platform-col microsoft">Microsoft</th>
+                                <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider platform-col ibm">IBM</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="p-4 font-semibold">Core Philosophy</td>
+                                <td class="p-4 platform-col google">Developer-centric, scalable, structured conversation management.</td>
+                                <td class="p-4 platform-col microsoft">CUX-centric, empowering "fusion teams" of business and tech users.</td>
+                                <td class="p-4 platform-col ibm">Enterprise-first, prioritizing trust, security, and governance.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-semibold">Design Metaphor</td>
+                                <td class="p-4 platform-col google">State Machine / Flow</td>
+                                <td class="p-4 platform-col microsoft">Collaborative Application</td>
+                                <td class="p-4 platform-col ibm">Secure & Transparent Agent</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-semibold">Key Differentiator</td>
+                                <td class="p-4 platform-col google">Granular control over complex dialogue flows via a state machine model.</td>
+                                <td class="p-4 platform-col microsoft">Synergy between low-code accessibility and enterprise governance.</td>
+                                <td class="p-4 platform-col ibm">Industry-leading focus on security and an explicit design system for AI transparency.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="ethics">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900">Ethical & Responsible AI</h3>
+                    <p class="mt-4 text-md text-gray-600 max-w-2xl mx-auto">Building conversational AI carries significant ethical responsibilities. A commitment to transparency, fairness, privacy, and accountability is not optional—it's a prerequisite for creating trustworthy technology. Explore the key ethical risks and their mitigation strategies below.</p>
+                </div>
+                <div id="ethics-accordion" class="space-y-4 max-w-4xl mx-auto">
+                </div>
+            </section>
+
+            <section id="pitfalls">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900">Common Pitfalls to Avoid</h3>
+                    <p class="mt-4 text-md text-gray-600 max-w-2xl mx-auto">Knowing what not to do is as important as knowing what to do. Many conversational AI projects fail due to a set of common, avoidable mistakes. Click on each card to see the pitfall and the recommended best practice.</p>
+                </div>
+                <div id="pitfalls-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 mt-24">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-400 text-sm">
+            <p>Interactive Guide based on "Architecting Dialogue" Report.</p>
+            <p>&copy; 2025. For educational purposes only.</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const heuristicsData = [
+        { title: 'Visibility of System Status', description: 'Keep users informed. Use cues like "Just 2 more questions to go" or "Hold on while I look that up..." to manage expectations.' },
+        { title: 'Match System & Real World', description: 'Speak the user\'s language. Use familiar words and concepts, not jargon. Understand informal language and context.' },
+        { title: 'User Control & Freedom', description: 'Provide an "emergency exit". Allow users to interrupt, correct, or change topics easily. Confirm high-stakes actions.' },
+        { title: 'Consistency & Standards', description: 'Maintain a consistent persona and brand voice. The agent\'s personality and terminology should not change unexpectedly.' },
+        { title: 'Error Prevention', description: 'Prevent problems before they occur. Use structured inputs like buttons and quick replies to guide users and eliminate ambiguity.' },
+        { title: 'Recognition, Not Recall', description: 'Minimize user memory load. Remember conversation context and user details across sessions to avoid repetition.' },
+        { title: 'Flexibility & Efficiency', description: 'Cater to both novice and expert users. Allow for multi-turn guidance and single-utterance "accelerators".' },
+        { title: 'Aesthetic & Minimalist Design', description: 'Be concise. Avoid walls of text. Every extra word diminishes the visibility of relevant information.' },
+        { title: 'Help Recover from Errors', description: 'Provide helpful error messages. Diagnose the problem in plain language and constructively suggest a solution.' },
+        { title: 'Help & Documentation', description: 'Provide a clear path to support. When at its limits, the agent must offer a seamless handoff to a human or help articles.' }
+    ];
+
+    const ethicsData = [
+        { title: 'Algorithmic Bias', description: 'Risk: The agent produces unfair or discriminatory outcomes. Mitigation: Use diverse training data, conduct regular audits, and implement user feedback mechanisms to flag biased content.' },
+        { title:alue: 'Data Privacy Violation', description: 'Risk: Unauthorized collection or exposure of sensitive user data. Mitigation: Practice data minimization, obtain explicit consent, and provide users with control to view and delete their data.' },
+        { title: 'Lack of Transparency / Deception', description: 'Risk: Users are unaware they are talking to an AI or are misled about its capabilities. Mitigation: Clearly disclose the AI identity upfront and be honest about its limitations.' },
+        { title: 'Manipulation / Nudging', description: 'Risk: The agent subtly steers users towards actions that benefit the organization over the user. Mitigation: Design for user goals, not just business goals. Avoid deceptive language.' },
+        { title: 'Safety and Harmful Content', description: 'Risk: The agent provides dangerously inaccurate information or generates offensive content. Mitigation: Ground responses in verified knowledge, implement robust content filtering.' },
+        { title: 'Lack of Accountability', description: 'Risk: No clear path for redress when the agent fails or causes harm. Mitigation: Provide a clear, easy-to-use option to escalate to a human agent at any point.' }
+    ];
+
+    const pitfallsData = [
+        { front: 'Pitfall: Lack of Clear Purpose', back: 'Solution: Start with a narrow, high-impact use case. Solve one specific, frequent user problem exceptionally well.' },
+        { front: 'Pitfall: Generic, Impersonal Design', back: 'Solution: Craft a distinct, brand-aligned persona. A consistent and relatable character builds trust.' },
+        { front: 'Pitfall: Poor Conversational Flow', back: 'Solution: Keep messages short. Use structured inputs like buttons to guide the user and simplify interaction.' },
+        { front: 'Pitfall: Inadequate Error Handling', back: 'Solution: Plan for failure. Replace "I don\'t understand" with helpful guidance that gets the conversation back on track.' },
+        { front: 'Pitfall: Deceiving the User', back: 'Solution: Be transparent. Disclose that the user is talking to an AI. Trust is broken irrevocably by deception.' },
+        { front: 'Pitfall: Ignoring Human Handoff', back: 'Solution: Provide an escape hatch. Always offer a clear and accessible path to escalate to a human agent.' }
+    ];
+
+    function initHeuristics() {
+        const grid = document.getElementById('heuristics-grid');
+        if (!grid) return;
+        grid.innerHTML = heuristicsData.map(h => `
+            <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 group">
+                <h4 class="font-bold text-md text-gray-800">${h.title}</h4>
+                <p class="text-sm text-gray-500 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-0 group-hover:h-auto">${h.description}</p>
+            </div>
+        `).join('');
+    }
+
+    function initPersonaChart() {
+        const ctx = document.getElementById('persona-chart');
+        if (!ctx) return;
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Enthusiastic', 'Formal', 'Serious', 'Respectful', 'Matter-of-fact', 'Casual', 'Funny', 'Irreverent'],
+                datasets: [{
+                    label: 'Helpful Persona',
+                    data: [6, 4, 3, 9, 5, 7, 4, 2],
+                    fill: true,
+                    backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                    borderColor: 'rgb(37, 99, 235)',
+                    pointBackgroundColor: 'rgb(37, 99, 235)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(37, 99, 235)'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                        grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                        pointLabels: { font: { size: 12 } },
+                        suggestedMin: 0,
+                        suggestedMax: 10,
+                        ticks: {
+                           display: false,
+                           stepSize: 2
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => `${context.dataset.label}: ${context.raw}`
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function initModalityToggle() {
+        const voiceBtn = document.getElementById('voice-btn');
+        const textBtn = document.getElementById('text-btn');
+        const toggleBg = document.getElementById('toggle-bg');
+        const voiceCard = document.getElementById('voice-card');
+        const textCard = document.getElementById('text-card');
+
+        if (!voiceBtn || !textBtn || !toggleBg || !voiceCard || !textCard) return;
+
+        function setToggle(mode) {
+            if (mode === 'voice') {
+                toggleBg.style.transform = 'translateX(0)';
+                voiceBtn.classList.add('text-blue-600');
+                textBtn.classList.remove('text-blue-600');
+                voiceCard.classList.add('border-blue-500', 'shadow-lg');
+                voiceCard.classList.remove('border-transparent', 'shadow-md');
+                textCard.classList.add('border-transparent', 'shadow-md');
+                textCard.classList.remove('border-green-500', 'shadow-lg');
+            } else {
+                toggleBg.style.transform = `translateX(${voiceBtn.offsetWidth}px)`;
+                textBtn.classList.add('text-blue-600');
+                voiceBtn.classList.remove('text-blue-600');
+                textCard.classList.add('border-green-500', 'shadow-lg');
+                textCard.classList.remove('border-transparent', 'shadow-md');
+                voiceCard.classList.add('border-transparent', 'shadow-md');
+                voiceCard.classList.remove('border-blue-500', 'shadow-lg');
+            }
+        }
+        
+        setToggle('voice');
+        voiceBtn.addEventListener('click', () => setToggle('voice'));
+        textBtn.addEventListener('click', () => setToggle('text'));
+    }
+
+    function initPlatformFilter() {
+        const filter = document.getElementById('platform-filter');
+        const table = document.getElementById('platform-table');
+        if (!filter || !table) return;
+
+        filter.addEventListener('change', (e) => {
+            const platform = e.target.value;
+            const allCols = table.querySelectorAll('.platform-col');
+            allCols.forEach(col => {
+                col.classList.remove('bg-blue-50', 'text-blue-800');
+                col.style.transition = 'background-color 0.3s ease';
+            });
+
+            if (platform !== 'all') {
+                const selectedCols = table.querySelectorAll(`.${platform}`);
+                selectedCols.forEach(col => {
+                    col.classList.add('bg-blue-50', 'text-blue-800');
+                });
+            }
+        });
+    }
+
+    function initEthicsAccordion() {
+        const accordion = document.getElementById('ethics-accordion');
+        if (!accordion) return;
+
+        accordion.innerHTML = ethicsData.map((item, index) => `
+            <div class="border border-gray-200 rounded-lg bg-white">
+                <h2>
+                    <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 hover:bg-gray-50" data-accordion-target="ethics-body-${index}">
+                        <span>${item.title}</span>
+                        <svg class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </h2>
+                <div id="ethics-body-${index}" class="hidden p-5 border-t border-gray-200">
+                    <p class="text-gray-600">${item.description}</p>
+                </div>
+            </div>
+        `).join('');
+
+        accordion.addEventListener('click', (e) => {
+            const button = e.target.closest('button[data-accordion-target]');
+            if (button) {
+                const targetId = button.getAttribute('data-accordion-target');
+                const targetPanel = document.getElementById(targetId);
+                const icon = button.querySelector('svg');
+                
+                if (targetPanel.classList.contains('hidden')) {
+                    targetPanel.classList.remove('hidden');
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    targetPanel.classList.add('hidden');
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            }
+        });
+    }
+
+    function initPitfallsGrid() {
+        const grid = document.getElementById('pitfalls-grid');
+        if (!grid) return;
+
+        grid.innerHTML = pitfallsData.map(p => `
+            <div class="card-flip h-48 rounded-lg shadow-md cursor-pointer">
+                <div class="card-flip-inner rounded-lg">
+                    <div class="card-face bg-white p-6 flex items-center justify-center text-center rounded-lg">
+                        <h4 class="text-lg font-semibold text-red-600">${p.front}</h4>
+                    </div>
+                    <div class="card-back bg-green-100 p-6 flex items-center justify-center text-center rounded-lg">
+                        <p class="text-md text-green-800">${p.back}</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        grid.addEventListener('click', (e) => {
+            const card = e.target.closest('.card-flip');
+            if (card) {
+                card.classList.toggle('flipped');
+            }
+        });
+    }
+    
+    function initMobileMenu() {
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if(menuButton && mobileMenu) {
+            menuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+    }
+
+    function initNavScroll() {
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                    });
+                }
+            });
+        }, { rootMargin: "-50% 0px -50% 0px" });
+
+        sections.forEach(section => observer.observe(section));
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+                if(mobileMenu.classList.contains('hidden') === false) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    }
+
+    initHeuristics();
+    initPersonaChart();
+    initModalityToggle();
+    initPlatformFilter();
+    initEthicsAccordion();
+    initPitfallsGrid();
+    initMobileMenu();
+    initNavScroll();
+});
+</script>
+</body>
+</html>

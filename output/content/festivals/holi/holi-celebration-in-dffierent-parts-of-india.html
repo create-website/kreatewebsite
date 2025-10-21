@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colors of India: A Holi Celebration Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Vibrant Accents -->
+    <!-- Application Structure Plan: The application uses a filter-based navigation model. A top-level set of buttons allows users to select a region of India (North, East, West, South). This action dynamically updates a central content area, displaying cards with details of specific Holi celebrations from that region. This structure was chosen because it allows users to easily compare and explore regional variations without being overwhelmed by a long, static page. It promotes a focused, interactive discovery process, which is more engaging than simple reading. -->
+    <!-- Visualization & Content Choices: 1. Regional Celebrations -> Goal: Inform/Organize -> Presentation: Dynamic HTML Cards -> Interaction: Content is filtered based on user's click on regional buttons. This provides an organized, uncluttered view of complex information. Method: Vanilla JS DOM manipulation. 2. Celebration Duration -> Goal: Compare -> Viz: Horizontal Bar Chart -> Interaction: Chart data updates dynamically with regional selection; tooltips show exact duration. This provides a quick, visual comparison of a key festival attribute. Library: Chart.js (Canvas). All visual elements are created using structured HTML/CSS or rendered on a Canvas, ensuring no SVG is used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8F0;
+            color: #4A4A4A;
+        }
+        .active-filter {
+            background-color: #FF6B6B !important;
+            color: white !important;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="text-center py-8 md:py-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-[#FF6B6B]">Colors of India</h1>
+        <p class="mt-2 text-lg md:text-xl text-gray-600">An Interactive Guide to Regional Holi Celebrations</p>
+    </header>
+
+    <main class="container mx-auto px-4 pb-12">
+        <section id="introduction" class="max-w-4xl mx-auto text-center mb-10">
+            <p class="text-gray-700 leading-relaxed">
+                Holi, the festival of colors, is celebrated with immense joy and enthusiasm across India. However, the traditions and rituals vary dramatically from one region to another, painting a rich tapestry of cultural diversity. This guide allows you to explore these unique celebrations. Select a region below to discover its distinct Holi traditions and see how the duration of festivities compares.
+            </p>
+        </section>
+
+        <nav id="region-filters" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-10">
+            <button data-region="All" class="filter-btn px-4 py-2 rounded-full bg-white text-gray-700 shadow-sm hover:bg-gray-100 transition-all duration-300">All Regions</button>
+            <button data-region="North" class="filter-btn px-4 py-2 rounded-full bg-white text-gray-700 shadow-sm hover:bg-gray-100 transition-all duration-300">North India</button>
+            <button data-region="East" class="filter-btn px-4 py-2 rounded-full bg-white text-gray-700 shadow-sm hover:bg-gray-100 transition-all duration-300">East India</button>
+            <button data-region="West" class="filter-btn px-4 py-2 rounded-full bg-white text-gray-700 shadow-sm hover:bg-gray-100 transition-all duration-300">West India</button>
+            <button data-region="South" class="filter-btn px-4 py-2 rounded-full bg-white text-gray-700 shadow-sm hover:bg-gray-100 transition-all duration-300">South India</button>
+        </nav>
+
+        <section id="celebration-details" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        </section>
+
+        <section id="duration-comparison" class="bg-white p-6 rounded-2xl shadow-lg">
+            <h2 class="text-2xl font-bold text-center mb-2 text-[#4ECDC4]">Festival Duration Comparison</h2>
+            <p class="text-center text-gray-600 mb-6">This chart visually compares the typical length of Holi celebrations in the selected region. Hover over the bars for exact days.</p>
+            <div class="chart-container">
+                <canvas id="durationChart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-6 border-t border-gray-200 mt-8">
+        <p class="text-gray-500">Explore the vibrant traditions of India.</p>
+    </footer>
+
+    <script>
+        const holiData = [
+            {
+                region: "North",
+                name: "Lathmar Holi",
+                location: "Barsana & Nandgaon, Uttar Pradesh",
+                duration: 7,
+                description: "A unique celebration where women playfully beat men with lathis (sticks), re-enacting a famous Hindu legend. It's a colorful, boisterous, and one-of-a-kind spectacle.",
+                color: "#FFD166"
+            },
+            {
+                region: "North",
+                name: "Holla Mohalla",
+                location: "Anandpur Sahib, Punjab",
+                duration: 3,
+                description: "A Sikh festival established by Guru Gobind Singh. It's a demonstration of martial skills, featuring mock battles, archery, and horse riding, alongside music and poetry.",
+                color: "#06D6A0"
+            },
+            {
+                region: "North",
+                name: "Kumaoni Holi",
+                location: "Kumaon Region, Uttarakhand",
+                duration: 5,
+                description: "A musical affair that starts from Basant Panchami. It includes Baithki Holi (musical gatherings) and Khari Holi (singing and dancing in traditional attire).",
+                color: "#118AB2"
+            },
+            {
+                region: "East",
+                name: "Basanta Utsav",
+                location: "Shantiniketan, West Bengal",
+                duration: 2,
+                description: "Started by Rabindranath Tagore, this is a graceful and culturally rich celebration. Students dress in yellow, sing, and dance to Tagore's songs, welcoming spring.",
+                color: "#EF476F"
+            },
+            {
+                region: "East",
+                name: "Phaguwa",
+                location: "Bihar & Jharkhand",
+                duration: 2,
+                description: "Known for its folk songs ('Phag') and energetic celebrations. The day before Holi, Holika Dahan is observed, and on the day, people play with dry colors (gulal) and water.",
+                color: "#FFD166"
+            },
+            {
+                region: "West",
+                name: "Shigmo",
+                location: "Goa",
+                duration: 14,
+                description: "A massive spring festival celebrated by the Konkani diaspora. It includes traditional folk dances, street parades with elaborate floats depicting regional mythology.",
+                color: "#06D6A0"
+            },
+            {
+                region: "West",
+                name: "Royal Holi",
+                location: "Udaipur, Rajasthan",
+                duration: 2,
+                description: "An elegant and regal affair. The Mewar royal family participates in the Holika Dahan ceremony at the City Palace, followed by a grand procession with decorated horses and a royal band.",
+                color: "#118AB2"
+            },
+            {
+                region: "South",
+                name: "Manjal Kuli",
+                location: "Kerala",
+                duration: 2,
+                description: "Celebrated in certain temples of Kerala, this is a more traditional and less boisterous version. Instead of synthetic colors, turmeric (manjal) and sandalwood water are used.",
+                color: "#EF476F"
+            },
+            {
+                region: "South",
+                name: "Kamadahana",
+                location: "Tamil Nadu",
+                duration: 1,
+                description: "Commemorates the legend of Kamadeva. People offer sandalwood to the fire, believing it brings relief from physical ailments. The focus is more on the ritual than on playing with colors.",
+                color: "#FFD166"
+            }
+        ];
+
+        let durationChart;
+        let currentRegion = 'All';
+
+        const detailsContainer = document.getElementById('celebration-details');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+
+        function createCelebrationCard(item) {
+            const card = document.createElement('div');
+            card.className = 'bg-white p-6 rounded-xl shadow-md border-t-4 transition-transform transform hover:-translate-y-1';
+            card.style.borderColor = item.color;
+
+            card.innerHTML = `
+                <h3 class="text-xl font-bold mb-2" style="color: ${item.color};">${item.name}</h3>
+                <p class="text-sm font-medium text-gray-500 mb-3">${item.location}</p>
+                <p class="text-gray-700 leading-relaxed">${item.description}</p>
+            `;
+            return card;
+        }
+
+        function updateDisplay(region) {
+            detailsContainer.innerHTML = '';
+            const filteredData = region === 'All' ? holiData : holiData.filter(item => item.region === region);
+            
+            if (filteredData.length === 0) {
+                 detailsContainer.innerHTML = `<p class="text-center text-gray-600 md:col-span-2 lg:col-span-3">No specific celebrations listed for this region. Holi is celebrated more privately or with different local customs here.</p>`;
+            } else {
+                 filteredData.forEach(item => {
+                    const card = createCelebrationCard(item);
+                    detailsContainer.appendChild(card);
+                });
+            }
+
+
+            updateChart(filteredData);
+
+            filterButtons.forEach(button => {
+                if (button.dataset.region === region) {
+                    button.classList.add('active-filter');
+                } else {
+                    button.classList.remove('active-filter');
+                }
+            });
+        }
+
+        function updateChart(data) {
+            const labels = data.map(item => item.name);
+            const durations = data.map(item => item.duration);
+            const colors = data.map(item => item.color);
+
+            durationChart.data.labels = labels;
+            durationChart.data.datasets[0].data = durations;
+            durationChart.data.datasets[0].backgroundColor = colors;
+            durationChart.data.datasets[0].borderColor = colors;
+            durationChart.update();
+        }
+
+        function initializeChart() {
+            const ctx = document.getElementById('durationChart').getContext('2d');
+            durationChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Festival Duration (Days)',
+                        data: [],
+                        backgroundColor: [],
+                        borderColor: [],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Days'
+                            }
+                        },
+                        y: {
+                           ticks: {
+                                autoSkip: false,
+                                callback: function(value) {
+                                    const label = this.getLabelForValue(value);
+                                    if (label.length > 20) {
+                                        return label.substring(0, 20) + '...';
+                                    }
+                                    return label;
+                                }
+                           }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` Duration: ${context.raw} days`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initializeChart();
+            updateDisplay(currentRegion);
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    currentRegion = button.dataset.region;
+                    updateDisplay(currentRegion);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dharma's Tapestry: A Visual Guide to the Ramayana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a linear narrative structure to tell the story of the Ramayana in a clear, digestible format. It begins with a hook introducing the core concept of Dharma, followed by sections detailing the main narrative arc, a spotlight on key 'unsung' characters, and a comparative analysis of the two main versions of the epic. This structure was chosen to guide the user through a complex topic logically, moving from the general story to deeper character and textual analysis. -->
+    <!-- Visualization & Content Choices: Report Info: Pivotal Events -> Goal: Change -> Viz: HTML/CSS Timeline -> Justification: Best way to show a sequence of events without SVG/Mermaid. Report Info: Unsung Characters -> Goal: Compare/Inform -> Viz: Bar Chart & Cards -> Justification: The bar chart visually ranks the 'impact' of their sacrifices, while cards provide detailed information. Chart.js is used for the bar chart. Report Info: Valmiki vs. Tulsidas -> Goal: Compare -> Viz: Donut Charts & Side-by-Side Text -> Justification: Donut charts offer a quick visual summary of thematic focus, supported by detailed textual comparisons. All charts use Chart.js and are rendered on Canvas. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #F2F2F2;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #FF6B6B;
+            border: 4px solid #F2F2F2;
+        }
+    </style>
+</head>
+<body class="text-[#4A4A4A]">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+
+        <header class="text-center my-12">
+            <h1 class="text-6xl md:text-8xl font-bold text-[#4A4A4A]">DHARMA'S TAPESTRY</h1>
+            <h2 class="text-3xl md:text-4xl text-[#FF6B6B] mt-2">A VISUAL EXPLORATION OF THE RAMAYANA</h2>
+            <p class="max-w-3xl mx-auto mt-4 text-lg">
+                The Ramayana is more than an epic tale; it's a profound exploration of <span class="font-bold text-[#4ECDC4]">Dharma</span>—the path of righteousness, duty, and cosmic law. This infographic visualizes the key events, unsung heroes, and enduring legacy of this timeless story.
+            </p>
+        </header>
+
+        <section class="my-16">
+            <h2 class="text-5xl text-center mb-12 font-bold text-[#4A4A4A]">THE NARRATIVE ARC</h2>
+            <div class="relative border-l-4 border-[#4ECDC4] ml-4 md:ml-0 md:mx-auto max-w-2xl py-8">
+                <div class="timeline-item mb-12 pl-10">
+                    <h3 class="text-3xl font-bold text-[#FF6B6B]">A PRINCE'S EXILE</h3>
+                    <p class="mt-2 text-md">Palace intrigue forces Prince Rama into a 14-year exile with his wife Sita and brother Lakshmana, stripping them of royalty and testing their inner commitment to Dharma.</p>
+                </div>
+                <div class="timeline-item mb-12 pl-10">
+                    <h3 class="text-3xl font-bold text-[#FF6B6B]">THE ABDUCTION OF SITA</h3>
+                    <p class="mt-2 text-md">The demon king Ravana, seeking revenge for his sister's mutilation, abducts Sita, setting the stage for an epic conflict between good and evil.</p>
+                </div>
+                <div class="timeline-item mb-12 pl-10">
+                    <h3 class="text-3xl font-bold text-[#FF6B6B]">THE QUEST & ALLIANCES</h3>
+                    <p class="mt-2 text-md">Rama and Lakshmana forge crucial alliances with figures like the vulture king Jatayu and the Vanara king Sugriva, demonstrating that even an avatar needs allies to uphold righteousness.</p>
+                </div>
+                <div class="timeline-item mb-12 pl-10">
+                    <h3 class="text-3xl font-bold text-[#FF6B6B]">THE WAR FOR DHARMA</h3>
+                    <p class="mt-2 text-md">Rama's army, aided by Ravana's righteous brother Vibhishana, builds a bridge to Lanka and wages a climactic war, culminating in Rama's victory over the ten-headed demon king.</p>
+                </div>
+                <div class="timeline-item pl-10">
+                    <h3 class="text-3xl font-bold text-[#FF6B6B]">A KING'S SACRIFICE</h3>
+                    <p class="mt-2 text-md">Despite Sita proving her purity, public doubt forces Rama to banish his pregnant wife, a tragic choice highlighting the conflict between a king's duty and a husband's love.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-20">
+            <h2 class="text-5xl text-center mb-4 font-bold text-[#4A4A4A]">THE UNSUNG PILLARS</h2>
+            <p class="text-center max-w-3xl mx-auto text-lg mb-12">The epic's moral structure is supported by characters whose quiet sacrifices are indispensable. This chart visualizes the profound impact of their contributions to the story of Dharma.</p>
+            <div class="bg-white rounded-lg shadow-xl p-6">
+                 <div class="chart-container">
+                    <canvas id="unsungHeroesChart"></canvas>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 mt-12">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-3xl font-bold text-[#4ECDC4]">URMILA <span class="text-xl text-gray-500">(Wife of Lakshmana)</span></h3>
+                    <p class="mt-2">Her sacrifice is one of consciousness. By entering a magical 14-year sleep, she enables her husband Lakshmana's sleepless vigilance, which is crucial for his victory over the demon Meghanada.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-3xl font-bold text-[#4ECDC4]">JATAYU & SAMPATI <span class="text-xl text-gray-500">(Avian Brothers)</span></h3>
+                    <p class="mt-2">Jatayu sacrifices his life in a direct, heroic attempt to stop Sita's abduction. His brother Sampati sacrifices his despair, using his unique far-sight to provide the crucial intelligence that locates Sita in Lanka.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-3xl font-bold text-[#4ECDC4]">SHABARI & GUHA <span class="text-xl text-gray-500">(Devotees)</span></h3>
+                    <p class="mt-2">These figures from outside the royal court demonstrate pure devotion. Shabari's offering of tasted berries and Guha's loyal friendship show that Rama's vision of a righteous kingdom transcends caste and social status.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-3xl font-bold text-[#4ECDC4]">AHALYA <span class="text-xl text-gray-500">(Sage's Wife)</span></h3>
+                    <p class="mt-2">Cursed to be invisible or a stone for a transgression, her redemption by Rama establishes his role as a compassionate liberator, setting a complex precedent for the later, harsher trial of his own wife, Sita.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-20">
+            <h2 class="text-5xl text-center mb-4 font-bold text-[#4A4A4A]">A TALE IN TWO VERSIONS</h2>
+            <p class="text-center max-w-3xl mx-auto text-lg mb-12">The Ramayana has been retold for centuries. A comparison between Valmiki's ancient epic and Tulsidas's 16th-century devotional retelling reveals a shift from an ethics-focused narrative to a devotion-focused one.</p>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-4xl text-center font-bold text-[#FFD166]">VALMIKI'S RAMAYANA</h3>
+                    <p class="text-center text-lg mt-2 mb-4">Focus on Human Ethics & Action</p>
+                    <div class="chart-container" style="height: 300px; max-height: 300px;">
+                        <canvas id="valmikiChart"></canvas>
+                    </div>
+                    <ul class="mt-4 space-y-2 list-disc list-inside">
+                        <li><strong>Rama as Ideal Man:</strong> Experiences genuine grief and uncertainty. His adherence to Dharma is a monumental human achievement.</li>
+                        <li><strong>Strong, Outspoken Sita:</strong> An assertive figure who argues her points and shows immense inner fortitude.</li>
+                        <li><strong>Real Abduction:</strong> The actual Sita is abducted, and her ordeal is a genuine test of her resilience.</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-4xl text-center font-bold text-[#06D6A0]">TULSIDAS'S RAMCHARITMANAS</h3>
+                    <p class="text-center text-lg mt-2 mb-4">Focus on Divine Play & Devotion</p>
+                    <div class="chart-container" style="height: 300px; max-height: 300px;">
+                        <canvas id="tulsidasChart"></canvas>
+                    </div>
+                    <ul class="mt-4 space-y-2 list-disc list-inside">
+                        <li><strong>Rama as Supreme Being:</strong> Omniscient and divine. His actions are 'leela' (divine play) to inspire devotion.</li>
+                        <li><strong>Pious, Ideal Consort:</strong> Reflecting later norms, Sita is softer, more reticent, and defined by her piety.</li>
+                        <li><strong>'Maya Sita' Abducted:</strong> An illusory clone is abducted to protect the divine goddess from impurity.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+<script>
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        if (Array.isArray(label)) {
+            return label.join(' ');
+        }
+        return label;
+    };
+
+    const wrapLabel = (label) => {
+        const maxLength = 16;
+        if (label.length <= maxLength) return label;
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + ' ' + word).length > maxLength) {
+                lines.push(currentLine);
+                currentLine = word;
+            } else {
+                currentLine = currentLine ? currentLine + ' ' + word : word;
+            }
+        });
+        lines.push(currentLine);
+        return lines;
+    };
+
+    const unsungHeroesData = {
+        labels: ['Urmila', 'Jatayu', 'Sampati', 'Shabari', 'Guha', 'Ahalya', ['Mandavi &', 'Shrutakirti']].map(l => Array.isArray(l) ? l : wrapLabel(l)),
+        datasets: [{
+            label: 'Impact Score (Qualitative)',
+            data: [90, 85, 80, 75, 70, 65, 60],
+            backgroundColor: ['#FF6B6B', '#FFD166', '#06D6A0', '#4ECDC4', '#4A4A4A', '#FF6B6B', '#FFD166'],
+            borderColor: '#F2F2F2',
+            borderWidth: 2
+        }]
+    };
+
+    new Chart(document.getElementById('unsungHeroesChart'), {
+        type: 'bar',
+        data: unsungHeroesData,
+        options: {
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    grid: { color: '#EAEAEA' },
+                    ticks: { font: { family: "'Roboto', sans-serif", size: 14 } }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: { font: { family: "'Roboto', sans-serif", size: 14, weight: '500' } }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'Qualitative Impact of Sacrifices',
+                    font: { family: "'Teko', sans-serif", size: 24 },
+                    padding: { top: 10, bottom: 20 }
+                },
+                tooltip: {
+                    callbacks: { title: tooltipTitleCallback }
+                }
+            }
+        }
+    });
+
+    const valmikiData = {
+        labels: ['Dharma (Ethics)', 'Human Action', 'Statecraft'],
+        datasets: [{
+            data: [50, 35, 15],
+            backgroundColor: ['#FFD166', '#4A4A4A', '#FF6B6B'],
+            hoverOffset: 4
+        }]
+    };
+
+    new Chart(document.getElementById('valmikiChart'), {
+        type: 'doughnut',
+        data: valmikiData,
+        options: {
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { font: { family: "'Roboto', sans-serif", size: 14 } }
+                },
+                tooltip: {
+                    callbacks: { title: tooltipTitleCallback }
+                }
+            }
+        }
+    });
+    
+    const tulsidasData = {
+        labels: ['Bhakti (Devotion)', 'Divine Leela', 'Grace'],
+        datasets: [{
+            data: [60, 25, 15],
+            backgroundColor: ['#06D6A0', '#4ECDC4', '#4A4A4A'],
+            hoverOffset: 4
+        }]
+    };
+
+    new Chart(document.getElementById('tulsidasChart'), {
+        type: 'doughnut',
+        data: tulsidasData,
+        options: {
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { font: { family: "'Roboto', sans-serif", size: 14 } }
+                },
+                tooltip: {
+                    callbacks: { title: tooltipTitleCallback }
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

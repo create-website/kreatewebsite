@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dussehra: The Ultimate Ravan Dahan Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Teko:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .font-teko {
+            font-family: 'Teko', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-amber-50 text-stone-800">
+    <!-- Chosen Palette: Golden Triumph -->
+    <!-- Application Structure Plan: A thematic, single-page application designed for easy navigation and focused learning. The structure is broken down into logical phases of planning and execution: Introduction, Planning, Construction, Safety, and Event Day. This is more intuitive for a user planning an event than a simple linear report. A sticky navigation bar allows users to jump between these phases easily. Interactive elements like a budget chart and construction tabs are used to make dense information digestible and engaging. The goal is to guide the user from concept to completion in a structured, user-friendly flow. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Event Budget -> Goal: Inform on fund allocation -> Viz: Donut Chart -> Interaction: Hover to see details -> Justification: Excellent for showing parts-of-a-whole, making financial distribution clear. -> Library: Chart.js (Canvas).
+        - Report Info: Construction Steps -> Goal: Organize complex process -> Viz: Tabbed Interface -> Interaction: Click tabs to reveal step-by-step guides -> Justification: Breaks down a large task into manageable chunks, preventing information overload. -> Library: Vanilla JS/HTML/CSS.
+        - Report Info: Project Timeline -> Goal: Visualize key milestones -> Viz: Horizontal Timeline Diagram -> Interaction: Visual progression, no clicks needed -> Justification: More intuitive and scannable than a text list for understanding project flow. -> Library: HTML/CSS (Tailwind).
+        - Report Info: Safety Rules -> Goal: Emphasize critical information -> Viz: Icon-based List -> Interaction: None, focus on clarity -> Justification: Icons and clear headings make critical safety information highly visible and easy to remember. -> Library: HTML/CSS with Unicode.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <header class="bg-amber-100/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="font-teko text-3xl font-bold text-orange-600">RAVAN DAHAN PLANNER</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#intro" class="text-stone-700 hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Introduction</a>
+                        <a href="#planning" class="text-stone-700 hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Planning</a>
+                        <a href="#construction" class="text-stone-700 hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Construction</a>
+                        <a href="#safety" class="text-stone-700 hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Safety First</a>
+                        <a href="#eventday" class="text-stone-700 hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium">The Big Day</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        <section id="intro" class="text-center my-12">
+            <h2 class="font-teko text-6xl md:text-8xl font-bold text-orange-600 tracking-wide">Victory of Light Over Darkness</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-stone-600">
+                This guide provides a comprehensive overview of organizing a Ravan Dahan event for Dussehra. Ravan Dahan, the burning of an effigy of the demon king Ravana, symbolizes the triumph of good over evil. This section explains the story's significance, setting the cultural context for the preparations that follow. It's a celebration of righteousness, courage, and the ultimate victory of truth.
+            </p>
+        </section>
+
+        <section id="planning" class="my-16 scroll-mt-20">
+            <h2 class="font-teko text-5xl font-semibold text-center mb-2 text-maroon-800">The Grand Plan</h2>
+            <p class="text-center max-w-3xl mx-auto mb-12 text-stone-600">
+                A successful Ravan Dahan requires careful planning, from budgeting to scheduling. This section provides interactive tools and a clear timeline to help you organize your team and resources effectively. Explore the budget breakdown and key project milestones to ensure your event comes together smoothly and on schedule.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="font-teko text-3xl text-center font-semibold mb-4 text-orange-600">Estimated Budget Breakdown</h3>
+                    <div class="chart-container">
+                        <canvas id="budgetChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="font-teko text-3xl text-center font-semibold mb-6 text-orange-600">Project Timeline</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-center">
+                            <div class="bg-orange-500 text-white rounded-full h-10 w-10 flex items-center justify-center font-bold">1</div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold text-lg">4-6 Weeks Out: Foundation</h4>
+                                <p class="text-stone-600">Form a team, set a budget, secure permissions.</p>
+                            </div>
+                        </div>
+                         <div class="flex items-center">
+                            <div class="bg-orange-500 text-white rounded-full h-10 w-10 flex items-center justify-center font-bold">2</div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold text-lg">3-4 Weeks Out: Sourcing</h4>
+                                <p class="text-stone-600">Gather all materials: bamboo, paper, crackers, etc.</p>
+                            </div>
+                        </div>
+                         <div class="flex items-center">
+                            <div class="bg-orange-500 text-white rounded-full h-10 w-10 flex items-center justify-center font-bold">3</div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold text-lg">1-2 Weeks Out: Construction</h4>
+                                <p class="text-stone-600">Begin building the effigy frame and structure.</p>
+                            </div>
+                        </div>
+                         <div class="flex items-center">
+                            <div class="bg-orange-500 text-white rounded-full h-10 w-10 flex items-center justify-center font-bold">4</div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold text-lg">Event Week: Final Touches</h4>
+                                <p class="text-stone-600">Apply paper skin, paint, and install fireworks.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="construction" class="my-16 scroll-mt-20">
+            <h2 class="font-teko text-5xl font-semibold text-center mb-2 text-maroon-800">Building the Giant</h2>
+             <p class="text-center max-w-3xl mx-auto mb-12 text-stone-600">
+                The heart of the celebration is the effigy itself. This section provides a step-by-step guide to constructing the effigy of Ravana. Use the tabs below to navigate through each phase of the build, from creating the sturdy bamboo frame to the final decorative touches. Each step includes key materials and expert tips for a spectacular result.
+            </p>
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="border-b border-stone-200">
+                    <nav id="construction-tabs" class="-mb-px flex space-x-4 px-6" aria-label="Tabs">
+                        <button class="tab-btn active text-orange-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-orange-500">Frame</button>
+                        <button class="tab-btn text-stone-500 hover:text-stone-700 hover:border-stone-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent">Skin & Paper</button>
+                        <button class="tab-btn text-stone-500 hover:text-stone-700 hover:border-stone-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent">Heads & Face</button>
+                        <button class="tab-btn text-stone-500 hover:text-stone-700 hover:border-stone-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent">Finishing</button>
+                    </nav>
+                </div>
+                <div class="p-6 md:p-8">
+                    <div id="tab-content-frame" class="tab-content">
+                        <h3 class="font-teko text-3xl font-semibold text-orange-600 mb-3">1. The Bamboo Skeleton</h3>
+                        <p class="text-stone-600 mb-4">The frame is the most critical part, providing structure and stability. Use strong, thick bamboo for the main torso and legs, and thinner pieces for arms and details. Lash all joints securely with rope or strong wire.</p>
+                        <ul class="list-disc list-inside space-y-2 text-stone-700">
+                            <li><strong>Materials:</strong> Thick bamboo poles, thin bamboo sticks, strong coir rope, wire.</li>
+                            <li><strong>Tip:</strong> Create a wide, stable base to prevent the effigy from tipping over, especially in windy conditions.</li>
+                            <li><strong>Action:</strong> Construct the torso first, then attach the legs, arms, and neck structure. Ensure everything is symmetrical.</li>
+                        </ul>
+                    </div>
+                    <div id="tab-content-skin" class="tab-content hidden">
+                        <h3 class="font-teko text-3xl font-semibold text-orange-600 mb-3">2. Creating the Skin</h3>
+                        <p class="text-stone-600 mb-4">Once the frame is ready, it's time to give it shape and a surface to paint on. This is typically done with paper, cardboard, or cloth stretched over the frame.</p>
+                        <ul class="list-disc list-inside space-y-2 text-stone-700">
+                            <li><strong>Materials:</strong> Old newspapers, colored paper, cardboard, strong adhesive (flour paste), hay/straw.</li>
+                            <li><strong>Tip:</strong> Use hay or straw to bulk out the chest and limbs before applying the paper layers. This gives the effigy a more three-dimensional shape.</li>
+                            <li><strong>Action:</strong> Apply multiple layers of paper using adhesive for strength. Allow each layer to dry completely.</li>
+                        </ul>
+                    </div>
+                    <div id="tab-content-heads" class="tab-content hidden">
+                        <h3 class="font-teko text-3xl font-semibold text-orange-600 mb-3">3. Crafting the Ten Heads</h3>
+                        <p class="text-stone-600 mb-4">Ravana's ten heads are his defining feature. Each head can be crafted separately and then attached to the main structure. Pay attention to the facial expressions to make them look menacing.</p>
+                        <ul class="list-disc list-inside space-y-2 text-stone-700">
+                            <li><strong>Materials:</strong> Clay, papier-mâché, cardboard, paints.</li>
+                            <li><strong>Tip:</strong> Create a main, larger head for the center and nine smaller, identical heads to arrange around it. A lightweight material like papier-mâché is ideal.</li>
+                            <li><strong>Action:</strong> Mold the faces, let them dry, then paint them with bright, bold colors. Don't forget the iconic mustache!</li>
+                        </ul>
+                    </div>
+                    <div id="tab-content-finishing" class="tab-content hidden">
+                         <h3 class="font-teko text-3xl font-semibold text-orange-600 mb-3">4. Final Paint and Fireworks</h3>
+                        <p class="text-stone-600 mb-4">The final step is to bring the effigy to life with paint and prepare it for the main event by carefully placing fireworks inside.</p>
+                        <ul class="list-disc list-inside space-y-2 text-stone-700">
+                            <li><strong>Materials:</strong> Brightly colored paints, decorative cloths, fireworks, crackers.</li>
+                            <li><strong>Tip:</strong> Paint the body with traditional attire and ornaments. Use gold and black to highlight features.</li>
+                            <li><strong>Action:</strong> Carefully place fireworks inside the body and head cavities, ensuring they are secure. This should ONLY be done by experienced adults.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="safety" class="my-16 scroll-mt-20">
+            <h2 class="font-teko text-5xl font-semibold text-center mb-2 text-maroon-800">Safety First, Always!</h2>
+            <p class="text-center max-w-3xl mx-auto mb-12 text-stone-600">
+                Ravan Dahan involves fire and fireworks, making safety the absolute top priority. This section outlines essential safety protocols to ensure a hazard-free celebration for everyone involved. Following these guidelines is not optional—it is crucial for protecting the construction team, the audience, and the surrounding property.
+            </p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-red-100 border-l-4 border-red-500 p-6 rounded-r-lg">
+                    <h3 class="font-teko text-2xl font-semibold mb-2 text-red-700">👷‍♀️ Construction Site</h3>
+                    <ul class="space-y-2 text-red-900">
+                        <li>Ensure a stable, level base.</li>
+                        <li>Wear gloves when handling bamboo/wire.</li>
+                        <li>Keep the area clear of debris.</li>
+                    </ul>
+                </div>
+                <div class="bg-red-100 border-l-4 border-red-500 p-6 rounded-r-lg">
+                    <h3 class="font-teko text-2xl font-semibold mb-2 text-red-700">🎆 Firework Handling</h3>
+                    <ul class="space-y-2 text-red-900">
+                        <li>Only adults should handle fireworks.</li>
+                        <li>Store crackers in a cool, dry place.</li>
+                        <li>Do not use damaged or dud fireworks.</li>
+                    </ul>
+                </div>
+                <div class="bg-red-100 border-l-4 border-red-500 p-6 rounded-r-lg">
+                    <h3 class="font-teko text-2xl font-semibold mb-2 text-red-700">👨‍👩‍👧‍👦 Crowd Control</h3>
+                    <ul class="space-y-2 text-red-900">
+                        <li>Establish a safe viewing distance.</li>
+                        <li>Use barriers or ropes.</li>
+                        <li>Have clear entry and exit points.</li>
+                    </ul>
+                </div>
+                 <div class="bg-red-100 border-l-4 border-red-500 p-6 rounded-r-lg">
+                    <h3 class="font-teko text-2xl font-semibold mb-2 text-red-700">🧯 Emergency Prep</h3>
+                    <ul class="space-y-2 text-red-900">
+                        <li>Keep fire extinguishers handy.</li>
+                        <li>Have buckets of sand and water ready.</li>
+                        <li>Know emergency contact numbers.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="eventday" class="my-16 scroll-mt-20">
+            <h2 class="font-teko text-5xl font-semibold text-center mb-2 text-maroon-800">The Day of Victory</h2>
+            <p class="text-center max-w-3xl mx-auto mb-12 text-stone-600">
+                The culmination of weeks of hard work is a grand spectacle. This section provides a sample schedule for the day of Ravan Dahan, helping you coordinate the final hours leading up to the main event. Proper timing ensures that the procession, rituals, and the final burning create a memorable and impactful experience for the entire community.
+            </p>
+            <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <ol class="relative border-l border-stone-300">                  
+                    <li class="mb-10 ml-6">            
+                        <span class="absolute flex items-center justify-center w-6 h-6 bg-orange-200 rounded-full -left-3 ring-8 ring-white">
+                           <span class="text-orange-600">🕔</span>
+                        </span>
+                        <h3 class="flex items-center mb-1 text-lg font-semibold text-stone-900">Afternoon: Final Setup</h3>
+                        <p class="block mb-2 text-sm font-normal leading-none text-stone-500">Transport the effigy to the event ground and secure it firmly.</p>
+                    </li>
+                    <li class="mb-10 ml-6">
+                        <span class="absolute flex items-center justify-center w-6 h-6 bg-orange-200 rounded-full -left-3 ring-8 ring-white">
+                           <span class="text-orange-600">🕖</span>
+                        </span>
+                        <h3 class="mb-1 text-lg font-semibold text-stone-900">Evening: Procession & Rituals</h3>
+                        <p class="text-base font-normal text-stone-600">Perform any cultural programs or processions leading up to the main event. Double-check all safety measures.</p>
+                    </li>
+                    <li class="mb-10 ml-6">
+                        <span class="absolute flex items-center justify-center w-6 h-6 bg-orange-200 rounded-full -left-3 ring-8 ring-white">
+                           <span class="text-orange-600">🕗</span>
+                        </span>
+                        <h3 class="mb-1 text-lg font-semibold text-stone-900">Sunset: The Dahan</h3>
+                        <p class="text-base font-normal text-stone-600">The moment everyone is waiting for. The effigy is set alight, symbolizing the destruction of evil. Ensure the crowd is at a safe distance.</p>
+                    </li>
+                     <li class="ml-6">
+                        <span class="absolute flex items-center justify-center w-6 h-6 bg-orange-200 rounded-full -left-3 ring-8 ring-white">
+                           <span class="text-orange-600">🕙</span>
+                        </span>
+                        <h3 class="mb-1 text-lg font-semibold text-stone-900">Post-Event: Cleanup</h3>
+                        <p class="text-base font-normal text-stone-600">Once the fire is completely extinguished, ensure the area is cleaned up responsibly.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-amber-100">
+        <div class="container mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center text-stone-600">
+            <p>Happy Dussehra! May this victory of good over evil bring you joy and prosperity.</p>
+        </div>
+    </footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        
+        const budgetData = {
+            labels: ['Effigy Materials (Bamboo, Paper)', 'Fireworks & Crackers', 'Logistics & Permissions', 'Paint & Decorations', 'Safety Equipment'],
+            datasets: [{
+                label: 'Budget Allocation',
+                data: [40, 30, 10, 15, 5],
+                backgroundColor: [
+                    '#FB923C', // orange-400
+                    '#F97316', // orange-500
+                    '#EA580C', // orange-600
+                    '#c2410c', // orange-700
+                    '#9A3412'  // orange-800
+                ],
+                hoverOffset: 4
+            }]
+        };
+
+        const budgetConfig = {
+            type: 'doughnut',
+            data: budgetData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            boxWidth: 12,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        const budgetChartCtx = document.getElementById('budgetChart').getContext('2d');
+        new Chart(budgetChartCtx, budgetConfig);
+
+        const tabs = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const constructionTabsContainer = document.getElementById('construction-tabs');
+
+        constructionTabsContainer.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('tab-btn')) return;
+
+            const targetTab = e.target;
+            const targetContentId = 'tab-content-' + targetTab.textContent.toLowerCase().split(' ')[0];
+
+            tabs.forEach(tab => {
+                tab.classList.remove('active', 'text-orange-600', 'border-orange-500');
+                tab.classList.add('text-stone-500', 'hover:text-stone-700', 'hover:border-stone-300', 'border-transparent');
+            });
+
+            targetTab.classList.add('active', 'text-orange-600', 'border-orange-500');
+            targetTab.classList.remove('text-stone-500', 'hover:text-stone-700', 'hover:border-stone-300', 'border-transparent');
+
+            tabContents.forEach(content => {
+                if (content.id === targetContentId) {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

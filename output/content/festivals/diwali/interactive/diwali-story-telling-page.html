@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diwali: Stories, History & Meaning</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #fff8e1, #ffffff, #fff3e0);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      padding: 20px;
+      background: #ffecb3;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2em;
+      margin: 0;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .tab-button {
+      padding: 10px 15px;
+      border: 1px solid #ccc;
+      background: #fff;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    .tab-button.active {
+      background: #ffe082;
+      font-weight: bold;
+    }
+    .tab-content {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fff;
+      margin: 0 auto;
+      max-width: 800px;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .timeline li {
+      margin-bottom: 15px;
+    }
+    .quiz {
+      margin-top: 20px;
+    }
+    .quiz .question {
+      margin-bottom: 15px;
+    }
+    .story-box {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+      background: #fffde7;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.8em;
+      color: #666;
+      margin: 20px 0;
+    }
+    button {
+      padding: 6px 12px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>✨ Diwali: Stories, History & Meaning ✨</h1>
+    <p>Explore mythology, history, and significance of Diwali in an interactive way.</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-button active" onclick="openTab('mythology')">Mythology</button>
+    <button class="tab-button" onclick="openTab('history')">History</button>
+    <button class="tab-button" onclick="openTab('significance')">Significance</button>
+    <button class="tab-button" onclick="openTab('regions')">Regions</button>
+  </div>
+
+  <div id="mythology" class="tab-content active">
+    <h2>Stories that Light the Night</h2>
+    <details><summary>Rama’s Return (Ramayana)</summary><p>Citizens lit rows of lamps to welcome Rama, Sita, and Lakshmana after defeating Ravana.</p></details>
+    <details><summary>Krishna and Narakasura</summary><p>South Indian traditions recall Krishna’s victory, marked with dawn baths and lights.</p></details>
+    <details><summary>Kali Puja</summary><p>Bengal celebrates Kali’s fierce compassion with lights and rituals.</p></details>
+    <details><summary>Mahavira’s Nirvana</summary><p>Jains mark Mahavira’s liberation, emphasizing knowledge and non‑violence.</p></details>
+    <details><summary>Bandi Chhor Divas</summary><p>Sikhs celebrate Guru Hargobind’s release and justice with illuminated gurdwaras.</p></details>
+
+    <div class="story-box">
+      <h3>Choose Your Path</h3>
+      <p id="story-text">It is the night of the new moon. Your town sits by a quiet river. You hold a diya.</p>
+      <button onclick="choosePath('market')">Go to the market</button>
+      <button onclick="choosePath('river')">Go to the riverbank</button>
+    </div>
+  </div>
+
+  <div id="history" class="tab-content">
+    <h2>A Visual Timeline</h2>
+    <ul class="timeline">
+      <li><b>Ancient Roots:</b> Vedic harvest festivals with lamps symbolizing abundance.</li>
+      <li><b>Epic Age:</b> Citizens of Ayodhya lit lamps to welcome Rama.</li>
+      <li><b>Classical Period:</b> Spread across regions—Lakshmi worship, Krishna stories, Kali worship.</li>
+      <li><b>Medieval:</b> Merchants mark new years; diyas light up cities.</li>
+      <li><b>Modern:</b> Diwali becomes global, celebrated by many faiths.</li>
+    </ul>
+  </div>
+
+  <div id="significance" class="tab-content">
+    <h2>What the Lights Mean</h2>
+    <details><summary>Light over Darkness</summary><p>Knowledge, courage, and compassion in uncertain times.</p></details>
+    <details><summary>Renewal</summary><p>Cleaning homes and habits for new beginnings.</p></details>
+    <details><summary>Community</summary><p>Rangoli, sweets, and gatherings foster unity.</p></details>
+    <details><summary>Gratitude & Prosperity</summary><p>Offerings to Lakshmi or acts of service.</p></details>
+
+    <div class="quiz">
+      <h3>Quick Quiz</h3>
+      <div class="question">
+        <p>1. Which epic homecoming is linked to Diwali?</p>
+        <input type="radio" name="q1"> Krishna returns<br>
+        <input type="radio" name="q1" checked> Rama returns<br>
+      </div>
+      <div class="question">
+        <p>2. What does ‘Deepavali’ mean?</p>
+        <input type="radio" name="q2"> Festival of colors<br>
+        <input type="radio" name="q2" checked> Row of lamps<br>
+      </div>
+    </div>
+  </div>
+
+  <div id="regions" class="tab-content">
+    <h2>Regional Traditions</h2>
+    <ul>
+      <li><b>North India:</b> Rama’s homecoming, Lakshmi Puja, fireworks.</li>
+      <li><b>South India:</b> Naraka Chaturdashi with oil baths.</li>
+      <li><b>East:</b> Kali Puja and river lamps.</li>
+      <li><b>Jain:</b> Mahavira’s nirvana.</li>
+      <li><b>Sikh:</b> Bandi Chhor Divas.</li>
+      <li><b>Diaspora:</b> Community melas and light trails.</li>
+    </ul>
+  </div>
+
+  <footer>
+    <p>Built with ♥ for interactive learning. Customs vary across regions.</p>
+  </footer>
+
+  <script>
+    function openTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function choosePath(path) {
+      const story = document.getElementById('story-text');
+      if (path === 'market') {
+        story.textContent = "In the market, people draw rangoli and worship Lakshmi.";
+      } else if (path === 'river') {
+        story.textContent = "At the riverbank, families float lamps telling Rama’s story.";
+      }
+    }
+  </script>
+</body>
+</html>

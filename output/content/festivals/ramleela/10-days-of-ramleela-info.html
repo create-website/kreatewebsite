@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Epic of Ramlila: An Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Application Structure Plan: The infographic is structured into thematic sections to tell a compelling narrative. It begins with a hero banner, followed by sections for 'The Incitement', 'The Alliance & Mission', and 'The Great War', each containing cards for the relevant days. This thematic grouping aids comprehension of the story's arc. A central, full-width section, 'Ravana's Champions', uses a radar chart for character comparison, acting as a visual anchor. The finale is a summary card. This grid-based, non-linear (but chronological) layout is more engaging than a simple timeline and better suited for a data-driven infographic format. -->
+    <!-- Visualization & Content Choices: Event: Rama's first battle -> Goal: Inform/Compare -> Viz: Bar Chart (Rama vs. 14,000) -> Justification: Visually dramatizes the scale of Rama's power. Library: Chart.js. Concept: Key Antagonists -> Goal: Compare -> Viz: Radar Chart (comparing attributes) -> Justification: Offers a multi-dimensional comparison of the main villains' strengths, a classic infographic element. Library: Chart.js. Event: Sita's Abduction -> Goal: Organize/Process -> Viz: HTML/CSS Flow Diagram -> Justification: Clearly illustrates the steps of Ravana's deceptive plan without needing complex graphics. Method: Tailwind CSS. Event: Final Victory -> Goal: Inform -> Viz: Donut Chart -> Justification: Provides a simple, powerful visual conclusion symbolizing the absolute triumph of good. Library: Chart.js. All choices adhere to the NO SVG/Mermaid constraint. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F9FF; /* A very light blue from the palette */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center py-12 px-4 rounded-xl bg-gradient-to-br from-[#00A1E4] to-[#48CAE4] mb-12">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white text-shadow">The Final 10 Days of Ramlila</h1>
+            <p class="mt-4 text-lg text-white/90 max-w-3xl mx-auto text-shadow">An infographic visualizing the epic conclusion of the Ramayana, from the abduction of Sita to the final, triumphant battle.</p>
+        </header>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#00A1E4]">Part I: The Incitement</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">The conflict begins not with an army, but with an act of vengeance that spirals into an epic confrontation.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-[#00B4D8]">Day 1: A Sister's Vengeance</h3>
+                    <p class="mt-2 text-gray-600 flex-grow">Shurpanakha's humiliation at the hands of Lakshmana ignites the fire. She implores her brother Ravana to avenge her, deceitfully describing Sita's beauty to entice him.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-[#00B4D8]">Day 2: The First Stand 🏹</h3>
+                    <p class="mt-2 text-gray-600 flex-grow">Ravana sends a legion of 14,000 Rakshasas led by Khara and Dushana. Rama single-handedly annihilates the entire force, a stark demonstration of his divine power.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-[#00B4D8]">Day 3: The Deception</h3>
+                    <p class="mt-2 text-gray-600 flex-grow">Enraged, Ravana plans Sita's abduction. The plan unfolds in three steps, luring Rama and Lakshmana away and leaving Sita vulnerable.</p>
+                    <div class="mt-4 flex justify-between items-center text-center text-xs">
+                        <div class="flex-1"><span class="block bg-[#90E0EF] text-[#00A1E4] font-bold rounded-full w-6 h-6 leading-6 mx-auto">1</span> Lure</div>
+                        <div class="flex-1 border-t-2 border-dashed border-[#90E0EF]"></div>
+                        <div class="flex-1"><span class="block bg-[#90E0EF] text-[#00A1E4] font-bold rounded-full w-6 h-6 leading-6 mx-auto">2</span> Distract</div>
+                        <div class="flex-1 border-t-2 border-dashed border-[#90E0EF]"></div>
+                        <div class="flex-1"><span class="block bg-[#90E0EF] text-[#00A1E4] font-bold rounded-full w-6 h-6 leading-6 mx-auto">3</span> Abduct</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#00A1E4]">Part II: The Alliance & Mission</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">With Sita captured, Rama forges a powerful alliance and sends his most devoted follower on a near-impossible mission.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-[#00B4D8]">Day 4: The Vanara Alliance</h3>
+                    <p class="mt-2 text-gray-600 flex-grow">Rama and Lakshmana meet Hanuman and Sugriva. By helping Sugriva reclaim his kingdom, Rama gains the loyalty of the entire Vanara army for his quest.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-[#00B4D8]">Day 5: Hanuman's Leap 🔥</h3>
+                    <p class="mt-2 text-gray-600 flex-grow">Hanuman makes his epic journey to Lanka, finds Sita, offers hope, and sets the city ablaze as a warning of the power that is to come.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-[#00B4D8]">Day 6: A Brother's Righteousness</h3>
+                    <p class="mt-2 text-gray-600 flex-grow">Vibhishana, Ravana's brother, advises peace. Scorned for his counsel, he defects to Rama's side, providing invaluable intelligence on Lanka's forces and secrets.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 p-8 bg-white rounded-lg shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#00A1E4]">Ravana's Champions</h2>
+            <p class="text-center text-gray-600 mb-6 max-w-2xl mx-auto">Ravana's strength was bolstered by his formidable kin. This chart compares the key attributes of his most powerful warriors who fell during the great war.</p>
+            <div class="chart-container h-96">
+                <canvas id="championsChart"></canvas>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#00A1E4]">Part III: The Great War</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">The final, cataclysmic days of battle where legends clash and the fate of the world is decided.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                 <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-bold text-[#00B4D8]">Day 7: The Sleeping Giant</h3>
+                    <p class="mt-2 text-gray-600">The colossal Kumbhakarna is awakened. He causes immense destruction before being slain by Rama, a major blow to Lanka's morale.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-bold text-[#00B4D8]">Day 8: The Sorcerer's Strike</h3>
+                    <p class="mt-2 text-gray-600">Ravana's son, Indrajit, a master of illusion, critically wounds Lakshmana with a celestial weapon, pausing the war as Hanuman fetches the life-saving Sanjeevani herb.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-bold text-[#00B4D8]">Day 9: The Prince's Fall</h3>
+                    <p class="mt-2 text-gray-600">Revived, Lakshmana confronts and, after a ferocious battle, slays Indrajit. This victory shatters Ravana's spirit and seals his doom.</p>
+                </div>
+                <div class="bg-gradient-to-br from-[#00A1E4] to-[#48CAE4] text-white rounded-lg shadow-xl p-6 flex flex-col justify-center items-center text-center">
+                    <h3 class="text-2xl font-bold">Day 10: Triumph of Dharma</h3>
+                    <p class="mt-2 text-white/90">On Vijayadashami, Rama confronts Ravana. In the final duel, Rama unleashes the Brahmastra, ending the reign of the demon king and restoring righteousness to the world.</p>
+                    <div class="w-40 h-40 mt-4">
+                        <canvas id="victoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const wrapLabel = (label) => {
+            const maxLineLength = 16;
+            if (label.length <= maxLineLength) return label;
+            
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxLineLength) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            });
+            lines.push(currentLine);
+            return lines;
+        };
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const championsChartCtx = document.getElementById('championsChart');
+        if (championsChartCtx) {
+            new Chart(championsChartCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Brute Strength', 'Magical Prowess', 'Weapon Mastery', 'Durability', 'Strategic Threat'],
+                    datasets: [{
+                        label: 'Ravana',
+                        data: [9, 9, 8, 9, 9],
+                        backgroundColor: 'rgba(0, 161, 228, 0.2)',
+                        borderColor: '#00A1E4',
+                        pointBackgroundColor: '#00A1E4',
+                    }, {
+                        label: 'Kumbhakarna',
+                        data: [10, 3, 5, 10, 7],
+                        backgroundColor: 'rgba(72, 202, 228, 0.2)',
+                        borderColor: '#48CAE4',
+                        pointBackgroundColor: '#48CAE4',
+                    }, {
+                        label: 'Indrajit',
+                        data: [7, 10, 10, 6, 10],
+                        backgroundColor: 'rgba(144, 224, 239, 0.2)',
+                        borderColor: '#90E0EF',
+                        pointBackgroundColor: '#90E0EF',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: { callbacks: { title: tooltipTitleCallback } },
+                        legend: { labels: { color: '#333' } }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0,0,0,0.1)' },
+                            grid: { color: 'rgba(0,0,0,0.1)' },
+                            pointLabels: { font: { size: 12 }, color: '#333' },
+                            ticks: {
+                                backdropColor: 'transparent',
+                                color: '#666',
+                                stepSize: 2
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        const victoryChartCtx = document.getElementById('victoryChart');
+        if (victoryChartCtx) {
+            new Chart(victoryChartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Dharma (Good)', 'Adharma (Evil)'],
+                    datasets: [{
+                        data: [100, 0],
+                        backgroundColor: ['#FFFFFF', '#00A1E4'],
+                        borderColor: '#48CAE4',
+                        borderWidth: 2,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        tooltip: { 
+                            callbacks: { 
+                                title: tooltipTitleCallback,
+                                label: (context) => `${context.parsed}%`
+                            } 
+                        },
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

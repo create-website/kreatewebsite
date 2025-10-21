@@ -1,0 +1,468 @@
+import React, { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { BookOpen, Sparkles, Star, Flame, History, Globe2, HelpCircle, Info } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+
+// --- Utility components ---
+const Section = ({ title, icon: Icon, children, subtitle }) => (
+  <Card className="rounded-2xl shadow-sm border bg-white/70 backdrop-blur">
+    <CardHeader className="space-y-1">
+      <div className="flex items-center gap-3">
+        <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100">
+          <Icon className="h-5 w-5" />
+        </span>
+        <CardTitle className="text-xl font-semibold">{title}</CardTitle>
+      </div>
+      {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
+    </CardHeader>
+    <CardContent>{children}</CardContent>
+  </Card>
+);
+
+const Pill = ({ children }) => (
+  <span className="rounded-full border px-3 py-1 text-xs font-medium">{children}</span>
+);
+
+// --- Data ---
+const timeline = [
+  {
+    era: "Ancient Roots",
+    date: "c. 1500–500 BCE",
+    desc:
+      "Early Vedic harvest festivals celebrated the return of prosperity and the transition from monsoon to winter. Lamps symbolized protection and abundance.",
+  },
+  {
+    era: "Epic Age",
+    date: "Ramayana era (mythic time)",
+    desc:
+      "In the Ramayana, citizens of Ayodhya lit rows of lamps (deepavali) to welcome Rama, Sita, and Lakshmana after the defeat of Ravana.",
+  },
+  {
+    era: "Classical Period",
+    date: "c. 300–1200 CE",
+    desc:
+      "Diwali spreads across regions with diverse emphases: worship of Lakshmi (wealth), Krishna’s victory over Narakasura, and the worship of Kali in eastern India.",
+  },
+  {
+    era: "Medieval & Early Modern",
+    date: "1200–1800 CE",
+    desc:
+      "Merchants mark new accounting years; diyas illuminate cities; regional calendars fix multi‑day observances across lunar month Kartika.",
+  },
+  {
+    era: "Modern Era",
+    date: "1800s–Present",
+    desc:
+      "Diwali becomes a pan‑South Asian and global festival of lights—celebrated by Hindus, Jains, Sikhs, and some Buddhists with distinct meanings.",
+  },
+];
+
+const regionalTraditions = [
+  { region: "North India", focus: "Rama’s homecoming; Lakshmi Puja on the new‑moon night; rangoli and fireworks." },
+  { region: "Western India", focus: "New business year; Lakshmi Puja; gambling as a good‑luck ritual in some communities." },
+  { region: "South India", focus: "Naraka Chaturdashi (Krishna’s victory over Narakasura); oil baths and dawn crackers." },
+  { region: "East & Northeast", focus: "Kali Puja; elaborate pandals; boat‑lamp rituals on rivers in some areas." },
+  { region: "Jain Communities", focus: "Marks Mahavira’s nirvana; meditation, knowledge, and non‑violence emphasized." },
+  { region: "Sikh Communities", focus: "Bandi Chhor Divas—celebrates Guru Hargobind’s release; illuminated gurdwaras." },
+  { region: "Diaspora", focus: "Community melas, temple open houses, neighborhood light trails, inclusive storytelling." },
+];
+
+const glossary = [
+  { term: "Diya", def: "Small clay oil lamp symbolizing light over darkness and knowledge over ignorance." },
+  { term: "Deepavali", def: "Sanskrit for ‘row of lamps’; another name for Diwali." },
+  { term: "Lakshmi", def: "Goddess of wealth and good fortune, often worshipped during Diwali." },
+  { term: "Rangoli", def: "Colorful floor art made with powders or flowers to welcome auspiciousness." },
+  { term: "Kartika", def: "Lunar month (Oct–Nov) when Diwali is observed." },
+];
+
+const quizQs = [
+  {
+    q: "Which epic homecoming is often linked to Diwali in North India?",
+    choices: ["Krishna returns to Mathura", "Rama returns to Ayodhya", "Arjuna returns from exile"],
+    answer: 1,
+    why: "Citizens of Ayodhya lit lamps to welcome Rama, Sita, and Lakshmana—hence ‘rows of lamps’.",
+  },
+  {
+    q: "What does ‘Deepavali’ literally mean?",
+    choices: ["Festival of colors", "Row of lamps", "Harvest of lights"],
+    answer: 1,
+    why: "From Sanskrit: dīpa (lamp) + āvali (row).",
+  },
+  {
+    q: "Which community associates Diwali with Mahavira’s nirvana?",
+    choices: ["Jains", "Sikhs", "Buddhists"],
+    answer: 0,
+    why: "For Jains, Diwali marks Mahavira’s liberation, with an emphasis on knowledge and non‑violence.",
+  },
+];
+
+// --- Interactive story steps (choose-your-path lite) ---
+const storySteps = [
+  {
+    id: "start",
+    title: "A City in Darkness",
+    text:
+      "It is the night of the new moon. Your town sits by a quiet river. Merchants mutter about closing their ledgers; children clutch unlit diyas. You hold a single wick and a vial of oil.",
+    options: [
+      { id: "market", label: "Walk to the market square" },
+      { id: "river", label: "Head to the riverbank" },
+    ],
+  },
+  {
+    id: "market",
+    title: "Ledger of Beginnings",
+    text:
+      "In the bazaar, shopkeepers sweep thresholds and draw rangoli. A ledger lies open—today is the first page of a new year. A priest offers a blessing to Lakshmi.",
+    options: [
+      { id: "offer", label: "Light a diya for prosperity" },
+      { id: "return", label: "Return to the crossroads" },
+    ],
+  },
+  {
+    id: "river",
+    title: "Lanterns on Water",
+    text:
+      "At the river, families whisper stories of Rama’s homecoming. Boats carry lamps into the current—each a wish for safe journeys and wisdom.",
+    options: [
+      { id: "launch", label: "Float your diya downstream" },
+      { id: "return", label: "Return to the crossroads" },
+    ],
+  },
+  {
+    id: "offer",
+    title: "A Quiet Blessing",
+    text:
+      "Your diya flickers to life. The crowd hushes as the first flame spreads. You feel a gentle resolve: to kindle light in others’ lives this year.",
+    options: [{ id: "end", label: "End: Light spreads" }],
+  },
+  {
+    id: "launch",
+    title: "Carried by the Current",
+    text:
+      "Your lamp drifts among dozens, each reflection trembling like a star. The riverbank glows. Stories are shared; strangers become neighbors.",
+    options: [{ id: "end", label: "End: River of stars" }],
+  },
+  {
+    id: "return",
+    title: "Crossroads Again",
+    text:
+      "Back beneath the banyan tree, two paths remain. The night is new; your flame is ready.",
+    options: [
+      { id: "market", label: "Try the market path" },
+      { id: "river", label: "Try the river path" },
+    ],
+  },
+];
+
+function useStory() {
+  const [stepId, setStepId] = useState("start");
+  const step = useMemo(() => storySteps.find((s) => s.id === stepId)!, [stepId]);
+  return { step, setStepId };
+}
+
+// --- Main Component ---
+export default function DiwaliStorytelling() {
+  const { step, setStepId } = useStory();
+  const [answers, setAnswers] = useState<number[]>(Array(quizQs.length).fill(-1));
+  const score = answers.filter((a, i) => a === quizQs[i].answer).length;
+
+  return (
+    <div className="min-h-screen w-full bg-gradient-to-b from-amber-50 via-white to-orange-50 text-slate-800">
+      <header className="mx-auto max-w-6xl px-4 pt-10 pb-6">
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="space-y-2">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight flex items-center gap-3">
+              <Sparkles className="h-7 w-7" /> Diwali: Stories, History & Meaning
+            </h1>
+            <p className="text-muted-foreground max-w-2xl">
+              Explore the mythology, history, and significance of Diwali through interactive stories, a visual timeline, and quick quizzes. 
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Pill>Interactive</Pill>
+            <Pill>Accessible</Pill>
+            <Pill>Mobile‑friendly</Pill>
+          </div>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-6xl px-4 pb-16 space-y-8">
+        {/* Interactive Tabs */}
+        <Tabs defaultValue="mythology" className="w-full">
+          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-white/60 p-2 rounded-xl">
+            <TabsTrigger value="mythology" className="gap-2">
+              <BookOpen className="h-4 w-4" /> Mythology
+            </TabsTrigger>
+            <TabsTrigger value="history" className="gap-2">
+              <History className="h-4 w-4" /> History
+            </TabsTrigger>
+            <TabsTrigger value="significance" className="gap-2">
+              <Star className="h-4 w-4" /> Significance
+            </TabsTrigger>
+            <TabsTrigger value="regions" className="gap-2">
+              <Globe2 className="h-4 w-4" /> Regions
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Mythology */}
+          <TabsContent value="mythology" className="mt-4">
+            <Section
+              title="Stories that Light the Night"
+              icon={Flame}
+              subtitle="Tap a panel to expand—discover multiple traditions behind the Festival of Lights."
+            >
+              <Accordion type="multiple" className="w-full">
+                <AccordionItem value="rama">
+                  <AccordionTrigger className="text-left">
+                    Rama’s Return to Ayodhya (Ramayana)
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    Citizens welcomed Rama, Sita, and Lakshmana after a long exile and the defeat of Ravana by lighting lanes with rows of lamps—deepavali. The lights honor virtue’s victory over arrogance and injustice.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="krishna">
+                  <AccordionTrigger className="text-left">
+                    Krishna and Narakasura (South Indian focus)
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    In many parts of South India, Diwali (especially Naraka Chaturdashi) recalls Krishna and Satyabhama’s defeat of the tyrant Narakasura. The dawn bath and first light symbolize purification and fresh beginnings.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="kali">
+                  <AccordionTrigger className="text-left">
+                    Kali Puja (Eastern traditions)
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    In Bengal and nearby regions, the new‑moon night is dedicated to Kali—fierce compassion that cuts through ego and fear. Lamps and incense steady the mind in darkness, inviting courage and clarity.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="jain">
+                  <AccordionTrigger className="text-left">
+                    Mahavira’s Nirvana (Jain tradition)
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    Jains commemorate the liberation (nirvana) of Mahavira. Lamps represent the light of knowledge and the vow to reduce harm through ahiṃsā (non‑violence) and self‑discipline.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="sikh">
+                  <AccordionTrigger className="text-left">
+                    Bandi Chhor Divas (Sikh tradition)
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    Sikhs celebrate Guru Hargobind’s release from captivity and his insistence on freeing many others. Illuminated gurdwaras and kirtan highlight justice, community, and freedom.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </Section>
+
+            {/* Choose‑Your‑Path Mini Story */}
+            <div className="mt-6">
+              <Section title="Choose Your Path" icon={Sparkles} subtitle="A tiny interactive tale set on Diwali night.">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={step.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.25 }}
+                    className="space-y-4"
+                  >
+                    <h3 className="text-lg font-semibold">{step.title}</h3>
+                    <p className="leading-relaxed">{step.text}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {step.options.map((o) => (
+                        <Button key={o.id} variant="secondary" onClick={() => setStepId(o.id)}>
+                          {o.label}
+                        </Button>
+                      ))}
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </Section>
+            </div>
+          </TabsContent>
+
+          {/* History */}
+          <TabsContent value="history" className="mt-4">
+            <Section title="A Visual Timeline" icon={History} subtitle="Scroll the eras to see how Diwali evolved across regions and communities.">
+              <ScrollArea className="h-[320px] pr-4">
+                <ol className="relative border-s pl-6">
+                  {timeline.map((t, i) => (
+                    <li key={i} className="mb-8 ms-4">
+                      <span className="absolute -start-2 mt-1 flex h-4 w-4 items-center justify-center rounded-full bg-amber-400 ring-2 ring-white" />
+                      <h4 className="font-semibold">{t.era}</h4>
+                      <p className="text-xs text-muted-foreground mb-1">{t.date}</p>
+                      <p className="leading-relaxed">{t.desc}</p>
+                    </li>
+                  ))}
+                </ol>
+              </ScrollArea>
+            </Section>
+          </TabsContent>
+
+          {/* Significance */}
+          <TabsContent value="significance" className="mt-4">
+            <Section
+              title="What the Lights Mean"
+              icon={Star}
+              subtitle="Values that many communities emphasize—click to reveal reflections you can use in class or at events."
+            >
+              <div className="grid gap-3 sm:grid-cols-2">
+                {[{
+                  k: "Light over Darkness",
+                  v: "A reminder to cultivate knowledge, compassion, and courage when times feel uncertain.",
+                },{
+                  k: "Renewal",
+                  v: "Cleaning homes, clearing ledgers, and clearing habits. Each flame can mark a new commitment.",
+                },{
+                  k: "Community",
+                  v: "Rangoli at thresholds, shared sweets, and open doors weave neighbors into kin.",
+                },{
+                  k: "Gratitude & Prosperity",
+                  v: "Offerings to Lakshmi or community service acts ask prosperity to be ethical and shared.",
+                }].map((item, idx) => (
+                  <details key={idx} className="group rounded-xl border p-4 hover:shadow-sm">
+                    <summary className="cursor-pointer list-none font-medium flex items-center gap-2">
+                      <Info className="h-4 w-4" /> {item.k}
+                    </summary>
+                    <p className="mt-2 text-sm text-muted-foreground">{item.v}</p>
+                  </details>
+                ))}
+              </div>
+            </Section>
+
+            {/* Quick Quiz */}
+            <div className="mt-6">
+              <Section title="Quick Quiz" icon={HelpCircle} subtitle="Check your understanding—no pressure, just learning!">
+                <div className="space-y-6">
+                  {quizQs.map((q, i) => (
+                    <div key={i} className="rounded-xl border p-4">
+                      <p className="font-medium">{i + 1}. {q.q}</p>
+                      <div className="mt-2 grid gap-2">
+                        {q.choices.map((c, ci) => (
+                          <label key={ci} className={`flex items-center gap-2 rounded-lg border p-2 cursor-pointer ${answers[i] === ci ? "bg-amber-50" : ""}`}>
+                            <input
+                              type="radio"
+                              name={`q-${i}`}
+                              className="accent-amber-500"
+                              checked={answers[i] === ci}
+                              onChange={() => {
+                                const next = [...answers];
+                                next[i] = ci;
+                                setAnswers(next);
+                              }}
+                            />
+                            <span>{c}</span>
+                          </label>
+                        ))}
+                      </div>
+                      {answers[i] !== -1 && (
+                        <p className={`mt-2 text-sm ${answers[i] === q.answer ? "text-green-700" : "text-red-700"}`}>
+                          {answers[i] === q.answer ? "Correct! " : "Not quite. "}{q.why}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+
+                  <div className="flex items-center justify-between border rounded-xl p-4">
+                    <div className="flex items-center gap-2">
+                      <Star className="h-5 w-5" />
+                      <p className="font-medium">Score: {score} / {quizQs.length}</p>
+                    </div>
+                    <Button variant="outline" onClick={() => setAnswers(Array(quizQs.length).fill(-1))}>Reset</Button>
+                  </div>
+                </div>
+              </Section>
+            </div>
+          </TabsContent>
+
+          {/* Regions */}
+          <TabsContent value="regions" className="mt-4">
+            <Section title="Regional Traditions" icon={Globe2} subtitle="Diwali is many festivals in one—browse regional highlights.">
+              <div className="grid gap-4 sm:grid-cols-2">
+                {regionalTraditions.map((r) => (
+                  <Card key={r.region} className="border rounded-2xl">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-base flex items-center gap-2">
+                        <Flame className="h-4 w-4" /> {r.region}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <p className="text-sm text-muted-foreground leading-relaxed">{r.focus}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </Section>
+          </TabsContent>
+        </Tabs>
+
+        {/* Glossary */}
+        <Section title="Festival Glossary" icon={BookOpen} subtitle="Hover on terms in your lessons or add these to your event program.">
+          <div className="grid gap-2 sm:grid-cols-2">
+            {glossary.map((g) => (
+              <div key={g.term} className="flex items-start gap-3 rounded-xl border p-3">
+                <span className="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-amber-100"><Info className="h-3 w-3" /></span>
+                <div>
+                  <p className="font-medium">{g.term}</p>
+                  <p className="text-sm text-muted-foreground">{g.def}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {/* Call to Action */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-muted-foreground">
+            Tip: Pair this page with a live diya‑lighting demo, sweet‑sharing table, or a story circle for maximum engagement.
+          </p>
+          <div className="flex gap-2">
+            <Button onClick={() => window.print()} variant="secondary">Print Lesson</Button>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                const body = document.body.innerText;
+                const blob = new Blob([body], { type: "text/plain;charset=utf-8" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "diwali-storytelling-notes.txt";
+                a.click();
+                URL.revokeObjectURL(url);
+              }}
+              className="inline-flex items-center rounded-xl border px-4 py-2 text-sm hover:bg-muted"
+            >
+              Export Notes
+            </a>
+          </div>
+        </div>
+      </main>
+
+      <footer className="mx-auto max-w-6xl px-4 pb-12">
+        <div className="text-xs text-muted-foreground">
+          Built with ♥ for interactive learning. Content is a broad educational summary; local customs vary.
+        </div>
+      </footer>
+
+      {/* Floating Diya */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="fixed bottom-4 right-4"
+      >
+        <Button className="rounded-full px-4" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <Flame className="mr-2 h-4 w-4" /> Back to Top
+        </Button>
+      </motion.div>
+    </div>
+  );
+}

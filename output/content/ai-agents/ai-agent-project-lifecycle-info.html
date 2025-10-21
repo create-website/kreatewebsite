@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Project Lifecycle Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .phase-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .phase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .icon-bg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+        }
+        .phase-1-icon { background-color: #4f46e5; } /* Indigo */
+        .phase-2-icon { background-color: #0284c7; } /* Sky */
+        .phase-3-icon { background-color: #059669; } /* Emerald */
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 antialiased">
+
+    <!-- Main Container -->
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">The AI Agent Project Lifecycle</h1>
+            <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">A visual guide to the key roles and activities involved in building production-grade AI agents from concept to deployment.</p>
+        </header>
+
+        <!-- Infographic Content -->
+        <div class="space-y-12">
+
+            <!-- Phase 1: Conception & Foundation -->
+            <section id="phase-1">
+                <h2 class="text-3xl font-bold text-center mb-8 text-indigo-700">Phase 1: Foundation</h2>
+                <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- PoC -->
+                    <div class="phase-card bg-white rounded-xl shadow-lg p-6 border-t-4 border-indigo-500">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="icon-bg phase-1-icon w-12 h-12"><i class="fa-solid fa-lightbulb fa-lg"></i></div>
+                            <h3 class="text-xl font-bold text-gray-900">Develop Proof of Concept</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">An initial, small-scale project to test the core idea and technical feasibility of the AI agent.</p>
+                        <h4 class="font-semibold mb-2">Key Skills & Tools:</h4>
+                        <p class="text-sm text-gray-500">Rapid Prototyping, Python, LangChain, LLM APIs, Streamlit</p>
+                    </div>
+                    <!-- Data Exploration -->
+                    <div class="phase-card bg-white rounded-xl shadow-lg p-6 border-t-4 border-indigo-500">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="icon-bg phase-1-icon w-12 h-12"><i class="fa-solid fa-magnifying-glass-chart fa-lg"></i></div>
+                            <h3 class="text-xl font-bold text-gray-900">Data Exploration</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Analyzing available data sources to understand their quality, structure, biases, and potential value.</p>
+                        <h4 class="font-semibold mb-2">Key Skills & Tools:</h4>
+                        <p class="text-sm text-gray-500">Data Analysis, Statistics, Pandas, NumPy, Matplotlib, SQL</p>
+                    </div>
+                    <!-- Prompt Engineering -->
+                    <div class="phase-card bg-white rounded-xl shadow-lg p-6 border-t-4 border-indigo-500">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="icon-bg phase-1-icon w-12 h-12"><i class="fa-solid fa-terminal fa-lg"></i></div>
+                            <h3 class="text-xl font-bold text-gray-900">Prompt Engineering</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">The art and science of designing effective inputs (prompts) to guide an LLM to produce the desired output.</p>
+                        <h4 class="font-semibold mb-2">Key Skills & Tools:</h4>
+                        <p class="text-sm text-gray-500">LLM Behavior, Creative Writing, Logical Reasoning, JSON</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phase 2: Core AI/ML Development -->
+            <section id="phase-2">
+                <h2 class="text-3xl font-bold text-center mb-8 text-sky-700">Phase 2: Core AI/ML</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Develop & Train Models -->
+                    <div class="phase-card bg-white rounded-xl shadow-lg p-6 border-t-4 border-sky-500">
+                        <div class="icon-bg phase-2-icon w-12 h-12 mb-4"><i class="fa-solid fa-brain fa-lg"></i></div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Develop & Train Models</h3>
+                        <p class="text-gray-600">Building the core ML models that power the agent, or pre-training domain-specific models.</p>
+                    </div>
+                    <!-- Finetuning -->
+                    <div class="phase-card bg-white rounded-xl shadow-lg p-6 border-t-4 border-sky-500">
+                        <div class="icon-bg phase-2-icon w-12 h-12 mb-4"><i class="fa-solid fa-sliders fa-lg"></i></div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Finetuning Models</h3>
+                        <p class="text-gray-600">Adapting a pre-trained model to a specific domain using a smaller, high-quality dataset.</p>
+                    </div>
+                    <!-- Embedding Management -->
+                    <div class="phase-card bg-white rounded-xl shadow-lg p-6 border-t-4 border-sky-500">
+                        <div class="icon-bg phase-2-icon w-12 h-12 mb-4"><i class="fa-solid fa-database fa-lg"></i></div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Embedding Management</h3>
+                        <p class="text-gray-600">Generating, storing, and retrieving vector embeddings for Retrieval-Augmented Generation (RAG).</p>
+                    </div>
+                    <!-- Evaluating -->
+                    <div class="phase-card bg-white rounded-xl shadow-lg p-6 border-t-4 border-sky-500">
+                        <div class="icon-bg phase-2-icon w-12 h-12 mb-4"><i class="fa-solid fa-clipboard-check fa-lg"></i></div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Evaluating Models</h3>
+                        <p class="text-gray-600">Measuring an agent's performance using robust datasets and metrics to benchmark changes.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phase 3: Production & Operations -->
+            <section id="phase-3">
+                <h2 class="text-3xl font-bold text-center mb-8 text-emerald-700">Phase 3: Operations</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
+                    <!-- Build Apps -->
+                    <div class="phase-card bg-white rounded-xl shadow-lg p-6 border-t-4 border-emerald-500">
+                        <div class="icon-bg phase-3-icon w-12 h-12 mb-4"><i class="fa-solid fa-code fa-lg"></i></div>
+                        <h3 class="text-lg font-bold">Build Production Apps</h3>
+                    </div>
+                    <!-- Infra -->
+                    <div class="phase-card bg-white rounded-xl shadow-lg p-6 border-t-4 border-emerald-500">
+                        <div class="icon-bg phase-3-icon w-12 h-12 mb-4"><i class="fa-solid fa-server fa-lg"></i></div>
+                        <h3 class="text-lg font-bold">Set up Infra</h3>
+                    </div>
+                    <!-- DevOps -->
+                    <div class="phase-card bg-white rounded-xl shadow-lg p-6 border-t-4 border-emerald-500">
+                        <div class="icon-bg phase-3-icon w-12 h-12 mb-4"><i class="fa-solid fa-gears fa-lg"></i></div>
+                        <h3 class="text-lg font-bold">DevOps</h3>
+                    </div>
+                    <!-- MLOps -->
+                    <div class="phase-card bg-white rounded-xl shadow-lg p-6 border-t-4 border-emerald-500">
+                        <div class="icon-bg phase-3-icon w-12 h-12 mb-4"><i class="fa-solid fa-robot fa-lg"></i></div>
+                        <h3 class="text-lg font-bold">MLOps</h3>
+                    </div>
+                    <!-- Testing -->
+                    <div class="phase-card bg-white rounded-xl shadow-lg p-6 border-t-4 border-emerald-500">
+                        <div class="icon-bg phase-3-icon w-12 h-12 mb-4"><i class="fa-solid fa-vial-circle-check fa-lg"></i></div>
+                        <h3 class="text-lg font-bold">Testing & QA</h3>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+<!--
+
+        <footer class="text-center mt-16 py-6 border-t border-gray-200">
+            <p class="text-gray-500">A comprehensive look at the modern AI development process.</p>
+        </footer>
+-->
+
+    </div>
+</body>
+</html>

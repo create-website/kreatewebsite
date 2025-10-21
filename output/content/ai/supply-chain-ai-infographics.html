@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Autonomous Supply Chain</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- 
+    Application Structure Plan: The infographic follows a clear narrative flow.
+    1. Hook: Start with the "Strategy Gap" (77% lack a strategy) using a prominent donut chart to immediately establish the core problem.
+    2. The Journey: Introduce the AI Maturity Curve (Predictive -> Generative -> Agentic) as the central visual narrative, built with styled HTML/CSS, to frame the entire story.
+    3. Deep Dives: Dedicate a section to each AI type, using specific charts to highlight their unique value proposition (e.g., bar chart for Predictive AI's impact, radar chart for Agentic AI's values).
+    4. The How-To: Present the "Run, Grow, Transform" framework and the phased implementation plan using clear, structured HTML/CSS diagrams.
+    5. The Reality Check: Use styled cards to break down complex challenges (data, ethics, etc.) into digestible pieces.
+    6. The Future: Conclude with the forward-looking vision of a "Self-Healing Network" to leave a powerful final impression.
+    This structure guides the user from problem to solution, then to practical implementation and future possibilities.
+    -->
+    <!-- 
+    Visualization & Content Choices:
+    - 77% Strategy Gap: Goal: Inform. Viz: Donut Chart (Chart.js). Justification: Instantly visualizes the majority vs. minority, highlighting the gap.
+    - Key ROI Stats: Goal: Inform. Viz: Big Number cards (HTML/CSS). Justification: High impact for key metrics.
+    - AI Maturity Curve: Goal: Organize/Change. Viz: Process flow diagram (HTML/CSS). Justification: Shows progression without complex charts. NO SVG/Mermaid.
+    - Predictive AI Impact: Goal: Compare. Viz: Horizontal Bar Chart (Chart.js). Justification: Clearly ranks the impact across different operational areas.
+    - Agentic AI Values: Goal: Compare. Viz: Radar Chart (Chart.js). Justification: Best for comparing multiple attributes (Speed, Agility, etc.) for a single concept.
+    - Implementation Roadmap: Goal: Organize. Viz: Step-based diagram (HTML/CSS). Justification: Clearly visualizes a sequential process. NO SVG/Mermaid.
+    CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F0F4F8; }
+        .chart-container { position: relative; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900">The Autonomous Supply Chain</h1>
+            <p class="mt-4 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">A strategic guide to leveraging Predictive, Generative, and Agentic AI for a resilient, intelligent future.</p>
+        </header>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8">The Critical Strategy Gap</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <p class="text-lg text-slate-700 leading-relaxed">Despite enormous potential, a significant majority of organizations are unprepared. This infographic outlines a clear path from strategy to execution, transforming AI from a buzzword into a competitive advantage.</p>
+                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <p class="text-3xl font-bold text-blue-600">40%</p>
+                            <p class="text-sm text-slate-600">Reduction in Sourcing Cycle Times</p>
+                        </div>
+                        <div class="bg-amber-50 p-4 rounded-lg">
+                            <p class="text-3xl font-bold text-amber-600">35%</p>
+                            <p class="text-sm text-slate-600">Improvement in Inventory Levels</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg chart-container">
+                    <canvas id="strategyGapChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-12">The AI Maturity Journey</h2>
+            <div class="relative">
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-slate-300 transform -translate-y-1/2"></div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="relative bg-white p-6 rounded-2xl shadow-lg border-t-8 border-amber-400">
+                        <div class="md:absolute md:-top-5 md:left-1/2 md:-translate-x-1/2 w-10 h-10 bg-amber-400 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">1</div>
+                        <h3 class="text-2xl font-bold text-amber-500">Predictive AI</h3>
+                        <p class="font-semibold mt-2">Core Function: Analyze & Predict</p>
+                        <p class="mt-2 text-slate-600 text-sm">Analyzes historical data to forecast future outcomes and optimize defined tasks. The foundation of modern efficiency.</p>
+                    </div>
+                    <div class="relative bg-white p-6 rounded-2xl shadow-lg border-t-8 border-blue-400">
+                        <div class="md:absolute md:-top-5 md:left-1/2 md:-translate-x-1/2 w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">2</div>
+                        <h3 class="text-2xl font-bold text-blue-500">Generative AI</h3>
+                        <p class="font-semibold mt-2">Core Function: Create & Simulate</p>
+                        <p class="mt-2 text-slate-600 text-sm">Moves from analysis to creation, generating novel content, synthetic data, and complex simulations to test resilience.</p>
+                    </div>
+                    <div class="relative bg-white p-6 rounded-2xl shadow-lg border-t-8 border-teal-400">
+                        <div class="md:absolute md:-top-5 md:left-1/2 md:-translate-x-1/2 w-10 h-10 bg-teal-400 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">3</div>
+                        <h3 class="text-2xl font-bold text-teal-500">Agentic AI</h3>
+                        <p class="font-semibold mt-2">Core Function: Decide & Act</p>
+                        <p class="mt-2 text-slate-600 text-sm">Introduces autonomous agents that make decisions and execute complex tasks with minimal human supervision.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-16 bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-8">Deep Dive: The Impact of Predictive AI</h2>
+            <p class="text-center text-slate-600 max-w-2xl mx-auto mb-8">By converting data into foresight, Predictive AI delivers measurable improvements in cost, speed, and service levels across the supply chain.</p>
+            <div class="chart-container h-96">
+                <canvas id="predictiveImpactChart"></canvas>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8">Deep Dive: The Power of Agentic AI</h2>
+            <p class="text-center text-slate-600 max-w-2xl mx-auto mb-8">Agentic AI introduces autonomous "digital workers" that redefine operational limits, focusing on three core values.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-6 rounded-2xl shadow-lg chart-container">
+                    <canvas id="agenticValueChart"></canvas>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h4 class="font-bold text-lg text-teal-600">Autonomy</h4>
+                        <p class="text-slate-600">AI agents independently execute workflows like procurement and disruption response, freeing up human talent for strategic tasks.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h4 class="font-bold text-lg text-blue-600">Speed</h4>
+                        <p class="text-slate-600">Negotiations that took weeks are completed in minutes. Disruptions are handled in real-time, not after days of planning.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h4 class="font-bold text-lg text-amber-600">Agility</h4>
+                        <p class="text-slate-600">The ability to perceive, reason, and act allows the supply chain to adapt to market changes with unprecedented flexibility.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8">A Strategic Roadmap for AI Adoption</h2>
+            <p class="text-center text-slate-600 max-w-2xl mx-auto mb-12">Avoid creating a "franken-system." A successful journey is a marathon, not a sprint, requiring a phased approach.</p>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">⚙️</div>
+                    <h3 class="text-xl font-bold">Phase 1: Assess & Plan</h3>
+                    <p class="mt-2 text-slate-600">Define clear objectives, conduct a data audit, and identify high-impact pilot projects. Secure executive sponsorship.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">🚀</div>
+                    <h3 class="text-xl font-bold">Phase 2: Pilot & Prove</h3>
+                    <p class="mt-2 text-slate-600">Execute small-scale pilots, measure both hard and soft ROI, and share success stories to build momentum.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-2xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">🌐</div>
+                    <h3 class="text-xl font-bold">Phase 3: Scale & Transform</h3>
+                    <p class="mt-2 text-slate-600">Develop scalable infrastructure, invest heavily in change management and upskilling, and establish robust AI governance.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8">Navigating the Headwinds</h2>
+            <p class="text-center text-slate-600 max-w-2xl mx-auto mb-12">Success requires a clear-eyed assessment of implementation hurdles and ethical risks.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-red-100 border-l-4 border-red-500 p-4 rounded-r-lg">
+                    <h4 class="font-bold text-red-800">Data Quality</h4>
+                    <p class="text-sm text-red-700">The "garbage in, garbage out" principle. AI is only as good as the data it's fed. Siloed and inaccurate data is the #1 barrier.</p>
+                </div>
+                 <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-r-lg">
+                    <h4 class="font-bold text-yellow-800">Legacy Systems</h4>
+                    <p class="text-sm text-yellow-700">Outdated ERP, WMS, and TMS platforms create significant integration challenges and technical debt.</p>
+                </div>
+                 <div class="bg-blue-100 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                    <h4 class="font-bold text-blue-800">Talent Gaps</h4>
+                    <p class="text-sm text-blue-700">Intense competition for data scientists and a lack of data literacy within existing teams hinders adoption.</p>
+                </div>
+                 <div class="bg-purple-100 border-l-4 border-purple-500 p-4 rounded-r-lg">
+                    <h4 class="font-bold text-purple-800">Ethical Risks</h4>
+                    <p class="text-sm text-purple-700">Algorithmic bias, the "black box" problem, and data privacy must be governed from day one to avoid significant harm.</p>
+                </div>
+            </div>
+        </section>
+
+<!--
+        
+        <footer class="text-center pt-8 border-t border-slate-300">
+             <h2 class="text-3xl font-bold text-center mb-4">The Future: A Self-Healing Network</h2>
+             <p class="text-lg text-slate-600 max-w-3xl mx-auto">The ultimate vision is a supply chain that can autonomously anticipate disruptions, simulate responses, and act to correct course in real-time, building a truly resilient global ecosystem.</p>
+        </footer>
+
+-->
+
+    </div>
+
+    <script>
+        const wrapLabel = (label) => {
+            const maxLen = 16;
+            if (label.length <= maxLen) return label;
+            const words = label.split(' ');
+            let currentLine = '';
+            const lines = [];
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).length > maxLen) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word);
+                }
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        };
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            }
+            return label;
+        };
+
+        const strategyGapData = {
+            labels: ['Have a Formal AI Strategy', 'Lack a Formal AI Strategy'],
+            datasets: [{
+                label: 'AI Strategy Adoption',
+                data: [23, 77],
+                backgroundColor: ['#34D399', '#F87171'],
+                borderColor: '#F0F4F8',
+                borderWidth: 5,
+            }]
+        };
+
+        const predictiveImpactData = {
+            labels: [
+                wrapLabel('Reduction in Demand Forecast Errors'),
+                wrapLabel('Improvement in Inventory Levels'),
+                wrapLabel('Reduction in Sourcing Cycle Times'),
+                wrapLabel('Reduction in Equipment Downtime'),
+                wrapLabel('Reduction in Logistics Costs')
+            ],
+            datasets: [{
+                label: 'Maximum Reported Improvement (%)',
+                data: [50, 35, 40, 30, 15],
+                backgroundColor: ['#FBBF24', '#F59E0B', '#F97316', '#EA580C', '#D97706'],
+                borderColor: '#ffffff',
+                borderWidth: 2,
+            }]
+        };
+
+        const agenticValueData = {
+            labels: ['Autonomy', 'Speed', 'Agility', 'Resilience', 'Innovation'],
+            datasets: [{
+                label: 'Agentic AI Core Values',
+                data: [95, 90, 85, 75, 70],
+                backgroundColor: 'rgba(20, 184, 166, 0.2)',
+                borderColor: 'rgb(13, 148, 136)',
+                pointBackgroundColor: 'rgb(13, 148, 136)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgb(13, 148, 136)',
+                borderWidth: 2,
+            }]
+        };
+
+        window.onload = function() {
+            const strategyGapCtx = document.getElementById('strategyGapChart').getContext('2d');
+            new Chart(strategyGapCtx, {
+                type: 'doughnut',
+                data: strategyGapData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: { position: 'bottom', labels: { font: { size: 14 } } },
+                        tooltip: { 
+                            callbacks: { 
+                                title: tooltipTitleCallback,
+                                label: (context) => `${context.dataset.label}: ${context.raw}%`
+                            } 
+                        },
+                        title: { display: true, text: 'AI Strategy Adoption in Supply Chain', font: { size: 16, weight: 'bold' } }
+                    }
+                }
+            });
+
+            const predictiveImpactCtx = document.getElementById('predictiveImpactChart').getContext('2d');
+            new Chart(predictiveImpactCtx, {
+                type: 'bar',
+                data: predictiveImpactData,
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { beginAtZero: true, grid: { display: false }, ticks: { callback: (value) => value + '%' } },
+                        y: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { 
+                            callbacks: {
+                                title: tooltipTitleCallback,
+                                label: (context) => `${context.dataset.label}: ${context.raw}%` 
+                            }
+                        },
+                        title: { display: true, text: 'Impact of Predictive AI on Key Metrics', font: { size: 16, weight: 'bold' } }
+                    }
+                }
+            });
+
+            const agenticValueCtx = document.getElementById('agenticValueChart').getContext('2d');
+            new Chart(agenticValueCtx, {
+                type: 'radar',
+                data: agenticValueData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: '#D1D5DB' },
+                            grid: { color: '#E5E7EB' },
+                            pointLabels: { font: { size: 14, weight: '500' } },
+                            ticks: { display: false, beginAtZero: true, max: 100 }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                         tooltip: { 
+                            callbacks: { 
+                                title: tooltipTitleCallback,
+                            } 
+                        },
+                        title: { display: true, text: 'Agentic AI Value Dimensions', font: { size: 16, weight: 'bold' } }
+                    }
+                }
+            });
+        };
+    </script>
+
+</body>
+</html>

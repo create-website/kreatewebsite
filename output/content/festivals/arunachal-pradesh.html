@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Report: The Architecture of Arunachal Pradesh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://css.gg/css?family=Oswald:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #FEFBF3; /* A very light cream/off-white */
+            color: #374151; /* Gray-700 for text */
+        }
+        h1, h2, h3, h4,.stat-text {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            color: #000080; /* Navy Blue */
+        }
+       .bg-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E5E7EB; /* Gray-200 border */
+        }
+       .text-accent-saffron { color: #FF9933; }
+       .text-accent-green { color: #138808; }
+       .border-accent-saffron { border-color: #FF9933; }
+       .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        /* Offset for anchor links */
+        section[id] {
+            scroll-margin-top: 4rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <header class="text-center my-12">
+            <h1 class="text-5xl md:text-7xl font-bold text-accent-saffron tracking-wider">Arunachal Pradesh</h1>
+            <h2 class="text-4xl md:text-6xl font-bold tracking-wide">Land of the Dawn-Lit Mountains</h2>
+            <p class="mt-4 text-lg max-w-3xl mx-auto">Explore a heritage of ancient forts, grand monasteries, and the unique living architecture of indigenous tribes.</p>
+        </header>
+
+        <section id="forts" class="my-20">
+            <h2 class="text-4xl font-bold text-center mb-8">The Forts of Arunachal Pradesh</h2>
+            <p class="text-center max-w-3xl mx-auto mb-12">The forts of Arunachal Pradesh are ancient strongholds, primarily built by the Chutia (Sutiya) kings between the 8th and 15th centuries, showcasing remarkable engineering in a challenging landscape.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-2">Ita Fort, Itanagar</h3>
+                    <p>The "Fort of Bricks," from which the state capital gets its name, is a massive 14th-15th century fortress. Its construction involved over 80 lakh bricks and 45,000 man-days, featuring irregular-shaped ramparts and three grand gates that guarded the kingdom. [7, 8, 9]</p>
+                </div>
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-2">Bhismaknagar Fort</h3>
+                    <p>One of the oldest archaeological sites in the region, this 8th-century fort is linked to the Mahabharata as the home of Rukmini. The ruins showcase advanced brickwork and a well-planned layout, reflecting the power of the Chutia dynasty. [7, 10, 11]</p>
+                </div>
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-2">Dirang Dzong</h3>
+                    <p>This 17th-century fortified village is a stunning example of Monpa architecture. The entire settlement, including its stone houses and monastery, is enclosed within a fort-like structure, strategically placed to defend the valley. [7, 12]</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="monuments" class="my-20">
+            <h2 class="text-4xl font-bold text-center mb-8">Monasteries & Temples</h2>
+            <p class="text-center max-w-3xl mx-auto mb-12">The state is a major center for Buddhism, with magnificent monasteries that are architectural and spiritual beacons, alongside ancient Hindu temple ruins.</p>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-2">Tawang Monastery</h3>
+                    <p>The largest monastery in India and second-largest in the world, this 17th-century marvel is a center of Tibetan Buddhism. Built like a mansion, the complex includes a grand assembly hall, 65 residential buildings, and a library with ancient scriptures, all enclosed by a 925-foot-long wall. [7, 13, 14, 15]</p>
+                </div>
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-2">Malinithan Temple</h3>
+                    <p>The ruins of this 10th-12th century temple complex are a treasure trove of classical Odishan-style architecture. The site is famed for its exquisite granite sculptures of Hindu deities like Indra and Surya, showcasing a high degree of artistic skill. [7, 10, 16]</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="styles" class="my-20">
+             <h2 class="text-4xl font-bold text-center mb-8">Indigenous Architecture</h2>
+             <p class="text-center max-w-3xl mx-auto mb-12">The traditional homes of Arunachal's tribes are masterpieces of sustainable design, built entirely from locally sourced materials and perfectly adapted to the environment.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-2">Houses on Stilts</h3>
+                    <p>The Adi and Apatani tribes build their houses on wooden stilts to avoid floods in the sloping, rainy terrain. These homes are constructed from wood, cane, and bamboo, using no metal nails, and often feature a large central fireplace that serves as the family's meeting point. [17, 18]</p>
+                </div>
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-2">Sustainable Materials</h3>
+                    <p>Vernacular architecture across the state relies on bamboo, thatch, mud, and wood. This approach, which uses local craftsmen and materials, results in eco-friendly structures with natural ventilation and features perfectly suited to the geography and climate. [18, 19]</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="analysis" class="my-20">
+            <h2 class="text-4xl font-bold text-center mb-8">Architectural Insights</h2>
+            <p class="text-center max-w-3xl mx-auto mb-12">The architecture of Arunachal Pradesh is a story of ancient kingdoms, deep spirituality, and indigenous ingenuity. The charts below analyze the purpose of its major structures and the materials used to build them.</p>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-4">Primary Purpose of Structures</h3>
+                    <div class="chart-container">
+                        <canvas id="purposeChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-4">Primary Building Materials</h3>
+                    <div class="chart-container">
+                        <canvas id="materialsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="visit" class="my-20">
+            <h2 class="text-4xl font-bold text-center mb-8">When to Visit</h2>
+            <p class="text-center max-w-3xl mx-auto mb-12">Arunachal Pradesh has a varied climate due to its altitude. The best time to visit for clear weather and comfortable travel is during the winter and spring months.</p>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-accent-green mb-2">Peak Season (October - April)</h3>
+                    <p>The winter and spring months offer pleasant, cool weather with clear skies, making it ideal for visiting monasteries, forts, and enjoying the scenic beauty.</p>
+                </div>
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-gray-500 mb-2">Monsoon Season (May - September)</h3>
+                    <p>The monsoon brings heavy rainfall, which can cause landslides and disrupt travel. While the landscape is incredibly lush, this season is less suitable for tourism.</p>
+                </div>
+                <div class="bg-card p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-accent-saffron mb-2">Festivals</h3>
+                    <p>Plan your visit around major festivals like Losar (Tibetan New Year, Feb/Mar) or the Ziro Music Festival (September) to experience the vibrant local culture.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+<!--   
+    <footer class="bg-white mt-16 border-t border-gray-200">
+        <div class="container mx-auto py-8 px-4 text-center">
+            <div class="flex justify-center space-x-6 md:space-x-8 mb-6">
+                <a href="#forts" class="text-gray-600 hover:text-accent-saffron transition-colors">Key Forts</a>
+                <a href="#monuments" class="text-gray-600 hover:text-accent-saffron transition-colors">Monuments</a>
+                <a href="#styles" class="text-gray-600 hover:text-accent-saffron transition-colors">Indigenous Styles</a>
+                <a href="#visit" class="text-gray-600 hover:text-accent-saffron transition-colors">When to Visit</a>
+            </div>
+            <div class="text-sm text-gray-500">
+                <p>Interactive Report based on "A Scholarly Report on the Forts, Palaces, and Monuments of India".</p>
+                <p>&copy; 2024 Architectural Heritage Infographics. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+-->
+
+    <script>
+        const chartTooltipPlugin = {
+            tooltip: {
+                titleFont: { size: 16 },
+                bodyFont: { size: 14 },
+                padding: 12,
+                boxPadding: 4,
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems;
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) { return label.join(' '); }
+                        return label;
+                    }
+                }
+            }
+        };
+
+        const chartLegendPlugin = {
+            legend: {
+                labels: { color: '#374151', font: { size: 14 } }
+            }
+        };
+        
+        new Chart(document.getElementById('purposeChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Function'],
+                datasets:, backgroundColor: '#000080' }, // Navy Blue
+                    { label: 'Defensive (Forts)', data: [2], backgroundColor: '#FF9933' }, // Saffron
+                    { label: 'Residential (Indigenous Homes)', data: [3], backgroundColor: '#138808' }   // Green
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+                scales: { x: { stacked: true, ticks: { callback: value => value + '%' } }, y: { stacked: true } },
+                plugins: {...chartTooltipPlugin, legend: {...chartLegendPlugin.legend, position: 'bottom' } }
+            }
+        });
+
+        new Chart(document.getElementById('materialsChart'), {
+            type: 'doughnut',
+            data: {
+                labels:,
+                datasets: [{
+                    data: [4, 2, 5, 6],
+                    backgroundColor: ['#138808', '#FF9933', '#808080', '#A7C7E7'], // Green, Saffron, Gray, Light Blue
+                    borderColor: '#FFFFFF',
+                    borderWidth: 4
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {...chartTooltipPlugin, legend: chartLegendPlugin.legend }
+            }
+        });
+    </script>
+</body>
+</html>

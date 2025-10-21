@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bihu: The Soul of Assam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Assamese Fields (Green, Red, Yellow) -->
+    <!-- Application Structure Plan: A narrative infographic that explains the three-fold celebration of Bihu. The structure is: 1. Hero section. 2. "What is Bihu?". 3. "The Cycle of Three Bihus" timeline. 4. "Symbols and Traditions". 5. "A Taste of Bihu" chart. This flow is designed to clearly explain the agricultural and cultural significance of each Bihu. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The three Bihus -> Goal: Show Process/Change -> Viz: Vertical timeline -> Justification: The most effective way to illustrate the cycle of the three festivals throughout the year. -> Library/Method: HTML/CSS.
+        - Data Point: Key traditions -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the main cultural elements. -> Library/Method: HTML/CSS.
+        - Data Point: Key festive foods -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display popular Bihu delicacies. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #F0FDF4; /* Very Light Green */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-green { color: #16A34A; }
+        .palette-text-red { color: #DC2626; }
+        .palette-text-yellow { color: #F59E0B; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #16A34A; /* Green */
+            border: 3px solid #F59E0B; /* Yellow */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-green tracking-wider">Bihu</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">The Vibrant Heartbeat of Assam</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Bihu?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Bihu is the national festival of Assam, a set of three important festivals that are deeply connected to the region's agricultural cycle. It is a celebration of nature, farming, community, and the rich cultural tapestry of the Assamese people, transcending all religious and demographic barriers.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-green mb-4">🌾</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Tied to Agriculture</h3>
+                    <p class="mt-2 text-gray-600">Each of the three Bihu festivals marks a distinct phase in the farming calendar: the beginning of the season, the protection of the crops, and the final harvest.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-yellow mb-4">🎶</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Festival of Music & Dance</h3>
+                    <p class="mt-2 text-gray-600">Bihu is synonymous with its lively folk songs (Bihu Geet) and energetic group dances, which express themes of love, nature, and community life.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-red mb-4">❤️</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Secular Celebration</h3>
+                    <p class="mt-2 text-gray-600">Bihu is celebrated by all Assamese people, irrespective of their faith or background, making it a powerful symbol of unity and cultural identity.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="timeline" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Cycle of Three Bihus</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Bihu is not a single event but a series of three festivals celebrated throughout the year, each with its own unique flavor and set of rituals.
+                </p>
+            </div>
+            <div class="mt-12 max-w-3xl mx-auto">
+                <div class="relative pl-8 border-l-4 border-yellow-200">
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-red">Bohag Bihu (Rongali Bihu) - The Festival of Merriment</h3>
+                        <p class="text-gray-600">Celebrated in mid-April, this is the most important of the three. It marks the Assamese New Year and the beginning of the agricultural season. It's a time of joyous celebration, feasting, and vibrant Bihu dance performances.</p>
+                    </div>
+                    <div class="timeline-item mb-8">
+                        <h3 class="text-2xl font-bold palette-text-gray">Kati Bihu (Kongali Bihu) - The Festival of the Poor</h3>
+                        <p class="text-gray-600">Observed in mid-October when the paddy fields are growing and the farmers' granaries are empty. This is a more somber Bihu, focused on prayer and protection. Earthen lamps are lit in homes and paddy fields to guide souls and ward off pests.</p>
+                    </div>
+                     <div class="timeline-item">
+                        <h3 class="text-2xl font-bold palette-text-yellow">Magh Bihu (Bhogali Bihu) - The Festival of Feasting</h3>
+                        <p class="text-gray-600">Celebrated in mid-January, this marks the end of the harvesting season. As the granaries are full, the focus is on food and community feasts. The highlight is the construction and burning of a 'Meji,' a bonfire structure made of bamboo and hay.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Symbols and Traditions</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   The Bihu festival is rich with cultural symbols and traditions that are central to its identity and celebration.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">💃</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Bihu Dance</h3>
+                    <p class="mt-2 text-sm text-gray-600">A joyful and energetic dance performed by young men and women, characterized by brisk steps and rapid hand movements.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎶</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Bihu Geet</h3>
+                    <p class="mt-2 text-sm text-gray-600">Traditional folk songs that narrate tales of love, nature, and the daily life of the Assamese people.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🧣</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Gamusa</h3>
+                    <p class="mt-2 text-sm text-gray-600">A white rectangular piece of cloth with a red border, the Gamusa is a symbol of respect and honor, often given as a gift during Bihu.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🔥</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Meji Bonfire</h3>
+                    <p class="mt-2 text-sm text-gray-600">A key ritual of Magh Bihu, where a tall structure of bamboo and thatch is burnt during community feasts.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Bihu</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    Food is central to all Bihu celebrations, especially Bhogali Bihu. The dishes are made from freshly harvested rice and other local ingredients.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Popular Bihu Delicacies</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Pitha (Rice Cakes)', 
+                'Laru (Sweet Balls)', 
+                'Jolpan (Breakfast Snacks)', 
+                'Masor Tenga (Sour Fish Curry)'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity during Bihu',
+                        data: [100, 95, 90, 80],
+                        backgroundColor: [
+                           '#F59E0B', // Yellow
+                           '#F97316', // Orange
+                           '#16A34A', // Green
+                           '#DC2626'  // Red
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Popularity & Importance',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

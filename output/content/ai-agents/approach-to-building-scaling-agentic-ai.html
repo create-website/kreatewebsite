@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Agentic Enterprise: An Interactive Strategic Roadmap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutrals -->
+    <!-- Application Structure Plan: The SPA is designed as a strategic, phased journey for executive decision-makers. It follows a logical narrative: 1) Introduction to frame the problem with the 10-20-70 rule, 2) An interactive Strategic Roadmap to visualize the end-to-end process, 3) A deep dive into the 'Building' phase with an interactive Pilot Selection Matrix, 4) A self-assessment tool for Enterprise Readiness with a dynamic radar chart, and 5) A 'Sustaining' section with a KPI dashboard and ROI framework. This structure transforms dense reports into an actionable, exploratory tool that aligns with a strategic planning mindset. -->
+    <!-- Visualization & Content Choices: 1. Strategic Roadmap (Goal: Organize): An interactive, multi-step diagram built with HTML/CSS. Justification: More engaging and intuitive for showing a process flow than a static list. 2. Pilot Prioritization Matrix (Goal: Compare): An interactive grid that reveals details on hover/click. Justification: Makes the abstract framework tangible. 3. Readiness Assessment (Goal: Inform/Compare): An interactive checklist that updates a Chart.js Radar Chart. Justification: A radar chart is the best visualization for a multi-dimensional score, providing an instant "readiness fingerprint." 4. KPI Dashboard (Goal: Inform): A filterable set of cards. Justification: Allows users to explore metrics by category, making the data less overwhelming. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #44403c;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active {
+            color: #a5522a;
+            border-bottom-color: #a5522a;
+        }
+        .accordion-button span {
+            transition: transform 0.3s ease;
+        }
+        .accordion-button[aria-expanded="true"] span {
+            transform: rotate(45deg);
+        }
+        .roadmap-step {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .roadmap-step.active {
+            background-color: #a5522a;
+            color: white;
+            transform: scale(1.05);
+        }
+        .matrix-quadrant {
+            transition: all 0.3s ease;
+        }
+        .matrix-quadrant:hover {
+            transform: scale(1.03);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-stone-800">The Agentic Enterprise Roadmap</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#intro" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:text-stone-900 border-b-2 border-transparent">Introduction</a>
+                        <a href="#roadmap" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:text-stone-900 border-b-2 border-transparent">Roadmap</a>
+                        <a href="#readiness" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:text-stone-900 border-b-2 border-transparent">Readiness</a>
+                        <a href="#sustaining" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:text-stone-900 border-b-2 border-transparent">Sustaining</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="intro" class="py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-stone-900">The Strategic Roadmap to Agentic AI</h2>
+                <p class="mt-6 max-w-3xl mx-auto text-lg text-stone-600">The journey to becoming an agentic enterprise is not a technology project; it's a strategic transformation. This interactive guide provides a phased roadmap for building, scaling, and sustaining AI-powered value, grounded in a critical principle for success.</p>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center p-6 bg-stone-50 rounded-lg border border-stone-200">
+                        <div class="text-6xl font-extrabold text-[#a5522a]">10%</div>
+                        <h3 class="text-xl font-bold mt-2">Algorithms & Models</h3>
+                    </div>
+                    <div class="text-center p-6 bg-stone-50 rounded-lg border border-stone-200">
+                        <div class="text-6xl font-extrabold text-[#a5522a]">20%</div>
+                        <h3 class="text-xl font-bold mt-2">Technology & Data</h3>
+                    </div>
+                    <div class="text-center p-6 bg-stone-50 rounded-lg border border-stone-200">
+                        <div class="text-6xl font-extrabold text-[#a5522a]">70%</div>
+                        <h3 class="text-xl font-bold mt-2">People, Process & Culture</h3>
+                    </div>
+                </div>
+                 <p class="mt-8 max-w-3xl mx-auto text-md text-stone-500">The "10-20-70" rule reframes the challenge: success depends less on the AI model and more on the organizational and human elements of the transformation.</p>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-20 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl md:text-4xl font-bold text-stone-900">A Phased Journey to Value</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-stone-600">A successful agentic transformation is an evolutionary journey, not a revolutionary event. This roadmap outlines a disciplined, four-phase approach to build capabilities, manage risk, and deliver sustainable value. Click each phase to explore its key activities.</p>
+                </div>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 mb-8" id="roadmap-steps">
+                    <div class="roadmap-step p-4 rounded-full bg-white border-2 border-stone-300 text-stone-700 font-semibold" data-step="1">1. Charting the Course</div>
+                    <div class="text-2xl text-stone-400 font-sans">&rarr;</div>
+                    <div class="roadmap-step p-4 rounded-full bg-white border-2 border-stone-300 text-stone-700 font-semibold" data-step="2">2. Building the Engine</div>
+                    <div class="text-2xl text-stone-400 font-sans">&rarr;</div>
+                    <div class="roadmap-step p-4 rounded-full bg-white border-2 border-stone-300 text-stone-700 font-semibold" data-step="3">3. Achieving Scale</div>
+                    <div class="text-2xl text-stone-400 font-sans">&rarr;</div>
+                    <div class="roadmap-step p-4 rounded-full bg-white border-2 border-stone-300 text-stone-700 font-semibold" data-step="4">4. Sustaining the Journey</div>
+                </div>
+                <div id="roadmap-content" class="mt-8 p-8 bg-white rounded-lg shadow-md min-h-[200px] max-w-3xl mx-auto"></div>
+            </div>
+        </section>
+
+        <section id="pilots" class="py-20 md:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl md:text-4xl font-bold text-stone-900">Prioritizing the First Move</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-stone-600">The selection of initial pilot projects is a critical strategic decision. The goal is to find "Quick Wins" that deliver tangible value, build momentum, and serve as powerful internal success stories. Explore the matrix to understand how to classify potential projects.</p>
+                </div>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-1">
+                    <div class="matrix-quadrant bg-green-50 p-6 border-4 border-white rounded-tl-2xl">
+                        <h4 class="font-bold text-xl text-green-800">Quick Wins (Prioritize Now)</h4>
+                        <p class="text-green-700 mt-2">High Impact, High Feasibility, Low Effort. The ideal starting point. Delivers measurable value quickly, builds momentum, and minimizes risk.</p>
+                    </div>
+                    <div class="matrix-quadrant bg-blue-50 p-6 border-4 border-white rounded-tr-2xl">
+                        <h4 class="font-bold text-xl text-blue-800">Strategic Bets</h4>
+                        <p class="text-blue-700 mt-2">High Impact, Low Feasibility/High Effort. Transformative potential but requires significant investment. Plan for the future, not for initial pilots.</p>
+                    </div>
+                    <div class="matrix-quadrant bg-yellow-50 p-6 border-4 border-white rounded-bl-2xl">
+                        <h4 class="font-bold text-xl text-yellow-800">Incremental Gains</h4>
+                        <p class="text-yellow-700 mt-2">Low Impact, High Feasibility, Low Effort. Easy to implement but won't move the needle strategically. Useful for training or small-scale experimentation.</p>
+                    </div>
+                    <div class="matrix-quadrant bg-red-50 p-6 border-4 border-white rounded-br-2xl">
+                        <h4 class="font-bold text-xl text-red-800">Avoid for Now</h4>
+                        <p class="text-red-700 mt-2">Low Impact, Low Feasibility/High Effort. High cost for little return. These projects drain resources and morale.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="readiness" class="py-20 md:py-28">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-stone-900">Assess Your Enterprise Readiness</h4>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-stone-600">Readiness is a precondition for ROI. Before building, conduct an honest assessment of your organization's maturity across five critical dimensions. Check the boxes to see how your readiness "fingerprint" might look.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+                    <div id="readiness-checklist" class="space-y-4"></div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200">
+                        <h4 class="text-xl font-bold text-center mb-2">Readiness Profile</h4>
+                        <div class="chart-container">
+                            <canvas id="readinessChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sustaining" class="py-20 md:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-stone-900">Sustaining the Journey</h4>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-stone-600">Long-term success requires robust governance, a focus on the human element, and a multi-dimensional approach to measuring value that goes beyond simple cost savings.</p>
+                </div>
+                <div id="sustaining-accordion" class="max-w-3xl mx-auto space-y-4"></div>
+            </div>
+        </section>
+    </main>
+
+<!--
+
+    <footer class="bg-stone-800 text-white mt-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+            <p class="text-stone-400">An interactive roadmap based on "The Agentic Enterprise: A Strategic Roadmap for Building, Scaling, and Sustaining AI-Powered Value."</p>
+        </div>
+    </footer>
+
+-->
+
+    <script>
+        const appData = {
+            roadmap: {
+                '1': {
+                    title: 'Phase 1: Charting the Course',
+                    content: '<ul class="list-disc pl-5 space-y-2 text-stone-600"><li><strong>Define the Agentic Paradigm:</strong> Understand the shift from passive tools to proactive collaborators.</li><li><strong>Set Realistic Expectations:</strong> Use the Spectrum of Autonomy to align stakeholders.</li><li><strong>Align with Business Imperatives:</strong> Link every AI initiative to a core business goal using a Goal-Capability Matrix.</li><li><strong>Embrace the 10-20-70 Rule:</strong> Focus 70% of effort on people, process, and culture.</li></ul>'
+                },
+                '2': {
+                    title: 'Phase 2: Building the Engine',
+                    content: '<ul class="list-disc pl-5 space-y-2 text-stone-600"><li><strong>Conduct Readiness Assessment:</strong> Establish a baseline of your organization\'s data, tech, talent, and governance maturity.</li><li><strong>Select Pilot Projects:</strong> Use the Impact/Feasibility/Effort matrix to identify "Quick Wins."</li><li><strong>Reengineer Business Processes:</strong> Redesign workflows around agent capabilities, not just automate existing tasks.</li></ul>'
+                },
+                '3': {
+                    title: 'Phase 3: Achieving Scale Velocity',
+                    content: '<ul class="list-disc pl-5 space-y-2 text-stone-600"><li><strong>Architect for Growth:</strong> Understand core components (Reasoning, Memory, Tools) and choose the right orchestration framework (e.g., LangGraph).</li><li><strong>Adopt the Agentic AI Mesh:</strong> Move from monolithic agents to a composable, distributed architecture for enterprise scale.</li><li><strong>Build Data Infrastructure:</strong> Invest in Vector Databases for long-term memory and Knowledge Graphs for contextual reasoning.</li><li><strong>Industrialize with AgentOps:</strong> Establish a discipline for managing the lifecycle, cost, and risk of agent ecosystems.</li></ul>'
+                },
+                '4': {
+                    title: 'Phase 4: Sustaining the Journey',
+                    content: '<ul class="list-disc pl-5 space-y-2 text-stone-600"><li><strong>Govern Autonomy:</strong> Establish a Responsible AI framework and an AI Ethics & Safety Committee.</li><li><strong>Secure the Enterprise:</strong> Address new threats like privilege compromise, tool misuse, and memory poisoning.</li><li><strong>Ensure Meaningful Human Control (MHC):</strong> Implement robust Human-in-the-Loop (HITL) systems.</li><li><strong>Measure What Matters:</strong> Use a multi-dimensional KPI dashboard and ROI framework to track value.</li></ul>'
+                }
+            },
+            readiness: [
+                { id: 'strategy', name: 'Strategic Alignment', criteria: ['C-Suite Sponsorship', 'Validated Business Case', 'Clear Vision'] },
+                { id: 'data', name: 'Data Readiness', criteria: ['Data Quality & Integrity', 'Data Accessibility', 'Robust Governance'] },
+                { id: 'tech', name: 'Tech & Infrastructure', criteria: ['Scalable Compute', 'Mature API Ecosystem', 'Modern AI/ML Platforms'] },
+                { id: 'talent', name: 'Talent & Culture', criteria: ['Technical Skills Access', 'Broad AI Literacy', 'Change Readiness & Psychological Safety'] },
+                { id: 'governance', name: 'Governance & Ethics', criteria: ['Risk Management Framework', 'Clear Ethical Guidelines', 'Human Oversight Processes'] }
+            ],
+            sustaining: [
+                { title: 'Navigating the Human Element', content: 'Successful adoption is 70% about people. This requires a structured change management playbook, fostering psychological safety to encourage experimentation, and a strategic focus on reskilling the workforce for an era of human-AI collaboration. New roles like AI Governor and Agent Orchestrator will emerge, and uniquely human skills like ethical judgment and creative thinking will become more valuable than ever.' },
+                { title: 'A Multi-Dimensional KPI Dashboard', content: 'To demonstrate value, organizations must track a balanced set of KPIs across four categories: <strong>Financial Impact</strong> (ROI, Cost Savings), <strong>Operational Efficiency</strong> (Task Completion Rate, Cycle Time), <strong>Customer & User Experience</strong> (CSAT, Adoption Rate), and <strong>Innovation & Agility</strong> (Learning Velocity, Time-to-Market Reduction).'},
+                { title: 'Robust Governance and Security', content: 'Sustaining agentic AI requires a shift to real-time governance. An AI Ethics & Safety Committee must oversee a framework for responsible AI. Security must address new threats like privilege compromise and memory poisoning. Finally, all systems must be designed for Meaningful Human Control (MHC) through well-architected Human-in-the-Loop (HITL) interfaces.'}
+            ]
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const roadmapSteps = document.getElementById('roadmap-steps');
+            const roadmapContent = document.getElementById('roadmap-content');
+
+            function updateRoadmapContent(step) {
+                roadmapSteps.querySelectorAll('.roadmap-step').forEach(el => {
+                    el.classList.toggle('active', el.dataset.step === step);
+                });
+                const data = appData.roadmap[step];
+                roadmapContent.innerHTML = `<h4 class="text-2xl font-bold text-stone-800 mb-4">${data.title}</h4>${data.content}`;
+            }
+
+            roadmapSteps.addEventListener('click', e => {
+                if (e.target.matches('.roadmap-step')) {
+                    updateRoadmapContent(e.target.dataset.step);
+                }
+            });
+            updateRoadmapContent('1');
+
+            const checklistContainer = document.getElementById('readiness-checklist');
+            const readinessChartCtx = document.getElementById('readinessChart').getContext('2d');
+            let readinessChart;
+
+            function renderReadinessChecklist() {
+                checklistContainer.innerHTML = '';
+                appData.readiness.forEach(pillar => {
+                    const pillarEl = document.createElement('div');
+                    pillarEl.className = 'bg-white p-4 rounded-lg shadow-sm border border-stone-200';
+                    let criteriaHTML = pillar.criteria.map((crit, index) => `
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="h-5 w-5 rounded border-stone-300 text-[#a5522a] focus:ring-[#a5522a]" data-pillar="${pillar.id}" />
+                            <span class="text-stone-700">${crit}</span>
+                        </label>
+                    `).join('');
+                    pillarEl.innerHTML = `
+                        <h5 class="font-bold text-lg text-stone-800 mb-2">${pillar.name}</h5>
+                        <div class="space-y-2">${criteriaHTML}</div>
+                    `;
+                    checklistContainer.appendChild(pillarEl);
+                });
+            }
+
+            function updateReadinessChart() {
+                const scores = appData.readiness.map(pillar => {
+                    const checkboxes = document.querySelectorAll(`input[data-pillar="${pillar.id}"]`);
+                    const checked = document.querySelectorAll(`input[data-pillar="${pillar.id}"]:checked`);
+                    return checkboxes.length > 0 ? (checked.length / checkboxes.length) * 100 : 0;
+                });
+
+                if (readinessChart) {
+                    readinessChart.data.datasets[0].data = scores;
+                    readinessChart.update();
+                } else {
+                    readinessChart = new Chart(readinessChartCtx, {
+                        type: 'radar',
+                        data: {
+                            labels: appData.readiness.map(p => p.name),
+                            datasets: [{
+                                label: 'Readiness Score',
+                                data: scores,
+                                backgroundColor: 'rgba(165, 82, 42, 0.2)',
+                                borderColor: 'rgba(165, 82, 42, 1)',
+                                pointBackgroundColor: 'rgba(165, 82, 42, 1)',
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            scales: { r: { min: 0, max: 100, ticks: { stepSize: 25, backdropColor: 'rgba(255, 255, 255, 0.75)' } } },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                }
+            }
+
+            renderReadinessChecklist();
+            updateReadinessChart();
+            checklistContainer.addEventListener('change', updateReadinessChart);
+
+            const accordionContainer = document.getElementById('sustaining-accordion');
+            appData.sustaining.forEach(item => {
+                const accordionItem = document.createElement('div');
+                accordionItem.className = 'bg-white rounded-lg shadow-sm border border-stone-200';
+                accordionItem.innerHTML = `
+                    <button class="accordion-button w-full flex justify-between items-center text-left p-4 font-semibold hover:bg-stone-50" aria-expanded="false">
+                        <span>${item.title}</span>
+                        <span class="transform transition-transform duration-300 text-[#a5522a] text-2xl font-light">+</span>
+                    </button>
+                    <div class="accordion-content overflow-hidden max-h-0 transition-all duration-500 ease-in-out">
+                        <p class="p-4 pt-0 text-stone-600">${item.content}</p>
+                    </div>
+                `;
+                accordionContainer.appendChild(accordionItem);
+            });
+            
+            accordionContainer.addEventListener('click', e => {
+                const button = e.target.closest('.accordion-button');
+                if (button) {
+                    const content = button.nextElementSibling;
+                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                    button.setAttribute('aria-expanded', !isExpanded);
+                    content.style.maxHeight = isExpanded ? '0px' : content.scrollHeight + 'px';
+                }
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            window.addEventListener('scroll', () => {
+                let current = 'intro';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

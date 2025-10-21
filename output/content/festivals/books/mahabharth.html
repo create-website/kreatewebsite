@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to the Mahabharata</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Ancient Scroll -->
+    <!-- Application Structure Plan: The SPA is designed with a top-down narrative flow to guide the user from a high-level overview to specific details. It begins with an 'Introduction', moves to the 'Core Conflict' to establish the central theme, then allows deep dives into 'Key Characters' and 'Major Events'. It concludes with 'Themes & Philosophy' to provide deeper meaning. This thematic, non-linear structure is more user-friendly for exploring a complex epic like the Mahabharata than a rigid, chapter-by-chapter layout. Navigation is handled by a sticky header, and interactivity is focused on clicking/tapping to reveal information, making it intuitive on all devices. -->
+    <!-- Visualization & Content Choices: 
+        - Core Conflict: Report Info -> Pandava vs. Kaurava factions. Goal -> Compare. Viz/Presentation -> Side-by-side HTML/CSS columns. Interaction -> Clear visual separation. Justification -> Instantly establishes the epic's central division. Method -> Tailwind CSS Flexbox.
+        - Key Characters: Report Info -> Major characters and their allegiances. Goal -> Organize/Inform. Viz/Presentation -> Character cards (HTML) with a details panel, supported by a Donut Chart. Interaction -> Clicking a card updates the panel. Chart provides an aggregate view. Justification -> Allows for both specific character exploration and a high-level understanding of faction sizes. Library -> Chart.js (Canvas).
+        - Major Events: Report Info -> Key narrative milestones. Goal -> Show Change. Viz/Presentation -> Vertical interactive timeline. Interaction -> Clicking an event expands it to show details. Justification -> Presents the narrative flow chronologically and digestibly. Method -> HTML/CSS/JS.
+        - Themes & Philosophy: Report Info -> Abstract concepts like Dharma. Goal -> Inform. Viz/Presentation -> Accordion layout. Interaction -> Clicking a theme reveals its explanation. Justification -> Organizes complex philosophical ideas into manageable, user-selectable chunks. Method -> HTML/CSS/JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF5; 
+            color: #4A4A4A;
+        }
+        h1, h2, h3, .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+        .active-nav {
+            color: #8B5A2B;
+            font-weight: bold;
+            border-bottom: 2px solid #8B5A2B;
+        }
+        .inactive-nav {
+            color: #6B7280;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            left: -0.875rem;
+            width: 1.75rem;
+            height: 1.75rem;
+            background-color: #FDFBF5;
+            border: 4px solid #D1C4B0;
+            border-radius: 9999px;
+            z-index: 10;
+        }
+        .timeline-item.active::before {
+            background-color: #8B5A2B;
+            border-color: #8B5A2B;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-amber-900 font-cinzel">The Mahabharata</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#introduction" class="nav-link inactive-nav transition duration-300">Introduction</a>
+                <a href="#conflict" class="nav-link inactive-nav transition duration-300">The Conflict</a>
+                <a href="#characters" class="nav-link inactive-nav transition duration-300">Characters</a>
+                <a href="#events" class="nav-link inactive-nav transition duration-300">Events</a>
+                <a href="#themes" class="nav-link inactive-nav transition duration-300">Themes</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-stone-100 border border-stone-300 rounded-md p-2 text-amber-900">
+                    <option value="#introduction">Introduction</option>
+                    <option value="#conflict">The Conflict</option>
+                    <option value="#characters">Characters</option>
+                    <option value="#events">Events</option>
+                    <option value="#themes">Themes</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        
+        <section id="introduction" class="min-h-screen flex items-center">
+            <div class="w-full text-center">
+                <h1 class="text-5xl md:text-7xl font-bold text-amber-900 mb-4 tracking-wider">महाभारत</h1>
+                <h2 class="text-3xl md:text-5xl text-stone-700 mb-6 font-cinzel">An Epic of Ancient India</h2>
+                <p class="max-w-3xl mx-auto text-lg md:text-xl text-stone-600 leading-relaxed">
+                    The Mahabharata is one of the two major Sanskrit epics of ancient India, the other being the Ramayana. It is a vast and complex narrative of the Kurukshetra War, a dynastic struggle for the throne of Hastinapura between two groups of cousins, the Kauravas and the Pandavas. This interactive guide invites you to explore its core conflict, pivotal characters, and timeless philosophical wisdom.
+                </p>
+            </div>
+        </section>
+
+        <section id="conflict" class="py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-amber-900 mb-2 font-cinzel">The Core Conflict</h2>
+                <p class="max-w-3xl mx-auto text-lg text-stone-600">
+                    The epic revolves around the intense rivalry between two families of cousins—the Pandavas, representing dharma (righteousness), and the Kauravas, driven by adharma (unrighteousness). Their dispute over the kingdom of Hastinapura escalates from a game of dice to the catastrophic Kurukshetra War.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <div class="bg-white p-8 rounded-lg shadow-lg border border-stone-200 text-center">
+                    <h3 class="text-3xl font-bold text-blue-800 mb-4 font-cinzel">The Pandavas</h3>
+                    <p class="text-stone-600 mb-6">The five sons of King Pandu, renowned for their virtue and righteousness. They are the rightful heirs to the throne.</p>
+                    <ul class="text-xl space-y-2 text-stone-700">
+                        <li>Yudhishthira (The Just)</li>
+                        <li>Bhima (The Mighty)</li>
+                        <li>Arjuna (The Archer)</li>
+                        <li>Nakula (The Handsome)</li>
+                        <li>Sahadeva (The Wise)</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg border border-stone-200 text-center">
+                    <h3 class="text-3xl font-bold text-red-800 mb-4 font-cinzel">The Kauravas</h3>
+                    <p class="text-stone-600 mb-6">The one hundred sons of the blind King Dhritarashtra, led by the eldest, the arrogant and envious Duryodhana.</p>
+                    <ul class="text-xl space-y-2 text-stone-700">
+                        <li>Duryodhana (The Antagonist)</li>
+                        <li>Dushasana (His cruel brother)</li>
+                        <li>And their 98 brothers</li>
+                        <li>Supported by figures like Karna</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="characters" class="py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-amber-900 mb-2 font-cinzel">Key Characters</h2>
+                <p class="max-w-3xl mx-auto text-lg text-stone-600">
+                    The Mahabharata is a story driven by its complex characters, each with their own motivations, flaws, and destinies. Select a character to learn more about their pivotal role in the epic tale.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1">
+                    <div id="character-list" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-4">
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 bg-white p-8 rounded-lg shadow-lg border border-stone-200 sticky top-24 h-fit">
+                    <div id="character-display">
+                        <h3 id="char-name" class="text-3xl font-bold text-amber-900 mb-2 font-cinzel">Select a Character</h3>
+                        <p id="char-allegiance" class="text-lg font-semibold mb-4 text-stone-500"></p>
+                        <p id="char-desc" class="text-stone-700 leading-relaxed"></p>
+                    </div>
+                     <div class="chart-container w-full max-w-md mx-auto h-64 md:h-80 mt-8 relative">
+                        <canvas id="allegiance-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="events" class="py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-amber-900 mb-2 font-cinzel">Major Events</h2>
+                <p class="max-w-3xl mx-auto text-lg text-stone-600">
+                    The narrative of the Mahabharata unfolds through a series of dramatic and consequential events. Click on each event in the timeline below to explore the key turning points that led to the great war and its aftermath.
+                </p>
+            </div>
+            <div class="relative max-w-2xl mx-auto">
+                <div class="absolute top-0 h-full w-1 bg-stone-300 left-4"></div>
+                <div id="timeline-container" class="space-y-8">
+                </div>
+            </div>
+        </section>
+
+        <section id="themes" class="py-20">
+             <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-amber-900 mb-2 font-cinzel">Themes & Philosophy</h2>
+                <p class="max-w-3xl mx-auto text-lg text-stone-600">
+                    Beyond the great war, the Mahabharata is a profound source of philosophical and spiritual wisdom. It explores complex questions of duty, righteousness, and the nature of reality. Expand the sections below to delve into its core themes.
+                </p>
+            </div>
+            <div id="accordion-container" class="max-w-3xl mx-auto space-y-4">
+            </div>
+        </section>
+
+    </main>
+<!--   
+    <footer class="bg-stone-100 border-t border-stone-200 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-stone-500">
+            <p>An Interactive Exploration of the Mahabharata</p>
+            <p class="text-sm mt-2">Crafted with modern web technologies to bring an ancient epic to life.</p>
+        </div>
+    </footer>
+-->
+
+    <script>
+        const characters = [
+            { name: 'Arjuna', allegiance: 'Pandava', description: 'The third Pandava brother, a master archer and central protagonist. His crisis of conscience on the battlefield leads to the discourse of the Bhagavad Gita.', color: 'border-blue-800' },
+            { name: 'Yudhishthira', allegiance: 'Pandava', description: 'The eldest Pandava, the epitome of dharma and truth. His main weakness is his love for the game of dice, which sets the stage for the Pandavas\' downfall and exile.', color: 'border-blue-800' },
+            { name: 'Duryodhana', allegiance: 'Kaurava', description: 'The eldest Kaurava and the primary antagonist. His jealousy and refusal to return the Pandavas\' kingdom are the direct causes of the Kurukshetra War.', color: 'border-red-800' },
+            { name: 'Krishna', allegiance: 'Ally of Pandavas', description: 'An incarnation of the god Vishnu, who serves as Arjuna\'s charioteer and guide. His wisdom, compiled in the Bhagavad Gita, is a cornerstone of Hindu philosophy.', color: 'border-yellow-600' },
+            { name: 'Karna', allegiance: 'Kaurava', description: 'The secret, first-born son of Kunti, making him the Pandavas\' elder brother. He sides with Duryodhana out of loyalty and becomes one of Arjuna\'s greatest rivals.', color: 'border-red-800' },
+            { name: 'Bhishma', allegiance: 'Neutral (Fights for Kauravas)', description: 'The grand-uncle of both Pandavas and Kauravas, bound by an oath to protect the throne of Hastinapura. He is an invincible warrior who can choose his time of death.', color: 'border-gray-500' },
+            { name: 'Draupadi', allegiance: 'Pandava', description: 'The wife of all five Pandava brothers. Her public humiliation by the Kauravas after the dice game becomes a major catalyst for the war.', color: 'border-blue-800' },
+            { name: 'Shakuni', allegiance: 'Kaurava', description: 'The maternal uncle of the Kauravas. A master of deception and an expert dice player, he engineers the infamous game that leads to the Pandavas losing their kingdom.', color: 'border-red-800' },
+        ];
+
+        const events = [
+            { title: 'The Game of Dice', description: 'Yudhishthira is tricked by Shakuni into gambling away his kingdom, his brothers, himself, and even their wife Draupadi. This event triggers the central conflict and leads to the public humiliation of Draupadi.' },
+            { title: 'The 13-Year Exile', description: 'As a result of losing the dice game, the Pandavas are exiled for twelve years in the forest, followed by one year of living in disguise. They must remain undiscovered during the final year to reclaim their kingdom.' },
+            { title: 'The Kurukshetra War', description: 'When the Kauravas refuse to return the kingdom after the exile, war becomes inevitable. The two armies clash at Kurukshetra in an epic 18-day battle that results in immense destruction.' },
+            { title: 'The Bhagavad Gita', description: 'On the first day of the war, Arjuna is filled with despair at the thought of fighting his own kin. Krishna imparts divine wisdom to him about duty (dharma), action (karma), and the eternal self, a discourse known as the Bhagavad Gita.' },
+            { title: 'The Aftermath', description: 'The Pandavas emerge victorious but at a great cost, with almost every warrior slain. Yudhishthira becomes king, but the victory is hollow, and the epic concludes with the Pandavas renouncing their kingdom for a final journey to the heavens.' },
+        ];
+
+        const themes = [
+            { title: 'Dharma (Righteous Duty)', content: 'Dharma is the central theme of the Mahabharata. It refers to one\'s moral, social, and ethical duties. The epic constantly explores the complexities of dharma, showing that the righteous path is often difficult and ambiguous. The conflict is framed as a struggle between dharma (Pandavas) and adharma (Kauravas).' },
+            { title: 'Karma (Action and Consequence)', content: 'The law of karma, where every action has a corresponding reaction, is integral to the narrative. The fates of the characters are deeply intertwined with their past actions. The war itself is seen as the culmination of generations of choices and their consequences.' },
+            { title: 'The Bhagavad Gita (The Song of God)', content: 'This 700-verse scripture within the Mahabharata is its philosophical heart. It is a dialogue between Krishna and Arjuna where Krishna explains the nature of reality, the path to spiritual liberation, and the importance of performing one\'s duty without attachment to the results.' },
+            { title: 'Family and Loyalty', content: 'The epic is fundamentally a family saga, exploring the destructive power of jealousy, ambition, and pride within a royal dynasty. It examines the conflicting loyalties characters face between family, duty, and personal principles, as seen in figures like Bhishma and Karna.' },
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const characterList = document.getElementById('character-list');
+            const charName = document.getElementById('char-name');
+            const charAllegiance = document.getElementById('char-allegiance');
+            const charDesc = document.getElementById('char-desc');
+            
+            const timelineContainer = document.getElementById('timeline-container');
+            const accordionContainer = document.getElementById('accordion-container');
+            
+            const mobileNav = document.getElementById('mobile-nav');
+
+            let activeCharacterCard = null;
+
+            function updateCharacterDisplay(character) {
+                charName.textContent = character.name;
+                charAllegiance.textContent = `Allegiance: ${character.allegiance}`;
+                charDesc.textContent = character.description;
+            }
+
+            characters.forEach((char, index) => {
+                const charCard = document.createElement('div');
+                charCard.className = `p-4 rounded-lg cursor-pointer transition duration-300 text-center border-2 ${char.color} bg-white hover:bg-stone-100 hover:shadow-md`;
+                charCard.innerHTML = `<h4 class="font-bold font-cinzel text-lg text-stone-800">${char.name}</h4>`;
+                
+                charCard.addEventListener('click', () => {
+                    updateCharacterDisplay(char);
+                    if(activeCharacterCard) {
+                        activeCharacterCard.classList.remove('bg-amber-100', 'shadow-xl', 'scale-105');
+                        activeCharacterCard.classList.add('bg-white');
+                    }
+                    charCard.classList.add('bg-amber-100', 'shadow-xl', 'scale-105');
+                    charCard.classList.remove('bg-white');
+                    activeCharacterCard = charCard;
+                });
+                
+                characterList.appendChild(charCard);
+                if (index === 0) {
+                    charCard.click();
+                }
+            });
+
+            events.forEach(event => {
+                const eventElement = document.createElement('div');
+                eventElement.className = 'timeline-item relative pl-12 pb-8';
+                eventElement.innerHTML = `
+                    <div class="cursor-pointer">
+                        <h3 class="font-bold text-xl text-amber-800 font-cinzel">${event.title}</h3>
+                    </div>
+                    <div class="timeline-content mt-2 text-stone-600 hidden">
+                        <p>${event.description}</p>
+                    </div>
+                `;
+                timelineContainer.appendChild(eventElement);
+
+                eventElement.querySelector('h3').addEventListener('click', () => {
+                    document.querySelectorAll('.timeline-item').forEach(item => {
+                        item.classList.remove('active');
+                        item.querySelector('.timeline-content').classList.add('hidden');
+                    });
+                    eventElement.classList.add('active');
+                    eventElement.querySelector('.timeline-content').classList.toggle('hidden');
+                });
+            });
+
+            themes.forEach(theme => {
+                const accordionItem = document.createElement('div');
+                accordionItem.className = 'bg-white rounded-lg shadow border border-stone-200';
+                accordionItem.innerHTML = `
+                    <button class="w-full text-left p-4 flex justify-between items-center accordion-header">
+                        <h3 class="text-xl font-semibold text-amber-900 font-cinzel">${theme.title}</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-4 pb-4">
+                        <p class="text-stone-700">${theme.content}</p>
+                    </div>
+                `;
+                accordionContainer.appendChild(accordionItem);
+
+                const header = accordionItem.querySelector('.accordion-header');
+                const content = accordionItem.querySelector('.accordion-content');
+                const icon = accordionItem.querySelector('span');
+
+                header.addEventListener('click', () => {
+                    const isOpen = content.style.maxHeight;
+                    document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+                    document.querySelectorAll('.accordion-header span').forEach(i => i.style.transform = 'rotate(0deg)');
+
+                    if (!isOpen) {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+            
+            const allegianceCounts = characters.reduce((acc, char) => {
+                let allegiance = char.allegiance;
+                if (allegiance.includes('Pandava')) allegiance = 'Pandava Faction';
+                if (allegiance.includes('Kaurava')) allegiance = 'Kaurava Faction';
+                if (allegiance.includes('Neutral')) allegiance = 'Neutral';
+                acc[allegiance] = (acc[allegiance] || 0) + 1;
+                return acc;
+            }, {});
+
+            const ctx = document.getElementById('allegiance-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(allegianceCounts),
+                    datasets: [{
+                        label: 'Character Allegiance',
+                        data: Object.values(allegianceCounts),
+                        backgroundColor: [
+                            'rgba(30, 64, 175, 0.7)',  // Blue-800 for Pandava
+                            'rgba(153, 27, 27, 0.7)', // Red-800 for Kaurava
+                            'rgba(120, 113, 108, 0.7)' // Stone-500 for Neutral
+                        ],
+                        borderColor: [
+                            'rgba(30, 64, 175, 1)',
+                            'rgba(153, 27, 27, 1)',
+                            'rgba(120, 113, 108, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Distribution of Key Characters by Allegiance',
+                            font: {
+                                size: 16,
+                                family: "'Inter', sans-serif"
+                            }
+                        }
+                    }
+                }
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            window.onscroll = () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 100) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active-nav');
+                    link.classList.add('inactive-nav');
+                    if (link.href.includes(current)) {
+                        link.classList.add('active-nav');
+                        link.classList.remove('inactive-nav');
+                    }
+                });
+                mobileNav.value = `#${current}`;
+            };
+            
+            mobileNav.addEventListener('change', (e) => {
+                window.location.href = e.target.value;
+            });
+        });
+    </script>
+</body>
+</html>

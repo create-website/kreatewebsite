@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid: A Celebration of Faith and Gratitude</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Festive Green & Gold -->
+    <!-- Application Structure Plan: A narrative infographic that explains the two major Eid festivals in Islam. The structure is: 1. Hero section. 2. "What is Eid?". 3. "The Two Eids of the Year" (Eid al-Fitr & Eid al-Adha). 4. "Symbols of Celebration". 5. "Traditions of Joy & Community". 6. "A Taste of Eid" chart. This flow is designed to clearly distinguish between the two Eids while highlighting their shared spirit of community and faith. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core concepts -> Goal: Inform -> Viz: Styled cards with Unicode icons -> Justification: A quick, visual summary. -> Library/Method: HTML/CSS.
+        - Data Point: The two Eids -> Goal: Organize/Inform -> Viz: A two-column layout -> Justification: Clearly presents and contrasts the two distinct festivals. -> Library/Method: HTML/CSS.
+        - Data Point: Key symbols -> Goal: Organize/Inform -> Viz: Grid of styled cards -> Justification: A clean format to showcase the main icons of the celebration. -> Library/Method: HTML/CSS.
+        - Data Point: Key festive foods -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart -> Justification: A simple way to display popular Eid dishes. -> Library/Method: Chart.js (Canvas).
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            background-color: #F0FDF4; /* Very Light Green */
+            color: #1F2937;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+        }
+        .palette-text-green { color: #15803D; }
+        .palette-text-gold { color: #B45309; }
+        .palette-text-darkgreen { color: #14532D; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 12px;
+            height: 12px;
+            background-color: #15803D; /* Green */
+            border: 3px solid #FBBF24; /* Gold */
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-6xl md:text-8xl font-bold palette-text-green tracking-wider">Eid Mubarak</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-2">A Celebration of Faith, Gratitude, and Community</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">What is Eid?</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    "Eid" in Arabic means "feast" or "festival." In Islam, there are two major Eid festivals celebrated by millions of Muslims worldwide. Both are joyous occasions for prayer, feasting, charity, and spending time with loved ones, but they commemorate different spiritual events.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-green mb-4">🙏</div>
+                    <h3 class="text-3xl font-bold text-gray-900">A Time for Prayer</h3>
+                    <p class="mt-2 text-gray-600">Both Eids begin with a special congregational prayer in the morning, where communities gather to thank Allah (God).</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform">
+                    <div class="text-6xl palette-text-gold mb-4">🤝</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Community & Charity</h3>
+                    <p class="mt-2 text-gray-600">A strong emphasis is placed on sharing with others, especially the poor and needy, ensuring everyone can partake in the celebration.</p>
+                </div>
+                <div class="card rounded-lg shadow-lg p-8 text-center transform hover:-translate-y-2 transition-transform sm:col-span-2 lg:col-span-1">
+                    <div class="text-6xl palette-text-darkgreen mb-4">👨‍👩‍👧‍👦</div>
+                    <h3 class="text-3xl font-bold text-gray-900">Family & Feasting</h3>
+                    <p class="mt-2 text-gray-600">Eid is a time for family reunions, visiting relatives, wearing new clothes, and sharing delicious meals together.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="legends" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">The Two Eids of the Year</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The two major festivals, Eid al-Fitr and Eid al-Adha, occur at different times of the year and commemorate different significant events in Islamic history.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                 <div class="card rounded-lg shadow-lg p-8 h-full">
+                    <h3 class="text-3xl font-bold palette-text-gold mb-4 text-center">Eid al-Fitr: The Festival of Breaking the Fast</h3>
+                    <p class="text-gray-700">Celebrated on the first day of Shawwal, the month after Ramadan, Eid al-Fitr marks the joyous end of the month-long fast. It is a reward for the devotion and self-control practiced during Ramadan. Before the Eid prayer, Muslims are required to give a special charity, *Zakat al-Fitr*, to the poor so they too can celebrate. The day is filled with feasting, with a particular emphasis on sweets, earning it the nickname "Sweet Eid."</p>
+                    <div class="text-center mt-6">
+                        <div class="text-8xl">🌙</div>
+                        <p class="font-bold text-gray-700">A celebration of spiritual discipline and gratitude.</p>
+                    </div>
+                </div>
+                 <div class="card rounded-lg shadow-lg p-8 h-full">
+                    <h3 class="text-3xl font-bold palette-text-darkgreen mb-4 text-center">Eid al-Adha: The Festival of Sacrifice</h3>
+                    <p class="text-gray-700">This Eid, also known as the "Greater Eid," is celebrated during the month of Dhul Hijjah, at the conclusion of the annual Hajj pilgrimage to Mecca. It commemorates the willingness of the Prophet Ibrahim (Abraham) to sacrifice his son as an act of obedience to God. Just as he was about to do so, God provided a ram to sacrifice instead. To honor this, Muslims who can afford it sacrifice an animal (like a sheep or goat) and divide the meat into three parts: one for the family, one for relatives and friends, and one for the poor.</p>
+                     <div class="text-center mt-6">
+                        <div class="text-8xl">🐑</div>
+                        <p class="font-bold text-gray-700">A tribute to faith, obedience, and sacrifice.</p>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="symbols" class="mb-16 md:mb-24">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Symbols of Celebration</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Several key symbols and practices are central to the spirit and observance of both Eid festivals.
+                </p>
+            </div>
+             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🌙</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Crescent Moon</h3>
+                    <p class="mt-2 text-sm text-gray-600">The sighting of the new crescent moon marks the end of Ramadan and the beginning of Eid al-Fitr, a moment of great anticipation.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🕌</div>
+                    <h3 class="text-2xl font-bold text-gray-900">The Mosque</h3>
+                    <p class="mt-2 text-sm text-gray-600">The mosque is the center of the community for the special Eid prayers that kick off the day's celebrations.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🤲</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Charity (Zakat/Qurbani)</h3>
+                    <p class="mt-2 text-sm text-gray-600">Giving to the poor is a mandatory act, ensuring that the entire community, rich and poor, can celebrate together.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🤝</div>
+                    <h3 class="text-2xl font-bold text-gray-900">"Eid Mubarak"</h3>
+                    <p class="mt-2 text-sm text-gray-600">The universal greeting, meaning "Blessed Feast/Festival," is exchanged by Muslims all over the world.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="traditions" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">Traditions of Joy & Community</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                   Eid is celebrated with traditions that strengthen family ties and community bonds.
+                </p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">✨</div>
+                    <h3 class="text-2xl font-bold text-gray-900">New Clothes</h3>
+                    <p class="mt-2 text-sm text-gray-600">Wearing new or the best clothes is a tradition that symbolizes spiritual renewal and a fresh start.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🎁</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Giving 'Eidi'</h3>
+                    <p class="mt-2 text-sm text-gray-600">A gift, often money, given to children by elder relatives as a token of love and blessing.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">👨‍👩‍👧‍👦</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Visiting Family</h3>
+                    <p class="mt-2 text-sm text-gray-600">A major part of the day is spent visiting the homes of family and friends, sharing food and strengthening relationships.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-md text-center">
+                    <div class="text-6xl mb-4">🍽️</div>
+                    <h3 class="text-2xl font-bold text-gray-900">Grand Feasts</h3>
+                    <p class="mt-2 text-sm text-gray-600">Preparing and sharing elaborate meals is central to the celebration, with each culture having its own special Eid dishes.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="food" class="mb-16 md:mb-24">
+             <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-wide">A Taste of Eid</h2>
+                <p class="mt-4 text-lg text-gray-600 px-4">
+                    The food of Eid is rich, diverse, and celebratory. While dishes vary greatly by region, some have become iconic symbols of the festival's culinary joy.
+                </p>
+            </div>
+             <div class="mt-12 card rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-center text-gray-900 mb-4">Popular Eid Dishes Around the World</h3>
+                <div class="chart-container">
+                    <canvas id="foodChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTooltipTitleCallback = () => {
+                return {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+
+            const wrapLabel = (label, maxLen = 16) => {
+                if (label.length <= maxLen) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for(const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const foodChartCtx = document.getElementById('foodChart').getContext('2d');
+            const foodLabels = [
+                'Biryani / Pulao', 
+                'Sheer Khurma / Sevaiyan', 
+                'Kebabs & Grills', 
+                'Baklava & Ma'amoul'
+            ].map(label => wrapLabel(label, 20));
+
+            new Chart(foodChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: foodLabels,
+                    datasets: [{
+                        label: 'Popularity during Eid',
+                        data: [100, 95, 90, 85],
+                        backgroundColor: [
+                           '#B45309', // Gold/Brown for Biryani
+                           '#FBBF24', // Gold for Sweets
+                           '#DC2626', // Red for Kebabs
+                           '#16A34A'  // Green for Pastries
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Popularity & Importance',
+                                color: '#4A5568'
+                            },
+                            ticks: { color: '#4A5568' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        y: {
+                            ticks: { 
+                                autoSkip: false,
+                                color: '#4A5568'
+                            },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        ...createTooltipTitleCallback().plugins
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Rise of Agentic AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: A linear, top-to-bottom narrative structure was chosen to guide the user through a story about Agentic AI, typical of a classic infographic. The flow starts with a high-impact statistic to grab attention, explains the core concept, details the framework pillars, visualizes organizational maturity levels, showcases real-world applications with a composition chart, and concludes with a clear, visual action plan. This structure ensures easy digestion of complex information in a single scroll. -->
+    <!-- Visualization & Content Choices: Key Stat -> Goal: Inform -> Chosen Viz: Single Big Number (HTML/CSS). Core Concept -> Goal: Organize -> Chosen Viz: Flow Chart (HTML/CSS). Framework Pillars -> Goal: Organize -> Chosen Viz: Styled Cards (HTML/CSS). Maturity Levels -> Goal: Compare -> Chosen Viz: Bar Chart (Chart.js/Canvas) to compare attributes across stages. Use Cases -> Goal: Compare/Inform -> Chosen Viz: Donut Chart (Chart.js/Canvas) showing composition, followed by a list. Action Plan -> Goal: Change/Organize -> Chosen Viz: Timeline (HTML/CSS). This mix of styled HTML and canvas-based charts from Chart.js adheres to the NO SVG/Mermaid constraint. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; 
+            color: #1e293b; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 45vh;
+        }
+       .timeline-item::before {
+           content: '';
+           position: absolute;
+           top: 1.25rem;
+           left: -0.5rem;
+           width: 1rem;
+           height: 1rem;
+           border-radius: 9999px;
+           background-color: #FC913A;
+           border: 2px solid white;
+       }
+    </style>
+</head>
+<body class="antialiased bg-slate-50">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section class="text-center my-12 md:my-16">
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900">The Rise of <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">Agentic AI</span></h1>
+            <p class="mt-6 max-w-3xl mx-auto text-lg md:text-xl leading-8 text-slate-600">A new wave of autonomous systems is here to reason, plan, and act. This infographic explores the framework for adopting these transformative agents and unlocking their potential.</p>
+            <div class="mt-12 bg-white rounded-xl shadow-lg p-8 max-w-sm mx-auto">
+                <p class="text-6xl font-bold text-red-500">85%</p>
+                <p class="mt-2 text-slate-700 font-semibold">of CEOs believe AI will significantly change their business in the next 5 years.</p>
+                <p class="text-xs text-slate-500 mt-2">(Source: Fictional Tech Survey 2025)</p>
+            </div>
+        </section>
+
+        <div class="my-16 md:my-24 border-t border-slate-200"></div>
+
+        <section class="my-16 md:my-24">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">What is an AI Agent?</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">Unlike traditional AI, which reacts to prompts, an agent operates in a continuous, proactive loop to achieve complex goals.</p>
+            </div>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0 max-w-4xl mx-auto">
+                 <div class="text-center p-4">
+                    <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-red-500"><span class="text-4xl">🧠</span><h3 class="font-bold mt-2">Perceive</h3><p class="text-sm text-slate-500">Gathers data from its environment</p></div>
+                </div>
+                <div class="text-2xl text-orange-400 font-bold hidden md:block mx-4">&rarr;</div>
+                <div class="text-2xl text-orange-400 font-bold block md:hidden my-2">&darr;</div>
+                 <div class="text-center p-4">
+                    <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-orange-400"><span class="text-4xl">🤔</span><h3 class="font-bold mt-2">Reason & Plan</h3><p class="text-sm text-slate-500">Creates a multi-step plan to reach a goal</p></div>
+                </div>
+                <div class="text-2xl text-yellow-400 font-bold hidden md:block mx-4">&rarr;</div>
+                <div class="text-2xl text-yellow-400 font-bold block md:hidden my-2">&darr;</div>
+                 <div class="text-center p-4">
+                    <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-yellow-400"><span class="text-4xl">⚡</span><h3 class="font-bold mt-2">Act</h3><p class="text-sm text-slate-500">Executes actions using tools and APIs</p></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="my-16 md:my-24 border-t border-slate-200"></div>
+
+        <section class="my-16 md:my-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">The Four Pillars of Adoption</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">Successful adoption requires a holistic approach, balancing vision with execution and innovation with control.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                 <div class="bg-white rounded-xl shadow-lg p-6 text-center border-t-4 border-red-500">
+                    <div class="text-5xl mb-4">🎯</div>
+                    <h3 class="text-xl font-bold text-slate-800">Strategic Alignment</h3>
+                    <p class="text-slate-600 mt-2">Connect AI initiatives to core business objectives. Define clear use cases, ROI, and an adoption roadmap.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 text-center border-t-4 border-orange-400">
+                    <div class="text-5xl mb-4">🛠️</div>
+                    <h3 class="text-xl font-bold text-slate-800">Foundational Capabilities</h3>
+                    <p class="text-slate-600 mt-2">Build the data pipelines, tech stack, and talent required to support autonomous agents.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 text-center border-t-4 border-yellow-400">
+                    <div class="text-5xl mb-4">🚀</div>
+                    <h3 class="text-xl font-bold text-slate-800">Agent Development</h3>
+                    <p class="text-slate-600 mt-2">Establish agile, responsible, and scalable processes for designing, building, and deploying agents.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 text-center border-t-4 border-lime-300">
+                    <div class="text-5xl mb-4">⚖️</div>
+                    <h3 class="text-xl font-bold text-slate-800">Governance & Scaling</h3>
+                    <p class="text-slate-600 mt-2">Implement robust ethical guidelines, risk management, and performance monitoring to scale responsibly.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="my-16 md:my-24 border-t border-slate-200"></div>
+
+        <section class="my-16 md:my-24">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">The Adoption Journey</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">Organizations progress through distinct maturity stages. This chart compares the focus at each level across the four pillars.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                <div class="chart-container">
+                    <canvas id="maturityChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <div class="my-16 md:my-24 border-t border-slate-200"></div>
+
+        <section class="my-16 md:my-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Unlocking Value Across Industries</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">Agentic AI is not theoretical; it's already creating value in diverse business functions.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+                 <div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-6">
+                     <h3 class="text-center font-bold text-slate-800 mb-4">Use Case Distribution by Function</h3>
+                    <div class="chart-container" style="height: 300px; max-height: 300px;">
+                        <canvas id="useCaseChart"></canvas>
+                    </div>
+                </div>
+                <div class="lg:col-span-3 space-y-4">
+                     <div class="bg-white rounded-lg shadow p-4 flex items-start gap-4">
+                        <div class="text-2xl bg-red-100 text-red-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center">⚙️</div>
+                        <div><h4 class="font-bold">Operations</h4><p class="text-sm text-slate-600">Autonomous supply chain management and proactive inventory re-ordering.</p></div>
+                    </div>
+                     <div class="bg-white rounded-lg shadow p-4 flex items-start gap-4">
+                        <div class="text-2xl bg-orange-100 text-orange-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center">📈</div>
+                        <div><h4 class="font-bold">Marketing</h4><p class="text-sm text-slate-600">Dynamic, self-optimizing ad campaigns and personalized customer journey orchestration.</p></div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4 flex items-start gap-4">
+                        <div class="text-2xl bg-yellow-100 text-yellow-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center">📞</div>
+                        <div><h4 class="font-bold">Customer Service</h4><p class="text-sm text-slate-600">Proactive issue resolution agents and personalized concierge services.</p></div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4 flex items-start gap-4">
+                        <div class="text-2xl bg-lime-100 text-lime-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center">💻</div>
+                        <div><h4 class="font-bold">IT & Finance</h4><p class="text-sm text-slate-600">Automated infrastructure management and real-time fraudulent transaction auditing.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="my-16 md:my-24 border-t border-slate-200"></div>
+
+        <section class="my-16 md:my-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">The Path Forward</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">Embark on your journey with a structured, phased approach to build momentum and deliver value.</p>
+            </div>
+            <div class="max-w-3xl mx-auto relative pl-6 border-l-2 border-slate-200">
+                <div class="timeline-item relative mb-10 pl-6">
+                    <h3 class="text-lg font-bold text-red-500">Phase 1: Educate & Explore</h3>
+                    <p class="text-slate-600">Form a task force, conduct workshops, and brainstorm potential use cases. The goal is ideation and education.</p>
+                </div>
+                 <div class="timeline-item relative mb-10 pl-6">
+                    <h3 class="text-lg font-bold text-orange-500">Phase 2: Prioritize & Plan</h3>
+                    <p class="text-slate-600">Select 2-3 high-impact pilot projects. Develop a clear business case, define success metrics, and secure sponsorship.</p>
+                </div>
+                <div class="timeline-item relative mb-10 pl-6">
+                    <h3 class="text-lg font-bold text-yellow-500">Phase 3: Pilot & Learn</h3>
+                    <p class="text-slate-600">Execute your first pilot. Focus on agile development and continuous learning to build a functional prototype and validate assumptions.</p>
+                </div>
+                <div class="timeline-item relative mb-2 pl-6">
+                    <h3 class="text-lg font-bold text-lime-500">Phase 4: Scale & Govern</h3>
+                    <p class="text-slate-600">Based on pilot success, refine your governance model and develop a playbook to scale agents across the organization.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+<!--
+
+    <footer class="bg-slate-200 border-t border-slate-300">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-slate-500 text-sm">
+            <p>&copy; 2025 Agentic AI Infographic. All data is illustrative.</p>
+        </div>
+    </footer>
+
+-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const wrapLabel = (label) => {
+                const maxLength = 16;
+                if (label.length <= maxLength) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLength) {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine);
+                return lines;
+            };
+            
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                return Array.isArray(label) ? label.join(' ') : label;
+            };
+
+            const maturityChartCtx = document.getElementById('maturityChart').getContext('2d');
+            new Chart(maturityChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Strategic Alignment', 'Foundational Capabilities', 'Agent Development', 'Governance & Scaling'].map(wrapLabel),
+                    datasets: [
+                        {
+                            label: 'Nascent',
+                            data: [20, 30, 15, 10],
+                            backgroundColor: '#FF4E50',
+                        },
+                        {
+                            label: 'Developing',
+                            data: [50, 60, 55, 40],
+                            backgroundColor: '#FC913A',
+                        },
+                        {
+                            label: 'Maturing',
+                            data: [80, 85, 75, 70],
+                            backgroundColor: '#F9D423',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { 
+                            stacked: true, 
+                            ticks: { callback: (value) => value + '%' },
+                            title: { display: true, text: 'Organizational Focus' },
+                            grid: { color: '#e2e8f0' } 
+                        },
+                        x: { stacked: true, grid: { display: false } }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Relative Focus by Maturity Level',
+                            padding: { bottom: 20 },
+                            font: { size: 16 }
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            const useCaseChartCtx = document.getElementById('useCaseChart').getContext('2d');
+            new Chart(useCaseChartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Operations', 'Marketing', 'Customer Service', 'IT & Finance'],
+                    datasets: [{
+                        label: 'Use Case Distribution',
+                        data: [35, 25, 20, 20],
+                        backgroundColor: ['#FF4E50', '#FC913A', '#F9D423', '#EDE574'],
+                        borderColor: '#ffffff',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback,
+                                label: (context) => `${context.label}: ${context.raw}%`
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

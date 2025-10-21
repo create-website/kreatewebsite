@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Culinary Guide to Karwa Chauth</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Narrative Structure Plan: The infographic tells a chronological story of the festival's food journey. It begins with the crucial "Sargi" meal, explaining its purpose and ideal composition. It then moves to practical "Fasting Tips" for the day. The narrative continues with "Breaking the Fast," suggesting appropriate dishes. It culminates in a "Celebratory Treats" section, showcasing the festive sweets and drinks. This linear flow is intuitive and easy for anyone to follow. -->
+    <!-- Visualization Choices: Sargi Composition -> Goal: Inform -> Chosen Viz: Donut Chart -> Justification: Best way to show parts of a whole, making the concept of a balanced meal instantly understandable (Chart.js/Canvas). Fasting Tips -> Goal: Inform -> Chosen Viz: Styled HTML cards with Unicode icons -> Justification: Icons and short text are highly scannable and digestible for tips (HTML/Tailwind). Post-Fast Dishes -> Goal: Organize -> Chosen Viz: Styled HTML list -> Justification: A simple, elegant list is clearest for presenting recipe ideas without overcomplicating the section (HTML/Tailwind). Sweets vs. Drinks -> Goal: Compare -> Chosen Viz: Bar Chart -> Justification: A bar chart provides a quick, visual comparison between the two categories of festive treats (Chart.js/Canvas). CONFIRMING NO SVG. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7fafc;
+        }
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="text-[#073B4C]">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="font-playfair text-4xl md:text-5xl font-bold text-[#118AB2]">The Culinary Journey of Karwa Chauth</h1>
+            <p class="mt-4 text-lg max-w-3xl mx-auto">An infographic celebrating the traditional foods, healthy fasting tips, and festive recipes that define this special day of devotion and love.</p>
+        </header>
+
+        <main class="space-y-12">
+            
+            <section id="sargi" class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h2 class="font-playfair text-3xl font-bold text-[#FF6B6B]">The Pre-Dawn Meal: Sargi</h2>
+                        <p class="mt-4 mb-6">Sargi is the vital meal eaten before sunrise. It's designed to provide sustained energy and hydration for the day-long fast. A well-balanced Sargi is key to observing the fast comfortably and healthily.</p>
+                        <div class="space-y-3 text-left">
+                            <p><strong>Popular Sargi Dishes Include:</strong></p>
+                            <ul class="list-disc list-inside ml-4 space-y-2">
+                                <li><strong>Pheni or Feni:</strong> A type of vermicelli cooked in sweetened milk.</li>
+                                <li><strong>Paneer Paratha:</strong> Wholesome flatbread stuffed with cottage cheese.</li>
+                                <li><strong>Fresh Fruits:</strong> Pomegranate, bananas, and apples for natural sugars and hydration.</li>
+                                <li><strong>Nuts & Dry Fruits:</strong> Almonds and walnuts for healthy fats and protein.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-center text-xl mb-4">The Ideal Sargi Plate</h3>
+                        <p class="text-center text-sm mb-4">This chart shows the recommended nutritional balance for a Sargi meal to ensure lasting energy throughout the day.</p>
+                        <div class="chart-container">
+                            <canvas id="sargiChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="tips">
+                <h2 class="font-playfair text-3xl font-bold text-center text-[#06D6A0] mb-8">Tips for a Healthy Fast</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="stat-card">
+                        <div class="text-5xl mb-3 text-[#118AB2]">💧</div>
+                        <h3 class="font-bold text-lg">Hydrate Wisely</h3>
+                        <p class="text-sm mt-2">Begin your fast well-hydrated. Drink plenty of water before sunrise but avoid it during the day as per tradition.</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="text-5xl mb-3 text-[#FFD166]">🏃‍♀️</div>
+                        <h3 class="font-bold text-lg">Conserve Energy</h3>
+                        <p class="text-sm mt-2">Avoid strenuous activities. Engage in light, relaxing tasks to keep your mind occupied and conserve physical energy.</p>
+                    </div>
+                     <div class="stat-card">
+                        <div class="text-5xl mb-3 text-[#FF6B6B]">🧘‍♀️</div>
+                        <h3 class="font-bold text-lg">Stay Calm</h3>
+                        <p class="text-sm mt-2">The fast is a spiritual practice. Meditation or listening to soothing music can help manage hunger pangs and maintain peace.</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="text-5xl mb-3 text-[#06D6A0]">🌙</div>
+                        <h3 class="font-bold text-lg">Break Gently</h3>
+                        <p class="text-sm mt-2">After moonrise, start with a sip of water and a date to gently reintroduce food to your system before the main meal.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="post-fast" class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                     <div class="order-2 md:order-1">
+                        <h3 class="font-bold text-xl mb-4 text-center">Popular Post-Fast Dishes</h3>
+                        <p class="text-center text-sm mb-4">These dishes are favored for breaking the fast as they are both delicious and relatively easy to digest after a day without food.</p>
+                        <div class="flow-root">
+                          <ul role="list" class="divide-y divide-gray-200">
+                            <li class="py-3 sm:py-4">
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex-shrink-0 text-2xl">🍛</div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-md font-medium text-[#073B4C] truncate">Aloo Puri</p>
+                                        <p class="text-sm text-gray-500 truncate">A comforting meal of spiced potato curry with fluffy fried bread.</p>
+                                    </div>
+                                </div>
+                            </li>
+                             <li class="py-3 sm:py-4">
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex-shrink-0 text-2xl">🥣</div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-md font-medium text-[#073B4C] truncate">Dahi Vada</p>
+                                        <p class="text-sm text-gray-500 truncate">Soft lentil dumplings soaked in cool, creamy yogurt.</p>
+                                    </div>
+                                </div>
+                            </li>
+                             <li class="py-3 sm:py-4">
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex-shrink-0 text-2xl">🥘</div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-md font-medium text-[#073B4C] truncate">Dal Makhani & Naan</p>
+                                        <p class="text-sm text-gray-500 truncate">Creamy black lentils served with soft, oven-baked flatbread.</p>
+                                    </div>
+                                </div>
+                            </li>
+                          </ul>
+                        </div>
+                    </div>
+                    <div class="order-1 md:order-2">
+                         <h2 class="font-playfair text-3xl font-bold text-[#FFD166]">Breaking the Fast</h2>
+                        <p class="mt-4">Once the moon is sighted, the fast is broken. The first meal is a celebration, meant to be nourishing and light. It replenishes the body and marks the joyous conclusion of the day's observance.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sweets">
+                 <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h2 class="font-playfair text-3xl font-bold text-[#118AB2]">Celebratory Treats</h2>
+                        <p class="mt-4 mb-6">No festival is complete without an array of traditional sweets and drinks. These recipes are passed down through generations and are an essential part of the Karwa Chauth celebration, adding sweetness to the special evening.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-center text-xl mb-4">Sweets vs. Refreshing Drinks</h3>
+                         <p class="text-center text-sm mb-4">The celebration features a delightful mix of rich sweets and cooling beverages. This chart highlights some of the most popular choices in each category.</p>
+                        <div class="chart-container h-96">
+                             <canvas id="sweetsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sargiCtx = document.getElementById('sargiChart').getContext('2d');
+            const sweetsCtx = document.getElementById('sweetsChart').getContext('2d');
+            
+            const commonTooltipConfig = {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                    return label.join(' ');
+                                } else {
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            new Chart(sargiCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Complex Carbs', 'Protein', 'Healthy Fats', 'Vitamins (Fruits)'],
+                    datasets: [{
+                        label: 'Sargi Plate Composition',
+                        data: [45, 25, 15, 15],
+                        backgroundColor: ['#FF6B6B', '#FFD166', '#06D6A0', '#118AB2'],
+                        borderColor: '#ffffff',
+                        borderWidth: 5,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    ...commonTooltipConfig,
+                    plugins: {
+                        ...commonTooltipConfig.plugins,
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#073B4C'
+                            }
+                        }
+                    }
+                }
+            });
+
+            new Chart(sweetsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Sweets', 'Drinks'],
+                    datasets: [
+                        { label: 'Kheer / Phirni', data: [1, 0], backgroundColor: '#FF6B6B' },
+                        { label: 'Ghevar', data: [1, 0], backgroundColor: '#FF8A8A' },
+                        { label: 'Badam Milk', data: [0, 1], backgroundColor: '#118AB2' },
+                        { label: 'Thandai / Lassi', data: [0, 1], backgroundColor: '#3FC5F0' }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { display: false, stacked: true },
+                        y: { stacked: true, ticks: { color: '#073B4C', font: { size: 14, weight: 'bold' } } }
+                    },
+                    ...commonTooltipConfig,
+                    plugins: {
+                         ...commonTooltipConfig.plugins,
+                         legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#073B4C'
+                            }
+                         }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

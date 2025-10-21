@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buddha Purnima - The Vesak Moon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a linear, top-to-bottom narrative designed for easy scrolling and comprehension. It starts with a high-level hook (The Thrice-Blessed Day), establishes the foundational story (Path to Awakening timeline), explains the core philosophy (The Dharma charts), showcases global diversity (Global Celebrations), and details specific practices (Grammar of Devotion). This structure was chosen to guide the user logically from the 'what' and 'why' of the festival to the 'how' it's celebrated, making complex information accessible in a single, flowing experience. -->
+    <!-- Visualization & Content Choices: 1. Core Significance -> Goal: Inform -> Single Big Numbers/Icons (HTML/CSS) -> Justification: Immediately conveys the three core events with high impact. 2. Buddha's Life -> Goal: Change/Organize -> Timeline (HTML/CSS) -> Justification: Best way to show a sequence of events without SVG/Mermaid. 3. Eightfold Path -> Goal: Organize/Compare -> Donut Chart (Chart.js) -> Justification: Visually groups the 8 factors into their 3 trainings, showing composition. 4. Global Traditions -> Goal: Compare -> Bar Chart (Chart.js) -> Justification: Effectively compares the distinct 'key flavor' of celebration across multiple countries. All choices adhere to the NO SVG/Mermaid constraint and use the most appropriate tool for the data type. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F7;
+            color: #333;
+        }
+        .section-title {
+            font-weight: 900;
+            color: #0D0D0D;
+        }
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #EAEAEA;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #FF8C42;
+            border: 4px solid #FFFFFF;
+            box-shadow: 0 0 0 3px #FF8C42;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center my-12">
+            <h1 class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#FF8C42] to-[#FFD32D]">The Vesak Moon</h1>
+            <p class="text-xl md:text-2xl mt-4 text-gray-600">Visualizing the Heart of the Buddha Purnima Festival</p>
+        </header>
+
+        <section id="significance" class="my-16">
+            <div class="text-center">
+                <h2 class="text-4xl section-title mb-4">The Thrice-Blessed Day</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-12">Buddha Purnima, or Vesak, is the most sacred day for millions of Buddhists worldwide. It uniquely commemorates three pivotal events in the life of Gautama Buddha, all believed to have occurred on the same full moon day of the Vaisakha month.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="card p-8">
+                    <div class="text-6xl mb-4">🪷</div>
+                    <h3 class="text-2xl font-bold text-[#FF8C42] mb-2">The Birth</h3>
+                    <p class="text-gray-600">As Prince Siddhartha in Lumbini, his arrival marked the beginning of a world-changing journey.</p>
+                </div>
+                <div class="card p-8">
+                    <div class="text-6xl mb-4">🌳</div>
+                    <h3 class="text-2xl font-bold text-[#FF8C42] mb-2">The Enlightenment</h3>
+                    <p class="text-gray-600">Beneath the Bodhi tree, he attained Nirvana, discovering the path to end all suffering.</p>
+                </div>
+                <div class="card p-8">
+                    <div class="text-6xl mb-4">🕊️</div>
+                    <h3 class="text-2xl font-bold text-[#FF8C42] mb-2">The Parinirvana</h3>
+                    <p class="text-gray-600">His final passing in Kushinagar, a complete release from the cycle of rebirth.</p>
+                </div>
+            </div>
+        </section>
+        
+        <hr class="my-16 border-gray-200">
+
+        <section id="life" class="my-16">
+            <div class="text-center">
+                <h2 class="text-4xl section-title mb-4">The Path to Awakening</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-12">The life of Siddhartha Gautama is the foundational narrative of Buddhism. This timeline illustrates his transformative journey from a sheltered prince to the Awakened One, a story that contains the entire Dharma in allegorical form.</p>
+            </div>
+            <div class="relative pl-8 border-l-4 border-dashed border-gray-300">
+                <div class="timeline-item mb-12">
+                    <h3 class="text-2xl font-bold text-[#4F3A65]">Birth and Prophecy</h3>
+                    <p class="text-gray-600 mt-1">Born in Lumbini, a prophecy foretells he will be a great king or a supreme spiritual teacher.</p>
+                </div>
+                <div class="timeline-item mb-12">
+                    <h3 class="text-2xl font-bold text-[#4F3A65]">The Four Sights</h3>
+                    <p class="text-gray-600 mt-1">At age 29, encounters with an old man, a sick person, a corpse, and an ascetic shatter his sheltered reality.</p>
+                </div>
+                <div class="timeline-item mb-12">
+                    <h3 class="text-2xl font-bold text-[#4F3A65]">The Great Renunciation</h3>
+                    <p class="text-gray-600 mt-1">He leaves his palace, wife, and child to become a homeless wanderer, seeking the end of suffering.</p>
+                </div>
+                <div class="timeline-item mb-12">
+                    <h3 class="text-2xl font-bold text-[#4F3A65]">Enlightenment</h3>
+                    <p class="text-gray-600 mt-1">At age 35, after discovering the "Middle Way," he attains Nirvana under the Bodhi tree, becoming the Buddha.</p>
+                </div>
+                 <div class="timeline-item">
+                    <h3 class="text-2xl font-bold text-[#4F3A65]">Teaching & Passing</h3>
+                    <p class="text-gray-600 mt-1">For 45 years, he teaches the Dharma. At age 80, he achieves Parinirvana, his final passing.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <section id="dharma" class="my-16">
+            <div class="text-center">
+                <h2 class="text-4xl section-title mb-4">The Heart of the Dharma</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-12">The Buddha's teachings provide a pragmatic framework for liberation. The Four Noble Truths diagnose the human condition, while the Noble Eightfold Path prescribes the cure, grouped into three essential trainings.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold text-center mb-4 text-[#4F3A65]">The Four Noble Truths</h3>
+                    <ul class="space-y-4 text-left">
+                        <li class="flex items-start"><span class="text-2xl mr-3 text-[#FF8C42]">1</span><div><strong>The Truth of Suffering (Dukkha):</strong> Life is inherently marked by dissatisfaction.</div></li>
+                        <li class="flex items-start"><span class="text-2xl mr-3 text-[#FF8C42]">2</span><div><strong>The Truth of Origin:</strong> The cause of suffering is craving and attachment.</div></li>
+                        <li class="flex items-start"><span class="text-2xl mr-3 text-[#FF8C42]">3</span><div><strong>The Truth of Cessation:</strong> It is possible to end suffering by ending craving.</div></li>
+                        <li class="flex items-start"><span class="text-2xl mr-3 text-[#FF8C42]">4</span><div><strong>The Truth of the Path:</strong> The way to end suffering is the Noble Eightfold Path.</div></li>
+                    </ul>
+                </div>
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold text-center mb-4 text-[#4F3A65]">The Noble Eightfold Path</h3>
+                    <div class="chart-container">
+                        <canvas id="eightfoldPathChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <hr class="my-16 border-gray-200">
+
+        <section id="celebrations" class="my-16">
+            <div class="text-center">
+                <h2 class="text-4xl section-title mb-4">A World of Celebration</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-12">While the core meaning of Vesak is universal, its expression is filtered through the rich lens of local culture. Each tradition emphasizes different aspects of the Dharma, from light and generosity to serene contemplation.</p>
+            </div>
+            <div class="card p-8">
+                 <h3 class="text-2xl font-bold text-center mb-6 text-[#4F3A65]">Key Flavors of Vesak Traditions</h3>
+                <div class="chart-container h-96 md:h-[500px] max-h-[500px]">
+                    <canvas id="celebrationsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <section id="rituals" class="my-16">
+            <div class="text-center">
+                <h2 class="text-4xl section-title mb-4">The Grammar of Devotion</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-12">Vesak rituals are a form of embodied learning, translating abstract concepts into tangible actions that cultivate virtue and wisdom. Each act is a physical expression of an inner commitment.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6 text-center">
+                    <div class="text-5xl mb-3">💧</div>
+                    <h3 class="text-xl font-bold text-[#FF8C42]">Bathing the Buddha</h3>
+                    <p class="text-sm text-gray-600">Symbolizes purifying one's mind from greed, hatred, and ignorance.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-5xl mb-3">🕯️</div>
+                    <h3 class="text-xl font-bold text-[#FF8C42]">Light Offerings</h3>
+                    <p class="text-sm text-gray-600">Represents the light of wisdom dispelling the darkness of ignorance.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-5xl mb-3">🌸</div>
+                    <h3 class="text-xl font-bold text-[#FF8C42]">Flower Offerings</h3>
+                    <p class="text-sm text-gray-600">A sensory reminder of impermanence; beauty is vibrant but fleeting.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-5xl mb-3">🎁</div>
+                    <h3 class="text-xl font-bold text-[#FF8C42]">Charity (Dāna)</h3>
+                    <p class="text-sm text-gray-600">Cultivates compassion and loving-kindness through acts of giving.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-5xl mb-3">🙏</div>
+                    <h3 class="text-xl font-bold text-[#FF8C42]">Observing Precepts</h3>
+                    <p class="text-sm text-gray-600">A conscious act of self-discipline to purify one's ethical conduct.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-5xl mb-3">🐦</div>
+                    <h3 class="text-xl font-bold text-[#FF8C42]">Releasing Animals</h3>
+                    <p class="text-sm text-gray-600">A symbolic gesture of bestowing freedom and compassion for all life.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+<!--
+    <footer class="text-center py-8 bg-gray-800 text-white">
+        <p>An infographic based on "The Vesak Moon: An Analytical Report".</p>
+    </footer>
+-->
+
+    <script>
+        const wrapLabel = (label) => {
+            if (label.length <= 16) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > 16) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const eightfoldPathCtx = document.getElementById('eightfoldPathChart').getContext('2d');
+        new Chart(eightfoldPathCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Wisdom Training', 'Ethical Conduct Training', 'Mental Discipline Training'],
+                datasets: [{
+                    label: 'Path Factors',
+                    data: [2, 3, 3],
+                    backgroundColor: ['#FFD32D', '#FF8C42', '#4F3A65'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 4,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: { size: 14 }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                },
+                cutout: '50%'
+            }
+        });
+
+        const celebrationsCtx = document.getElementById('celebrationsChart').getContext('2d');
+        new Chart(celebrationsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Sri Lanka', 'Thailand', 'India', 'Nepal', 'Bhutan', 'Hong Kong'],
+                datasets: [{
+                    label: 'Key Tradition',
+                    data: [9, 8, 7, 7, 9, 6],
+                    backgroundColor: ['#FF8C42', '#FFD32D', '#4F3A65', '#A17A9E', '#FFB270', '#7E6A8F'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        display: false
+                    },
+                    y: {
+                        ticks: {
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback,
+                            label: function(context) {
+                                const labels = ['Festival of Light & Generosity', 'Serene Candlelight Processions', 'Pilgrimage to Sacred Sites', 'National Pride & Parades', 'Month of Heightened Virtue', 'Ritual of Bathing the Buddha'];
+                                return labels[context.dataIndex];
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

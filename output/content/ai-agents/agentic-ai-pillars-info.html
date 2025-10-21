@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Pillars of Agentic AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: "Brilliant Blues & Vibrant Oranges" (A mix of #003f5c, #665191, #d45087, #f95d6a, #ff7c43, #ffa600) for a high-contrast, professional, and energetic feel. -->
+    <!-- Application Structure Plan: The infographic follows a linear narrative designed for scrolling. It starts with a high-level hook (1. Intro), explains the core components (2. Pillars Flowchart), details how they work (3. Frameworks), shows their impact (4. Applications), addresses the main concerns (5. Risks), and ends with a forward-looking summary (6. Future). This structure guides the user from "what is it?" to "why does it matter?" in a logical progression. -->
+    <!-- Visualization & Content Choices: 1. Pillars: Report Info (Part II) -> Goal (Organize) -> Viz (HTML/CSS Flowchart) -> Justification (Visually shows the cyclical relationship between pillars better than a list) -> Method (Tailwind CSS). 2. Applications: Report Info (Part IV) -> Goal (Compare) -> Viz (Bar Chart) -> Justification (Effectively compares job transformation numbers) -> Library (Chart.js). 3. Risks: Report Info (Part V) -> Goal (Inform) -> Viz (Donut Chart) -> Justification (Metaphorically shows governance containing risk) -> Library (Chart.js). All choices adhere to the NO SVG/Mermaid constraint. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 45vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #d45087, #f95d6a, #ff7c43);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-12">
+
+        <header class="text-center mb-16">
+            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-[#003f5c]">THE RISE OF</h1>
+            <h2 class="text-6xl md:text-7xl font-extrabold tracking-tight gradient-text">AGENTIC AI</h2>
+            <p class="mt-6 max-w-3xl mx-auto text-lg text-gray-600">Moving beyond simple instruction-following, Agentic AI introduces autonomous systems that can independently plan, act, and adapt to achieve complex goals. This is the shift from a passive <span class="font-bold">tool</span> to an active <span class="font-bold">digital partner</span>.</p>
+        </header>
+
+        <section id="pillars" class="mb-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-[#003f5c]">The Cognitive Architecture of an Agent</h3>
+                <p class="mt-2 max-w-2xl mx-auto text-gray-600">An AI agent operates on a continuous cognitive cycle, powered by six foundational pillars that work in synergy.</p>
+            </div>
+            <div class="relative flex flex-col items-center">
+                <div class="absolute w-full h-full flex justify-center items-center">
+                    <div class="w-48 h-48 md:w-56 md:h-56 bg-[#665191] text-white rounded-full flex flex-col justify-center items-center text-center p-4 shadow-2xl">
+                        <span class="text-4xl">🎯</span>
+                        <span class="font-bold text-lg mt-2">AGENT GOAL</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 lg:grid-cols-6 gap-x-4 gap-y-10 w-full max-w-6xl">
+                    <div class="flex justify-center items-center col-span-2 lg:col-span-6 order-1">
+                        <div class="text-center p-4 bg-white rounded-lg shadow-lg border-t-4 border-[#ffa600]">
+                            <p class="text-4xl">👁️</p>
+                            <h4 class="font-bold mt-2">1. Perception</h4>
+                            <p class="text-sm text-gray-500">Gathers data from its environment to build a "world model".</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-end items-center lg:justify-center col-span-1 lg:col-span-2 order-2 lg:order-5">
+                        <div class="text-center p-4 bg-white rounded-lg shadow-lg border-t-4 border-[#ff7c43]">
+                            <p class="text-4xl">🤝</p>
+                            <h4 class="font-bold mt-2">6. Collaboration</h4>
+                            <p class="text-sm text-gray-500">Works with other agents to solve complex problems.</p>
+                        </div>
+                    </div>
+                     <div class="flex justify-start items-center lg:justify-center col-span-1 lg:col-span-2 order-3 lg:order-2">
+                        <div class="text-center p-4 bg-white rounded-lg shadow-lg border-t-4 border-[#f95d6a]">
+                            <p class="text-4xl">🧠</p>
+                            <h4 class="font-bold mt-2">2. Memory</h4>
+                            <p class="text-sm text-gray-500">Uses past experiences to learn and adapt.</p>
+                        </div>
+                    </div>
+                    <div class="hidden lg:flex justify-center items-center col-span-2 order-3">
+                    </div>
+                    <div class="flex justify-center items-center col-span-2 lg:col-span-6 order-5 lg:order-4">
+                        <div class="text-center p-4 bg-white rounded-lg shadow-lg border-t-4 border-[#a05195]">
+                            <p class="text-4xl">🔄</p>
+                            <h4 class="font-bold mt-2">5. Reflection</h4>
+                            <p class="text-sm text-gray-500">Critiques its own performance to self-correct and improve.</p>
+                        </div>
+                    </div>
+                     <div class="flex justify-end items-center lg:justify-center col-span-1 lg:col-span-2 order-4 lg:order-6">
+                         <div class="text-center p-4 bg-white rounded-lg shadow-lg border-t-4 border-[#665191]">
+                            <p class="text-4xl">⚙️</p>
+                            <h4 class="font-bold mt-2">3. Reasoning</h4>
+                            <p class="text-sm text-gray-500">Decomposes goals into a sequence of executable steps.</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-start items-center lg:justify-center col-span-1 lg:col-span-2 order-6 lg:order-3">
+                        <div class="text-center p-4 bg-white rounded-lg shadow-lg border-t-4 border-[#d45087]">
+                            <p class="text-4xl">🛠️</p>
+                            <h4 class="font-bold mt-2">4. Action</h4>
+                            <p class="text-sm text-gray-500">Executes plans using tools like APIs and code interpreters.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="frameworks" class="mb-20 bg-white rounded-2xl shadow-xl p-8 md:p-12">
+            <div class="text-center mb-10">
+                <h3 class="text-3xl font-bold text-[#003f5c]">How Agents Think: Two Core Frameworks</h3>
+                <p class="mt-2 max-w-2xl mx-auto text-gray-600">The agent's "brain" operates using different strategies. The choice of framework depends on the task's complexity and predictability.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-[#f95d6a]">
+                    <h4 class="text-xl font-bold text-[#d45087]">ReAct Framework</h4>
+                    <p class="mt-2 text-gray-600">A dynamic, interleaved cycle of reasoning and acting. Best for unpredictable, exploratory tasks.</p>
+                    <div class="mt-4 space-y-2">
+                        <div class="flex items-center"><span class="font-bold text-[#d45087] mr-2">1.</span> Thought: "I need to find X."</div>
+                        <div class="flex items-center"><span class="font-bold text-[#d45087] mr-2">2.</span> Action: Calls a search tool.</div>
+                        <div class="flex items-center"><span class="font-bold text-[#d45087] mr-2">3.</span> Observation: Gets result for X.</div>
+                        <div class="flex items-center"><span class="font-bold text-[#d45087] mr-2">4.</span> Repeat: "Now I need Y."</div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-[#665191]">
+                    <h4 class="text-xl font-bold text-[#665191]">Plan-and-Solve</h4>
+                    <p class="mt-2 text-gray-600">A structured approach where the entire plan is created upfront before any action is taken. Best for deterministic, multi-step problems.</p>
+                    <div class="mt-4 space-y-2">
+                        <div class="flex items-center"><span class="font-bold text-[#665191] mr-2">1.</span> Plan: "To find Z, I will do A, then B, then C."</div>
+                        <div class="flex items-center"><span class="font-bold text-[#665191] mr-2">2.</span> Execute A</div>
+                        <div class="flex items-center"><span class="font-bold text-[#665191] mr-2">3.</span> Execute B</div>
+                        <div class="flex items-center"><span class="font-bold text-[#665191] mr-2">4.</span> Execute C</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="applications" class="mb-20">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-3xl font-bold text-[#003f5c]">Agents at Work: Transforming Industries</h3>
+                    <p class="mt-4 text-gray-600">Agentic AI is already automating complex internal workflows and creating new efficiencies across sectors.</p>
+                    <div class="mt-6 space-y-4">
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-4">💰</span>
+                            <div><span class="font-bold">Finance:</span> Manages intelligent spending, automates KYC checks, and detects fraud.</div>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-4">⚕️</span>
+                            <div><span class="font-bold">Healthcare:</span> Streamlines EHR updates and manages hospital operations.</div>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-4">🛒</span>
+                            <div><span class="font-bold">Retail:</span> Optimizes inventory, manages dynamic pricing, and personalizes shopping.</div>
+                        </div>
+                         <div class="flex items-start">
+                            <span class="text-2xl mr-4">💻</span>
+                            <div><span class="font-bold">IT & HR:</span> Resolves service tickets and automates employee onboarding.</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold text-center mb-4 text-[#003f5c]">The Emerging Agentic Workforce</h4>
+                    <div class="chart-container">
+                        <canvas id="workforceChart"></canvas>
+                    </div>
+                    <p class="text-center mt-4 text-sm text-gray-500">Source: Projected impact in India by 2030. Agentic AI is transforming existing jobs and creating entirely new roles like AI Configurators and Agent Orchestrators.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="risks" class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="order-2 md:order-1">
+                    <h4 class="text-xl font-bold text-center mb-4 text-[#003f5c]">The Governance Imperative</h4>
+                    <div class="chart-container">
+                        <canvas id="governanceChart"></canvas>
+                    </div>
+                    <p class="text-center mt-4 text-sm text-gray-500">As agent capabilities grow, robust governance is essential to contain the risk of misalignment and ensure safe, reliable operation.</p>
+                </div>
+                <div class="order-1 md:order-2">
+                    <h3 class="text-3xl font-bold text-[#003f5c]">The Balancing Act: Risk vs. Reward</h3>
+                    <p class="mt-4 text-gray-600">The immense power of agentic AI comes with profound challenges. The primary risk is not just technical failure, but the strategic success of an agent pursuing a poorly specified or misaligned goal.</p>
+                    <div class="mt-6 space-y-4">
+                        <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                            <h5 class="font-bold text-red-800">Agentic Misalignment</h5>
+                            <p class="text-sm text-red-700">The risk of an agent intentionally choosing a harmful path because it calculates it as the optimal way to achieve its goal.</p>
+                        </div>
+                        <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
+                            <h5 class="font-bold text-yellow-800">Technical Fragility</h5>
+                            <p class="text-sm text-yellow-700">Challenges like finite memory (context windows) and prompt sensitivity can lead to unreliable performance in long tasks.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const wrapLabel = (label) => {
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > 16) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            };
+            
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            const workforceCtx = document.getElementById('workforceChart').getContext('2d');
+            new Chart(workforceCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Existing Roles Influenced', 'New Tech Jobs Created'],
+                    datasets: [{
+                        label: 'Number of Roles (in millions)',
+                        data: [10, 3],
+                        backgroundColor: ['#665191', '#ffa600'],
+                        borderColor: ['#665191', '#ffa600'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Millions of Roles' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    }
+                }
+            });
+
+            const governanceCtx = document.getElementById('governanceChart').getContext('2d');
+            new Chart(governanceCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Technical Fragility', 'Value Misalignment', 'Security Vulnerabilities', 'Data Bias'],
+                    datasets: [{
+                        label: 'Key Risk Areas',
+                        data: [30, 40, 20, 10],
+                        backgroundColor: ['#f95d6a', '#d45087', '#a05195', '#665191'],
+                        borderColor: '#ffffff',
+                        borderWidth: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

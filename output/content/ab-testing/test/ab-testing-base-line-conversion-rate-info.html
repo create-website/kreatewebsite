@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/B Testing: A Data-Driven Guide to Optimization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Narrative & Structure Plan: The infographic tells a linear story designed to educate a user new to A/B testing. It starts with the fundamental "what" (definition), moves to the "how" (process flowchart), presents a tangible "result" (example with a chart), explains the "details" (key metrics), and concludes with "warnings" (common pitfalls). This logical progression from concept to practical application ensures the information is digestible and builds upon itself, making it an effective educational tool. -->
+    <!-- Visualization & Content Choices: 
+        1. Data: A/B Concept. Goal: Inform. Viz: Side-by-side HTML/CSS diagram. Justification: A simple, direct visual is best for explaining the core A vs. B comparison without complexity. Method: HTML/CSS. (NO SVG).
+        2. Data: Testing Process. Goal: Organize. Viz: HTML/CSS Flowchart. Justification: A flowchart clearly illustrates the required sequence of steps in the A/B testing methodology. Method: HTML/CSS with flexbox. (NO SVG, NO Mermaid JS).
+        3. Data: Hypothetical Test Results (Conversion Rates). Goal: Compare. Viz: Bar Chart. Justification: A bar chart provides an immediate, clear comparison of performance between the two versions. Method: Chart.js (Canvas). (NO SVG).
+        4. Data: Uplift & Significance. Goal: Inform. Viz: Single Big Number. Justification: Highlights the most critical, impactful outcomes of the test for quick comprehension. Method: HTML. (NO SVG).
+        5. Data: Key Metric Definitions. Goal: Organize. Viz: Icon List. Justification: Breaks down terminology into easy-to-scan, visually separated blocks, improving retention. Method: HTML/CSS with Unicode characters. (NO SVG).
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F8FF;
+        }
+        .card {
+            background-color: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #E0E7FF;
+        }
+        .flow-step {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            color: #004AAD;
+            background-color: #E0E7FF;
+            border: 2px solid #AAD5F5;
+            min-height: 80px;
+        }
+        .flow-arrow {
+            font-size: 2.5rem;
+            color: #56A5EC;
+            font-weight: 200;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto max-w-5xl p-4 sm:p-6 md:p-8">
+        
+        <header class="text-center my-8 md:my-12">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-[#004AAD]">The Guide to A/B Testing</h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Make smarter, data-driven decisions to optimize your user experience and boost conversion rates.</p>
+        </header>
+
+        <main class="space-y-12">
+
+            <section class="card p-8">
+                <h2 class="text-3xl font-bold text-center text-[#004AAD] mb-6">What is A/B Testing?</h2>
+                <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">A/B testing (or split testing) is a method of comparing two versions of a webpage, app screen, or email against each other to determine which one performs better. You show the two variants to users at random and statistical analysis determines which variation is more effective for a given goal.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="border-4 border-dashed border-[#AAD5F5] p-6 rounded-2xl text-center">
+                        <h3 class="text-2xl font-bold text-[#0073E6]">Version A</h3>
+                        <p class="font-semibold text-gray-500 mb-4">(Control)</p>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <p class="font-bold text-lg">"Sign Up Now"</p>
+                            <div class="mt-2 w-full h-10 bg-[#0073E6] rounded-lg"></div>
+                        </div>
+                    </div>
+                    <div class="border-4 border-solid border-[#0073E6] p-6 rounded-2xl text-center bg-[#E0E7FF]">
+                        <h3 class="text-2xl font-bold text-[#004AAD]">Version B</h3>
+                        <p class="font-semibold text-gray-500 mb-4">(Variation)</p>
+                        <div class="bg-white p-4 rounded-lg">
+                           <p class="font-bold text-lg">"Get Started Free"</p>
+                           <div class="mt-2 w-full h-10 bg-green-500 rounded-lg"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card p-8">
+                <h2 class="text-3xl font-bold text-center text-[#004AAD] mb-8">The A/B Testing Workflow</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 items-center">
+                    <div class="flow-step">1. Research & Analyze Data</div>
+                    <div class="flow-arrow text-center hidden md:block">→</div>
+                    <div class="flow-step">2. Formulate a Hypothesis</div>
+                    <div class="flow-arrow text-center hidden md:block">→</div>
+                    <div class="flow-step">3. Create Variations</div>
+                     <div class="flow-arrow text-center hidden md:block col-start-2">←</div>
+                    <div class="flow-step md:col-start-4">4. Run the Experiment</div>
+                     <div class="flow-arrow text-center hidden md:block">→</div>
+                    <div class="flow-step md:col-start-2">5. Analyze Results & Conclude</div>
+                </div>
+            </section>
+
+            <section class="card p-8">
+                <h2 class="text-3xl font-bold text-center text-[#004AAD] mb-2">Analyzing the Results</h2>
+                <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">After running the experiment, you compare the performance of each version. The goal is to find a statistically significant winner.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-xl font-bold text-center mb-4 text-[#004AAD]">Conversion Rate Comparison</h3>
+                        <div class="chart-container">
+                            <canvas id="resultsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="text-center space-y-6">
+                        <div class="bg-[#E0E7FF] p-6 rounded-2xl">
+                            <p class="text-lg font-semibold text-[#004AAD]">Conversion Lift</p>
+                            <p class="text-5xl font-extrabold text-green-600">+25%</p>
+                            <p class="text-gray-600 mt-1">Version B outperformed Version A.</p>
+                        </div>
+                        <div class="bg-[#E0E7FF] p-6 rounded-2xl">
+                            <p class="text-lg font-semibold text-[#004AAD]">Statistical Significance</p>
+                            <p class="text-5xl font-extrabold text-[#004AAD]">98%</p>
+                            <p class="text-gray-600 mt-1">High confidence the result is not due to chance.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card p-8">
+                <h2 class="text-3xl font-bold text-center text-[#004AAD] mb-8">Common Pitfalls to Avoid</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                    <div class="bg-gray-50 p-6 rounded-2xl border">
+                        <span class="text-4xl">①</span>
+                        <h3 class="font-bold text-lg mt-2">Ending Tests Too Early</h3>
+                        <p class="text-gray-600 text-sm mt-1">Wait for a large enough sample size to ensure results are statistically significant.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-2xl border">
+                        <span class="text-4xl">②</span>
+                        <h3 class="font-bold text-lg mt-2">Testing Too Many Things</h3>
+                        <p class="text-gray-600 text-sm mt-1">Isolate changes to one element per test to know what caused the impact.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-2xl border">
+                         <span class="text-4xl">③</span>
+                        <h3 class="font-bold text-lg mt-2">Ignoring External Factors</h3>
+                        <p class="text-gray-600 text-sm mt-1">Be aware of holidays, marketing campaigns, or site changes that can skew data.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!--
+        <footer class="text-center mt-16 mb-8">
+            <p class="text-gray-500">Start testing today and let data guide your growth.</p>
+        </footer>
+    -->
+
+    </div>
+
+    <script>
+        const ctx = document.getElementById('resultsChart').getContext('2d');
+        const resultsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Version A (Control)', 'Version B (Variation)'],
+                datasets: [{
+                    label: 'Conversion Rate',
+                    data: [4.0, 5.0],
+                    backgroundColor: [
+                        '#56A5EC',
+                        '#0073E6'
+                    ],
+                    borderColor: [
+                        '#004AAD',
+                        '#004AAD'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Conversion Rate (%)',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                           color: '#E0E7FF'
+                        }
+                    },
+                    x: {
+                         grid: {
+                           display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            },
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y.toFixed(2) + '%';
+                                }
+                                return label;
+                            }
+                        },
+                        backgroundColor: '#004AAD',
+                        titleFont: { size: 16, weight: 'bold' },
+                        bodyFont: { size: 14 },
+                        padding: 12,
+                        cornerRadius: 8,
+                        displayColors: false
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

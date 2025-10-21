@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI Startup Opportunities</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Slate & Sky -->
+    <!-- Application Structure Plan: The application is designed as a single-page, top-down narrative experience to guide the user from foundational knowledge to actionable ideas. It starts with a broad introduction ("What is Agentic AI?"), moves to core principles, then dives into the main interactive element: a filterable grid of specific startup opportunities. Clicking an idea reveals a detailed analysis with a dynamic chart. This is followed by a strategic market overview via a bubble chart. This thematic, funnel-like structure was chosen over a simple report layout to make complex information digestible and empower users to explore based on their interests (e.g., a specific industry), fostering a more engaging and less intimidating discovery process. -->
+    <!-- Visualization & Content Choices: 
+        - Core Concepts: Goal: Inform. Method: HTML/CSS cards. Interaction: Hover effects. Justification: Simple, clear presentation of foundational ideas without overwhelming the user.
+        - Startup Ideas: Goal: Organize/Compare. Method: Filterable HTML/CSS card grid. Interaction: Click to filter by category, click to expand for details. Justification: Allows users to easily navigate a large set of ideas and drill down into those most relevant to them.
+        - Market Potential: Goal: Compare. Method: Dynamic Bar Chart (Chart.js/Canvas). Interaction: Chart is generated/updated when a user expands a startup idea. Justification: Provides a quick, quantitative visual comparison of the opportunity size for each specific idea.
+        - Market Landscape: Goal: Relationships. Method: Bubble Chart (Chart.js/Canvas). Interaction: Hover tooltips. Justification: Offers a high-level strategic view, allowing users to see how different opportunities relate to each other in terms of market size and feasibility.
+        - Text Blocks: Goal: Inform. Method: HTML paragraphs. Justification: To provide necessary context and explanation for each section.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .detail-view {
+            transition: all 0.3s ease-in-out;
+            max-height: 0;
+            overflow: hidden;
+        }
+        .detail-view.open {
+            max-height: 1000px;
+        }
+        .nav-link {
+            transition: color 0.2s;
+        }
+        .nav-link.active {
+            color: #0284c7;
+            font-weight: 600;
+        }
+        .filter-btn.active {
+            background-color: #0284c7;
+            color: white;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-slate-800">Agentic AI Frontiers</h1>
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
+                <a href="#intro" class="nav-link hover:text-sky-600">Introduction</a>
+                <a href="#concepts" class="nav-link hover:text-sky-600">Core Concepts</a>
+                <a href="#opportunities" class="nav-link hover:text-sky-600">Opportunities</a>
+                <a href="#market" class="nav-link hover:text-sky-600">Market View</a>
+                <a href="#future" class="nav-link hover:text-sky-600">Future Outlook</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section id="intro" class="text-center mb-24">
+            <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">The Next Wave of Startups</h2>
+            <p class="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
+                Agentic AI represents a paradigm shift from task-specific models to autonomous systems that can reason, plan, and execute complex goals. This dashboard explores the fertile ground this technology creates for innovative new companies across diverse industries.
+            </p>
+        </section>
+
+        <section id="concepts" class="mb-24">
+            <h3 class="text-3xl font-bold text-center text-slate-900 mb-2">What is Agentic AI?</h3>
+            <p class="text-center text-slate-600 max-w-2xl mx-auto mb-12">Agentic AI systems are built on several core principles that grant them autonomous capabilities. Understanding these concepts is key to identifying true opportunities for innovation.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 hover:shadow-lg transition-shadow">
+                    <div class="text-3xl mb-3">🚀</div>
+                    <h4 class="font-bold text-lg text-slate-800 mb-2">Autonomy</h4>
+                    <p class="text-sm text-slate-600">Agents can operate independently without constant human supervision to achieve predefined goals.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 hover:shadow-lg transition-shadow">
+                    <div class="text-3xl mb-3">🎯</div>
+                    <h4 class="font-bold text-lg text-slate-800 mb-2">Goal-Orientation</h4>
+                    <p class="text-sm text-slate-600">They are designed to pursue objectives, breaking down large goals into smaller, executable steps.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 hover:shadow-lg transition-shadow">
+                    <div class="text-3xl mb-3">💡</div>
+                    <h4 class="font-bold text-lg text-slate-800 mb-2">Proactivity</h4>
+                    <p class="text-sm text-slate-600">Agents can take initiative, anticipate needs, and adapt to changing environments to better achieve their goals.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 hover:shadow-lg transition-shadow">
+                    <div class="text-3xl mb-3">🧠</div>
+                    <h4 class="font-bold text-lg text-slate-800 mb-2">Continuous Learning</h4>
+                    <p class="text-sm text-slate-600">They improve over time by learning from interactions, feedback, and the outcomes of their actions.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="opportunities" class="mb-24">
+            <h3 class="text-3xl font-bold text-center text-slate-900 mb-2">Startup Opportunities</h3>
+            <p class="text-center text-slate-600 max-w-2xl mx-auto mb-8">Agentic AI unlocks solutions to complex problems that were previously intractable. Explore potential startup ideas by filtering by industry. Click on any card to see a detailed breakdown of the problem, solution, and market potential.</p>
+            <div id="filters" class="flex flex-wrap justify-center gap-2 mb-12">
+                <button class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-white border border-slate-300 hover:bg-slate-100 transition active" data-filter="all">All</button>
+            </div>
+            <div id="ideas-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+        </section>
+
+        <section id="market" class="mb-24">
+            <h3 class="text-3xl font-bold text-center text-slate-900 mb-2">Market Landscape View</h3>
+            <p class="text-center text-slate-600 max-w-2xl mx-auto mb-12">This chart visualizes the startup opportunities based on potential market size and technical feasibility. Larger bubbles represent a higher potential impact. This strategic view can help identify crowded spaces versus untapped niches.</p>
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                <div class="chart-container h-[400px] md:h-[500px]">
+                    <canvas id="marketLandscapeChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="future" class="text-center">
+            <h3 class="text-3xl font-bold text-slate-900 mb-4">The Road Ahead</h3>
+            <p class="text-slate-600 max-w-3xl mx-auto">
+                The journey for Agentic AI is just beginning. Challenges in safety, ethics, and reliability remain, but the potential is undeniable. Startups that focus on building trustworthy, specialized, and efficient AI agents will define the next decade of technological innovation and create immense value.
+            </p>
+        </section>
+    </main>
+    
+    <footer class="text-center py-8 mt-12 border-t border-slate-200">
+        <p class="text-sm text-slate-500">&copy; 2025 Agentic AI Frontiers. An interactive report.</p>
+    </footer>
+
+    <script>
+        const startupIdeas = [
+            {
+                id: 1,
+                category: 'dev',
+                title: 'Autonomous Dev Teams',
+                short: 'AI agents that manage entire software development lifecycles, from spec to deployment.',
+                problem: 'Software development is slow, expensive, and prone to human error. Managing project backlogs, writing boilerplate code, and running tests consumes significant developer time.',
+                solution: 'An agentic system where a "project manager" agent interprets product specs, assigns tasks to "developer" agents who write and commit code, and "QA" agents who run automated tests and report bugs.',
+                marketSize: 9,
+                feasibility: 3,
+                impact: 9
+            },
+            {
+                id: 2,
+                category: 'finance',
+                title: 'Proactive Financial Analyst',
+                short: 'An AI agent that constantly monitors market data, company filings, and news to provide real-time strategic advice.',
+                problem: 'Financial analysts are overwhelmed with data. It\'s impossible for a human to track every signal and produce timely, comprehensive reports for investment decisions.',
+                solution: 'An agent that autonomously ingests diverse financial data streams, identifies opportunities and risks based on a user\'s investment profile, and generates concise, actionable briefs.',
+                marketSize: 8,
+                feasibility: 6,
+                impact: 8
+            },
+            {
+                id: 3,
+                category: 'hr',
+                title: 'AI-Powered Recruiting Agent',
+                short: 'An autonomous agent that manages the entire hiring pipeline, from sourcing to scheduling interviews.',
+                problem: 'Recruiting is a high-touch, repetitive process. Sourcing candidates, screening resumes, and coordinating interview schedules is a major bottleneck for growing companies.',
+                solution: 'An agent that sources candidates from multiple platforms, uses intelligent criteria to screen them, communicates with candidates to schedule interviews, and provides hiring managers with a curated shortlist.',
+                marketSize: 7,
+                feasibility: 7,
+                impact: 6
+            },
+            {
+                id: 4,
+                category: 'healthcare',
+                title: 'Personalized Health Navigator',
+                short: 'An agent that helps patients manage chronic diseases by coordinating care and providing guidance.',
+                problem: 'Patients with chronic conditions struggle to manage appointments, medications, and lifestyle changes. Care is often fragmented across multiple providers.',
+                solution: 'An agent that tracks a patient\'s health data, schedules appointments, sends medication reminders, and provides personalized dietary/exercise advice, acting as a central hub for their care.',
+                marketSize: 8,
+                feasibility: 4,
+                impact: 9
+            },
+            {
+                id: 5,
+                category: 'marketing',
+                title: 'Autonomous Marketing Strategist',
+                short: 'An AI agent that designs, executes, and optimizes multi-channel marketing campaigns.',
+                problem: 'Effective marketing requires constant analysis and optimization across many channels (social, email, ads). Teams often lack the bandwidth to be truly data-driven.',
+                solution: 'An agent that defines campaign goals, generates creative assets (copy/images), allocates budget across channels, monitors performance in real-time, and adjusts its strategy to maximize ROI.',
+                marketSize: 8,
+                feasibility: 5,
+                impact: 7
+            },
+            {
+                id: 6,
+                category: 'dev',
+                title: 'AI Code Security Auditor',
+                short: 'Proactive agents that continuously scan codebases for vulnerabilities and automatically patch them.',
+                problem: 'Security vulnerabilities are often discovered too late in the development cycle. Manual code reviews are slow and can miss sophisticated exploits.',
+                solution: 'An agent that integrates with version control, analyzes every code change for potential security flaws, suggests fixes, and can even be authorized to automatically apply patches for common vulnerabilities.',
+                marketSize: 7,
+                feasibility: 6,
+                impact: 8
+            },
+             {
+                id: 7,
+                category: 'hr',
+                title: 'Agentic Employee Onboarding',
+                short: 'An AI assistant to guide new hires through their entire onboarding process.',
+                problem: 'Onboarding is often inconsistent and overwhelming. New employees struggle to find information, complete paperwork, and get set up with the right tools and access.',
+                solution: 'An agent that creates a personalized onboarding plan, proactively schedules intro meetings, provides access to necessary systems, and answers common questions, ensuring a smooth start.',
+                marketSize: 6,
+                feasibility: 8,
+                impact: 5
+            },
+            {
+                id: 8,
+                category: 'finance',
+                title: 'Automated Compliance Officer',
+                short: 'AI agents that ensure a company\'s operations adhere to complex regulatory standards.',
+                problem: 'Staying compliant with financial regulations (like GDPR, SOX) is a massive, ongoing effort requiring specialized legal and technical knowledge.',
+                solution: 'An agent that monitors internal data and processes, cross-references them with regulatory documents, flags potential compliance issues in real-time, and generates reports for audits.',
+                marketSize: 7,
+                feasibility: 4,
+                impact: 7
+            }
+        ];
+
+        const categories = {
+            'all': 'All',
+            'dev': 'Software Dev',
+            'finance': 'Finance',
+            'hr': 'Human Resources',
+            'healthcare': 'Healthcare',
+            'marketing': 'Marketing'
+        };
+
+        const ideasGrid = document.getElementById('ideas-grid');
+        const filtersContainer = document.getElementById('filters');
+        let activeChart = null;
+
+        function renderIdeas(filter = 'all') {
+            ideasGrid.innerHTML = '';
+            const filteredIdeas = filter === 'all' ? startupIdeas : startupIdeas.filter(idea => idea.category === filter);
+
+            filteredIdeas.forEach(idea => {
+                const card = document.createElement('div');
+                card.className = 'idea-card-container';
+                card.innerHTML = `
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 cursor-pointer h-full flex flex-col hover:border-sky-500 transition-colors" data-id="${idea.id}">
+                        <h4 class="font-bold text-lg text-slate-800 mb-2">${idea.title}</h4>
+                        <p class="text-sm text-slate-600 mb-4 flex-grow">${idea.short}</p>
+                        <span class="text-xs font-semibold text-sky-600 bg-sky-100 px-2 py-1 rounded-full self-start">${categories[idea.category]}</span>
+                    </div>
+                    <div class="detail-view bg-white rounded-b-xl -mt-2" data-detail-id="${idea.id}">
+                        <div class="p-6 border-t border-slate-200">
+                             <h5 class="font-semibold text-slate-800 mb-2">The Problem</h5>
+                             <p class="text-sm text-slate-600 mb-4">${idea.problem}</p>
+                             <h5 class="font-semibold text-slate-800 mb-2">The Agentic Solution</h5>
+                             <p class="text-sm text-slate-600 mb-6">${idea.solution}</p>
+                            <div class="grid grid-cols-2 gap-4 text-sm mb-6">
+                                <div>
+                                    <h5 class="font-semibold text-slate-800 mb-1">Tech Feasibility</h5>
+                                    <div class="flex items-center" title="${idea.feasibility}/10">${[...Array(10)].map((_, i) => `<div class="w-4 h-4 rounded-full border border-slate-300 ${i < idea.feasibility ? 'bg-sky-500' : 'bg-slate-100'}"></div>`).join('')}</div>
+                                </div>
+                                 <div>
+                                    <h5 class="font-semibold text-slate-800 mb-1">Market Size Score</h5>
+                                    <div class="flex items-center" title="${idea.marketSize}/10">${[...Array(10)].map((_, i) => `<div class="w-4 h-4 rounded-full border border-slate-300 ${i < idea.marketSize ? 'bg-sky-500' : 'bg-slate-100'}"></div>`).join('')}</div>
+                                </div>
+                            </div>
+                             <div class="chart-container-detail">
+                                <canvas id="chart-${idea.id}"></canvas>
+                             </div>
+                        </div>
+                    </div>
+                `;
+                ideasGrid.appendChild(card);
+            });
+        }
+
+        function createDetailChart(canvasId, idea) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            if (activeChart && activeChart.canvas.id !== canvasId) {
+                activeChart.destroy();
+            }
+
+            const data = {
+                labels: ['Market Size', 'Tech Feasibility', 'Potential Impact'],
+                datasets: [{
+                    label: idea.title,
+                    data: [idea.marketSize, idea.feasibility, idea.impact],
+                    backgroundColor: [
+                        'rgba(56, 189, 248, 0.6)',
+                        'rgba(14, 165, 233, 0.6)',
+                        'rgba(2, 132, 199, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(56, 189, 248, 1)',
+                        'rgba(14, 165, 233, 1)',
+                        'rgba(2, 132, 199, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            activeChart = new Chart(ctx, {
+                type: 'bar',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 10,
+                            grid: { display: false },
+                        },
+                        y: {
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: 'Opportunity Score (out of 10)'
+                        }
+                    }
+                }
+            });
+        }
+        
+        function setupFilters() {
+            Object.keys(categories).forEach(key => {
+                if (key === 'all') return;
+                const button = document.createElement('button');
+                button.className = 'filter-btn px-4 py-2 text-sm font-medium rounded-full bg-white border border-slate-300 hover:bg-slate-100 transition';
+                button.dataset.filter = key;
+                button.textContent = categories[key];
+                filtersContainer.appendChild(button);
+            });
+        }
+
+        filtersContainer.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                document.querySelector('.filter-btn.active').classList.remove('active');
+                e.target.classList.add('active');
+                const filter = e.target.dataset.filter;
+                renderIdeas(filter);
+            }
+        });
+
+        ideasGrid.addEventListener('click', (e) => {
+            const cardHeader = e.target.closest('.bg-white[data-id]');
+            if (!cardHeader) return;
+            
+            const id = cardHeader.dataset.id;
+            const detailView = document.querySelector(`.detail-view[data-detail-id="${id}"]`);
+
+            const isOpen = detailView.classList.contains('open');
+            
+            document.querySelectorAll('.detail-view.open').forEach(el => el.classList.remove('open'));
+            document.querySelectorAll('.bg-white[data-id]').forEach(el => el.classList.remove('ring-2', 'ring-sky-500'));
+
+            if (!isOpen) {
+                detailView.classList.add('open');
+                cardHeader.classList.add('ring-2', 'ring-sky-500');
+                const idea = startupIdeas.find(i => i.id == id);
+                setTimeout(() => {
+                    createDetailChart(`chart-${id}`, idea);
+                }, 300);
+            }
+        });
+        
+        function createMarketLandscapeChart() {
+            const ctx = document.getElementById('marketLandscapeChart').getContext('2d');
+            const data = {
+                datasets: [{
+                    label: 'Startup Opportunities',
+                    data: startupIdeas.map(idea => ({
+                        x: idea.feasibility,
+                        y: idea.marketSize,
+                        r: idea.impact * 2,
+                        title: idea.title,
+                        category: categories[idea.category]
+                    })),
+                    backgroundColor: 'rgba(14, 165, 233, 0.6)',
+                    borderColor: 'rgba(2, 132, 199, 1)'
+                }]
+            };
+
+            new Chart(ctx, {
+                type: 'bubble',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Technical Feasibility (1-10)'
+                            },
+                             min: 0,
+                             max: 10
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Potential Market Size (1-10)'
+                            },
+                            min: 0,
+                            max: 10
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const d = context.raw;
+                                    return `${d.title} | Category: ${d.category}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function setupNavScroll() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px' });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupFilters();
+            renderIdeas();
+            createMarketLandscapeChart();
+            setupNavScroll();
+        });
+    </script>
+
+</body>
+</html>

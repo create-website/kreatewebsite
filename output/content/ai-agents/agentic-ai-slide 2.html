@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slides: The Rise of Agentic AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        #presentation-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+            visibility: hidden;
+        }
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            height: 60vh;
+            max-height: 500px;
+        }
+       .timeline-item::before {
+           content: '';
+           position: absolute;
+           top: 0.7rem;
+           left: -0.4rem;
+           width: 0.8rem;
+           height: 0.8rem;
+           border-radius: 9999px;
+           background-color: #FC913A;
+       }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div id="presentation-container">
+
+        <!-- Slide 1: Title -->
+        <div class="slide active bg-slate-900 text-white" id="slide-0">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight">The Rise of <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">Agentic AI</span></h1>
+                <p class="mt-6 max-w-3xl mx-auto text-lg md:text-xl leading-8 text-slate-300">A Framework for Adoption & Transformation</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: The Hook/Statistic -->
+        <div class="slide" id="slide-1">
+            <div class="text-center p-8">
+                 <p class="text-7xl md:text-9xl font-bold text-red-500">85%</p>
+                 <p class="mt-4 text-2xl md:text-3xl font-semibold text-slate-800 max-w-3xl">of CEOs believe AI will significantly change their business in the next 5 years.</p>
+                 <p class="text-sm text-slate-500 mt-4">(Source: Fictional Tech Survey 2025)</p>
+            </div>
+        </div>
+        
+        <!-- Slide 3: What is an AI Agent? -->
+        <div class="slide" id="slide-2">
+            <div class="text-center w-full max-w-5xl mx-auto p-8">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 mb-12">What is Agentic AI?</h2>
+                <p class="text-lg text-slate-600 mb-12 max-w-3xl mx-auto">Unlike traditional AI that only reacts, an agent operates in a continuous, proactive loop to achieve complex goals.</p>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0">
+                     <div class="text-center p-4">
+                        <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-red-500"><span class="text-4xl">🧠</span><h3 class="font-bold mt-2">Perceive</h3><p class="text-sm text-slate-500">Gathers data from its environment</p></div>
+                    </div>
+                    <div class="text-3xl text-orange-400 font-bold hidden md:block mx-6">&rarr;</div>
+                    <div class="text-3xl text-orange-400 font-bold block md:hidden my-4">&darr;</div>
+                     <div class="text-center p-4">
+                        <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-orange-400"><span class="text-4xl">🤔</span><h3 class="font-bold mt-2">Reason & Plan</h3><p class="text-sm text-slate-500">Creates a multi-step plan to reach a goal</p></div>
+                    </div>
+                    <div class="text-3xl text-yellow-400 font-bold hidden md:block mx-6">&rarr;</div>
+                    <div class="text-3xl text-yellow-400 font-bold block md:hidden my-4">&darr;</div>
+                     <div class="text-center p-4">
+                        <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-yellow-400"><span class="text-4xl">⚡</span><h3 class="font-bold mt-2">Act</h3><p class="text-sm text-slate-500">Executes actions using tools and APIs</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Four Pillars -->
+        <div class="slide" id="slide-3">
+             <div class="text-center w-full max-w-6xl mx-auto p-8">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 mb-12">The Four Pillars of Adoption</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                     <div class="bg-white rounded-xl shadow-lg p-8 border-l-8 border-red-500">
+                        <div class="text-5xl mb-4">🎯</div>
+                        <h3 class="text-xl font-bold text-slate-800">Strategic Alignment</h3>
+                        <p class="text-slate-600 mt-2">Connect AI initiatives to core business objectives. Define clear use cases, ROI, and an adoption roadmap.</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-8 border-l-8 border-orange-400">
+                        <div class="text-5xl mb-4">🛠️</div>
+                        <h3 class="text-xl font-bold text-slate-800">Foundational Capabilities</h3>
+                        <p class="text-slate-600 mt-2">Build the data pipelines, tech stack, and talent required to support autonomous agents.</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-8 border-l-8 border-yellow-400">
+                        <div class="text-5xl mb-4">🚀</div>
+                        <h3 class="text-xl font-bold text-slate-800">Agent Development</h3>
+                        <p class="text-slate-600 mt-2">Establish agile, responsible, and scalable processes for designing, building, and deploying agents.</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-8 border-l-8 border-lime-300">
+                        <div class="text-5xl mb-4">⚖️</div>
+                        <h3 class="text-xl font-bold text-slate-800">Governance & Scaling</h3>
+                        <p class="text-slate-600 mt-2">Implement robust ethical guidelines and risk management to scale responsibly.</p>
+                    </div>
+                </div>
+             </div>
+        </div>
+
+        <!-- Slide 5: Maturity Chart -->
+        <div class="slide" id="slide-4">
+            <div class="text-center w-full max-w-6xl mx-auto p-8">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 mb-6">The Adoption Journey</h2>
+                <p class="text-lg text-slate-600 mb-8 max-w-3xl mx-auto">Organizations progress through distinct maturity stages, shifting their focus across the pillars as they advance.</p>
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="chart-container">
+                        <canvas id="maturityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Use Cases -->
+        <div class="slide" id="slide-5">
+            <div class="text-center w-full max-w-6xl mx-auto p-8">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 mb-12">Real-World Applications</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-center font-bold text-slate-800 mb-4">Use Case Distribution by Function</h3>
+                        <div class="chart-container" style="height: 40vh; max-height: 400px;">
+                            <canvas id="useCaseChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="space-y-4 text-left">
+                        <div class="bg-white rounded-lg shadow p-4 flex items-center gap-4"><div class="text-2xl bg-red-100 text-red-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center">⚙️</div><div><h4 class="font-bold">Operations</h4><p class="text-sm text-slate-600">Autonomous supply chain management.</p></div></div>
+                        <div class="bg-white rounded-lg shadow p-4 flex items-center gap-4"><div class="text-2xl bg-orange-100 text-orange-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center">📈</div><div><h4 class="font-bold">Marketing</h4><p class="text-sm text-slate-600">Self-optimizing ad campaigns.</p></div></div>
+                        <div class="bg-white rounded-lg shadow p-4 flex items-center gap-4"><div class="text-2xl bg-yellow-100 text-yellow-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center">📞</div><div><h4 class="font-bold">Customer Service</h4><p class="text-sm text-slate-600">Proactive issue resolution agents.</p></div></div>
+                        <div class="bg-white rounded-lg shadow p-4 flex items-center gap-4"><div class="text-2xl bg-lime-100 text-lime-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center">💻</div><div><h4 class="font-bold">IT & Finance</h4><p class="text-sm text-slate-600">Automated infrastructure and auditing.</p></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Action Plan -->
+        <div class="slide" id="slide-6">
+            <div class="text-center w-full max-w-3xl mx-auto p-8">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 mb-12">Your Path Forward</h2>
+                <div class="text-left relative border-l-2 border-slate-200">
+                    <div class="timeline-item relative mb-8 pl-6">
+                        <h3 class="text-lg font-bold text-red-500">Phase 1: Educate & Explore</h3>
+                        <p class="text-slate-600">Form a task force, conduct workshops, and brainstorm potential use cases.</p>
+                    </div>
+                     <div class="timeline-item relative mb-8 pl-6">
+                        <h3 class="text-lg font-bold text-orange-500">Phase 2: Prioritize & Plan</h3>
+                        <p class="text-slate-600">Select 2-3 high-impact pilot projects and develop a clear business case.</p>
+                    </div>
+                    <div class="timeline-item relative mb-8 pl-6">
+                        <h3 class="text-lg font-bold text-yellow-500">Phase 3: Pilot & Learn</h3>
+                        <p class="text-slate-600">Execute your first pilot, focusing on agile development and continuous learning.</p>
+                    </div>
+                    <div class="timeline-item relative pl-6">
+                        <h3 class="text-lg font-bold text-lime-500">Phase 4: Scale & Govern</h3>
+                        <p class="text-slate-600">Refine your governance model and develop a playbook to scale agents across the organization.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 8: Conclusion -->
+        <div class="slide bg-slate-900 text-white" id="slide-7">
+            <div class="text-center">
+                <h2 class="text-5xl font-bold">Thank You</h2>
+                <p class="mt-4 text-xl text-slate-300">Q & A</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="navigation" class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-slate-200 p-4 flex justify-center items-center gap-4">
+        <button id="prev-btn" class="px-4 py-2 rounded-lg bg-slate-700 text-white hover:bg-slate-900 disabled:opacity-50 disabled:cursor-not-allowed">&larr; Previous</button>
+        <span id="slide-counter" class="text-slate-700 font-medium">1 / 8</span>
+        <button id="next-btn" class="px-4 py-2 rounded-lg bg-slate-700 text-white hover:bg-slate-900 disabled:opacity-50 disabled:cursor-not-allowed">Next &rarr;</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const slideCounter = document.getElementById('slide-counter');
+            let currentSlide = 0;
+            let maturityChartInstance = null;
+            let useCaseChartInstance = null;
+
+            const wrapLabel = (label) => {
+                const maxLength = 16;
+                if (label.length <= maxLength) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLength) {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                lines.push(currentLine);
+                return lines;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                return Array.isArray(label) ? label.join(' ') : label;
+            };
+
+            function createMaturityChart() {
+                if (maturityChartInstance) return;
+                const ctx = document.getElementById('maturityChart').getContext('2d');
+                maturityChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Strategic Alignment', 'Foundational Capabilities', 'Agent Development', 'Governance & Scaling'].map(wrapLabel),
+                        datasets: [
+                            { label: 'Nascent', data: [20, 30, 15, 10], backgroundColor: '#FF4E50' },
+                            { label: 'Developing', data: [50, 60, 55, 40], backgroundColor: '#FC913A' },
+                            { label: 'Maturing', data: [80, 85, 75, 70], backgroundColor: '#F9D423' }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { stacked: true, ticks: { callback: (value) => value + '%' }, title: { display: true, text: 'Organizational Focus' }, grid: { color: '#e2e8f0' } },
+                            x: { stacked: true, grid: { display: false } }
+                        },
+                        plugins: {
+                            tooltip: { callbacks: { title: tooltipTitleCallback } },
+                            title: { display: true, text: 'Relative Focus by Maturity Level', padding: { bottom: 20 }, font: { size: 16 } },
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            }
+
+            function createUseCaseChart() {
+                if (useCaseChartInstance) return;
+                const ctx = document.getElementById('useCaseChart').getContext('2d');
+                useCaseChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Operations', 'Marketing', 'Customer Service', 'IT & Finance'],
+                        datasets: [{
+                            label: 'Use Case Distribution',
+                            data: [35, 25, 20, 20],
+                            backgroundColor: ['#FF4E50', '#FC913A', '#F9D423', '#EDE574'],
+                            borderColor: '#ffffff',
+                            borderWidth: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '60%',
+                        plugins: {
+                            legend: { position: 'bottom', labels: { padding: 15 } },
+                            tooltip: {
+                                callbacks: {
+                                    title: tooltipTitleCallback,
+                                    label: (context) => `${context.label}: ${context.raw}%`
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                });
+                
+                if (index === 4) createMaturityChart();
+                if (index === 5) createUseCaseChart();
+
+                currentSlide = index;
+                slideCounter.textContent = `${index + 1} / ${slides.length}`;
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    showSlide(currentSlide - 1);
+                }
+            });
+
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < slides.length - 1) {
+                    showSlide(currentSlide + 1);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft') {
+                    prevBtn.click();
+                }
+            });
+
+            showSlide(0);
+        });
+    </script>
+</body>
+</html>

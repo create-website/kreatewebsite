@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holi Across India: A Festival of Colors Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Narrative Structure Plan: The infographic follows a narrative flow designed to educate the user from general to specific. It starts with a bold hook, explains the core concepts of Holi (Holika Dahan & Rangwali Holi), then takes the user on a visual tour of unique regional celebrations. It provides a quantitative comparison of festival durations, adds cultural context with festive foods, and ends with a unifying message. This top-down structure makes the complex information highly digestible for someone unfamiliar with the topic. -->
+    <!-- Visualization & Content Choices: 1. Core Concepts -> Goal: Inform -> Viz: Styled HTML cards with Unicode icons (🔥, 🎨). Justification: Simple, universally understood symbols to quickly convey meaning without SVG. Method: HTML/Tailwind. 2. Regional Variations -> Goal: Organize/Compare -> Viz: A responsive grid of content cards. Justification: A card layout effectively compartmentalizes and presents distinct traditions side-by-side for easy comparison. Method: HTML/Tailwind Grid. 3. Festival Duration -> Goal: Compare -> Viz: Horizontal Bar Chart. Justification: This is the clearest way to visually compare a single metric (days) across multiple categories (celebrations), making differences instantly apparent. Library: Chart.js (Canvas). 4. Festive Foods -> Goal: Inform -> Viz: Styled list with Unicode characters. Justification: A simple and visually appealing way to present related items of interest. Method: HTML/Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F8F9FA;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 500px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="text-[#073B4C]">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-bold text-[#FF6B6B]">The Colors of Unity</h1>
+            <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto">Holi is more than a festival; it's a vibrant tapestry of traditions woven across India. This infographic explores the core rituals and diverse regional celebrations that make Holi a spectacular display of culture, joy, and togetherness.</p>
+        </header>
+
+        <section class="mb-16">
+             <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-[#118AB2]">The Heart of the Festival</h2>
+                <p class="mt-2 text-md max-w-2xl mx-auto">Every Holi celebration, no matter how different, is rooted in two key events that symbolize the victory of good over evil and the arrival of spring.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center border-t-4 border-[#FFD166]">
+                    <span class="text-5xl mb-4 block">🔥</span>
+                    <h3 class="text-2xl font-semibold mb-2">Holika Dahan</h3>
+                    <p>The festival begins the night before with a sacred bonfire. Communities gather to light the pyre, symbolizing the triumph of good over evil, as depicted in the legend of Holika and Prahlad.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center border-t-4 border-[#06D6A0]">
+                    <span class="text-5xl mb-4 block">🎨</span>
+                    <h3 class="text-2xl font-semibold mb-2">Rangwali Holi</h3>
+                    <p>This is the main event—a free-for-all carnival of colors. People chase each other, smearing vibrant powders (gulal) and drenching each other with water, transcending social barriers in a day of pure fun.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-[#118AB2]">A Journey Through India's Holi</h2>
+                <p class="mt-2 text-md max-w-2xl mx-auto">While the spirit remains the same, the expression of Holi changes beautifully with geography. Here’s a glimpse into some of the most unique celebrations across the country.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-[#FF6B6B]">Lathmar Holi</h3>
+                    <p class="font-semibold text-gray-600 mb-2">Barsana, Uttar Pradesh</p>
+                    <p>A playful tradition where women chase men and playfully hit them with lathis (sticks), re-enacting a divine story. It's a week-long, high-energy spectacle.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-[#FFD166]">Holla Mohalla</h3>
+                    <p class="font-semibold text-gray-600 mb-2">Anandpur Sahib, Punjab</p>
+                    <p>A martial twist on Holi celebrated by Sikhs. The three-day festival showcases incredible displays of swordsmanship, horse-riding, and mock battles.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-[#06D6A0]">Basanta Utsav</h3>
+                    <p class="font-semibold text-gray-600 mb-2">Shantiniketan, West Bengal</p>
+                    <p>A graceful and poetic celebration of spring. Students wear yellow, sing, and dance to the tunes of Rabindranath Tagore, creating a serene cultural performance.</p>
+                </div>
+                 <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-[#118AB2]">Royal Holi</h3>
+                    <p class="font-semibold text-gray-600 mb-2">Udaipur, Rajasthan</p>
+                    <p>Experience Holi with regal splendor. The celebration starts with a magnificent palace procession, led by the royal family, culminating in a grand Holika Dahan bonfire.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-[#073B4C] text-opacity-80">Shigmo Festival</h3>
+                    <p class="font-semibold text-gray-600 mb-2">Goa</p>
+                    <p>Goa's vibrant spring festival spans two weeks, featuring traditional folk dances, elaborate parades, and colorful festivities, merging Holi with local traditions.</p>
+                </div>
+                 <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-[#FF6B6B]">Manjal Kuli</h3>
+                    <p class="font-semibold text-gray-600 mb-2">Kerala</p>
+                    <p>A unique and gentle form of Holi celebrated in temples. Instead of synthetic colors, people use natural turmeric water, giving the festival a fragrant, golden hue.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-[#118AB2]">By the Numbers: Festival Duration</h2>
+                <p class="mt-2 text-md max-w-2xl mx-auto">The length of Holi celebrations varies significantly, from a single day of revelry to fortnight-long festivals. This chart compares the typical duration of some of the most famous Holi traditions across India.</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="chart-container">
+                    <canvas id="durationChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-[#118AB2]">The Flavors of the Festival</h2>
+                <p class="mt-2 text-md max-w-2xl mx-auto">No Indian festival is complete without its special culinary delights. Holi brings an array of sweet and savory treats that are shared among family and friends.</p>
+            </div>
+            <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+                <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-lg">
+                    <li class="flex items-center"><span class="text-2xl mr-3">🥟</span> <strong>Gujiya:</strong> Sweet dumplings filled with khoya and nuts.</li>
+                    <li class="flex items-center"><span class="text-2xl mr-3">🥛</span> <strong>Thandai:</strong> A cold, refreshing drink made with milk and spices.</li>
+                    <li class="flex items-center"><span class="text-2xl mr-3">🍛</span> <strong>Dahi Vada:</strong> Soft lentil fritters soaked in creamy yogurt.</li>
+                    <li class="flex items-center"><span class="text-2xl mr-3">🍘</span> <strong>Malpua:</strong> Sweet, syrup-soaked pancakes.</li>
+                    <li class="flex items-center"><span class="text-2xl mr-3">🌶️</span> <strong>Chaat:</strong> Various savory snacks that tantalize the taste buds.</li>
+                    <li class="flex items-center"><span class="text-2xl mr-3">🍹</span> <strong>Bhang:</strong> A traditional intoxicating drink (consumed with caution!).</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="text-center py-6 mt-8 border-t border-gray-200">
+        <p class="text-gray-500">Celebrating diversity, one color at a time.</p>
+    </footer>
+
+    <script>
+        const ctx = document.getElementById('durationChart').getContext('2d');
+        const celebrationsData = [
+            { name: 'Shigmo, Goa', duration: 14 },
+            { name: 'Lathmar Holi, UP', duration: 7 },
+            { name: 'Holla Mohalla, Punjab', duration: 3 },
+            { name: 'Royal Holi, Rajasthan', duration: 2 },
+            { name: 'Basanta Utsav, WB', duration: 2 },
+            { name: 'Manjal Kuli, Kerala', duration: 2 },
+        ];
+
+        const processLabel = (label) => {
+            if (label.length > 16) {
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > 16) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            }
+            return label;
+        };
+
+        const labels = celebrationsData.map(c => processLabel(c.name));
+        const data = celebrationsData.map(c => c.duration);
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Duration in Days',
+                    data: data,
+                    backgroundColor: [
+                        '#FF6B6B',
+                        '#FFD166',
+                        '#06D6A0',
+                        '#118AB2',
+                        '#073B4C',
+                        '#FF6B6B'
+                    ],
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Duration (Days)',
+                            font: { size: 14 }
+                        }
+                    },
+                    y: {
+                        ticks: { font: { size: 14 } }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

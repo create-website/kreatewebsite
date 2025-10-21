@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Year Countdown</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden; /* Hide scrollbars caused by confetti */
+        }
+        .font-great-vibes {
+            font-family: 'Great Vibes', cursive;
+        }
+        .text-gold {
+            color: #FFD700;
+        }
+        .text-shadow-gold {
+            text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700, 0 0 15px #c9ab00;
+        }
+        .card {
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        /* --- Confetti Animation --- */
+        .confetti-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffd700;
+            opacity: 0.7;
+            animation: fall linear infinite;
+        }
+        
+        .confetti:nth-child(1) { left: 10%; animation-duration: 7s; animation-delay: -5s; background-color: #fff; }
+        .confetti:nth-child(2) { left: 20%; animation-duration: 5s; animation-delay: -2s; background-color: #f0f0f0; }
+        .confetti:nth-child(3) { left: 30%; animation-duration: 6s; animation-delay: -4s; }
+        .confetti:nth-child(4) { left: 40%; animation-duration: 8s; animation-delay: -1s; background-color: #silver; }
+        .confetti:nth-child(5) { left: 50%; animation-duration: 4s; animation-delay: -3s; }
+        .confetti:nth-child(6) { left: 60%; animation-duration: 7s; animation-delay: -5s; background-color: #fff; }
+        .confetti:nth-child(7) { left: 70%; animation-duration: 6s; animation-delay: -2.5s; }
+        .confetti:nth-child(8) { left: 80%; animation-duration: 5s; animation-delay: -1.5s; background-color: #f0f0f0; }
+        .confetti:nth-child(9) { left: 90%; animation-duration: 8s; animation-delay: -4.5s; background-color: #silver; }
+        .confetti:nth-child(10) { left: 5%; animation-duration: 6s; animation-delay: -3.5s; }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <div class="confetti-container">
+        <!-- Confetti elements will be generated here by JS -->
+    </div>
+
+    <div class="min-h-screen flex flex-col items-center justify-center p-4 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1515942145435-a75765793f79?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3');">
+        <div class="card p-6 md:p-10 rounded-2xl shadow-2xl text-center max-w-4xl w-full">
+            
+            <!-- Main Title -->
+            <h1 class="font-great-vibes text-gold text-5xl md:text-7xl mb-2 text-shadow-gold">New Year Countdown</h1>
+            <p class="text-gray-300 mb-6 md:mb-8">Time left until the ball drops!</p>
+
+            <!-- Countdown Timer -->
+            <div id="countdown" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+                <div class="bg-gray-800/50 p-4 rounded-lg">
+                    <div id="days" class="text-4xl md:text-6xl font-bold text-gold">0</div>
+                    <div class="text-sm text-gray-400">Days</div>
+                </div>
+                <div class="bg-gray-800/50 p-4 rounded-lg">
+                    <div id="hours" class="text-4xl md:text-6xl font-bold text-gold">0</div>
+                    <div class="text-sm text-gray-400">Hours</div>
+                </div>
+                <div class="bg-gray-800/50 p-4 rounded-lg">
+                    <div id="minutes" class="text-4xl md:text-6xl font-bold text-gold">0</div>
+                    <div class="text-sm text-gray-400">Minutes</div>
+                </div>
+                <div class="bg-gray-800/50 p-4 rounded-lg">
+                    <div id="seconds" class="text-4xl md:text-6xl font-bold text-gold">0</div>
+                    <div class="text-sm text-gray-400">Seconds</div>
+                </div>
+            </div>
+
+            <div id="new-year-message" class="hidden text-5xl font-bold text-gold text-shadow-gold font-great-vibes animate-pulse">
+                Happy New Year!
+            </div>
+
+            <!-- Current Time and Timezone Information -->
+            <div class="mt-8 border-t border-gold/20 pt-6 text-gray-300 text-sm">
+                <p id="current-time">Loading current time...</p>
+                <p id="timezone" class="mt-2">Detecting your timezone...</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const currentTimeEl = document.getElementById('current-time');
+        const timezoneEl = document.getElementById('timezone');
+        const countdownContainer = document.getElementById('countdown');
+        const newYearMessage = document.getElementById('new-year-message');
+        const confettiContainer = document.querySelector('.confetti-container');
+
+        // Get user's timezone
+        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        timezoneEl.textContent = `Your Timezone: ${userTimezone.replace('_', ' ')}`;
+
+        function updateCountdown() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const newYearDate = new Date(`January 1, ${currentYear + 1} 00:00:00`);
+
+            // Update current time display
+            currentTimeEl.textContent = `Current Time: ${now.toLocaleString()}`;
+
+            const totalSeconds = (newYearDate - now) / 1000;
+
+            if (totalSeconds < 0) {
+                // Happy New Year!
+                countdownContainer.classList.add('hidden');
+                newYearMessage.classList.remove('hidden');
+                clearInterval(countdownInterval);
+                return;
+            }
+
+            const days = Math.floor(totalSeconds / 3600 / 24);
+            const hours = Math.floor(totalSeconds / 3600) % 24;
+            const minutes = Math.floor(totalSeconds / 60) % 60;
+            const seconds = Math.floor(totalSeconds) % 60;
+            
+            // Update UI
+            daysEl.textContent = formatTime(days);
+            hoursEl.textContent = formatTime(hours);
+            minutesEl.textContent = formatTime(minutes);
+            secondsEl.textContent = formatTime(seconds);
+        }
+
+        function formatTime(time) {
+            return time < 10 ? `0${time}` : time;
+        }
+        
+        // --- Generate more confetti ---
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 4}s`; // 4 to 7 seconds
+                confetti.style.animationDelay = `${Math.random() * 5}s`;
+                confetti.style.backgroundColor = ['#FFD700', '#FFFFFF', '#C0C0C0', '#f0f0f0'][Math.floor(Math.random() * 4)];
+                confetti.style.width = `${Math.random() * 8 + 5}px`;
+                confetti.style.height = confetti.style.width;
+                confetti.style.opacity = Math.random();
+                confettiContainer.appendChild(confetti);
+            }
+        }
+
+        // Initial call to display immediately
+        updateCountdown();
+        createConfetti();
+
+        // Update every second
+        const countdownInterval = setInterval(updateCountdown, 1000);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Diwali Celebration: Light a Diya & Create a Rangoli</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background: linear-gradient(135deg, #4c0519, #7a0c2f, #2d0d30, #0c0a24);
+            overflow-x: hidden;
+        }
+        .diya-canvas, .rangoli-canvas {
+            cursor: crosshair;
+            touch-action: none;
+        }
+        .font-devanagari {
+            font-family: 'Tiro Devanagari Hindi', serif;
+        }
+        .color-palette button:hover, .color-palette button.active {
+            transform: scale(1.15);
+            box-shadow: 0 0 15px currentColor;
+        }
+        .btn-primary {
+            @apply bg-amber-500 text-red-900 font-bold py-2 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:bg-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-300;
+        }
+        .modal {
+            @apply fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 transition-opacity duration-300;
+        }
+        .modal-content {
+            @apply bg-white p-6 rounded-2xl shadow-2xl text-center max-w-sm w-full mx-4;
+        }
+        .animate-flicker {
+             animation: flicker 1.5s infinite alternate;
+        }
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                box-shadow:
+                0 0 4px #fff,
+                0 0 11px #fff,
+                0 0 19px #fff,
+                0 0 40px #ff0,
+                0 0 80px #ff0,
+                0 0 90px #ff0,
+                0 0 100px #ff0,
+                0 0 150px #ff0;
+            }
+            20%, 24%, 55% {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Header -->
+    <header class="text-center mb-8">
+        <h1 class="font-devanagari text-5xl md:text-7xl font-bold text-amber-400" style="text-shadow: 0 0 10px #f59e0b;">शुभ दीपावली</h1>
+        <p class="text-xl md:text-2xl text-amber-100 mt-2">Virtual Diwali Celebration</p>
+    </header>
+
+    <div class="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+        <!-- Diya Section -->
+        <section id="diya-section" class="bg-black bg-opacity-30 p-6 rounded-2xl shadow-xl flex flex-col items-center justify-between">
+            <h2 class="text-3xl font-semibold text-amber-300 mb-4">Light a Virtual Diya</h2>
+            <div class="relative w-full max-w-sm h-64 flex items-center justify-center">
+                <canvas id="diyaCanvas" class="diya-canvas w-full h-full"></canvas>
+            </div>
+            <div class="flex space-x-4 mt-6">
+                <button id="lightDiyaBtn" class="btn-primary">Light the Diya</button>
+                <button id="shareDiyaBtn" class="btn-primary" disabled>Share Diya</button>
+            </div>
+        </section>
+
+        <!-- Rangoli Section -->
+        <section id="rangoli-section" class="bg-black bg-opacity-30 p-6 rounded-2xl shadow-xl flex flex-col items-center">
+            <h2 class="text-3xl font-semibold text-amber-300 mb-4">Create a Rangoli</h2>
+            <div class="w-full max-w-md aspect-square bg-gray-900 rounded-lg shadow-inner overflow-hidden">
+                <canvas id="rangoliCanvas" class="rangoli-canvas w-full h-full"></canvas>
+            </div>
+            <div class="mt-4 w-full max-w-md">
+                <!-- Color Palette -->
+                <div class="color-palette flex justify-center flex-wrap gap-3 mb-4 p-2 bg-black bg-opacity-20 rounded-lg">
+                    <button class="w-8 h-8 rounded-full transition-transform active" style="background-color: #ffffff;"></button>
+                    <button class="w-8 h-8 rounded-full transition-transform" style="background-color: #f87171;"></button>
+                    <button class="w-8 h-8 rounded-full transition-transform" style="background-color: #fb923c;"></button>
+                    <button class="w-8 h-8 rounded-full transition-transform" style="background-color: #facc15;"></button>
+                    <button class="w-8 h-8 rounded-full transition-transform" style="background-color: #4ade80;"></button>
+                    <button class="w-8 h-8 rounded-full transition-transform" style="background-color: #38bdf8;"></button>
+                    <button class="w-8 h-8 rounded-full transition-transform" style="background-color: #a78bfa;"></button>
+                    <button class="w-8 h-8 rounded-full transition-transform" style="background-color: #f472b6;"></button>
+                </div>
+                 <!-- Controls -->
+                <div class="flex items-center justify-between mb-4">
+                     <label for="brushSize" class="text-amber-100">Brush Size:</label>
+                     <input type="range" id="brushSize" min="1" max="20" value="5" class="w-1/2">
+                </div>
+                <div class="flex space-x-4">
+                    <button id="clearRangoliBtn" class="btn-primary w-1/2">Clear</button>
+                    <button id="shareRangoliBtn" class="btn-primary w-1/2">Share Rangoli</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Sharing Modal -->
+    <div id="shareModal" class="modal opacity-0 pointer-events-none">
+        <div class="modal-content transform scale-95 transition-transform duration-300">
+             <h3 class="text-2xl font-bold text-gray-800 mb-4">Share Your Creation!</h3>
+             <img id="sharedImage" src="" alt="Your Diwali Creation" class="w-full h-auto rounded-lg border-4 border-amber-400 mb-4">
+             <p class="text-gray-600 mb-4">Right-click or long-press to save and share this image with your loved ones.</p>
+             <button id="closeModalBtn" class="btn-primary">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Diya Lighting Logic ---
+        const diyaCanvas = document.getElementById('diyaCanvas');
+        const diyaCtx = diyaCanvas.getContext('2d');
+        const lightDiyaBtn = document.getElementById('lightDiyaBtn');
+        const shareDiyaBtn = document.getElementById('shareDiyaBtn');
+
+        let isLit = false;
+        let flameAnimation;
+
+        function resizeDiyaCanvas() {
+            const rect = diyaCanvas.parentElement.getBoundingClientRect();
+            diyaCanvas.width = rect.width;
+            diyaCanvas.height = rect.height;
+            drawDiya();
+        }
+
+        function drawDiya() {
+            diyaCtx.clearRect(0, 0, diyaCanvas.width, diyaCanvas.height);
+            const centerX = diyaCanvas.width / 2;
+            const centerY = diyaCanvas.height / 1.5;
+            const diyaWidth = diyaCanvas.width / 2.5;
+            const diyaHeight = diyaCanvas.height / 5;
+
+            // Diya Body
+            diyaCtx.beginPath();
+            diyaCtx.moveTo(centerX - diyaWidth / 2, centerY);
+            diyaCtx.quadraticCurveTo(centerX, centerY + diyaHeight, centerX + diyaWidth / 2, centerY);
+            diyaCtx.quadraticCurveTo(centerX, centerY - diyaHeight / 2, centerX - diyaWidth / 2, centerY);
+            diyaCtx.fillStyle = '#E59866';
+            diyaCtx.fill();
+            diyaCtx.strokeStyle = '#D35400';
+            diyaCtx.lineWidth = 2;
+            diyaCtx.stroke();
+            
+            // Oil
+            diyaCtx.beginPath();
+            diyaCtx.ellipse(centerX, centerY - diyaHeight / 6, diyaWidth / 2.2, diyaHeight / 4, 0, 0, 2 * Math.PI);
+            diyaCtx.fillStyle = '#FAD7A0';
+            diyaCtx.fill();
+
+            if (isLit) {
+                drawFlame(centerX, centerY - diyaHeight / 2);
+            }
+        }
+        
+        function drawFlame(x, y) {
+            const flickerX = x + (Math.random() - 0.5) * 4;
+            const flickerY = y - (Math.random() * 5);
+            const flameHeight = diyaCanvas.height / 4 + (Math.random() - 0.5) * 10;
+            
+            // Outer glow
+            diyaCtx.beginPath();
+            const glowGradient = diyaCtx.createRadialGradient(flickerX, flickerY, 0, flickerX, flickerY, flameHeight * 0.8);
+            glowGradient.addColorStop(0, 'rgba(255, 165, 0, 0.6)');
+            glowGradient.addColorStop(1, 'rgba(255, 165, 0, 0)');
+            diyaCtx.fillStyle = glowGradient;
+            diyaCtx.arc(flickerX, flickerY, flameHeight * 0.8, 0, 2 * Math.PI);
+            diyaCtx.fill();
+
+            // Flame
+            diyaCtx.beginPath();
+            diyaCtx.moveTo(flickerX, flickerY + flameHeight / 4);
+            diyaCtx.quadraticCurveTo(flickerX + flameHeight / 5, flickerY - flameHeight / 2, flickerX, flickerY - flameHeight);
+            diyaCtx.quadraticCurveTo(flickerX - flameHeight / 5, flickerY - flameHeight / 2, flickerX, flickerY + flameHeight / 4);
+            const gradient = diyaCtx.createLinearGradient(flickerX, flickerY, flickerX, flickerY - flameHeight);
+            gradient.addColorStop(0, '#FFD700'); // Gold
+            gradient.addColorStop(0.5, '#FFA500'); // Orange
+            gradient.addColorStop(1, '#FF4500'); // OrangeRed
+            diyaCtx.fillStyle = gradient;
+            diyaCtx.fill();
+        }
+
+        function animateFlame() {
+            drawDiya();
+            flameAnimation = requestAnimationFrame(animateFlame);
+        }
+
+        lightDiyaBtn.addEventListener('click', () => {
+            isLit = true;
+            if (flameAnimation) cancelAnimationFrame(flameAnimation);
+            animateFlame();
+            lightDiyaBtn.textContent = 'Relight Diya';
+            shareDiyaBtn.disabled = false;
+        });
+
+        // --- Rangoli Drawing Logic ---
+        const rangoliCanvas = document.getElementById('rangoliCanvas');
+        const rangoliCtx = rangoliCanvas.getContext('2d');
+        const colorPalette = document.querySelector('.color-palette');
+        const brushSizeInput = document.getElementById('brushSize');
+        const clearRangoliBtn = document.getElementById('clearRangoliBtn');
+        const shareRangoliBtn = document.getElementById('shareRangoliBtn');
+
+        let isDrawing = false;
+        let currentColor = '#ffffff';
+        let currentBrushSize = 5;
+        const SYMMETRY_POINTS = 8;
+
+        function resizeRangoliCanvas() {
+            const rect = rangoliCanvas.parentElement.getBoundingClientRect();
+            rangoliCanvas.width = rect.width;
+            rangoliCanvas.height = rect.height;
+            rangoliCtx.fillStyle = '#111827'; // bg-gray-900
+            rangoliCtx.fillRect(0,0,rangoliCanvas.width, rangoliCanvas.height);
+        }
+        
+        function getMousePos(canvas, evt) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
+            const clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
+
+            return {
+                x: (clientX - rect.left) * scaleX,
+                y: (clientY - rect.top) * scaleY
+            };
+        }
+
+        function drawSymmetric(x, y) {
+            const centerX = rangoliCanvas.width / 2;
+            const centerY = rangoliCanvas.height / 2;
+            
+            for (let i = 0; i < SYMMETRY_POINTS; i++) {
+                const angle = (i * 2 * Math.PI) / SYMMETRY_POINTS;
+                
+                const dx = x - centerX;
+                const dy = y - centerY;
+                
+                const rotatedX = dx * Math.cos(angle) - dy * Math.sin(angle);
+                const rotatedY = dx * Math.sin(angle) + dy * Math.cos(angle);
+                
+                rangoliCtx.beginPath();
+                rangoliCtx.arc(centerX + rotatedX, centerY + rotatedY, currentBrushSize, 0, 2 * Math.PI);
+                rangoliCtx.fillStyle = currentColor;
+                rangoliCtx.fill();
+                
+                // Mirrored version for more complex patterns
+                 const mirroredRotatedX = -dx * Math.cos(angle) - dy * Math.sin(angle);
+                 rangoliCtx.beginPath();
+                 rangoliCtx.arc(centerX + mirroredRotatedX, centerY + rotatedY, currentBrushSize, 0, 2 * Math.PI);
+                 rangoliCtx.fillStyle = currentColor;
+                 rangoliCtx.fill();
+            }
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            draw(e);
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            rangoliCtx.beginPath(); // Reset the path
+        }
+        
+        function draw(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+            const pos = getMousePos(rangoliCanvas, e);
+            drawSymmetric(pos.x, pos.y);
+        }
+
+        rangoliCanvas.addEventListener('mousedown', startDrawing);
+        rangoliCanvas.addEventListener('mousemove', draw);
+        rangoliCanvas.addEventListener('mouseup', stopDrawing);
+        rangoliCanvas.addEventListener('mouseout', stopDrawing);
+        
+        rangoliCanvas.addEventListener('touchstart', startDrawing);
+        rangoliCanvas.addEventListener('touchmove', draw);
+        rangoliCanvas.addEventListener('touchend', stopDrawing);
+
+        colorPalette.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                currentColor = e.target.style.backgroundColor;
+                document.querySelector('.color-palette .active').classList.remove('active');
+                e.target.classList.add('active');
+            }
+        });
+        
+        brushSizeInput.addEventListener('input', (e) => {
+            currentBrushSize = e.target.value;
+        });
+        
+        clearRangoliBtn.addEventListener('click', () => {
+             rangoliCtx.fillStyle = '#111827';
+             rangoliCtx.fillRect(0, 0, rangoliCanvas.width, rangoliCanvas.height);
+        });
+
+        // --- Sharing & Modal Logic ---
+        const modal = document.getElementById('shareModal');
+        const sharedImage = document.getElementById('sharedImage');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        async function shareCanvas(canvasEl, title) {
+            const dataUrl = canvasEl.toDataURL('image/png');
+            const blob = await (await fetch(dataUrl)).blob();
+            const file = new File([blob], `${title}.png`, { type: 'image/png' });
+
+            // Use Web Share API if available
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        title: `My Virtual Diwali ${title}`,
+                        text: `Happy Diwali! I created this on the Virtual Diwali Celebration page.`,
+                        files: [file]
+                    });
+                } catch (error) {
+                    console.log('Sharing failed', error);
+                    showModal(dataUrl); // Fallback to modal if user cancels
+                }
+            } else {
+                // Fallback to modal
+                showModal(dataUrl);
+            }
+        }
+
+        function showModal(dataUrl) {
+            sharedImage.src = dataUrl;
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.querySelector('.modal-content').classList.remove('scale-95');
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('.modal-content').classList.add('scale-95');
+        }
+
+        shareDiyaBtn.addEventListener('click', () => shareCanvas(diyaCanvas, 'Diya'));
+        shareRangoliBtn.addEventListener('click', () => shareCanvas(rangoliCanvas, 'Rangoli'));
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // --- Initial Setup ---
+        window.addEventListener('load', () => {
+            resizeDiyaCanvas();
+            resizeRangoliCanvas();
+        });
+        window.addEventListener('resize', () => {
+            resizeDiyaCanvas();
+            resizeRangoliCanvas();
+        });
+
+    </script>
+</body>
+</html>

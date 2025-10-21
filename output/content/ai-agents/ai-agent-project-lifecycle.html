@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive AI Agent Project Roles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for the diagram and transitions */
+        .role-node {
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .role-node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .role-node.selected {
+            transform: scale(1.08);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5); /* Blue-500 with opacity */
+            z-index: 10;
+        }
+        .role-node.interacting {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.4); /* Green-500 with opacity */
+        }
+        .details-panel {
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+        }
+        .details-panel.hidden {
+            transform: translateX(100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+    <!-- Main Container -->
+    <div class="min-h-screen flex flex-col items-center justify-center p-4 lg:p-8 relative overflow-hidden">
+        
+        <div class="text-center mb-8 lg:mb-12">
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900">The AI Agent Project Lifecycle</h1>
+            <p class="mt-3 text-base md:text-lg text-gray-600 max-w-3xl mx-auto">An interactive guide to the roles and activities in building production-grade AI. Click any role to learn more.</p>
+        </div>
+
+        <!-- Diagram and Details Panel Wrapper -->
+        <div class="w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
+            
+            <!-- Interactive Diagram -->
+            <div id="diagram-container" class="flex-grow grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                
+                <!-- Phase 1: Conception & Foundation -->
+                <div class="space-y-4 text-center">
+                    <h2 class="text-xl font-bold text-indigo-600">Phase 1: Foundation</h2>
+                    <div data-role="poc" class="role-node bg-white border border-indigo-200 rounded-lg p-4 shadow-sm">
+                        <h3 class="font-semibold text-indigo-800">Develop Proof of Concept</h3>
+                    </div>
+                    <div data-role="data_exploration" class="role-node bg-white border border-indigo-200 rounded-lg p-4 shadow-sm">
+                        <h3 class="font-semibold text-indigo-800">Data Exploration</h3>
+                    </div>
+                    <div data-role="prompt_engineering" class="role-node bg-white border border-indigo-200 rounded-lg p-4 shadow-sm">
+                        <h3 class="font-semibold text-indigo-800">Prompt Engineering</h3>
+                    </div>
+                </div>
+
+                <!-- Phase 2: Core AI/ML Development -->
+                <div class="space-y-4 text-center">
+                    <h2 class="text-xl font-bold text-sky-600">Phase 2: Core AI/ML</h2>
+                    <div data-role="develop_models" class="role-node bg-white border border-sky-200 rounded-lg p-4 shadow-sm">
+                        <h3 class="font-semibold text-sky-800">Develop & Train Models</h3>
+                    </div>
+                    <div data-role="finetuning" class="role-node bg-white border border-sky-200 rounded-lg p-4 shadow-sm">
+                        <h3 class="font-semibold text-sky-800">Finetuning Models</h3>
+                    </div>
+                    <div data-role="embedding" class="role-node bg-white border border-sky-200 rounded-lg p-4 shadow-sm">
+                        <h3 class="font-semibold text-sky-800">Embedding Management</h3>
+                    </div>
+                    <div data-role="evaluating" class="role-node bg-white border border-sky-200 rounded-lg p-4 shadow-sm">
+                        <h3 class="font-semibold text-sky-800">Evaluating Models</h3>
+                    </div>
+                </div>
+
+                <!-- Phase 3: Production & Operations -->
+                <div class="space-y-4 text-center">
+                    <h2 class="text-xl font-bold text-emerald-600">Phase 3: Operations</h2>
+                    <div data-role="build_apps" class="role-node bg-white border border-emerald-200 rounded-lg p-4 shadow-sm">
+                        <h3 class="font-semibold text-emerald-800">Build Production Apps</h3>
+                    </div>
+                     <div data-role="infra" class="role-node bg-white border border-emerald-200 rounded-lg p-4 shadow-sm">
+                        <h3 class="font-semibold text-emerald-800">Set up Infra</h3>
+                    </div>
+                    <div data-role="devops" class="role-node bg-white border border-emerald-200 rounded-lg p-4 shadow-sm">
+                        <h3 class="font-semibold text-emerald-800">DevOps</h3>
+                    </div>
+                    <div data-role="mlops" class="role-node bg-white border border-emerald-200 rounded-lg p-4 shadow-sm">
+                        <h3 class="font-semibold text-emerald-800">MLOps</h3>
+                    </div>
+                    <div data-role="testing" class="role-node bg-white border border-emerald-200 rounded-lg p-4 shadow-sm">
+                        <h3 class="font-semibold text-emerald-800">Testing & QA</h3>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Details Panel -->
+            <div id="details-panel" class="details-panel hidden fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 p-6 flex flex-col transform">
+                <div class="flex-shrink-0 flex items-center justify-between pb-4 border-b border-gray-200">
+                    <h2 id="details-title" class="text-2xl font-bold text-gray-900">Select a Role</h2>
+                    <button id="close-button" class="p-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <div id="details-content" class="flex-grow overflow-y-auto pt-6 space-y-6">
+                    <!-- Content will be injected here by JS -->
+                     <p class="text-gray-500">Click on a role from the diagram to see the details here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const rolesData = {
+            poc: {
+                title: 'Develop Proof of Concept (PoC)',
+                description: "This is an initial, small-scale project to test the core idea and technical feasibility of the AI agent. The goal is to answer: 'Is this idea viable?' For an agent, a PoC might involve a simple script that chains a few API calls to an LLM to perform a single, well-defined task.",
+                skills: ['Rapid Prototyping', 'Python', 'Jupyter', 'LangChain/LlamaIndex', 'LLM APIs', 'Streamlit/Gradio'],
+                interactsWith: ['data_exploration', 'prompt_engineering']
+            },
+            data_exploration: {
+                title: 'Data Exploration',
+                description: "Before any model is trained, this role involves analyzing available data sources to understand their quality, structure, biases, and potential value. For an agent using RAG, this means deeply investigating the knowledge base it will draw from.",
+                skills: ['Data Analysis', 'Statistics', 'Visualization', 'Pandas', 'NumPy', 'Matplotlib', 'SQL'],
+                interactsWith: ['develop_models', 'poc']
+            },
+            prompt_engineering: {
+                title: 'Prompt Engineering',
+                description: "The art and science of designing effective inputs (prompts) to guide an LLM to produce the desired output. It involves crafting the agent's core instructions, persona, tool usage guidelines, and response formats.",
+                skills: ['LLM Behavior', 'Creative Writing', 'Logical Reasoning', 'Structured Formats (JSON)', 'Prompt Testing'],
+                interactsWith: ['develop_models', 'testing', 'build_apps', 'poc']
+            },
+            develop_models: {
+                title: 'Develop & Train Models',
+                description: "This involves building the core machine learning models that power the agent. While many agents leverage pre-trained models, this role might involve creating custom models for tasks like intent recognition, or pre-training a smaller, domain-specific model.",
+                skills: ['Machine Learning', 'Deep Learning', 'PyTorch', 'TensorFlow/Keras', 'Model Architectures'],
+                interactsWith: ['mlops', 'evaluating', 'data_exploration']
+            },
+            finetuning: {
+                title: 'Finetuning Models',
+                description: "Instead of training from scratch, you take a pre-trained foundation model and further train it on a smaller, high-quality, domain-specific dataset. This adapts the model to your specific vocabulary, style, or task.",
+                skills: ['PyTorch/TensorFlow', 'Hugging Face', 'PEFT (LoRA, QLoRA)', 'Data Preparation'],
+                interactsWith: ['mlops', 'evaluating', 'develop_models']
+            },
+            embedding: {
+                title: 'Embedding Management',
+                description: "For agents that rely on RAG, this role is crucial. It involves generating, storing, and retrieving vector embeddings—numerical representations of text—to ensure the agent gets the most relevant context for its queries.",
+                skills: ['Vector Databases (Pinecone, Weaviate)', 'Embedding Models', 'Similarity Metrics', 'Information Retrieval'],
+                interactsWith: ['infra', 'mlops', 'build_apps']
+            },
+            evaluating: {
+                title: 'Evaluating Models',
+                description: "The scientific process of measuring an agent's performance. It involves creating robust evaluation datasets, defining metrics (e.g., context relevance, answer faithfulness), and running automated and human evaluations to benchmark different models and prompts.",
+                skills: ['Statistics', 'Experimental Design', 'Evaluation Frameworks (Ragas, TruLens)', 'LLM-as-a-judge'],
+                interactsWith: ['develop_models', 'finetuning', 'testing', 'prompt_engineering']
+            },
+            build_apps: {
+                title: 'Build Production Apps',
+                description: "A Software Engineering role focused on building the user-facing application that houses the AI agent. This could be a web app, a mobile app, or an API. They are responsible for the backend logic, frontend interface, and integrating AI components.",
+                skills: ['Backend (Python/Node.js)', 'Frontend (React/Vue)', 'Database Management', 'API Design'],
+                interactsWith: ['devops', 'prompt_engineering', 'testing', 'embedding']
+            },
+            infra: {
+                title: 'Set up Infra',
+                description: "Responsible for provisioning and managing the underlying cloud or on-premise infrastructure. This includes setting up virtual machines, container orchestration, networking, and security. They provide the foundational resources for the project.",
+                skills: ['Cloud (AWS, GCP, Azure)', 'Infrastructure as Code (Terraform)', 'Docker', 'Kubernetes'],
+                interactsWith: ['devops', 'mlops', 'embedding']
+            },
+            devops: {
+                title: 'DevOps',
+                description: "Focuses on the automation and streamlining of the software development lifecycle for the application side. They build and maintain the CI/CD pipelines for backend and frontend services, ensuring code can be tested and deployed quickly.",
+                skills: ['Git', 'CI/CD (GitHub Actions, Jenkins)', 'Scripting', 'Docker', 'Kubernetes'],
+                interactsWith: ['build_apps', 'infra', 'testing']
+            },
+            mlops: {
+                title: 'MLOps',
+                description: "The specialized equivalent of DevOps for the machine learning lifecycle. This role automates the processes of training, evaluating, deploying, and monitoring the AI models themselves, including versioning datasets and models.",
+                skills: ['All DevOps tools', 'ML Platforms (MLflow, Vertex AI)', 'Model Serving (BentoML)', 'Monitoring'],
+                interactsWith: ['develop_models', 'finetuning', 'evaluating', 'infra', 'embedding']
+            },
+            testing: {
+                title: 'Testing & QA',
+                description: "Ensures the quality of the entire application. This includes traditional software testing (unit, integration) and unique AI challenges: testing for hallucinations, biases, and prompt injection vulnerabilities.",
+                skills: ['Testing Frameworks (Pytest)', 'Automation (Selenium)', 'Adversarial Testing', 'QA Strategy'],
+                interactsWith: ['build_apps', 'evaluating', 'prompt_engineering', 'devops']
+            }
+        };
+
+        const diagramContainer = document.getElementById('diagram-container');
+        const detailsPanel = document.getElementById('details-panel');
+        const detailsTitle = document.getElementById('details-title');
+        const detailsContent = document.getElementById('details-content');
+        const closeButton = document.getElementById('close-button');
+        const roleNodes = document.querySelectorAll('.role-node');
+
+        function updateDetailsPanel(roleId) {
+            const data = rolesData[roleId];
+            if (!data) return;
+
+            detailsTitle.textContent = data.title;
+            
+            const skillsHtml = data.skills.map(skill => 
+                `<span class="inline-block bg-gray-100 text-gray-700 text-sm font-medium mr-2 mb-2 px-3 py-1 rounded-full">${skill}</span>`
+            ).join('');
+
+            detailsContent.innerHTML = `
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Description</h3>
+                    <p class="text-gray-600 leading-relaxed">${data.description}</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Key Skills & Tools</h3>
+                    <div class="flex flex-wrap">
+                        ${skillsHtml}
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Interacts With</h3>
+                    <p class="text-gray-600">This role frequently collaborates with the teams highlighted in green.</p>
+                </div>
+            `;
+            detailsPanel.classList.remove('hidden');
+        }
+
+        function highlightNodes(selectedRoleId) {
+            const interactingRoles = rolesData[selectedRoleId]?.interactsWith || [];
+            
+            roleNodes.forEach(node => {
+                const roleId = node.dataset.role;
+                node.classList.remove('selected', 'interacting', 'opacity-50');
+
+                if (roleId === selectedRoleId) {
+                    node.classList.add('selected');
+                } else if (interactingRoles.includes(roleId)) {
+                    node.classList.add('interacting');
+                } else {
+                    node.classList.add('opacity-50');
+                }
+            });
+        }
+        
+        function clearHighlights() {
+             roleNodes.forEach(node => {
+                node.classList.remove('selected', 'interacting', 'opacity-50');
+            });
+        }
+
+        diagramContainer.addEventListener('click', (e) => {
+            const roleNode = e.target.closest('.role-node');
+            if (roleNode) {
+                const roleId = roleNode.dataset.role;
+                updateDetailsPanel(roleId);
+                highlightNodes(roleId);
+            }
+        });
+
+        closeButton.addEventListener('click', () => {
+            detailsPanel.classList.add('hidden');
+            clearHighlights();
+        });
+
+    </script>
+</body>
+</html>

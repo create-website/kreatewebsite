@@ -1,0 +1,7 @@
+🚀 How It Works
+
+Loads 9 images initially (batchSize).
+
+When you scroll near the bottom, it automatically loads 9 more.
+
+Works seamlessly even after applying filters or searches.

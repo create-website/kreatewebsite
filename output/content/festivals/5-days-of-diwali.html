@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Five Days of Diwali: An Interactive Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Saffron & Gold -->
+    <!-- Application Structure Plan: The application is designed as a guided, non-linear journey. The core navigation is a 5-day timeline at the top, allowing users to jump to any day. This is more intuitive than scrolling through a long report. Below this, content for the selected day appears. The app is then divided into thematic sections: 'A Prism of Faiths' and 'A Geographic Mosaic'. These use interactive tabs and clickable regions, respectively, to present comparative data in a digestible format. This structure was chosen to break down complex information into manageable, explorable chunks, encouraging user interaction and making the rich, multi-faceted nature of Diwali easier to understand than a linear document. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: The 5-day chronological sequence of Diwali. -> Goal: Provide primary navigation. -> Viz/Presentation: Interactive horizontal timeline with clickable day cards. -> Interaction: On click, the main content area updates with details for that day. -> Justification: More engaging and user-friendly than a table of contents; provides a clear sense of progression. -> Library/Method: HTML/CSS/Tailwind + JS.
+        - Report Info: Comparison of Diwali in Hinduism, Jainism, and Sikhism. -> Goal: Allow easy comparison. -> Viz/Presentation: Tabbed content section. -> Interaction: Clicking a faith tab reveals its specific celebrations and meanings. -> Justification: Tabs are a standard, intuitive UI pattern for comparing distinct but related sets of information. -> Library/Method: HTML/CSS/Tailwind + JS.
+        - Report Info: Regional variations of Diwali across India. -> Goal: Show geographic diversity. -> Viz/Presentation: A simplified, conceptual map using styled HTML divs for regions. -> Interaction: Clicking a region displays its unique traditions. -> Justification: A visual, map-like representation is more engaging for geographic data than a simple table or list. -> Library/Method: HTML/CSS/Tailwind + JS.
+        - Report Info: Key legends and rituals for each day. -> Goal: Inform and detail. -> Viz/Presentation: Content cards with icons and structured text within the main display area. -> Interaction: Content appears/disappears based on day selection. -> Justification: Cards break up text, improving readability and visual organization. -> Library/Method: HTML/CSS/Tailwind + JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8F0;
+            color: #4A2E0D;
+        }
+        .font-lora {
+            font-family: 'Lora', serif;
+        }
+        .bg-primary { background-color: #FFF8F0; }
+        .bg-secondary { background-color: #FFE8CC; }
+        .bg-accent { background-color: #FFD5A3; }
+        .text-title { color: #A15200; }
+        .text-body { color: #6B4F3A; }
+        .border-accent { border-color: #FFC078; }
+        .nav-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 4px solid transparent;
+        }
+        .nav-item.active {
+            border-bottom-color: #E57A00;
+            transform: translateY(-2px);
+            background-color: #FFD5A3;
+        }
+        .tab-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #FFE8CC;
+        }
+        .tab-item.active {
+            background-color: #E57A00;
+            color: #FFFFFF;
+        }
+        .region-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #FFE8CC;
+            border: 2px solid #FFD5A3;
+        }
+        .region-item:hover, .region-item.active {
+            background-color: #FFC078;
+            transform: scale(1.05);
+        }
+        .content-card {
+            display: none;
+        }
+        .content-card.active {
+            display: block;
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .diya-icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle, #FFDE59 20%, #FF914D 50%, transparent 70%);
+            border-radius: 50% 50% 0 0;
+            position: relative;
+        }
+        .diya-icon::before {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 8px;
+            background: #D2691E;
+            border-radius: 0 0 40% 40%;
+        }
+    </style>
+</head>
+<body class="bg-primary">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-title font-lora">The Festival of Lights</h1>
+            <p class="mt-2 text-lg text-body max-w-3xl mx-auto">An interactive exploration of Diwali's five-day spiritual journey, diverse traditions, and profound meanings. Select a day to begin.</p>
+        </header>
+
+        <nav id="day-navigation" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-10">
+        </nav>
+
+        <main id="content-display" class="bg-secondary p-6 sm:p-8 rounded-2xl shadow-lg min-h-[500px]">
+        </main>
+
+        <section id="faiths-section" class="mt-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-title font-lora">A Prism of Faiths</h2>
+                <p class="mt-2 text-lg text-body max-w-3xl mx-auto">While a major Hindu festival, the light of Diwali is shared and celebrated for different reasons across other great faiths of India. This section explains the significance of the festival for each community.</p>
+            </div>
+            <div class="flex justify-center flex-wrap gap-2 sm:gap-4 mb-6" id="faith-tabs">
+            </div>
+            <div id="faith-content-display" class="bg-secondary p-6 sm:p-8 rounded-2xl shadow-lg min-h-[300px]">
+            </div>
+        </section>
+
+        <section id="regions-section" class="mt-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-title font-lora">A Geographic Mosaic</h2>
+                <p class="mt-2 text-lg text-body max-w-3xl mx-auto">Diwali's celebrations are a vibrant tapestry woven with unique regional customs. Explore how the festival is expressed across the Indian subcontinent by selecting a region below.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <div class="md:col-span-3 flex flex-col gap-4" id="region-list">
+                </div>
+                <div class="md:col-span-9 bg-secondary p-6 sm:p-8 rounded-2xl shadow-lg min-h-[300px]" id="region-content-display">
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+
+<script>
+const diwaliData = {
+    days: [
+        {
+            day: 1,
+            name: "Dhanteras",
+            theme: "Prosperity & Well-being",
+            icon: "💰",
+            content: `
+                <h3 class="text-2xl font-bold font-lora text-title mb-2">Day 1: Dhanteras – The Inauguration of Prosperity</h3>
+                <p class="text-body mb-4">The festival begins with Dhanteras, focusing on wealth, health, and auspicious new beginnings. The name combines 'Dhan' (wealth) and 'Teras' (thirteenth day). It's a day for preparation, purification, and inviting divine blessings into the home.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-primary p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 text-title">Mythological Foundations</h4>
+                        <p class="text-body text-sm">Two key legends define this day. The first is the 'Samudra Manthan' (Churning of the Ocean), from which Lord Dhanvantari (god of health) and Goddess Lakshmi (goddess of wealth) emerged. This links physical health with material prosperity. The second tells of a clever wife who saved her husband from a prophesied death by dazzling Yama, the god of death, with glittering gold and lamps.</p>
+                    </div>
+                    <div class="bg-primary p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 text-title">Core Rituals</h4>
+                        <p class="text-body text-sm">Homes are meticulously cleaned and decorated with 'rangoli' (colorful patterns). The main ritual is purchasing new items, especially gold, silver, or steel utensils, symbolizing an investment in future prosperity. In the evening, a 'puja' (worship) is performed for Lakshmi, Ganesha, and Kubera, and thirteen lamps are lit to honor Yama and seek protection from untimely death.</p>
+                    </div>
+                </div>
+            `
+        },
+        {
+            day: 2,
+            name: "Naraka Chaturdashi",
+            theme: "Purging of Evil",
+            icon: "⚔️",
+            content: `
+                <h3 class="text-2xl font-bold font-lora text-title mb-2">Day 2: Naraka Chaturdashi – The Purgation of Evil</h3>
+                <p class="text-body mb-4">Also known as 'Choti Diwali' (Small Diwali), this day celebrates the victory of good over evil. It is dedicated to the vanquishing of demonic forces and the cleansing of spiritual impurities, setting the stage for the main festival.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-primary p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 text-title">The Epic Confrontation</h4>
+                        <p class="text-body text-sm">The central legend is Lord Krishna's victory over the demon-king Narakasura, who had terrorized the heavens and earth. Accompanied by his wife Satyabhama (an incarnation of Narakasura's mother), Krishna defeated the demon, liberating 16,100 captive women. Before dying, Narakasura requested that his death be celebrated with light and color, a wish that was granted.</p>
+                    </div>
+                    <div class="bg-primary p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 text-title">Rituals of Purification</h4>
+                        <p class="text-body text-sm">The day's main ritual is the 'abhyanga snana', a pre-dawn oil bath that symbolizes the cleansing of sins and impurities. Homes are lit with diyas, and firecrackers are burst to celebrate the triumph over evil. In some regions like Bengal, this day is 'Kali Chaudas', focusing on the worship of the fierce goddess Kali, a powerful destroyer of negativity.</p>
+                    </div>
+                </div>
+            `
+        },
+        {
+            day: 3,
+            name: "Lakshmi Puja",
+            theme: "Triumph of Light",
+            icon: "✨",
+            content: `
+                <h3 class="text-2xl font-bold font-lora text-title mb-2">Day 3: Lakshmi Puja – The Luminous Zenith</h3>
+                <p class="text-body mb-4">This is the main day of Diwali, celebrated on the dark new moon night. It is the apex of the festival, a day of immense joy, light, and devotion dedicated to Goddess Lakshmi, who is believed to visit and bless homes with prosperity and fortune.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-primary p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 text-title">Confluence of Narratives</h4>
+                        <p class="text-body text-sm">The central observance is the 'Lakshmi Puja'. However, in North India, this day also commemorates the triumphant return of Lord Rama, Sita, and Lakshmana to Ayodhya after 14 years of exile and defeating Ravana. The citizens lit rows of lamps to welcome them, an event many consider the origin of the festival of lights.</p>
+                    </div>
+                    <div class="bg-primary p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 text-title">Rituals of Light and Community</h4>
+                        <p class="text-body text-sm">Families wear new clothes, and homes glow with rows of 'diyas'. The evening 'puja' venerates the trinity of Ganesha (remover of obstacles), Lakshmi (wealth), and Saraswati (knowledge). After the puja, families share a grand feast, exchange gifts and sweets, and light up the night sky with fireworks, strengthening community and family bonds.</p>
+                    </div>
+                </div>
+            `
+        },
+        {
+            day: 4,
+            name: "Govardhan Puja",
+            theme: "Gratitude & New Beginnings",
+            icon: "⛰️",
+            content: `
+                <h3 class="text-2xl font-bold font-lora text-title mb-2">Day 4: Govardhan Puja – Honoring Nature</h3>
+                <p class="text-body mb-4">The fourth day showcases Diwali's regional diversity. In the North, it's Govardhan Puja, while in the West and South, it's Bali Pratipada. Both traditions focus on divine intervention to curb arrogance and mark a time of renewal.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-primary p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 text-title">Divergent Legends</h4>
+                        <p class="text-body text-sm"><b>Govardhan Puja (North):</b> Celebrates young Krishna lifting the Govardhan Hill to protect his villagers from the wrath of a prideful god Indra, teaching reverence for nature. <br><b>Bali Pratipada (West/South):</b> Commemorates the day Lord Vishnu, in his Vamana (dwarf) avatar, humbled the generous demon-king Bali, who was granted a boon to be honored on earth once a year.</p>
+                    </div>
+                    <div class="bg-primary p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 text-title">Rituals of Gratitude</h4>
+                        <p class="text-body text-sm">The key ritual for Govardhan Puja is the 'Annakut' (mountain of food), where a vast array of vegetarian dishes is offered to Krishna. This day also marks the New Year for many North Indian business communities, who perform 'Chopda Puja' to consecrate new account books for a prosperous year ahead.</p>
+                    </div>
+                </div>
+            `
+        },
+        {
+            day: 5,
+            name: "Bhai Dooj",
+            theme: "Sibling Bonds",
+            icon: "❤️",
+            content: `
+                <h3 class="text-2xl font-bold font-lora text-title mb-2">Day 5: Bhai Dooj – The Celebration of Sibling Bonds</h3>
+                <p class="text-body mb-4">The festival concludes with Bhai Dooj, a day that sanctifies the cherished bond between brothers and sisters. It beautifully frames the festival with the theme of conquering death through familial love, echoing the story from Dhanteras.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-primary p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 text-title">Mythological Origins</h4>
+                        <p class="text-body text-sm">The primary legend is of Yama, the god of death, visiting his sister, the river goddess Yamuna. Delighted by her welcome, he granted her a boon: any brother who receives a 'tilak' (ceremonial mark) from his sister on this day would be granted a long life. An alternate legend tells of Krishna visiting his sister Subhadra after defeating Narakasura.</p>
+                    </div>
+                    <div class="bg-primary p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 text-title">The Tilak Ceremony</h4>
+                        <p class="text-body text-sm">The central ritual is simple yet profound. A sister applies a 'tilak' of vermilion paste and rice on her brother's forehead, praying for his well-being and long life. She performs an 'aarti' (waving a lamp) and offers him sweets. In return, the brother gives his sister a gift, renewing his vow to protect her. The festival has many regional names, like 'Bhai Tika' in Nepal and 'Bhai Phonta' in Bengal.</p>
+                    </div>
+                </div>
+            `
+        }
+    ],
+    faiths: [
+        {
+            name: "Hinduism",
+            content: `
+                <h4 class="font-bold text-lg mb-2 text-title">Hinduism: Victory of Light Over Darkness</h4>
+                <p class="text-body">For Hindus, Diwali is a multifaceted festival celebrating various mythological events. The core theme is the universal victory of light over darkness, good over evil, and knowledge over ignorance. Key events commemorated include Lord Rama's return to Ayodhya, Lord Krishna's victory over Narakasura, and the emergence of Goddess Lakshmi. Observances are joyful and social, involving lighting 'diyas', grand 'pujas', feasting, fireworks, and exchanging gifts.</p>
+            `
+        },
+        {
+            name: "Jainism",
+            content: `
+                <h4 class="font-bold text-lg mb-2 text-title">Jainism: The Light of Mahavira's Nirvana</h4>
+                <p class="text-body">For Jains, Diwali marks the attainment of 'nirvana' (final liberation) by their 24th Tirthankara, Lord Mahavira, in 527 BCE. The lamps lit symbolize the eternal light of Mahavira's divine knowledge, which guides humanity away from the darkness of ignorance. Celebrations are solemn and austere, reflecting the core principle of 'ahimsa' (non-violence). Devotees fast, pray, meditate, and visit temples. Fireworks are strictly avoided to prevent harm to living organisms.</p>
+            `
+        },
+        {
+            name: "Sikhism",
+            content: `
+                <h4 class="font-bold text-lg mb-2 text-title">Sikhism: Bandi Chhor Divas (Day of Liberation)</h4>
+                <p class="text-body">Sikhs celebrate 'Bandi Chhor Divas', which coincides with Diwali. It commemorates the day in 1619 when their sixth Guru, Guru Hargobind, was released from imprisonment. He cleverly secured the freedom of 52 Hindu kings along with him by having them hold onto a special cloak with 52 tassels. His return to Amritsar was celebrated by lighting lamps at the Golden Temple. The day celebrates freedom and human rights, and also solemnly remembers the martyrdom of Bhai Mani Singh.</p>
+            `
+        }
+    ],
+    regions: [
+        {
+            name: "North India",
+            content: `
+                <h4 class="font-bold text-lg mb-2 text-title">North: The Kingdom of Rama</h4>
+                <p class="text-body">In states like Uttar Pradesh and Punjab, celebrations are dominated by the Ramayana. Diwali commemorates the return of Lord Rama, Sita, and Lakshmana to Ayodhya. The lighting of lamps is a direct continuation of the tradition started by Ayodhya's citizens. In the weeks prior, 'Ramlila' performances (dramatic enactments of Rama's life) are common. The grand Lakshmi Puja on Day 3 is the main event.</p>
+            `
+        },
+        {
+            name: "South India",
+            content: `
+                <h4 class="font-bold text-lg mb-2 text-title">South: The Triumph of Krishna</h4>
+                <p class="text-body">In Tamil Nadu, Karnataka, and Andhra Pradesh, the festival is 'Deepavali' and centers on Lord Krishna's victory over Narakasura. The main celebration is often on Naraka Chaturdashi (Day 2). A central ritual is the pre-dawn oil bath ('abhyanga snana') for purification. Homes are decorated with intricate 'kolam' designs, and special foods like 'murukku' are prepared. The first Deepavali for newlyweds ('Thalai Deepavali') is a major event.</p>
+            `
+        },
+        {
+            name: "West India",
+            content: `
+                <h4 class="font-bold text-lg mb-2 text-title">West: A Time for New Beginnings</h4>
+                <p class="text-body">In Gujarat and Maharashtra, Diwali blends Lakshmi worship with New Year celebrations. In Gujarat, the day after Diwali is 'Bestu Varas' (New Year), and 'Chopda Puja' is performed to consecrate new business account books. In Maharashtra, the festival starts early with 'Vasu Baras' (cow worship). Special snacks known as 'Faral' are prepared and shared in both regions.</p>
+            `
+        },
+        {
+            name: "East India",
+            content: `
+                <h4 class="font-bold text-lg mb-2 text-title">East: The Night of the Divine Mother</h4>
+                <p class="text-body">In West Bengal, Odisha, and Assam, Diwali has a strong Shakta (Goddess-worshipping) character. The main focus of the new moon night is the powerful Goddess Kali. In West Bengal, 'Kali Puja' is celebrated with huge, decorated idols of the goddess in 'pandals'. In Odisha, a unique ritual called 'Bada Badua Daka' involves burning jute sticks to call upon the spirits of ancestors for their blessings.</p>
+            `
+        }
+    ]
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    const dayNavContainer = document.getElementById('day-navigation');
+    const contentDisplay = document.getElementById('content-display');
+    
+    const faithTabsContainer = document.getElementById('faith-tabs');
+    const faithContentDisplay = document.getElementById('faith-content-display');
+    
+    const regionListContainer = document.getElementById('region-list');
+    const regionContentDisplay = document.getElementById('region-content-display');
+
+    function initDays() {
+        diwaliData.days.forEach(day => {
+            const navItem = document.createElement('div');
+            navItem.className = 'nav-item bg-secondary p-4 rounded-lg text-center shadow hover:shadow-md';
+            navItem.dataset.day = day.day;
+            navItem.innerHTML = `
+                <div class="text-3xl mb-1">${day.icon}</div>
+                <div class="font-bold text-title">${day.name}</div>
+                <div class="text-sm text-body">${day.theme}</div>
+            `;
+            navItem.addEventListener('click', () => {
+                updateDayContent(day.day);
+            });
+            dayNavContainer.appendChild(navItem);
+        });
+        updateDayContent(3);
+    }
+
+    function updateDayContent(dayNumber) {
+        const dayData = diwaliData.days.find(d => d.day === dayNumber);
+        if (!dayData) return;
+
+        contentDisplay.innerHTML = `<div class="fade-in">${dayData.content}</div>`;
+
+        document.querySelectorAll('#day-navigation .nav-item').forEach(item => {
+            if (parseInt(item.dataset.day) === dayNumber) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
+    
+    function initFaiths() {
+        diwaliData.faiths.forEach((faith, index) => {
+            const tabItem = document.createElement('button');
+            tabItem.className = 'tab-item px-4 py-2 rounded-md font-semibold text-body';
+            tabItem.textContent = faith.name;
+            tabItem.dataset.index = index;
+            tabItem.addEventListener('click', () => {
+                updateFaithContent(index);
+            });
+            faithTabsContainer.appendChild(tabItem);
+        });
+        updateFaithContent(0);
+    }
+
+    function updateFaithContent(index) {
+        const faithData = diwaliData.faiths[index];
+        if (!faithData) return;
+
+        faithContentDisplay.innerHTML = `<div class="fade-in">${faithData.content}</div>`;
+
+        document.querySelectorAll('#faith-tabs .tab-item').forEach(item => {
+            if (parseInt(item.dataset.index) === index) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
+
+    function initRegions() {
+        diwaliData.regions.forEach((region, index) => {
+            const regionItem = document.createElement('div');
+            regionItem.className = 'region-item p-4 rounded-lg text-center font-bold text-title';
+            regionItem.textContent = region.name;
+            regionItem.dataset.index = index;
+            regionItem.addEventListener('click', () => {
+                updateRegionContent(index);
+            });
+            regionListContainer.appendChild(regionItem);
+        });
+        updateRegionContent(0);
+    }
+
+    function updateRegionContent(index) {
+        const regionData = diwaliData.regions[index];
+        if (!regionData) return;
+
+        regionContentDisplay.innerHTML = `<div class="fade-in">${regionData.content}</div>`;
+
+        document.querySelectorAll('#region-list .region-item').forEach(item => {
+            if (parseInt(item.dataset.index) === index) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
+
+    initDays();
+    initFaiths();
+    initRegions();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/B Test Baseline Conversion Rate Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A single-view, task-oriented calculator dashboard. The structure is designed for maximum usability and speed to answer. A user provides two inputs (conversions, visitors), clicks a button, and immediately sees the calculated rate and a visual representation. This direct flow was chosen because the user's goal is singular and functional. The structure includes an introduction, input fields, a results display, and a dynamic chart, logically guiding the user from setup to insight without any navigation or cognitive overhead. -->
+    <!-- Visualization & Content Choices: 
+        1. Report Info: Baseline Conversion Rate. Goal: Inform/Calculate. Viz/Presentation: Numeric inputs, large text display for result. Interaction: User inputs numbers, clicks calculate, result updates. Justification: Most direct method for a calculator. Library: Vanilla JS.
+        2. Report Info: Proportion of Conversions. Goal: Inform/Compare. Viz/Presentation: Donut Chart. Interaction: Chart updates automatically after calculation. Justification: A donut chart provides an immediate, intuitive visual understanding of the part-to-whole relationship between converted and non-converted users, making the calculated percentage more tangible. Library: Chart.js (Canvas).
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .calculator-card {
+            background-color: #FFFFFF;
+            border: 1px solid #F0EAE1;
+        }
+        .form-input {
+            background-color: #FDFBF8;
+            border-color: #DCD6CC;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #C8BBAE;
+            box-shadow: 0 0 0 3px rgba(200, 187, 174, 0.2);
+        }
+        .btn-primary {
+            background-color: #4A55A2;
+            color: #FFFFFF;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #3A4482;
+        }
+        .result-display {
+            color: #4A55A2;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 320px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <main class="w-full max-w-4xl mx-auto">
+            <div class="calculator-card rounded-2xl shadow-lg p-6 md:p-10">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Baseline Conversion Rate Calculator</h1>
+                    <p class="mt-3 text-base text-gray-600 max-w-2xl mx-auto">This tool helps you determine the starting performance of your website or app before running an A/B test. Enter the data for your control group to establish your baseline.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div class="space-y-6">
+                        <div>
+                            <label for="conversions" class="block text-sm font-medium text-gray-700 mb-2">Number of Conversions</label>
+                            <input type="number" id="conversions" name="conversions" placeholder="e.g., 500" class="form-input block w-full rounded-lg border p-3 text-gray-800 shadow-sm focus:ring-0">
+                        </div>
+                        <div>
+                            <label for="visitors" class="block text-sm font-medium text-gray-700 mb-2">Total Visitors or Users</label>
+                            <input type="number" id="visitors" name="visitors" placeholder="e.g., 10000" class="form-input block w-full rounded-lg border p-3 text-gray-800 shadow-sm focus:ring-0">
+                        </div>
+                        <button id="calculateBtn" class="btn-primary w-full font-semibold py-3 px-4 rounded-lg shadow-sm">Calculate Rate</button>
+                        <div id="error-message" class="text-red-600 text-sm text-center h-5"></div>
+                    </div>
+                    
+                    <div class="text-center p-6 rounded-xl bg-gray-50 border border-gray-200">
+                        <h2 class="text-lg font-medium text-gray-600">Baseline Conversion Rate</h2>
+                        <div id="result" class="result-display text-5xl md:text-6xl font-bold my-4">0.00%</div>
+                        <p id="result-summary" class="text-gray-500 text-sm h-10">Enter your data to see the summary.</p>
+                        <div class="chart-container mt-4">
+                            <canvas id="conversionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const conversionsInput = document.getElementById('conversions');
+        const visitorsInput = document.getElementById('visitors');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultDisplay = document.getElementById('result');
+        const resultSummary = document.getElementById('result-summary');
+        const errorMessage = document.getElementById('error-message');
+        const ctx = document.getElementById('conversionChart').getContext('2d');
+
+        let conversionChart;
+
+        const chartColors = {
+            converted: '#4A55A2',
+            notConverted: '#E2E8F0'
+        };
+
+        function createChart(data) {
+            if (conversionChart) {
+                conversionChart.destroy();
+            }
+            conversionChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Converted', 'Not Converted'],
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [chartColors.converted, chartColors.notConverted],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 4,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: '#1F2937',
+                            titleFont: { weight: 'bold' },
+                            bodyFont: { size: 14 },
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += new Intl.NumberFormat().format(context.parsed);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function validateInputs(conversions, visitors) {
+            errorMessage.textContent = '';
+            if (isNaN(conversions) || isNaN(visitors) || conversions < 0 || visitors <= 0) {
+                errorMessage.textContent = 'Please enter valid, positive numbers.';
+                return false;
+            }
+            if (conversions > visitors) {
+                errorMessage.textContent = 'Conversions cannot exceed total visitors.';
+                return false;
+            }
+            return true;
+        }
+
+        function calculateRate() {
+            const conversions = parseInt(conversionsInput.value, 10);
+            const visitors = parseInt(visitorsInput.value, 10);
+            
+            if (!validateInputs(conversions, visitors)) {
+                resultDisplay.textContent = '0.00%';
+                resultSummary.textContent = 'Invalid input provided.';
+                updateChartData([0, 100]);
+                return;
+            }
+
+            const rate = visitors > 0 ? (conversions / visitors) * 100 : 0;
+            resultDisplay.textContent = `${rate.toFixed(2)}%`;
+            resultSummary.textContent = `Out of ${new Intl.NumberFormat().format(visitors)} visitors, ${new Intl.NumberFormat().format(conversions)} converted.`;
+            updateChartData([conversions, visitors - conversions]);
+        }
+
+        function updateChartData(data) {
+            if (conversionChart) {
+                conversionChart.data.datasets[0].data = data;
+                conversionChart.update();
+            }
+        }
+        
+        calculateBtn.addEventListener('click', calculateRate);
+        
+        conversionsInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                visitorsInput.focus();
+            }
+        });
+
+        visitorsInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                calculateRate();
+            }
+        });
+
+        window.onload = () => {
+            createChart([0, 100]);
+        };
+    </script>
+</body>
+</html>

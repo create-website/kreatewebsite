@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Global Garba: An Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:ital,wght@0;400;0;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a linear narrative structure, guiding the user on a journey from Garba's core meaning to its global impact. Sections are: 1. Introduction (Hook with UNESCO status). 2. Core Symbolism (Explaining the 'why'). 3. Regional Styles (Showing diversity at the source). 4. Global Diaspora Models (Visualizing adaptation abroad). 5. The Evolution of Sound (Showing change over time). 6. The Garba Economy (Highlighting modern impact). This structure tells a coherent story, making complex cultural information digestible and visually engaging for a general audience. -->
+    <!-- Visualization & Content Choices: 
+        - Data Point: Core Symbolism -> Goal: Inform -> Viz: Styled HTML cards with Unicode icons -> Justification: More engaging and explanatory for abstract concepts than a chart. Method: HTML/CSS.
+        - Data Point: Regional Style Tempos -> Goal: Compare -> Viz: Bar Chart -> Justification: Provides an immediate visual comparison of the energy levels of different traditional forms. Library: Chart.js (Canvas).
+        - Data Point: Diaspora Models Comparison -> Goal: Compare -> Viz: Horizontal Bar Chart -> Justification: Effectively compares qualitative rankings across multiple categories (commercialization, community focus) for different countries. Library: Chart.js (Canvas).
+        - Data Point: Music Evolution -> Goal: Change -> Viz: Timeline -> Justification: The most intuitive way to represent a chronological progression of musical styles. Method: HTML/CSS.
+        - Data Point: Economic Impact -> Goal: Inform -> Viz: Big Number Callouts -> Justification: High-impact way to present key statistics that grab the user's attention. Method: HTML/CSS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FEFBF6;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Lora', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #F57C00;
+            border: 4px solid #FFF1E0;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="container mx-auto px-4 py-12">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-bold text-[#F57C00] mb-4">The Global Garba</h1>
+            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">From a sacred ritual in Gujarat to a UNESCO-recognized global phenomenon, discover the journey of the world's longest dance festival.</p>
+        </header>
+
+        <section id="symbolism" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#00897B]">The Heart of the Dance: Symbolism in Motion</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center border-t-4 border-[#F9A826]">
+                    <div class="text-5xl mb-4">🪔</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">The Garbha Deep</h3>
+                    <p class="text-gray-600">The central "womb lamp" symbolizes the divine spark of life within the body (the pot), making the dance a celebration of creation itself.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center border-t-4 border-[#F57C00]">
+                    <div class="text-5xl mb-4">🔄</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">The Sacred Circle</h3>
+                    <p class="text-gray-600">The counter-clockwise dance represents the cyclical nature of time—birth, life, death, and rebirth—circling the constant, unchanging divine at the center.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center border-t-4 border-[#00ACC1]">
+                    <div class="text-5xl mb-4">👣</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Dancing Barefoot</h3>
+                    <p class="text-gray-600">This act of reverence shows respect for the sacred earth, creating a direct physical connection to nature's generative and divine power.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="regional-styles" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-4 text-[#00897B]">A Tapestry of Tradition in Gujarat</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">Garba is not one single dance. In its homeland, it's a rich collection of styles, each with a unique tempo and energy reflecting the community it comes from. This chart compares the relative energy levels of four distinct forms.</p>
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <div class="chart-container">
+                    <canvas id="regionalStylesChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="diaspora-models" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-4 text-[#00897B]">The Global Circle: How Garba Adapted Abroad</h2>
+             <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">As Garba traveled with the Gujarati diaspora, it transformed to fit new cultural landscapes. This visualization compares how Garba is primarily expressed in four key countries, showing a clear divergence in focus.</p>
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <div class="chart-container" style="height: 450px; max-height: 500px;">
+                    <canvas id="diasporaModelsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="evolution-music" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#00897B]">The Evolution of the Soundscape</h2>
+            <div class="relative pl-8 border-l-4 border-[#F9A826]">
+                <div class="mb-12 timeline-item">
+                    <h3 class="text-2xl font-bold text-[#F57C00]">Traditional Folk</h3>
+                    <p class="text-gray-600">The original sound was purely devotional, centered on live vocals praising the goddess, with the earthy, powerful rhythms of the <span class="font-semibold">dhol and dholak</span> drums.</p>
+                </div>
+                <div class="mb-12 timeline-item">
+                    <h3 class="text-2xl font-bold text-[#F57C00]">"Disco Dandiya" Fusion</h3>
+                    <p class="text-gray-600">In the late 20th century, <span class="font-semibold">synthesizers and Bollywood beats</span> were introduced, creating a high-energy fusion that prioritized entertainment and faster tempos.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 class="text-2xl font-bold text-[#F57C00]">Contemporary Spectacle</h3>
+                    <p class="text-gray-600">Today's large-scale events are a hybrid, dominated by <span class="font-semibold">live DJs, electronic music, and global pop influences</span>, designed to energize massive crowds for hours.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="economy" class="text-center">
+            <h2 class="text-3xl font-bold mb-10 text-[#00897B]">The Garba Economy</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">What was once a non-commercial ritual has become a major economic engine, boosting tourism and creating a massive seasonal demand for goods and services.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <div class="text-5xl mb-4">👕</div>
+                    <h3 class="text-xl font-bold text-gray-800">Garments & Jewelry</h3>
+                    <p class="text-gray-600">A massive surge in sales of traditional <span class="font-semibold">Chaniya Cholis</span> and oxidized silver jewelry.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <div class="text-5xl mb-4">🎟️</div>
+                    <h3 class="text-xl font-bold text-gray-800">Events & Sponsorship</h3>
+                    <p class="text-gray-600">Large-scale ticketed events with corporate sponsorships generate significant revenue.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                     <div class="text-5xl mb-4">✈️</div>
+                    <h3 class="text-xl font-bold text-gray-800">Tourism & Hospitality</h3>
+                    <p class="text-gray-600">Navratri in Gujarat is a major tourist attraction, boosting local hotels, travel, and food industries.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+<!--
+    <footer class="text-center py-8 mt-12 bg-gray-50 border-t">
+        <p class="text-gray-500">Infographic created based on the analytical report "The Sacred Circle in a Global Sphere."</p>
+    </footer>
+-->
+
+    <script>
+        const processLabels = (labels) => {
+            return labels.map(label => {
+                if (label.length <= 16) {
+                    return label;
+                }
+                const words = label.split(' ');
+                let currentLine = '';
+                const lines = [];
+                words.forEach(word => {
+                    if ((currentLine + word).length > 16) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            });
+        };
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const sharedTooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            }
+        };
+
+        const regionalStylesCtx = document.getElementById('regionalStylesChart').getContext('2d');
+        new Chart(regionalStylesCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Betha Garba (Seated, Meditative)', 'Rabari Garba (Pot-Balancing)', 'Dandiya Raas (Stick Dance)', 'Koli Garba (Fishing Community)'],
+                datasets: [{
+                    label: 'Relative Tempo / Energy Level',
+                    data: [1, 3, 7, 10],
+                    backgroundColor: ['#00ACC1', '#00897B', '#F9A826', '#F57C00'],
+                    borderColor: ['#00838F', '#00695C', '#F57F17', '#E65100'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                ...sharedTooltipOptions,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        title: { display: true, text: 'Energy Level (1=Slow, 10=Very Fast)' }
+                    }
+                },
+                plugins: {
+                    ...sharedTooltipOptions.plugins,
+                    legend: { display: false }
+                }
+            }
+        });
+
+        const diasporaModelsCtx = document.getElementById('diasporaModelsChart').getContext('2d');
+        new Chart(diasporaModelsCtx, {
+            type: 'bar',
+            data: {
+                labels: processLabels(['USA: Community & Competitive Circuit', 'UK: Commercial Artist-Led Concerts', 'Canada: Multicultural Integration', 'Australia: Heritage Preservation Focus']),
+                datasets: [
+                    {
+                        label: 'Commercialization',
+                        data: [4, 5, 2, 2],
+                        backgroundColor: '#F57C00',
+                    },
+                    {
+                        label: 'Community Focus',
+                        data: [3, 2, 5, 4],
+                        backgroundColor: '#00897B',
+                    },
+                     {
+                        label: 'Innovation',
+                        data: [5, 2, 3, 2],
+                        backgroundColor: '#F9A826',
+                    }
+                ]
+            },
+            options: {
+                ...sharedTooltipOptions,
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        stacked: true,
+                        max: 12,
+                        title: { display: true, text: 'Relative Emphasis Score' }
+                    },
+                    y: {
+                        stacked: true
+                    }
+                },
+                plugins: {
+                    ...sharedTooltipOptions.plugins,
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Story of Karwa Chauth: A Visual Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Narrative Structure Plan: The infographic follows a logical narrative flow to tell a complete story. It starts with a bold hook defining the festival, then moves to the 'Why' (core significance). It then explores the foundational legends, followed by a step-by-step visual guide to the day's rituals. The narrative then broadens to compare regional celebrations and concludes with a look at its modern form. This top-down approach makes complex cultural information easily digestible for a general audience. -->
+    <!-- Visualization & Content Choices:
+        - Data: Core Significance -> Goal: Inform -> Viz: Icon Cards -> Justification: Breaks down abstract concepts (love, prayer) into simple, visually supported points. -> Method: HTML/Unicode/Tailwind (No SVG).
+        - Data: Rituals -> Goal: Organize -> Viz: Vertical Timeline -> Justification: Clearly presents a chronological process in an engaging, scroll-friendly format. -> Method: Structured HTML/Tailwind (No SVG/Mermaid).
+        - Data: Regional Variations -> Goal: Compare -> Viz: Bar Chart -> Justification: Provides an immediate visual comparison of how different regions emphasize specific traditions. -> Library: Chart.js/Canvas (No SVG).
+        - Data: Modern Celebration Components -> Goal: Compare (Composition) -> Viz: Donut Chart -> Justification: Effectively shows the proportional importance of various elements in contemporary celebrations. -> Library: Chart.js/Canvas (No SVG).
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFFDF9;
+            color: #073B4C;
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 1.25rem;
+            left: -0.875rem;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 50%;
+            background-color: #FF6B6B;
+            border: 4px solid #FFFDF9;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="max-w-5xl mx-auto p-4 sm:p-8">
+
+        <header class="text-center my-12">
+            <h1 class="text-5xl md:text-7xl font-bold text-[#FF6B6B]">Karwa Chauth</h1>
+            <p class="mt-4 text-xl md:text-2xl font-semibold text-[#073B4C]">A Day of Love, Devotion, and Tradition</p>
+        </header>
+
+        <section class="my-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#118AB2]">The Heart of the Tradition</h2>
+                <p class="mt-2 max-w-3xl mx-auto text-lg">Karwa Chauth is more than just a fast; it's a profound expression of love and commitment, rooted in deep cultural and spiritual beliefs.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-xl text-center transition-transform transform hover:scale-105">
+                    <div class="text-5xl mb-4">💖</div>
+                    <h3 class="text-xl font-bold mb-2">Symbol of Love</h3>
+                    <p>A wife's selfless prayer for her husband's longevity, well-being, and success.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-xl text-center transition-transform transform hover:scale-105">
+                    <div class="text-5xl mb-4">🙏</div>
+                    <h3 class="text-xl font-bold mb-2">Spiritual Discipline</h3>
+                    <p>A day of 'nirjala' fasting (without food or water) to show devotion and seek divine blessings.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-xl text-center transition-transform transform hover:scale-105">
+                    <div class="text-5xl mb-4">🤝</div>
+                    <h3 class="text-xl font-bold mb-2">Community Bonding</h3>
+                    <p>An occasion that strengthens bonds between family members and friends who celebrate together.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#118AB2]">Echoes of Legend</h2>
+                <p class="mt-2 max-w-3xl mx-auto text-lg">The festival draws its inspiration from timeless tales of devotion and marital fidelity.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                 <div class="bg-white p-8 rounded-lg shadow-xl border-l-8 border-[#FFD166]">
+                    <h3 class="text-2xl font-bold mb-3">The Legend of Savitri</h3>
+                    <p>The story of Princess Savitri, who debated with Yama, the God of Death, and cleverly won back her husband Satyavan's life. Her unwavering determination is a symbol of a wife's power to protect her husband.</p>
+                 </div>
+                 <div class="bg-white p-8 rounded-lg shadow-xl border-l-8 border-[#06D6A0]">
+                    <h3 class="text-2xl font-bold mb-3">The Tale of Queen Veeravati</h3>
+                    <p>A queen who was tricked by her loving brothers into breaking her fast early, leading to her husband's illness. She re-observed the fast with full devotion, and through her faith, her husband was restored to health.</p>
+                 </div>
+            </div>
+        </section>
+
+        <section class="my-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#118AB2]">A Day of Devotion: The Rituals</h2>
+                <p class="mt-2 max-w-3xl mx-auto text-lg">From a pre-dawn meal to the rising moon, the day is marked by a series of beautiful and meaningful rituals.</p>
+            </div>
+            <div class="relative">
+                <div class="border-l-4 border-dashed border-[#FFD166] absolute h-full top-0 left-4 md:left-1/2 md:-ml-0.5"></div>
+                <div class="space-y-12">
+                    <div class="relative md:flex md:justify-end">
+                        <div class="md:w-5/12 ml-12 md:ml-0 md:mr-12">
+                            <div class="timeline-item bg-white p-6 rounded-lg shadow-xl">
+                                <h3 class="text-xl font-bold text-[#FF6B6B]">1. Sargi (Pre-Dawn Meal)</h3>
+                                <p class="mt-2">Before sunrise, women eat a meal prepared by their mother-in-law, providing sustenance for the day's fast.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative md:flex">
+                        <div class="md:w-5/12 md:ml-auto md:pl-12 ml-12">
+                             <div class="timeline-item bg-white p-6 rounded-lg shadow-xl">
+                                <h3 class="text-xl font-bold text-[#FF6B6B]">2. The Fast Begins</h3>
+                                <p class="mt-2">A strict fast without food or water is observed from sunrise, channeling thoughts towards prayer and devotion.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative md:flex md:justify-end">
+                        <div class="md:w-5/12 ml-12 md:ml-0 md:mr-12">
+                            <div class="timeline-item bg-white p-6 rounded-lg shadow-xl">
+                                <h3 class="text-xl font-bold text-[#FF6B6B]">3. Evening Puja (Katha)</h3>
+                                <p class="mt-2">Women gather to worship, narrate the festival's legends, and sing traditional songs in a community ceremony.</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="relative md:flex">
+                        <div class="md:w-5/12 md:ml-auto md:pl-12 ml-12">
+                             <div class="timeline-item bg-white p-6 rounded-lg shadow-xl">
+                                <h3 class="text-xl font-bold text-[#FF6B6B]">4. Sighting the Moon</h3>
+                                <p class="mt-2">After a long wait, the moon is sighted through a sieve, followed by a glimpse of the husband's face.</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="relative md:flex md:justify-end">
+                        <div class="md:w-5/12 ml-12 md:ml-0 md:mr-12">
+                            <div class="timeline-item bg-white p-6 rounded-lg shadow-xl">
+                                <h3 class="text-xl font-bold text-[#FF6B6B]">5. Breaking the Fast</h3>
+                                <p class="mt-2">The husband offers his wife her first sip of water and bite of food, concluding the day's observance.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#118AB2]">A Tapestry of Celebrations</h2>
+                <p class="mt-2 max-w-3xl mx-auto text-lg">While the essence is the same, Karwa Chauth is celebrated with unique regional flavors across India. The chart shows the varying emphasis on key traditions.</p>
+            </div>
+            <div class="bg-white p-4 sm:p-8 rounded-lg shadow-xl">
+                <div class="chart-container">
+                    <canvas id="regionalChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+         <section class="my-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#118AB2]">The Modern Karwa Chauth</h2>
+                <p class="mt-2 max-w-3xl mx-auto text-lg">Today, the festival blends timeless tradition with contemporary expressions of love, partnership, and celebration.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
+                <div class="md:col-span-3 bg-white p-4 sm:p-8 rounded-lg shadow-xl">
+                    <div class="chart-container" style="height: 300px; max-height: 350px;">
+                        <canvas id="modernCelebrationChart"></canvas>
+                    </div>
+                </div>
+                <div class="md:col-span-2 text-left space-y-4">
+                    <p>While the core ritual of fasting remains central, modern celebrations also emphasize:</p>
+                    <ul class="list-disc list-inside space-y-2 font-semibold">
+                        <li class="text-[#FF6B6B]">Shared Experience: Many couples now fast together as a symbol of mutual respect and partnership.</li>
+                        <li class="text-[#118AB2]">Social Gatherings: The day has become a major social event with themed parties and get-togethers.</li>
+                        <li class="text-[#FFD166]">Gifting & Pampering: It's a time for festive shopping, dressing up, and exchanging gifts.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const wrapLabel = (label) => {
+        const maxLength = 16;
+        if (typeof label !== 'string' || label.length <= maxLength) {
+            return label;
+        }
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + ' ' + word).trim().length > maxLength) {
+                lines.push(currentLine.trim());
+                currentLine = word;
+            } else {
+                currentLine = (currentLine + ' ' + word).trim();
+            }
+        });
+        if (currentLine) {
+            lines.push(currentLine.trim());
+        }
+        return lines;
+    };
+
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        return Array.isArray(label) ? label.join(' ') : label;
+    };
+    
+    const sharedTooltipOptions = {
+        callbacks: {
+            title: tooltipTitleCallback
+        }
+    };
+
+    const regionalChartCtx = document.getElementById('regionalChart').getContext('2d');
+    const regionalChartLabels = [
+        'Grandeur of Sargi', 
+        'Community Puja Gathering', 
+        'Focus on Traditional Attire', 
+        'Elaborate Karwa (Pot) Art'
+    ].map(wrapLabel);
+    new Chart(regionalChartCtx, {
+        type: 'bar',
+        data: {
+            labels: regionalChartLabels,
+            datasets: [
+                {
+                    label: 'Punjab',
+                    data: [9, 8, 7, 6],
+                    backgroundColor: '#FF6B6B',
+                },
+                {
+                    label: 'Rajasthan',
+                    data: [6, 7, 9, 8],
+                    backgroundColor: '#FFD166',
+                },
+                {
+                    label: 'Uttar Pradesh',
+                    data: [7, 9, 6, 9],
+                    backgroundColor: '#06D6A0',
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                       font: {
+                           size: 12
+                       }
+                    }
+                },
+                 x: {
+                    ticks: {
+                       font: {
+                           size: 12
+                       }
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Regional Tradition Emphasis (Score out of 10)',
+                    font: { size: 16, family: 'Poppins' },
+                    color: '#073B4C',
+                    padding: { bottom: 20 }
+                },
+                legend: {
+                    position: 'top',
+                },
+                tooltip: sharedTooltipOptions
+            }
+        }
+    });
+
+    const modernChartCtx = document.getElementById('modernCelebrationChart').getContext('2d');
+    new Chart(modernChartCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Core Fasting Ritual', 'Social Gatherings', 'Gifting & Festivities', 'Shared Partnership'],
+            datasets: [{
+                label: 'Modern Celebration Focus',
+                data: [45, 25, 20, 10],
+                backgroundColor: ['#FF6B6B', '#FFD166', '#06D6A0', '#118AB2'],
+                borderColor: '#FFFDF9',
+                borderWidth: 4,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '60%',
+            plugins: {
+                 title: {
+                    display: true,
+                    text: 'Elements of a Modern Celebration',
+                    font: { size: 16, family: 'Poppins' },
+                    color: '#073B4C',
+                    padding: { bottom: 20 }
+                },
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 15,
+                        font: {
+                            size: 12,
+                            family: 'Poppins'
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += context.parsed + '%';
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+
+</body>
+</html>

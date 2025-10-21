@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The AI Agent Decision Framework</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: The application is designed as an interactive decision-making tool, departing from the linear structure of the source report. It starts with a hero section defining the purpose, followed by a sticky navigation bar for easy access to all content. The core of the app is the 'Interactive Framework,' which uses a radar chart to visualize task suitability. This is followed by a 'Use Case Explorer' with tabs to make abstract concepts concrete. A dedicated 'Risks & Contraindications' section uses a card layout for clarity, followed by a 'Maturity Model' visualizer to provide a strategic roadmap. Finally, a 'Deployment Checklist' offers actionable steps. This thematic, tool-oriented structure was chosen to transform the passive report into an active guide, allowing users to directly apply the report's concepts to their own scenarios and navigate to the information most relevant to them. -->
+    <!-- Visualization & Content Choices: 1. Decision Framework: The 4 criteria (Complexity, Duration, etc.) are visualized using a Chart.js radar chart to compare 'Ideal', 'Potential', and 'Poor Fit' profiles. Interaction: Buttons toggle profiles, updating a description panel. Justification: A radar chart effectively shows the multi-dimensional 'shape' of a suitable task. 2. Use Cases: Presented in a tabbed interface (HTML/JS) for categorized exploration. Interaction: Click tabs to switch content. Justification: Standard, clean UI for segmenting examples. 3. Risks: A grid of cards (HTML/Tailwind) with Unicode icons. Interaction: Clicking a card could show details. Justification: Breaks down critical warnings into digestible chunks. 4. Maturity Model: A horizontal process diagram built with styled HTML/CSS. Interaction: Clicking a stage highlights it and shows descriptive text. Justification: More intuitive for showing a sequence than a list. All interactions are handled with vanilla JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F6F1;
+            color: #334155;
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #0F766E;
+            border-bottom-color: #0F766E;
+        }
+        .active-tab {
+            background-color: #0F766E !important;
+            color: #ffffff !important;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .stage {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .stage.active {
+            transform: translateY(-5px);
+            background-color: #0D9488;
+            color: white;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .stage.active .stage-number {
+             background-color: white;
+             color: #0D9488;
+        }
+        .risk-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .risk-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-slate-800">AI Agent Decision Framework</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#framework" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Framework</a>
+                        <a href="#use-cases" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Use Cases</a>
+                        <a href="#risks" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Risks</a>
+                        <a href="#maturity" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Maturity Model</a>
+                        <a href="#checklist" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Checklist</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-slate-500 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+             <div class="md:hidden hidden" id="mobile-menu">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#framework" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600">Framework</a>
+                    <a href="#use-cases" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600">Use Cases</a>
+                    <a href="#risks" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600">Risks</a>
+                    <a href="#maturity" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600">Maturity Model</a>
+                    <a href="#checklist" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600">Checklist</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="hero" class="text-center mb-16">
+            <h2 class="text-3xl md:text-5xl font-bold text-slate-900 mb-4">The Agentic Enterprise</h2>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-slate-600">A strategic framework for deploying autonomous AI. This tool helps you move from rigid process automation to dynamic, outcome-oriented orchestration by determining which tasks are right for AI agents.</p>
+        </section>
+
+        <section id="framework" class="mb-16 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-slate-900 mb-2">Interactive Decision Framework</h3>
+                <p class="max-w-2xl mx-auto text-slate-600">When is a task suitable for an AI agent? Use this framework to evaluate tasks across four key dimensions. Select a profile below to see how different types of tasks map onto the framework and understand their core characteristics.</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="chart-container">
+                        <canvas id="agentRadarChart"></canvas>
+                    </div>
+                    <div>
+                        <div class="flex justify-center space-x-2 mb-6">
+                            <button data-profile="ideal" class="profile-btn bg-teal-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md hover:bg-teal-700 transition">Ideal Fit</button>
+                            <button data-profile="potential" class="profile-btn bg-slate-200 text-slate-700 px-4 py-2 rounded-full text-sm font-semibold hover:bg-slate-300 transition">Potential Fit</button>
+                            <button data-profile="poor" class="profile-btn bg-slate-200 text-slate-700 px-4 py-2 rounded-full text-sm font-semibold hover:bg-slate-300 transition">Poor Fit</button>
+                        </div>
+                        <div id="profile-description" class="p-6 bg-slate-50 rounded-lg border border-slate-200 min-h-[200px]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="use-cases" class="mb-16 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-slate-900 mb-2">Use Case Explorer</h3>
+                <p class="max-w-2xl mx-auto text-slate-600">Explore concrete examples of tasks that are ideal, potential, or poor fits for AI agent automation. Understanding these distinctions is key to successful implementation and avoiding costly misapplications.</p>
+            </div>
+
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="flex border-b border-slate-200 mb-6 justify-center">
+                    <button data-tab="ideal-cases" class="use-case-tab flex-1 md:flex-none text-slate-500 py-3 px-6 block hover:text-teal-600 focus:outline-none font-medium border-b-2 border-transparent">Ideal Fit</button>
+                    <button data-tab="potential-cases" class="use-case-tab flex-1 md:flex-none text-slate-500 py-3 px-6 block hover:text-teal-600 focus:outline-none font-medium border-b-2 border-transparent">Potential Fit</button>
+                    <button data-tab="poor-cases" class="use-case-tab flex-1 md:flex-none text-slate-500 py-3 px-6 block hover:text-teal-600 focus:outline-none font-medium border-b-2 border-transparent">Poor Fit</button>
+                </div>
+                <div id="use-case-content" class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                </div>
+            </div>
+        </section>
+
+        <section id="risks" class="mb-16 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-slate-900 mb-2">Risks & Contraindications</h3>
+                <p class="max-w-2xl mx-auto text-slate-600">Autonomy introduces risk. AI agents should not be used in every situation. Review these critical factors where traditional automation or human oversight remains the superior choice for safety, ethical, and practical reasons.</p>
+            </div>
+            <div id="risks-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+        <section id="maturity" class="mb-16 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-slate-900 mb-2">Adoption Maturity Model</h3>
+                <p class="max-w-2xl mx-auto text-slate-600">Implementing AI agents is a journey, not a single step. This model outlines the four key stages of organizational maturity, from automating simple tasks to orchestrating entire business ecosystems. Click each stage to learn more.</p>
+            </div>
+            <div class="w-full">
+                <div class="relative">
+                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-slate-300 -translate-y-1/2"></div>
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 relative">
+                        <div id="stage-1" class="stage w-full md:w-1/4 p-4 bg-white rounded-lg shadow-md border text-center">
+                            <div class="stage-number w-10 h-10 mx-auto mb-3 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-lg transition-colors">1</div>
+                            <h4 class="font-semibold text-slate-800">Task Automation</h4>
+                        </div>
+                        <div id="stage-2" class="stage w-full md:w-1/4 p-4 bg-white rounded-lg shadow-md border text-center">
+                            <div class="stage-number w-10 h-10 mx-auto mb-3 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-lg transition-colors">2</div>
+                            <h4 class="font-semibold text-slate-800">Workflow Orchestration</h4>
+                        </div>
+                        <div id="stage-3" class="stage w-full md:w-1/4 p-4 bg-white rounded-lg shadow-md border text-center">
+                            <div class="stage-number w-10 h-10 mx-auto mb-3 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-lg transition-colors">3</div>
+                            <h4 class="font-semibold text-slate-800">Process Re-engineering</h4>
+                        </div>
+                        <div id="stage-4" class="stage w-full md:w-1/4 p-4 bg-white rounded-lg shadow-md border text-center">
+                            <div class="stage-number w-10 h-10 mx-auto mb-3 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-lg transition-colors">4</div>
+                            <h4 class="font-semibold text-slate-800">Ecosystem Orchestration</h4>
+                        </div>
+                    </div>
+                </div>
+                <div id="maturity-description" class="mt-8 p-6 bg-white rounded-xl shadow-lg border border-slate-200 min-h-[150px]">
+                </div>
+            </div>
+        </section>
+
+        <section id="checklist" class="scroll-mt-20">
+             <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-slate-900 mb-2">Deployment Checklist</h3>
+                <p class="max-w-2xl mx-auto text-slate-600">Before deploying an AI agent, ensure you have addressed these strategic, technical, and ethical prerequisites. This checklist serves as a final guardrail to maximize the probability of success and minimize unintended consequences.</p>
+            </div>
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8">
+                <ul id="checklist-items" class="space-y-4">
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white mt-16 border-t">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-slate-500">
+            <p>&copy; 2025 The Agentic Enterprise Initiative. An interactive summary based on the report "The Agentic Enterprise: A Strategic Framework for Deploying Autonomous AI".</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const data = {
+                profiles: {
+                    ideal: {
+                        title: "Ideal Fit Profile",
+                        description: "Tasks ideal for AI agents are complex enough to provide significant value but are well-defined. They involve multiple steps and predictable data sources, operating in a moderately dynamic environment where autonomous decision-making within clear boundaries is beneficial.",
+                        values: [7, 6, 3, 5]
+                    },
+                    potential: {
+                        title: "Potential Fit Profile",
+                        description: "These tasks show promise but may require significant setup or human oversight. They might involve higher ambiguity, requiring the agent to perform more sophisticated reasoning, or operate in more dynamic environments. Careful consideration of guardrails is essential.",
+                        values: [8, 8, 7, 8]
+                    },
+                    poor: {
+                        title: "Poor Fit Profile",
+                        description: "Tasks that are a poor fit are either too simple (offering low ROI) or too critical and unpredictable. They often involve high ambiguity, high-stakes decisions, or require nuanced human interaction and ethical judgment that cannot be delegated.",
+                        values: [2, 2, 8, 9]
+                    }
+                },
+                useCases: {
+                    'ideal-cases': {
+                        title: "Ideal Fit Use Cases",
+                        cases: [
+                            { name: "Autonomous Market Research", desc: "Agent is tasked to research a competitor, gathering public data, summarizing findings, and compiling a report." },
+                            { name: "Complex Customer Support Triage", desc: "Agent analyzes incoming support tickets, categorizes them by urgency and topic, and routes them to the correct human agent with summarized context." },
+                            { name: "IT Resource Provisioning", desc: "Agent receives a request for a new development environment, provisions the necessary cloud resources, installs software, and notifies the user upon completion." }
+                        ]
+                    },
+                    'potential-cases': {
+                        title: "Potential Fit Use Cases",
+                        cases: [
+                            { name: "Proactive Sales Outreach", desc: "Agent monitors market signals and identifies potential leads, then drafts and sends initial outreach emails, scheduling meetings if interest is shown." },
+                            { name: "Dynamic Supply Chain Adjustment", desc: "Agent monitors weather and logistics data to predict shipping delays and automatically re-routes shipments to minimize disruption." },
+                            { name: "Personalized Content Curation", desc: "Agent learns a user's preferences and scours the web to build a personalized daily news digest or research briefing." }
+                        ]
+                    },
+                    'poor-cases': {
+                        title: "Poor Fit Use Cases",
+                        cases: [
+                            { name: "Final Medical Diagnosis", desc: "Making a final, unsupervised medical diagnosis where a mistake could have severe health consequences." },
+                            { name: "Employee Performance Reviews", desc: "Conducting sensitive, nuanced performance reviews that require empathy, subjective judgment, and direct human interaction." },
+                            { name: "Strategic Company Acquisition Decisions", desc: "Making the final call on a multi-billion dollar acquisition, a decision with immense strategic and financial consequence." }
+                        ]
+                    }
+                },
+                risks: [
+                    { icon: '⚖️', title: 'High-Stakes / Low Fault Tolerance', desc: 'Tasks where errors have severe financial, physical, or reputational consequences. Human judgment is irreplaceable.' },
+                    { icon: '🤔', title: 'Ethical Ambiguity', desc: 'Situations that require nuanced ethical reasoning, cultural sensitivity, or balancing conflicting values.' },
+                    { icon: '🚫', title: 'Unclear Objectives & Metrics', desc: 'Agents need clear, measurable goals. If you cannot define success, an agent cannot achieve it.' },
+                    { icon: '🤝', title: 'Requires Deep Human Connection', desc: 'Tasks centered on empathy, negotiation, or building trust, such as therapy or high-level sales.' },
+                    { icon: '📉', title: 'Low ROI / Simple Tasks', desc: 'Simple, single-step tasks that are easily handled by traditional automation without the overhead of an LLM.' },
+                    { icon: '🔒', title: 'Extreme Security & Privacy Needs', desc: 'Handling highly sensitive data where the risk of leaks or misuse by an autonomous agent is unacceptable.' }
+                ],
+                maturity: {
+                    'stage-1': {
+                        title: "Stage 1: Task Automation",
+                        desc: "The starting point. Agents are deployed to handle discrete, well-defined tasks with limited scope, such as summarizing a document or categorizing emails. This stage focuses on achieving quick wins and building organizational confidence in the technology with low-risk applications."
+                    },
+                    'stage-2': {
+                        title: "Stage 2: Workflow Orchestration",
+                        desc: "Agents begin to manage multi-step processes that may involve multiple systems or tools. For example, an agent might handle the entire workflow of onboarding a new customer, from initial data entry to scheduling a welcome call. This requires more sophisticated planning and tool integration."
+                    },
+                    'stage-3': {
+                        title: "Stage 3: Process Re-engineering",
+                        desc: "Organizations move from automating existing processes to fundamentally rethinking them around agent capabilities. Instead of just making a workflow faster, the agent's ability to reason and act autonomously allows for entirely new, more efficient processes to be designed and implemented."
+                    },
+                    'stage-4': {
+                        title: "Stage 4: Ecosystem Orchestration",
+                        desc: "The most advanced stage. A network of specialized agents collaborates to manage complex, dynamic business functions, potentially interacting with external agents from partners or customers. This represents a shift to a truly 'agentic enterprise' where autonomous systems drive significant strategic value."
+                    }
+                },
+                checklist: [
+                    { item: 'Objective Clarity', desc: 'Is the business objective for the agent specific, measurable, and unambiguous?' },
+                    { item: 'Success Metrics', desc: 'Are there clear, quantifiable KPIs to evaluate the agent’s performance?' },
+                    { item: 'Bounded Authority', desc: 'Are the agent’s permissions and scope of action strictly limited to what is necessary?' },
+                    { item: 'Data Readiness', desc: 'Is the data required by the agent accessible, clean, and reliable?' },
+                    { item: 'Human-in-the-Loop', desc: 'Is there a clear process for human oversight, intervention, and final approval for critical actions?' },
+                    { item: 'Ethical Review', desc: 'Has the task been reviewed for potential ethical implications, bias, or unintended social consequences?' },
+                    { item: 'Security & Containment', desc: 'Are robust security protocols in place to prevent misuse and contain the agent if it behaves unexpectedly?' },
+                    { item: 'Cost-Benefit Analysis', desc: 'Does the projected ROI justify the complexity and cost of developing, deploying, and maintaining an AI agent over simpler automation?' }
+                ]
+            };
+
+            const ctx = document.getElementById('agentRadarChart').getContext('2d');
+            const radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Complexity', 'Duration', 'Ambiguity', 'Dynamism'],
+                    datasets: []
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 14,
+                                },
+                                color: '#334155'
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 10,
+                            ticks: {
+                                stepSize: 2,
+                                backdropColor: 'rgba(255, 255, 255, 0.75)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                             callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.r !== null) {
+                                        label += context.parsed.r;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const profileDescription = document.getElementById('profile-description');
+            const profileButtons = document.querySelectorAll('.profile-btn');
+
+            function updateChart(profile) {
+                const profileData = data.profiles[profile];
+                radarChart.data.datasets = [{
+                    label: profileData.title,
+                    data: profileData.values,
+                    backgroundColor: 'rgba(13, 148, 136, 0.2)',
+                    borderColor: 'rgba(13, 148, 136, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(13, 148, 136, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(13, 148, 136, 1)'
+                }];
+                radarChart.update();
+                
+                profileDescription.innerHTML = `
+                    <h4 class="font-bold text-lg mb-2 text-slate-800">${profileData.title}</h4>
+                    <p class="text-slate-600">${profileData.description}</p>
+                `;
+            }
+
+            profileButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    profileButtons.forEach(btn => {
+                        btn.classList.remove('bg-teal-600', 'text-white');
+                        btn.classList.add('bg-slate-200', 'text-slate-700');
+                    });
+                    button.classList.add('bg-teal-600', 'text-white');
+                    button.classList.remove('bg-slate-200', 'text-slate-700');
+                    updateChart(button.dataset.profile);
+                });
+            });
+
+            updateChart('ideal');
+
+            const useCaseTabs = document.querySelectorAll('.use-case-tab');
+            const useCaseContent = document.getElementById('use-case-content');
+
+            function updateUseCases(tab) {
+                const useCaseData = data.useCases[tab];
+                let content = `<h4 class="text-xl font-bold text-slate-800 mb-4">${useCaseData.title}</h4><div class="space-y-4">`;
+                useCaseData.cases.forEach(c => {
+                    content += `
+                        <div class="border-l-4 border-teal-500 pl-4">
+                            <h5 class="font-semibold text-slate-700">${c.name}</h5>
+                            <p class="text-slate-600">${c.desc}</p>
+                        </div>
+                    `;
+                });
+                content += `</div>`;
+                useCaseContent.innerHTML = content;
+            }
+
+            useCaseTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    useCaseTabs.forEach(t => {
+                        t.classList.remove('text-teal-600', 'border-teal-600');
+                        t.classList.add('text-slate-500', 'border-transparent');
+                    });
+                    tab.classList.add('text-teal-600', 'border-teal-600');
+                    tab.classList.remove('text-slate-500', 'border-transparent');
+                    updateUseCases(tab.dataset.tab);
+                });
+            });
+
+            updateUseCases('ideal-cases');
+            document.querySelector('.use-case-tab[data-tab="ideal-cases"]').classList.add('text-teal-600', 'border-teal-600');
+            document.querySelector('.use-case-tab[data-tab="ideal-cases"]').classList.remove('text-slate-500', 'border-transparent');
+
+
+            const risksGrid = document.getElementById('risks-grid');
+            risksGrid.innerHTML = data.risks.map(risk => `
+                <div class="risk-card bg-white rounded-xl shadow-md p-6 border border-slate-200">
+                    <div class="text-3xl mb-3">${risk.icon}</div>
+                    <h4 class="font-bold text-lg text-slate-800 mb-2">${risk.title}</h4>
+                    <p class="text-slate-600">${risk.desc}</p>
+                </div>
+            `).join('');
+
+            const stages = document.querySelectorAll('.stage');
+            const maturityDescription = document.getElementById('maturity-description');
+
+            function updateMaturity(stageId) {
+                const stageData = data.maturity[stageId];
+                maturityDescription.innerHTML = `
+                    <h4 class="font-bold text-xl mb-2 text-slate-800">${stageData.title}</h4>
+                    <p class="text-slate-600">${stageData.desc}</p>
+                `;
+            }
+
+            stages.forEach(stage => {
+                stage.addEventListener('click', () => {
+                    stages.forEach(s => s.classList.remove('active'));
+                    stage.classList.add('active');
+                    updateMaturity(stage.id);
+                });
+            });
+            
+            document.getElementById('stage-1').classList.add('active');
+            updateMaturity('stage-1');
+
+
+            const checklistItems = document.getElementById('checklist-items');
+            checklistItems.innerHTML = data.checklist.map(item => `
+                <li class="flex items-start">
+                    <span class="text-teal-500 mr-4 mt-1">✔</span>
+                    <div>
+                        <h5 class="font-semibold text-slate-800">${item.item}</h5>
+                        <p class="text-slate-600">${item.desc}</p>
+                    </div>
+                </li>
+            `).join('');
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: '-20% 0px -80% 0px' });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    if (mobileMenu.classList.contains('hidden') === false) {
+                       mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
