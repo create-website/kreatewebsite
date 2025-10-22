@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP on Azure: Building Agentic AI with Microsoft’s MCP Support</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .code-block {
+            background-color: #1a202c; /* gray-900 */
+            color: #e2e8f0; /* gray-300 */
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            font-family: 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+        .code-block .token.comment { color: #a0aec0; } /* gray-500 */
+        .code-block .token.keyword { color: #f6ad55; } /* orange-400 */
+        .code-block .token.string { color: #68d391; } /* green-400 */
+        .code-block .token.function { color: #63b3ed; } /* blue-400 */
+        .code-block .token.punctuation { color: #cbd5e0; } /* gray-400 */
+        .code-block .token.class-name { color: #f6e05e; } /* yellow-400 */
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">MCP on Azure</h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Building Enterprise-Grade Agentic AI with Microsoft’s Cloud</p>
+        </header>
+
+        <main class="max-w-4xl mx-auto">
+            <!-- Introduction Section -->
+            <section class="mb-12">
+                <p class="text-lg leading-relaxed">
+                    As enterprises adopt agentic AI, the underlying cloud platform plays a critical role. Microsoft Azure, with its rich ecosystem of AI services, serverless computing, and developer tools, is a natural fit for deploying Model Context Protocol (MCP) servers. Microsoft's investment in frameworks like Semantic Kernel and its robust cloud infrastructure provides a powerful toolkit for building and scaling agentic applications.
+                </p>
+            </section>
+
+            <!-- Integrating with the Azure Ecosystem -->
+            <section id="azure-integration" class="mb-16 bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Integrating with the Azure Ecosystem</h2>
+                <p class="text-lg leading-relaxed mb-6">The power of MCP on Azure comes from its seamless integration with other Azure services. This creates a cohesive environment for development, deployment, and management.</p>
+                
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800">Azure Functions for Serverless MCP</h3>
+                        <p class="text-gray-700">Azure Functions are a perfect match for hosting MCP tool endpoints. Their serverless, event-driven nature means you only pay for compute when a tool is called, and they scale automatically to handle fluctuating demand from agents.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800">Azure AI and Semantic Kernel</h3>
+                        <p class="text-gray-700">Agents built with Microsoft's <a href="https://learn.microsoft.com/en-us/semantic-kernel/overview/" class="text-indigo-600 hover:underline">Semantic Kernel</a> are designed to be extensible. MCP provides a standardized way for a Semantic Kernel-based agent to discover and consume external tools hosted on Azure, moving beyond simple plugins to a dynamic, service-oriented architecture.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Real-World Example -->
+            <section id="real-world-example" class="mb-16">
+                 <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Example: A Serverless MCP Tool on Azure</h2>
+                 <p class="text-center text-lg mb-6 max-w-2xl mx-auto">Here’s a practical example in Python, inspired by a post from Imaginarium Dev, showing how to create a simple `GetOrderStatus` tool hosted on an Azure Function.</p>
+                
+                <!-- Step 1 -->
+                <div class="mb-10">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3"><span class="text-indigo-600">Part 1:</span> The Azure Function MCP Endpoint</h3>
+                    <p class="mb-4">This Python code defines an Azure Function that acts as our tool server. It listens for HTTP POST requests at the `/api/tools/call` endpoint.</p>
+                    <div class="code-block">
+<pre><code><span class="token comment"># function_app.py (for Azure Functions)</span>
+<span class="token keyword">import</span> azure.functions <span class="token keyword">as</span> func
+<span class="token keyword">import</span> logging
+<span class="token keyword">import</span> json
+
+app <span class="token punctuation">=</span> func<span class="token punctuation">.</span>FunctionApp<span class="token punctuation">(</span>http_auth_level<span class="token operator">=</span>func<span class="token punctuation">.</span>AuthLevel<span class="token punctuation">.</span>ANONYMOUS<span class="token punctuation">)</span>
+
+<span class="token comment"># Mock tool implementation</span>
+<span class="token keyword">def</span> <span class="token function">get_order_status</span><span class="token punctuation">(</span>order_id<span class="token punctuation">:</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">"orderId"</span><span class="token punctuation">:</span> order_id<span class="token punctuation">,</span> <span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"Shipped"</span><span class="token punctuation">,</span> <span class="token string">"estimatedDelivery"</span><span class="token punctuation">:</span> <span class="token string">"2025-10-12"</span><span class="token punctuation">}</span>
+
+TOOL_REGISTRY <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+    <span class="token string">"GetOrderStatus"</span><span class="token punctuation">:</span> get_order_status
+<span class="token punctuation">}</span>
+
+<span class="token decorator"><span class="token punctuation">@</span>app<span class="token punctuation">.</span>route</span><span class="token punctuation">(</span>route<span class="token operator">=</span><span class="token string">"tools/call"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">call_tool</span><span class="token punctuation">(</span>req<span class="token punctuation">:</span> func<span class="token punctuation">.</span>HttpRequest<span class="token punctuation">)</span> <span class="token operator">-&gt;</span> func<span class="token punctuation">.</span>HttpResponse<span class="token punctuation">:</span>
+    logging<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">'MCP tool call received.'</span><span class="token punctuation">)</span>
+    
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        req_body <span class="token punctuation">=</span> req<span class="token punctuation">.</span>get_json<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        tool_name <span class="token punctuation">=</span> req_body<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'tool_name'</span><span class="token punctuation">)</span>
+        params <span class="token punctuation">=</span> req_body<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'parameters'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+        tool_func <span class="token punctuation">=</span> TOOL_REGISTRY<span class="token punctuation">.</span>get<span class="token punctuation">(</span>tool_name<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> tool_func<span class="token punctuation">:</span>
+            result <span class="token punctuation">=</span> tool_func<span class="token punctuation">(</span><span class="token operator">**</span>params<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> func<span class="token punctuation">.</span>HttpResponse<span class="token punctuation">(</span>json<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'result'</span><span class="token punctuation">:</span> result<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span> mimetype<span class="token operator">=</span><span class="token string">"application/json"</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> func<span class="token punctuation">.</span>HttpResponse<span class="token punctuation">(</span><span class="token string">"Tool not found"</span><span class="token punctuation">,</span> status_code<span class="token operator">=</span><span class="token number">404</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">except</span> ValueError<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> func<span class="token punctuation">.</span>HttpResponse<span class="token punctuation">(</span><span class="token string">"Invalid request body"</span><span class="token punctuation">,</span> status_code<span class="token operator">=</span><span class="token number">400</span><span class="token punctuation">)</span></code></pre>
+                    </div>
+                </div>
+
+                 <!-- Step 2 -->
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3"><span class="text-indigo-600">Part 2:</span> The Semantic Kernel Agent Client</h3>
+                    <p class="mb-4">This client code simulates how an agent built with Semantic Kernel would make a call to our Azure Function endpoint after deciding a tool is needed.</p>
+                     <div class="code-block">
+<pre><code><span class="token comment"># agent_client.py</span>
+<span class="token keyword">import</span> requests
+<span class="token keyword">import</span> os
+
+<span class="token comment"># Your Azure Function URL would go here</span>
+AZURE_FUNCTION_URL <span class="token punctuation">=</span> os<span class="token punctuation">.</span>environ<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"MCP_FUNCTION_URL"</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">invoke_mcp_tool</span><span class="token punctuation">(</span>tool_name<span class="token punctuation">:</span> str<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment">"""Simulates a Semantic Kernel function calling an external tool."""</span>
+    payload <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+        <span class="token string">"tool_name"</span><span class="token punctuation">:</span> tool_name<span class="token punctuation">,</span>
+        <span class="token string">"parameters"</span><span class="token punctuation">:</span> kwargs
+    <span class="token punctuation">}</span>
+    
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        response <span class="token punctuation">=</span> requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span>f<span class="token string">"{AZURE_FUNCTION_URL}/api/tools/call"</span><span class="token punctuation">,</span> json<span class="token punctuation">=</span>payload<span class="token punctuation">)</span>
+        response<span class="token punctuation">.</span>raise_for_status<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> response<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">except</span> requests<span class="token punctuation">.</span>exceptions<span class="token punctuation">.</span>RequestException <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">"error"</span><span class="token punctuation">:</span> str<span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">}</span>
+
+<span class="token comment"># --- Agent's simulated run ---</span>
+prompt <span class="token punctuation">=</span> <span class="token string">"Can you check the status for order #12345?"</span>
+<span class="token comment"># (LLM planner decides to call the GetOrderStatus tool)</span>
+tool_result <span class="token punctuation">=</span> <span class="token function">invoke_mcp_tool</span><span class="token punctuation">(</span><span class="token string">"GetOrderStatus"</span><span class="token punctuation">,</span> order_id<span class="token operator">=</span><span class="token string">"12345"</span><span class="token punctuation">)</span>
+print<span class="token punctuation">(</span>tool_result<span class="token punctuation">)</span></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Conclusion -->
+            <section class="text-center mt-16">
+                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Azure: A Robust Foundation for Agentic AI</h2>
+                 <p class="text-lg leading-relaxed max-w-3xl mx-auto">
+                    By combining the standardized MCP pattern with Azure's scalable, serverless infrastructure and its native AI frameworks, developers can build sophisticated, enterprise-ready agentic systems. This approach provides the flexibility, security, and performance needed to move AI agents from experimental prototypes to core business applications.
+                </p>
+            </section>
+        </main>
+
+        <footer class="text-center mt-16 border-t pt-8">
+            <p class="text-gray-500">&copy; 2025 AI Insights. All Rights Reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The MCP Learning Path: A Guide to Agentic AI Infrastructure</title>
+    
+    <meta name="description" content="A complete learning path covering the Model Context Protocol (MCP) for Agentic AI. Explore the architecture, design patterns, tutorials, and best practices for building, deploying, and monitoring MCP servers.">
+    <meta name="keywords" content="MCP, Model Context Protocol, Agentic AI, AI Agents, MCP Server, A2A, Agentic Mesh, AI Architecture, FastAPI, Azure">
+
+    <meta property="og:title" content="The MCP Learning Path: A Guide to Agentic AI Infrastructure">
+    <meta property="og:description" content="Follow this step-by-step guide to master the concepts behind the Model Context Protocol for building scalable and collaborative AI agent systems.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://example.com/mcp-learning-path">
+    <meta property="og:image" content="https://placehold.co/1200x630/4A5568/FFFFFF?text=MCP+Learning+Path">
+    <meta property="og:site_name" content="AI Architecture Guides">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "The MCP Learning Path: A Guide to Agentic AI Infrastructure",
+      "description": "A sequential collection of guides and tutorials for understanding and implementing the Model Context Protocol (MCP) for agentic AI systems.",
+      "url": "https://example.com/mcp-learning-path",
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "item": { "@type": "WebPage", "name": "What Is an MCP Server?", "url": "1-mcp-overview.html" } },
+          { "@type": "ListItem", "position": 2, "item": { "@type": "WebPage", "name": "MCP Server Architecture Deep Dive", "url": "2-mcp-server-architecture.html" } },
+          { "@type": "ListItem", "position": 3, "item": { "@type": "WebPage", "name": "The Agent-as-Server Pattern", "url": "3-exposing-agent-as-mcp-server.html" } },
+          { "@type": "ListItem", "position": 4, "item": { "@type": "WebPage", "name": "Integrating MCP with A2A Communication", "url": "4-integrating-mp-a2a.html" } },
+          { "@type": "ListItem", "position": 5, "item": { "@type": "WebPage", "name": "Designing an Agentic Mesh", "url": "5-designing-agentic-mesh-with-multiple-mcp-servers.html" } },
+          { "@type": "ListItem", "position": 6, "item": { "@type": "WebPage", "name": "Tutorial: Building a Minimal MCP Server", "url": "6-tutorial-building-mcp-server.html" } },
+          { "@type": "ListItem", "position": 7, "item": { "@type": "WebPage", "name": "Deploying MCP Servers in the Cloud", "url": "7-deploy-mcp-server-in-cloud.html" } },
+          { "@type": "ListItem", "position": 8, "item": { "@type": "WebPage", "name": "MCP on Azure", "url": "8-mcp-on-azure.html" } },
+          { "@type": "ListItem", "position": 9, "item": { "@type": "WebPage", "name": "Extending MCP for Domain-Specific Applications", "url": "9-extendng-mcp-for-domain-specific-applications.html" } },
+          { "@type": "ListItem", "position": 10, "item": { "@type": "WebPage", "name": "Monitoring, Logging & Observability", "url": "10-monitoring-logging-observability-mcp-servers.html" } }
+        ]
+      }
+    }
+    </script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1f2937; }
+        h1, h2, h3 { font-family: 'Lora', serif; }
+        .path-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .path-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-gray-800 text-white shadow-md py-8">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold">The MCP Learning Path</h1>
+            <p class="mt-2 text-lg text-gray-300">A Guide to Architecting Agentic AI Infrastructure</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 max-w-4xl">
+        <section id="hero" class="text-center mb-12">
+            <p class="text-lg text-slate-600">This collection of guides provides a step-by-step journey into the Model Context Protocol (MCP). Start from the beginning to build a solid foundation, or jump to the topic that interests you most. Each guide explores a key aspect of building, deploying, and managing scalable, collaborative AI agent systems.</p>
+        </section>
+
+        <div class="space-y-6">
+
+            <a href="1-mcp-overview.html" class="path-card block bg-white rounded-lg shadow-md border-l-4 border-indigo-500 p-6">
+                <div class="flex items-start gap-4">
+                    <div class="text-2xl font-bold text-indigo-500">1.</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">What Is an MCP Server? A Primer</h3>
+                        <p class="mt-2 text-gray-600">Start here to understand the foundational concept of MCP and the crucial role it plays as the "tool and context interface" for agentic AI.</p>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="2-mcp-server-architecture.html" class="path-card block bg-white rounded-lg shadow-md border-l-4 border-indigo-500 p-6">
+                <div class="flex items-start gap-4">
+                    <div class="text-2xl font-bold text-indigo-500">2.</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">MCP Server Architecture Deep Dive</h3>
+                        <p class="mt-2 text-gray-600">Explore the core architectural components—from the Tool Registry to the Routing Engine—required to engineer scalable multi-agent systems.</p>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="3-exposing-agent-as-mcp-server.html" class="path-card block bg-white rounded-lg shadow-md border-l-4 border-indigo-500 p-6">
+                <div class="flex items-start gap-4">
+                    <div class="text-2xl font-bold text-indigo-500">3.</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">The Agent-as-Server Pattern</h3>
+                        <p class="mt-2 text-gray-600">Discover a powerful new pattern where each agent acts as its own MCP server, exposing its skills as tools for a collaborative, peer-to-peer network.</p>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="4-integrating-mp-a2a.html" class="path-card block bg-white rounded-lg shadow-md border-l-4 border-indigo-500 p-6">
+                <div class="flex items-start gap-4">
+                    <div class="text-2xl font-bold text-indigo-500">4.</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">Integrating MCP with A2A Communication</h3>
+                        <p class="mt-2 text-gray-600">Learn how Agent-to-Agent (A2A) protocols complement MCP to enable higher-level dialogue, negotiation, and true collaboration between agents.</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="5-designing-agentic-mesh-with-multiple-mcp-servers.html" class="path-card block bg-white rounded-lg shadow-md border-l-4 border-indigo-500 p-6">
+                <div class="flex items-start gap-4">
+                    <div class="text-2xl font-bold text-indigo-500">5.</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">Designing an Agentic Mesh</h3>
+                        <p class="mt-2 text-gray-600">Move beyond simple integrations to design a structured, distributed network of specialized agents and MCP servers that work in concert at enterprise scale.</p>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="6-tutorial-building-mcp-server.html" class="path-card block bg-white rounded-lg shadow-md border-l-4 border-green-500 p-6">
+                <div class="flex items-start gap-4">
+                    <div class="text-2xl font-bold text-green-500">6.</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">Tutorial: Building a Minimal MCP Server</h3>
+                        <p class="mt-2 text-gray-600">Put theory into practice with this step-by-step guide to building a functional MCP server from scratch using Python and FastAPI.</p>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="7-deploy-mcp-server-in-cloud.html" class="path-card block bg-white rounded-lg shadow-md border-l-4 border-purple-500 p-6">
+                <div class="flex items-start gap-4">
+                    <div class="text-2xl font-bold text-purple-500">7.</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">Deploying MCP Servers in the Cloud</h3>
+                        <p class="mt-2 text-gray-600">Learn the patterns and best practices for deploying production-grade agentic systems using cloud-native principles like containerization and autoscaling.</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="8-mcp-on-azure.html" class="path-card block bg-white rounded-lg shadow-md border-l-4 border-purple-500 p-6">
+                <div class="flex items-start gap-4">
+                    <div class="text-2xl font-bold text-purple-500">8.</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">MCP on Azure</h3>
+                        <p class="mt-2 text-gray-600">Explore how to build and scale enterprise-grade agentic AI by leveraging Microsoft Azure's ecosystem, including Azure Functions and Semantic Kernel.</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="9-extendng-mcp-for-domain-specific-applications.html" class="path-card block bg-white rounded-lg shadow-md border-l-4 border-red-500 p-6">
+                <div class="flex items-start gap-4">
+                    <div class="text-2xl font-bold text-red-500">9.</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">Extending MCP for Domain-Specific Applications</h3>
+                        <p class="mt-2 text-gray-600">Unlock the true power of MCP by tailoring it for complex fields like finance, healthcare, and IoT with custom schemas and compliance guardrails.</p>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="10-monitoring-logging-observability-mcp-servers.html" class="path-card block bg-white rounded-lg shadow-md border-l-4 border-red-500 p-6">
+                <div class="flex items-start gap-4">
+                    <div class="text-2xl font-bold text-red-500">10.</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">Monitoring, Logging & Observability</h3>
+                        <p class="mt-2 text-gray-600">Ensure reliability and trust in production MCP servers by implementing key strategies for end-to-end tracing, monitoring, and auditing.</p>
+                    </div>
+                </div>
+            </a>
+            
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 mt-16">
+        <div class="container mx-auto px-6 py-8 text-center text-slate-300">
+            <p>&copy; 2025 AI Architecture Guides. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
